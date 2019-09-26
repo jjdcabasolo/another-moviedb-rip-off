@@ -1,7 +1,15 @@
 import React from 'react';
 
-const DummyComponent = () => (
-  <div>asdf</div>
-);
+import { getPopularMovies } from '../api/movie';
+
+const DummyComponent = () => {
+  getPopularMovies();
+
+  return (
+    <div>
+      asdf
+    </div>
+  )
+}
 
 export default DummyComponent;
