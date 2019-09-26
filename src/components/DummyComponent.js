@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { getPopularMovies } from '../api/movie';
 
 const DummyComponent = () => {
-  getPopularMovies();
+  const [movies, setMovies] = useState('');
+
+  getPopularMovies((data) => {
+    setMovies(JSON.stringify(data.results));
+  }, (error) => {
+    setMovies(error.status_message);
+  });
 
   return (
     <div>
-      asdf
+      {movies}
     </div>
-  )
-}
+  );
+};
 
 export default DummyComponent;
