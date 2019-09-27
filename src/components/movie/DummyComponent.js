@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { getPopularMovies } from '../api/movie';
+import { getPopularMovies } from '../../api/movie';
 
 const DummyComponent = () => {
   const [movies, setMovies] = useState('');

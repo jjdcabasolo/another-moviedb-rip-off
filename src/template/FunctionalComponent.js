@@ -1,0 +1,88 @@
+// npm module imports: react, react-redux, PropTypes, moment
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+
+// mui native styling hook API
+import { makeStyles } from '@material-ui/core/styles';
+// mui component imports: rename materialUIComponent
+import materialUIComponent from '@material-ui/core/materialUIComponent';
+// mui icon imports: rename materialUIIcon
+import materialUIIcon from '@material-ui/icons/materialUIIcon';
+
+// local component imports: rename localComponent, add proper path
+import localComponent from './path_to_component';
+
+// api imports: rename apiName, add proper path
+import apiName from './path_to_api';
+
+// redux ducks action imports: rename component
+import { componentActions } from '../../../reducers/ducks/component';
+
+// utils imports: replace functionUtil, rename file
+import { functionUtil } from '../../../utils/file';
+
+// constants imports: replace VARIABLE, rename file
+import { VARIABLE } from '../../../constants/file';
+
+// mui styling hook API usage
+const useStyles = makeStyles(theme => ({
+
+}));
+
+// functional component declaration: rename FunctionalComponent
+const FunctionalComponent = (props) => {
+  // props declaration
+  const { } = props;
+
+  // hook API variable declaration
+  const classes = useStyles();
+
+  // redux states declaration: rename component, replace variable
+  const variable = useSelector(state => state.component.variable);
+
+  // redux actions usage
+  const dispatch = useDispatch();
+
+  // refs declaration: rename ref, replace value
+  const ref = useRef(value);
+
+  // react states declaration: rename state & setState, replace value
+  const [state, setState] = useState(value);
+
+  // side effects on state change (redux state change rerender, redux actions)
+  useEffect(() => {
+
+  }, []);
+
+  // local variable declaration (conditions, state evaluations, switch cases)
+  const variable = 1;
+
+  // local component declaration (conditional renders, refactored redundant components)
+  const Component = (children) => (
+    <>
+      {children}
+    </>
+  );
+
+  // component functions (state changes, onClick callbacks, event handling)
+  const handleRowClick = () => {
+    return 0;
+  };
+
+  // return block - component usage
+  return (
+    <>
+
+    </>
+  );
+};
+
+// PropTypes for props
+FunctionalComponent.propTypes = {
+
+};
+
+// default export
+export default FunctionalComponent;

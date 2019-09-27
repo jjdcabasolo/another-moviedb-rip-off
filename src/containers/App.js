@@ -8,6 +8,7 @@ import { createMuiTheme, MuiThemeProvider, lighten } from '@material-ui/core/sty
 
 import Snackbars from './Snackbars';
 import Home from './Home';
+import Sidebar from '../components/sidebar/Sidebar';
 
 const App = () => {
   const darkMode = useSelector(state => state.sidebar.darkMode);
@@ -27,12 +28,15 @@ const App = () => {
   return (
     <MuiThemeProvider theme={theme}>
       {/* <MuiPickersUtilsProvider utils={MomentUtils}> */}
-      <Router basename="/">
-        <Switch>
-          <Route exact path="/" component={Home} />
-        </Switch>
-      </Router>
-      {/* <Snackbars />  */}
+        <Router basename="/">
+          <Sidebar>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/movies" component={Home} />
+            </Switch>
+          </Sidebar>
+        </Router>
+      <Snackbars />
       {/* </MuiPickersUtilsProvider> */}
     </MuiThemeProvider>
   );

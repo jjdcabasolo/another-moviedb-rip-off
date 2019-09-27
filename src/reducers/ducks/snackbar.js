@@ -6,45 +6,38 @@ const snackbarActionType = {
 
 // ACTIONS
 export const snackbarActions = {
-  showSnackbar: (snackbarName, snackbarMessage) => ({
+  showSnackbar: (snackbarMessage, variant) => ({
     type: snackbarActionType.SHOW_SNACKBAR,
-    snackbarName,
-    snackbarMessage,
+    payload: { snackbarMessage, variant },
   }),
 
-  hideSnackbar: snackbarName => ({
+  hideSnackbar: () => ({
     type: snackbarActionType.HIDE_SNACKBAR,
-    snackbarName,
   }),
 };
 
 // REDUCER
 const initialState = {
   snackbarMessage: '',
-
-  // format: <Action><Case to be Handled>
-  addEditBatchCompleteDetails: false,
-  addEditBatchIncompleteDetails: false,
-  saveDraftCompleteDetails: false,
-  saveDraftIncompleteDetails: false,
-  updateCourseStatus: false,
-  userLogging: false,
+  variant: 'success',
+  isShown: false,
 };
 
 const showSnackbar = (state, action) => ({
   ...state,
-  [action.snackbarName]: true,
-  snackbarMessage: action.snackbarMessage,
+  isShown: true,
+  variant: action.payload.variant,
+  snackbarMessage: action.payload.snackbarMessage,
 });
 
-const hideSnackbar = (state, action) => ({
+const hideSnackbar = (state) => ({
   ...state,
-  [action.snackbarName]: false,
+  isShown: false,
 });
 
 export const snackbarReducer = (state = initialState, action) => {
   switch (action.type) {
-    case snackbarActionType.HIDE_SNACKBAR: return hideSnackbar(state, action);
+    case snackbarActionType.HIDE_SNACKBAR: return hideSnackbar(state);
     case snackbarActionType.SHOW_SNACKBAR: return showSnackbar(state, action);
     default: return state;
   }

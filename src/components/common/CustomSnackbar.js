@@ -53,17 +53,15 @@ const CustomSnackbar = (props) => {
   const snackbarSettings = {
     success: {
       action: [closeIcon],
-      autoHideDuration: 3000,
+      autoHideDuration: 6000,
       color: (darkMode ? green[200] : green[600]),
       icon: (<CheckCircleOutlineOutlined className={classes.icon} />),
-      origin: { vertical: 'top', horizontal: 'right' },
     },
     error: {
       action: [closeIcon],
-      autoHideDuration: 3000,
+      autoHideDuration: 6000,
       color: (darkMode ? red[200] : red[500]),
       icon: (<ErrorOutlineOutlined className={classes.icon} />),
-      origin: { vertical: 'top', horizontal: 'right' },
     },
   };
 
@@ -76,7 +74,7 @@ const CustomSnackbar = (props) => {
 
   return (
     <Snackbar
-      anchorOrigin={snackbarSettings[variant].origin}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       autoHideDuration={snackbarSettings[variant].autoHideDuration}
       onClose={handleOnClose}
       open={isOpen}
