@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { createMuiTheme, MuiThemeProvider, lighten } from '@material-ui/core/styles';
 
 import Snackbars from './Snackbars';
-import DummyComponent from '../components/DummyComponent';
+import Home from './Home';
 
 const App = () => {
   const darkMode = useSelector(state => state.sidebar.darkMode);
@@ -29,7 +29,7 @@ const App = () => {
       {/* <MuiPickersUtilsProvider utils={MomentUtils}> */}
       <Router basename="/">
         <Switch>
-          <Route exact path="/" component={DummyComponent} />
+          <Route exact path="/" component={Home} />
         </Switch>
       </Router>
       {/* <Snackbars />  */}
