@@ -124,6 +124,7 @@ export default function APIKeyDialog() {
 
       getPopularMovies(apiKeyState.value, () => {
         dispatch(snackbarActions.showSnackbar('TMDb API key successfully added!', 'success'));
+        dispatch(sidebarActions.setAPIKey(apiKeyState.value, usernameState.value));
         handleClose();
       }, () => {
         dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));

@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js';
+
 // ACTION TYPE
 const sidebarActionType = {
   SET_ACTIVE_TAB: '@sidebar/set_active_tab',
@@ -59,11 +61,15 @@ const setActiveTab = (state, action) => ({
   activeTab: action.payload.tab,
 });
 
-const setAPIKey = (state, action) => ({
-  ...state,
-  apiKey: action.payload.apiKey,
-  username: action.payload.username,
-});
+const setAPIKey = (state, action) => {
+  const apiKey = CryptoJS.AES.encrypt(action.payload.apiKey, action.payload.username);
+
+  return ({
+    ...state,
+    apiKey: apiKey.toString(),
+    username: action.payload.username,
+  })
+};
 
 const toggleDrawer = state => ({
   ...state,
