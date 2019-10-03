@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -36,11 +35,12 @@ import { snackbarActions } from '../../reducers/ducks/snackbar';
 import {
   API_KEY_DIALOG_TITLE,
   API_KEY_DIALOG_SUBTITLE,
-  API_KEY_DIALOG_TMDB_LINK,
+  API_KEY_DIALOG_TMDB_API_LINK,
   API_KEY_DIALOG_NOTE,
   API_KEY_DIALOG_MISSING_USERNAME,
   API_KEY_DIALOG_MISSING_API_KEY,
-  API_KEY_DIALOG_INVALID_API_KEY,
+  API_KEY_DIALOG_HAS_KEY,
+  API_KEY_DIALOG_TMDB_LINK,
 } from '../../constants/movie';
 
 const useStyles = makeStyles(theme => ({
@@ -85,30 +85,36 @@ export default function APIKeyDialog() {
 
   const apiKey = useSelector(state => state.sidebar.apiKey);
   const username = useSelector(state => state.sidebar.username);
+  const hasApiKey = apiKey.length > 0 && username.length > 0;
 
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(initState.open);
   const [isApplyingKey, setIsApplyingKey] = useState(initState.isApplyingKey);
   const [apiKeyState, setApiKeyState] = useState(initState.apiKey);
-  const [usernameState, setUsernameState] = useState(initState.apiKey);
+  const [usernameState, setUsernameState] = useState(initState.username);
+
+  useEffect(() => {
+    setApiKeyState({ ...apiKeyState, value: apiKey });
+    setUsernameState({ ...usernameState, value: username });
+  }, [username]);
 
   const handleClickOpen = () => setOpen(true);
 
   const handleClose = () => {
     setOpen(false);
     setIsApplyingKey(initState.isApplyingKey);
-    setApiKeyState(initState.apiKey);
-    setUsernameState(initState.apiKey);
+    setUsernameState({ ...usernameState, error: false });
+    setApiKeyState({ ...apiKeyState, error: false });
   };
 
-  const handleAPIKeyChange = event => setApiKeyState({ ...apiKeyState, value: event.target.value });
+  const handleAPIKeyChange = e => setApiKeyState({ ...apiKeyState, value: e.target.value });
 
-  const handleUsernameChange = event => setUsernameState({ ...apiKeyState, value: event.target.value });
+  const handleUsernameChange = e => setUsernameState({ ...usernameState, value: e.target.value });
 
   const handleClickShowAPIKey = () => setApiKeyState({ ...apiKeyState, showAPIKey: !apiKeyState.showAPIKey });
 
-  const handleMouseDownAPIKey = event => event.preventDefault();
+  const handleMouseDownAPIKey = e => e.preventDefault();
 
   const handleSubmit = () => {
     const hasUsernameValue = usernameState.value !== '';
@@ -135,8 +141,13 @@ export default function APIKeyDialog() {
   };
 
   const handleClearForms = () => {
-    setUsernameState({ ...usernameState, value: '' });
-    setApiKeyState({ ...apiKeyState, value: '' });
+    if (hasApiKey) {
+      dispatch(snackbarActions.showSnackbar('Your API key has been cleared!', 'success'));
+      dispatch(sidebarActions.clearAPIKey());
+    } else {
+      setUsernameState({ ...usernameState, value: '' });
+      setApiKeyState({ ...apiKeyState, value: '' });
+    }
   };
 
   return (
@@ -170,9 +181,9 @@ export default function APIKeyDialog() {
         <DialogContent>
           <DialogContentText>
             {API_KEY_DIALOG_SUBTITLE}
-            <Link href={API_KEY_DIALOG_TMDB_LINK}>
-              Learn more.
-            </Link>
+            <Link href={API_KEY_DIALOG_TMDB_API_LINK}>
+              Learn more
+            </Link>{'.'}
           </DialogContentText>
           <TextField
             autoFocus
@@ -182,7 +193,7 @@ export default function APIKeyDialog() {
             margin="dense"
             id="username"
             label="Username"
-            disabled={isApplyingKey}
+            disabled={isApplyingKey || hasApiKey}
             fullWidth
             variant="filled"
             helperText={usernameState.error ? API_KEY_DIALOG_MISSING_USERNAME : null}
@@ -199,7 +210,7 @@ export default function APIKeyDialog() {
               value={apiKeyState.value}
               error={apiKeyState.error}
               margin="dense"
-              disabled={isApplyingKey}
+              disabled={isApplyingKey || hasApiKey}
               onChange={handleAPIKeyChange}
               endAdornment={
                 <InputAdornment position="end">
@@ -208,7 +219,7 @@ export default function APIKeyDialog() {
                     onClick={handleClickShowAPIKey}
                     onMouseDown={handleMouseDownAPIKey}
                     size="small"
-                    disabled={isApplyingKey}
+                    disabled={isApplyingKey || hasApiKey}
                   >
                     {apiKeyState.showPassword ? <VisibilityTwoTone /> : <VisibilityOffTwoTone />}
                   </IconButton>
@@ -219,7 +230,17 @@ export default function APIKeyDialog() {
           </FormControl>
 
           <DialogContentText className={classes.note}>
-            {API_KEY_DIALOG_NOTE}
+            {hasApiKey
+              ? (
+                <>
+                  {API_KEY_DIALOG_HAS_KEY}
+                  <Link href={API_KEY_DIALOG_TMDB_LINK}>
+                    The Movie Database
+                  </Link>{'.'}
+                </>
+              )
+              : API_KEY_DIALOG_NOTE
+            }
           </DialogContentText>
         </DialogContent>
 
@@ -230,16 +251,18 @@ export default function APIKeyDialog() {
           <Button onClick={handleClearForms} color="primary" disabled={isApplyingKey}>
             Clear
           </Button>
-          <div className={classes.progressWrapper}>
-            <Button
-              onClick={handleSubmit}
-              color="primary"
-              disabled={isApplyingKey}
-            >
-              Submit
-            </Button>
-            { (isApplyingKey) && <CircularProgress size={24} thickness={7} className={classes.buttonProgress} /> }
-          </div>
+          { !hasApiKey && (
+            <div className={classes.progressWrapper}>
+              <Button
+                onClick={handleSubmit}
+                color="primary"
+                disabled={isApplyingKey}
+              >
+                Submit
+              </Button>
+              { (isApplyingKey) && <CircularProgress size={24} thickness={7} className={classes.buttonProgress} /> }
+            </div>
+          )}
         </DialogActions>
       </Dialog>
     </>

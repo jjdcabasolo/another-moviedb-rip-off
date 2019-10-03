@@ -1,38 +1,27 @@
-import CryptoJS from 'crypto-js';
+import { encrypt, decrypt } from '../../utils/encrypt';
 
 // ACTION TYPE
 const sidebarActionType = {
-  SET_ACTIVE_TAB: '@sidebar/set_active_tab',
-  SET_API_KEY: '@sidebar/set_api_key',
-  TOGGLE_DRAWER: '@sidebar/toggle_drawer',
-  TOGGLE_LIGHTS: '@sidebar/toggle_lights',
+  CLEAR_API_KEY: '@sidebar/CLEAR_API_KEY',
+  SET_ACTIVE_TAB: '@sidebar/SET_ACTIVE_TAB',
+  SET_API_KEY: '@sidebar/SET_API_KEY',
+  TOGGLE_DRAWER: '@sidebar/TOGGLE_DRAWER',
+  TOGGLE_LIGHTS: '@sidebar/TOGGLE_LIGHTS',
 };
 
 // ACTIONS
 export const sidebarActions = {
-  toggleDrawer: () => (
-    async (dispatch, getState) => {
-      const { drawerOpen } = getState().sidebar;
-      if (drawerOpen) {
-        localStorage.setItem('drawerOpen', 'false');
-      } else {
-        localStorage.setItem('drawerOpen', 'true');
-      }
-      dispatch({ type: sidebarActionType.TOGGLE_DRAWER });
-    }
-  ),
+  clearAPIKey: () => ({
+    type: sidebarActionType.CLEAR_API_KEY,
+  }),
 
-  toggleLights: () => (
-    async (dispatch, getState) => {
-      const { darkMode } = getState().sidebar;
-      if (darkMode) {
-        localStorage.setItem('darkMode', 'false');
-      } else {
-        localStorage.setItem('darkMode', 'true');
-      }
-      dispatch({ type: sidebarActionType.TOGGLE_LIGHTS });
-    }
-  ),
+  toggleDrawer: () => ({
+    type: sidebarActionType.TOGGLE_DRAWER,
+  }),
+
+  toggleLights: () => ({
+    type: sidebarActionType.TOGGLE_LIGHTS,
+  }),
 
   setActiveTab: tab => ({
     type: sidebarActionType.SET_ACTIVE_TAB,
@@ -47,13 +36,15 @@ export const sidebarActions = {
 
 // REDUCER
 const initialTab = window.location.pathname.replace('/', '');
+const initialApiKey = localStorage.getItem('apiKey') || '';
+const initialUsername = localStorage.getItem('username') || '';
 
 const initialState = {
-  activeTab: initialTab === '' ? 'calendar' : initialTab,
-  apiKey: '',
+  activeTab: initialTab === '' ? 'movies' : initialTab,
+  apiKey: initialApiKey,
   darkMode: localStorage.getItem('darkMode') === 'true',
   drawerOpen: localStorage.getItem('drawerOpen') === 'true',
-  username: '',
+  username: decrypt(initialUsername, initialApiKey),
 };
 
 const setActiveTab = (state, action) => ({
@@ -62,27 +53,53 @@ const setActiveTab = (state, action) => ({
 });
 
 const setAPIKey = (state, action) => {
-  const apiKey = CryptoJS.AES.encrypt(action.payload.apiKey, action.payload.username);
+  const apiKey = encrypt(action.payload.apiKey, action.payload.username);
+  const username = encrypt(action.payload.username, apiKey);
+
+  localStorage.setItem('apiKey', apiKey);
+  localStorage.setItem('username', username);
 
   return ({
     ...state,
-    apiKey: apiKey.toString(),
+    apiKey: apiKey,
     username: action.payload.username,
-  })
+  });
 };
 
-const toggleDrawer = state => ({
-  ...state,
-  drawerOpen: !state.drawerOpen,
-});
+const toggleDrawer = state => {
+  if (state.drawerOpen) localStorage.setItem('drawerOpen', 'false');
+  else localStorage.setItem('drawerOpen', 'true');
 
-const toggleLights = state => ({
-  ...state,
-  darkMode: !state.darkMode,
-});
+  return ({
+    ...state,
+    drawerOpen: !state.drawerOpen,
+  });
+};
+
+const toggleLights = state => {
+  if (state.darkMode) localStorage.setItem('darkMode', 'false');
+  else localStorage.setItem('darkMode', 'true');
+
+  return ({
+    ...state,
+    darkMode: !state.darkMode,
+  });
+};
+
+const clearAPIKey = state => {
+  localStorage.removeItem('apiKey');
+  localStorage.removeItem('username');
+
+  return ({
+    ...state,
+    apiKey: '',
+    username: '',
+  });
+}
 
 export const sidebarReducer = (state = initialState, action) => {
   switch (action.type) {
+    case sidebarActionType.CLEAR_API_KEY: return clearAPIKey(state, action);
     case sidebarActionType.SET_ACTIVE_TAB: return setActiveTab(state, action);
     case sidebarActionType.SET_API_KEY: return setAPIKey(state, action);
     case sidebarActionType.TOGGLE_DRAWER: return toggleDrawer(state);

@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-import APIKeyDialog from '../components/sidebar/APIKeyDialog';
+import React from 'react';
 
 const Home = () => {
 

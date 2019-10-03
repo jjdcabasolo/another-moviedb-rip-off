@@ -13,8 +13,8 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
   Tooltip,
+  Typography,
 } from '@material-ui/core';
 import {
   BrightnessLowTwoTone,
@@ -29,7 +29,10 @@ import { sidebarActions } from '../../reducers/ducks/sidebar';
 import {
   SIDEBAR_UPPER_TABS,
   SIDEBAR_WIDTH,
+  SIDEBAR_TMDB_LOGO_DARK,
+  SIDEBAR_TMDB_LOGO,
 } from '../../constants/sidebar';
+import { API_KEY_DIALOG_TMDB_LINK } from '../../constants/movie';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -73,11 +76,13 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     alignItems: 'center',
-    color: 'white',
     display: 'flex',
     marginBottom: '10px',
     padding: '0 4px',
     ...theme.mixins.toolbar,
+  },
+  tmdblogo: {
+    width: '1.6em',
   },
 }));
 
@@ -131,7 +136,7 @@ const Sidebar = (props) => {
           <IconButton className={classes.appTitle} onClick={() => handleDrawerState(props)}>
             <MenuTwoTone />
           </IconButton>
-          {/* <Typography variant="h6">  </Typography> */}
+          <Typography variant="h6"> ATMDbRo </Typography>
         </div>
 
         <List>
@@ -153,10 +158,7 @@ const Sidebar = (props) => {
         </List>
 
         <List className={classes.bottomTabs}>
-          <ListItem
-            button
-            onClick={() => dispatch(sidebarActions.toggleLights())}
-          >
+          <ListItem button onClick={() => dispatch(sidebarActions.toggleLights())}>
             <WithTooltip title="Toggle lights" withTooltip={!drawerOpen}>
               <ListItemIcon>
                 {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
@@ -164,7 +166,21 @@ const Sidebar = (props) => {
             </WithTooltip>
             <ListItemText primary="Toggle lights"/>
           </ListItem>
+
           <APIKeyDialog />
+
+          <ListItem button onClick={() => window.open(API_KEY_DIALOG_TMDB_LINK, '_blank')}>
+            <WithTooltip title="Le TMDb" withTooltip={!drawerOpen}>
+              <ListItemIcon>
+                <img
+                  alt="TMDb Logo"
+                  className={classes.tmdblogo}
+                  src={darkMode ? SIDEBAR_TMDB_LOGO_DARK : SIDEBAR_TMDB_LOGO}
+                />
+              </ListItemIcon>
+            </WithTooltip>
+            <ListItemText secondary="Made with ❤ and TMDb"/>
+          </ListItem>
         </List>
       </Drawer>
 
