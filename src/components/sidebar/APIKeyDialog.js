@@ -67,7 +67,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const initState = {
-  open: true,
   isApplyingKey: false,
   apiKey: {
     value: '',
@@ -89,7 +88,7 @@ export default function APIKeyDialog() {
 
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(initState.open);
+  const [open, setOpen] = useState(!hasApiKey);
   const [isApplyingKey, setIsApplyingKey] = useState(initState.isApplyingKey);
   const [apiKeyState, setApiKeyState] = useState(initState.apiKey);
   const [usernameState, setUsernameState] = useState(initState.username);
