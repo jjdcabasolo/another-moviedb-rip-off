@@ -2,8 +2,6 @@ import React from 'react';
 import {
   MovieTwoTone,
   LiveTvTwoTone,
-  TrendingUpTwoTone,
-  WhatshotTwoTone,
 } from '@material-ui/icons';
 
 export const SIDEBAR_WIDTH = 275;

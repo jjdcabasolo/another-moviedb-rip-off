@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -106,7 +106,9 @@ const Sidebar = (props) => {
 
   const dispatch = useDispatch();
 
-  const handleListItemClick = (tab, index, { history }) => {
+  const history = useHistory();
+
+  const handleListItemClick = (tab, _) => {
     dispatch(sidebarActions.setActiveTab(tab.toLowerCase()));
     history.push(tab.toLowerCase().replace(/ /, ''));
   };
@@ -134,7 +136,7 @@ const Sidebar = (props) => {
       >
 
         <div className={classes.toolbar}>
-          <IconButton className={classes.appTitle} onClick={() => handleDrawerState(props)}>
+          <IconButton className={classes.appTitle} onClick={handleDrawerState}>
             <MenuTwoTone />
           </IconButton>
           <Typography variant="h6"> ATMDbRo </Typography>
@@ -146,7 +148,7 @@ const Sidebar = (props) => {
               button
               classes={{ selected: classes.activeTab }}
               key={element.key}
-              onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase(), index, props)}
+              onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase(), index)}
               selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
             >
               <WithTooltip title={element.title} withTooltip={!drawerOpen}>
@@ -197,4 +199,4 @@ Sidebar.propTypes = {
   user: PropTypes.shape({}).isRequired,
 };
 
-export default withRouter(Sidebar);
+export default Sidebar;
