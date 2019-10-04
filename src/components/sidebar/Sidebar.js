@@ -92,7 +92,8 @@ const WithTooltip = ({ children, title, withTooltip }) => (withTooltip
       {children}
     </Tooltip>
   )
-  : children);
+  : children
+);
 
 const Sidebar = (props) => {
   const classes = useStyles();
@@ -144,10 +145,9 @@ const Sidebar = (props) => {
             <ListItem
               button
               classes={{ selected: classes.activeTab }}
-              key={element.title}
+              key={element.key}
               onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase(), index, props)}
               selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
-              disabled={element.disabled}
             >
               <WithTooltip title={element.title} withTooltip={!drawerOpen}>
                 <ListItemIcon>{element.icon}</ListItemIcon>

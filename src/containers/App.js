@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux';
 import { createMuiTheme, MuiThemeProvider, lighten } from '@material-ui/core/styles';
 
 import Snackbars from './Snackbars';
-import Home from './Home';
+import Movies from './Movies';
+import TVShows from './TVShows';
 import Sidebar from '../components/sidebar/Sidebar';
 
 const App = () => {
@@ -31,8 +32,9 @@ const App = () => {
         <Router basename="/">
           <Sidebar>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/movies" component={Home} />
+              <Route exact path="/" component={Movies} />
+              <Route exact path="/movies" component={Movies} />
+              <Route exact path="/tvshows" component={TVShows} />
             </Switch>
           </Sidebar>
         </Router>

@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Home = () => {
+const TVShows = () => {
 
   return (
     <>
-      asdf
+      TV Shows!
     </>
   );
 };
 
-export default Home;
+export default TVShows;
