@@ -7,6 +7,14 @@ export const encrypt = (message, passphrase) => {
 
 export const decrypt = (message, passphrase) => {
   const decryptedMessage = CryptoJS.AES.decrypt(message, passphrase);
-  console.log(decryptedMessage)
   return decryptedMessage.toString(CryptoJS.enc.Utf8);
+};
+
+export const decryptKey = () => {
+  const apiKey = localStorage.getItem('apiKey');
+  const username = localStorage.getItem('username');
+  console.log(apiKey, username)
+  if (apiKey == undefined || username == undefined) return '';
+  const decrpytedUsername = decrypt(username, apiKey);
+  return decrypt(apiKey, decrpytedUsername);
 };

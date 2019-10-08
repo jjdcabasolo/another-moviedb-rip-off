@@ -108,7 +108,7 @@ const Sidebar = (props) => {
 
   const history = useHistory();
 
-  const handleListItemClick = (tab, _) => {
+  const handleListItemClick = tab => {
     dispatch(sidebarActions.setActiveTab(tab.toLowerCase()));
     history.push(tab.toLowerCase().replace(/ /, ''));
   };
@@ -148,7 +148,7 @@ const Sidebar = (props) => {
               button
               classes={{ selected: classes.activeTab }}
               key={element.key}
-              onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase(), index)}
+              onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase())}
               selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
             >
               <WithTooltip title={element.title} withTooltip={!drawerOpen}>
