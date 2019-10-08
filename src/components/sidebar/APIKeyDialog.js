@@ -152,16 +152,12 @@ export default function APIKeyDialog() {
   return (
     <>
       <ListItem button onClick={handleClickOpen}>
-        <ListItemIcon className={classes.whiteText}>
+        <ListItemIcon>
           { apiKey === '' ? (<ErrorOutlineTwoTone />) : (<AccountCircleTwoTone />) }
         </ListItemIcon>
         <ListItemText
           primary={username === '' ? 'No API key entered yet' : username}
           secondary={username === '' ? 'Click here to add one.' : ''}
-          classes={{
-            primary: classes.whiteText,
-            secondary: classes.whiteSubText,
-          }}
         />
       </ListItem>
 
@@ -220,7 +216,7 @@ export default function APIKeyDialog() {
                     size="small"
                     disabled={isApplyingKey || hasApiKey}
                   >
-                    {apiKeyState.showPassword ? <VisibilityTwoTone /> : <VisibilityOffTwoTone />}
+                    {apiKeyState.showAPIKey ? <VisibilityTwoTone /> : <VisibilityOffTwoTone />}
                   </IconButton>
                 </InputAdornment>
               }
