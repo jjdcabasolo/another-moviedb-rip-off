@@ -23,6 +23,7 @@ import {
 } from '@material-ui/icons';
 
 import APIKeyDialog from './APIKeyDialog';
+import MovieDrawer from '../movie/MovieDrawer';
 
 import { sidebarActions } from '../../reducers/ducks/sidebar';
 
@@ -185,6 +186,8 @@ const Sidebar = (props) => {
           </ListItem>
         </List>
       </Drawer>
+
+      <MovieDrawer />
 
       <main className={classes.content}>
         { children }
