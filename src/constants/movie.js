@@ -13,3 +13,5 @@ export const API_KEY_DIALOG_MISSING_USERNAME = 'Username is missing!';
 export const API_KEY_DIALOG_MISSING_API_KEY = 'API key is missing!';
 
 export const API_KEY_DIALOG_HAS_KEY = 'You had already entered your API key. You can view the app with data live from ';
+
+export const MOVIE_DRAWER_TMDB_IMAGE_PREFIX = 'http://image.tmdb.org/t/p/w780';

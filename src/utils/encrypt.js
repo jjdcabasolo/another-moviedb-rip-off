@@ -13,8 +13,8 @@ export const decrypt = (message, passphrase) => {
 export const decryptKey = () => {
   const apiKey = localStorage.getItem('apiKey');
   const username = localStorage.getItem('username');
-  console.log(apiKey, username)
-  if (apiKey == undefined || username == undefined) return '';
+  if (apiKey === undefined || username === undefined) return '';
+
   const decrpytedUsername = decrypt(username, apiKey);
   return decrypt(apiKey, decrpytedUsername);
 };

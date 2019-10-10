@@ -20,38 +20,10 @@ const useStyles = makeStyles({
 const Movies = () => {
   const classes = useStyles();
 
-  const [moviePage, setMoviePage] = useState({
-    config: '',
-    content: [],
-    pageNumber: 1,
-  });
-
-  useEffect(() => {
-    getConfiguration(decryptKey(), response => {
-      const imageConfig = response.data.images;
-      const imageURL = `${imageConfig.base_url}${imageConfig.poster_sizes[5]}`
-      setMoviePage({ ...moviePage, config: imageURL });
-    }, () => {
-
-    });
-
-    getPopularMovies(decryptKey(), response => {
-      setMoviePage({ ...moviePage, content: response.data.results });
-    }, error => {
-      console.log(error.response);
-      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-    });
-  }, []);
 
   return (
     <>
-      {/* <MovieDrawer /> */}
-      <Grid container>
-        {moviePage.content.slice(0, 5).map(movie => <MovieCard movie={movie} imageURL={moviePage.config} /> )}
-      </Grid>
-      <Grid container>
-        {moviePage.content.slice(5, 10).map(movie => <MovieCard movie={movie} imageURL={moviePage.config} /> )}
-      </Grid>
+      Movie Content!
     </>
   );
 };

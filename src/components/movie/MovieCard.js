@@ -12,41 +12,37 @@ import Typography from '@material-ui/core/Typography';
 
 import { truncateText } from '../../utils/text';
 
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants/movie';
+
 const useStyles = makeStyles(theme => ({
+  card: {
+    margin: theme.spacing(0, 1),
+  },
   media: {
     height: 0,
-    paddingTop: '30em',
-    width: '20em',
+    paddingTop: '25em',
+    width: '15em',
   },
 }));
 
-const MovieCard = ({movie, imageURL}) => {
-  console.log(movie, imageURL, `${imageURL}${movie.poster_path}`)
+const MovieCard = ({movie}) => {
   const classes = useStyles();
-
+  console.log(`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}${movie.poster_path}`);
   return (
-    <Grid item xs={2}>
+    <Grid item xs={2} className={classes.card}>
       <Card>
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            image={`${imageURL}${movie.poster_path}`}
+            image={`${1}${movie.poster_path}`}
             title={movie.title}
           />
           <CardContent>
-            <Typography gutterBottom variant="h6">
-              {movie.title}
+            <Typography gutterBottom variant="button">
+              {truncateText(movie.title, 25)}
             </Typography>
           </CardContent>
         </CardActionArea>
-        <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
-        </CardActions>
       </Card>
     </Grid>
   );
