@@ -20,14 +20,14 @@ const useStyles = makeStyles(theme => ({
   },
   media: {
     height: 0,
-    paddingTop: '25em',
-    width: '15em',
+    paddingTop: '26em',
+    width: '21em',
   },
 }));
 
 const MovieCard = ({movie}) => {
   const classes = useStyles();
-  console.log(`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}${movie.poster_path}`);
+  // console.log(`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}${movie.poster_path}`);
   return (
     <Grid item xs={2} className={classes.card}>
       <Card>

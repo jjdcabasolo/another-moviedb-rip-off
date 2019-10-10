@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MovieDrawer() {
+const MovieDrawer = () => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -119,4 +119,6 @@ export default function MovieDrawer() {
       </Drawer>
     </div>
   );
-}
+};
+
+export default MovieDrawer;
