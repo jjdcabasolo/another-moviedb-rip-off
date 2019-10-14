@@ -7,7 +7,6 @@ import MovieCard from '../components/movie/MovieCard';
 import MovieDrawer from '../components/movie/MovieDrawer';
 
 import { getPopularMovies } from '../api/movie';
-import { getConfiguration } from '../api/configuration';
 
 import { decryptKey } from '../utils/encrypt';
 
@@ -19,7 +18,6 @@ const useStyles = makeStyles({
 
 const Movies = () => {
   const classes = useStyles();
-
 
   return (
     <>

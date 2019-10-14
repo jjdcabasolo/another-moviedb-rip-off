@@ -36,7 +36,10 @@ const FunctionalComponent = (props) => {
   // props declaration
   const { } = props;
 
-  // hook API variable declaration
+  // theme variable usage variable declaration
+  const theme = useTheme();
+
+  // styling hook API variable declaration
   const classes = useStyles();
 
   // redux states declaration: rename component, replace variable

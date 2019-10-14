@@ -187,7 +187,7 @@ const Sidebar = (props) => {
         </List>
       </Drawer>
 
-      <MovieDrawer />
+      {activeTab === 'movies' && <MovieDrawer />}
 
       <main className={classes.content}>
         { children }

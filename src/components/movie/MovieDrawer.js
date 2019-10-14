@@ -6,25 +6,20 @@ import Drawer from '@material-ui/core/Drawer';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import MovieCard from './MovieCard';
 
 import { getPopularMovies } from '../../api/movie';
-import { getConfiguration } from '../../api/configuration';
 
 import { decryptKey } from '../../utils/encrypt';
 
 import { SIDEBAR_WIDTH } from '../../constants/sidebar';
 
-const drawerWidth = window.innerWidth - (SIDEBAR_WIDTH + 20);
+const drawerWidth = window.innerWidth - (SIDEBAR_WIDTH + 10);
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -37,13 +32,19 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  drawerHeaderOpen: {
+    padding: theme.spacing(0, 10),
+  },
+  drawerHeaderClosed: {
+    padding: theme.spacing(0, 5),
+  },
   drawerClose: {
     overflow: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: 100,
+    width: drawerWidth / 2,
   },
   drawerOpen: {
     overflow: 'hidden',
@@ -53,16 +54,20 @@ const useStyles = makeStyles(theme => ({
     }),
     width: drawerWidth,
   },
-  grid: {
+  gridDrawerOpen: {
     margin: theme.spacing(5, 0),
-  }
+  },
+  gridDrawerClosed: {
+    margin: theme.spacing(5, 5),
+    width: 'unset',
+  },
 }));
 
 const MovieDrawer = () => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(true);
+  const [movieDrawerOpen, setMovieDrawerOpen] = React.useState(false);
   const [moviePage, setMoviePage] = useState({
     config: '',
     content: [],
@@ -78,46 +83,54 @@ const MovieDrawer = () => {
     });
   }, []);
 
-  const handleDrawerToggle = () => setOpen(!open);
-
-  console.log(moviePage);
+  const handleDrawerToggle = () => setMovieDrawerOpen(!movieDrawerOpen);
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
+    <Drawer
+      className={clsx(
+        classes.drawer,
+        { [classes.drawerOpen]: movieDrawerOpen },
+        { [classes.drawerClose]: !movieDrawerOpen },
+      )}
+      variant="permanent"
+      movieDrawerOpen={movieDrawerOpen}
+      classes={{
+        paper: clsx(
+          classes.drawerPaper,
+          { [classes.drawerOpen]: movieDrawerOpen },
+          { [classes.drawerClose]: !movieDrawerOpen },
+        ),
+      }}
+    >
+      {movieDrawerOpen
+        ? (
+          <Grid container spacing={2} className={classes.gridDrawerOpen}>
+            <Grid item container direction="row" justify="center" alignItems="flex-start">
+              {moviePage.content.slice(0, 5).map(movie => <MovieCard movie={movie} imageURL={moviePage.config} movieDrawerOpen={movieDrawerOpen}/> )}
+            </Grid>
+            <Grid item container direction="row" justify="center" alignItems="flex-start">
+              {moviePage.content.slice(5, 10).map(movie => <MovieCard movie={movie} imageURL={moviePage.config} movieDrawerOpen={movieDrawerOpen}/> )}
+            </Grid>
+          </Grid>
+        )
+        : (
+          <Grid item container justify="center" spacing={2} className={classes.gridDrawerClosed}>
+            {moviePage.content.slice(0, 10).map(movie => <MovieCard movie={movie} imageURL={moviePage.config} movieDrawerOpen={movieDrawerOpen}/> )}
+          </Grid>
+        )
+      }
 
-      <Drawer
-        className={clsx(
-          classes.drawer,
-          { [classes.drawerOpen]: open },
-          { [classes.drawerClose]: !open },
+      <div className={clsx(
+          classes.drawerHeader,
+          { [classes.drawerHeaderOpen]: movieDrawerOpen },
+          { [classes.drawerHeaderClosed]: !movieDrawerOpen },
         )}
-        variant="permanent"
-        open={open}
-        classes={{
-          paper: clsx(
-            classes.drawerPaper,
-            { [classes.drawerOpen]: open },
-            { [classes.drawerClose]: !open },
-          ),
-        }}
       >
-        <Grid container spacing={2} className={classes.grid}>
-          <Grid item container direction="row" justify="center" alignItems="flex-start">
-            {moviePage.content.slice(0, 5).map(movie => <MovieCard movie={movie} imageURL={moviePage.config} /> )}
-          </Grid>
-          <Grid item container direction="row" justify="center" alignItems="flex-start">
-            {moviePage.content.slice(5, 10).map(movie => <MovieCard movie={movie} imageURL={moviePage.config} /> )}
-          </Grid>
-        </Grid>
-
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerToggle}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </div>
-      </Drawer>
-    </div>
+        <IconButton onClick={handleDrawerToggle}>
+          {movieDrawerOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
+      </div>
+    </Drawer>
   );
 };
 
