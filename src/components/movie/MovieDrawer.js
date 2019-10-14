@@ -22,7 +22,11 @@ import {
 
 import { decryptKey } from '../../utils/encrypt';
 
-import { SIDEBAR_WIDTH, MOVIE_DRAWER_WIDTH } from '../../constants';
+import {
+  SIDEBAR_WIDTH,
+  MOVIE_DRAWER_WIDTH,
+  MOVIE_DRAWER_CATEGORY_CHIPS,
+} from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -68,7 +72,6 @@ const useStyles = makeStyles(theme => ({
 
 const MovieDrawer = () => {
   const classes = useStyles();
-  const theme = useTheme();
 
   const [movieDrawerOpen, setMovieDrawerOpen] = React.useState(false);
   const [moviePage, setMoviePage] = useState({
@@ -112,10 +115,6 @@ const MovieDrawer = () => {
     });
   }, []);
 
-  const isNowPlaying = moviePage.category === 'nowPlaying';
-  const isPopular = moviePage.category === 'popular';
-  const isTopRated = moviePage.category === 'topRated';
-  const isUpcoming = moviePage.category === 'upcoming';
   const moviesToDisplay = moviePage.content[moviePage.category];
 
   const handleDrawerToggle = () => setMovieDrawerOpen(!movieDrawerOpen);
@@ -149,34 +148,15 @@ const MovieDrawer = () => {
           </IconButton>
         </Grid>
         <Grid item>
-          <Chip
-            variant="outlined"
-            label="Now Playing"
-            color={isNowPlaying ? 'primary' : 'default'}
-            className={classes.chip}
-            onClick={() => handleChipClick('nowPlaying')}
-          />
-          <Chip
-            variant="outlined"
-            label="Upcoming"
-            color={isUpcoming ? 'primary' : 'default'}
-            className={classes.chip}
-            onClick={() => handleChipClick('upcoming')}
-          />
-          <Chip
-            variant="outlined"
-            label="Popular"
-            color={isPopular ? 'primary' : 'default'}
-            className={classes.chip}
-            onClick={() => handleChipClick('popular')}
-          />
-          <Chip
-            variant="outlined"
-            label="Top Rated"
-            color={isTopRated ? 'primary' : 'default'}
-            className={classes.chip}
-            onClick={() => handleChipClick('topRated')}
-          />
+          {MOVIE_DRAWER_CATEGORY_CHIPS.map(e => (
+            <Chip
+              variant="outlined"
+              label={e.label}
+              color={e.isActive(moviePage.category) ? 'secondary' : 'default'}
+              className={classes.chip}
+              onClick={() => handleChipClick(e.identifier)}
+            />
+          ))}
         </Grid>
       </Grid>
 

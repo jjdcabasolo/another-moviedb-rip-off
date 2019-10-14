@@ -19,3 +19,26 @@ export const API_KEY_DIALOG_HAS_KEY = 'You had already entered your API key. You
 export const MOVIE_DRAWER_TMDB_IMAGE_PREFIX = 'http://image.tmdb.org/t/p/w780';
 
 export const MOVIE_DRAWER_WIDTH = window.innerWidth - (SIDEBAR_WIDTH + 10);
+
+export const MOVIE_DRAWER_CATEGORY_CHIPS = [
+  {
+    label: 'Now Playing',
+    identifier: 'nowPlaying',
+    isActive: e => e === 'nowPlaying',
+  },
+  {
+    label: 'Upcoming',
+    identifier: 'upcoming',
+    isActive: e => e === 'upcoming',
+  },
+  {
+    label: 'Popular',
+    identifier: 'popular',
+    isActive: e => e === 'popular',
+  },
+  {
+    label: 'Top Rated',
+    identifier: 'topRated',
+    isActive: e => e === 'topRated',
+  },
+];
