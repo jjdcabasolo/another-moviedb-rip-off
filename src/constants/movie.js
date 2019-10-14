@@ -1,3 +1,5 @@
+import { SIDEBAR_WIDTH } from './sidebar';
+
 export const API_KEY_DIALOG_TITLE = 'Enter TMDb API key';
 
 export const API_KEY_DIALOG_SUBTITLE =  'To view the contents of this application, you need to enter your own API key. ';
@@ -15,3 +17,5 @@ export const API_KEY_DIALOG_MISSING_API_KEY = 'API key is missing!';
 export const API_KEY_DIALOG_HAS_KEY = 'You had already entered your API key. You can view the app with data live from ';
 
 export const MOVIE_DRAWER_TMDB_IMAGE_PREFIX = 'http://image.tmdb.org/t/p/w780';
+
+export const MOVIE_DRAWER_WIDTH = window.innerWidth - (SIDEBAR_WIDTH + 10);

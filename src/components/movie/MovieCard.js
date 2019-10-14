@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerOpen: {
     height: 0,
-    paddingTop: '26em',
+    paddingTop: '30em',
     width: '21em',
   },
   mediaDrawerClosed: {
@@ -46,7 +46,6 @@ const useStyles = makeStyles(theme => ({
 
 const MovieCard = ({movie, movieDrawerOpen}) => {
   const classes = useStyles();
-  console.log(movieDrawerOpen, movie);
 
   const imagePath = `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}${movieDrawerOpen ? movie.poster_path : movie.backdrop_path}`;
 
@@ -56,28 +55,17 @@ const MovieCard = ({movie, movieDrawerOpen}) => {
         <CardActionArea>
           <CardMedia
             className={clsx(
+              classes.mediaHover,
               { [classes.mediaDrawerOpen]: movieDrawerOpen },
               { [classes.mediaDrawerClosed]: !movieDrawerOpen },
-              { [classes.mediaHover]: !movieDrawerOpen },
             )}
             // image={`${1}${movie.poster_path}`}
             image={imagePath}
           />
-          {movieDrawerOpen
-            ? (
-              <CardContent>
-                <Typography gutterBottom variant="button">
-                  {truncateText(movie.title, 25)}
-                </Typography>
-              </CardContent>
-            )
-            : (
-              <Typography gutterBottom variant="button" className={classes.typoOverlay}>
-                {truncateText(movie.title, 100)}
-              </Typography>
-            )
-          }
-          </CardActionArea>
+          <Typography gutterBottom variant="button" className={classes.typoOverlay}>
+            {truncateText(movie.title, movieDrawerOpen ? 25 : 100)}
+          </Typography>
+        </CardActionArea>
       </Card>
     </Grid>
   );
