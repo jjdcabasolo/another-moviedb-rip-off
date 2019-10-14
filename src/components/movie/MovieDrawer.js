@@ -22,8 +22,7 @@ import {
 
 import { decryptKey } from '../../utils/encrypt';
 
-import { SIDEBAR_WIDTH } from '../../constants/sidebar';
-import { MOVIE_DRAWER_WIDTH } from '../../constants/movie';
+import { SIDEBAR_WIDTH, MOVIE_DRAWER_WIDTH } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -83,11 +82,6 @@ const MovieDrawer = () => {
     pageNumber: 1,
   });
 
-  const isNowPlaying = moviePage.category === 'nowPlaying';
-  const isPopular = moviePage.category === 'popular';
-  const isTopRated = moviePage.category === 'topRated';
-  const isUpcoming = moviePage.category === 'upcoming';
-
   useEffect(() => {
     getNowPlayingMovies(decryptKey(), response => {
       setMoviePage({ ...moviePage, content: {...moviePage.content, nowPlaying: response.data.results} });
@@ -118,6 +112,10 @@ const MovieDrawer = () => {
     });
   }, []);
 
+  const isNowPlaying = moviePage.category === 'nowPlaying';
+  const isPopular = moviePage.category === 'popular';
+  const isTopRated = moviePage.category === 'topRated';
+  const isUpcoming = moviePage.category === 'upcoming';
   const moviesToDisplay = moviePage.content[moviePage.category];
 
   const handleDrawerToggle = () => setMovieDrawerOpen(!movieDrawerOpen);
@@ -182,7 +180,7 @@ const MovieDrawer = () => {
         </Grid>
       </Grid>
 
-      {movieDrawerOpen
+      { movieDrawerOpen
         ? (
           <Grid container spacing={2}>
             <Grid item container direction="row" justify="center" alignItems="flex-start">

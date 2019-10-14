@@ -28,12 +28,12 @@ import MovieDrawer from '../movie/MovieDrawer';
 import { sidebarActions } from '../../reducers/ducks/sidebar';
 
 import {
+  API_KEY_DIALOG_TMDB_LINK,
   SIDEBAR_UPPER_TABS,
   SIDEBAR_WIDTH,
   SIDEBAR_TMDB_LOGO_DARK,
   SIDEBAR_TMDB_LOGO,
-} from '../../constants/sidebar';
-import { API_KEY_DIALOG_TMDB_LINK } from '../../constants/movie';
+} from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   root: {

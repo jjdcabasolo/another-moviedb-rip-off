@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { truncateText } from '../../utils/text';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants/movie';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   card: {

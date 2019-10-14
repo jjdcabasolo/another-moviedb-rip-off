@@ -41,7 +41,7 @@ import {
   API_KEY_DIALOG_MISSING_API_KEY,
   API_KEY_DIALOG_HAS_KEY,
   API_KEY_DIALOG_TMDB_LINK,
-} from '../../constants/movie';
+} from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
