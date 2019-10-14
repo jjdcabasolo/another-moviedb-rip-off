@@ -1,10 +1,14 @@
 import React from 'react';
 
+import Note from '../components/common/Note';
+
+import { NOTE_NO_SELECTED_TV_SHOW } from '../constants';
+
 const TVShows = () => {
 
   return (
     <>
-      TV Shows!
+      <Note details={NOTE_NO_SELECTED_TV_SHOW} />
     </>
   );
 };

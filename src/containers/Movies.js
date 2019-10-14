@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import Note from '../components/common/Note';
 
-import MovieCard from '../components/movie/MovieCard';
-import MovieDrawer from '../components/movie/MovieDrawer';
-
-import { getPopularMovies } from '../api/movie';
-
-import { decryptKey } from '../utils/encrypt';
-
-const useStyles = makeStyles({
-  // horizontalContainer: {
-  //   width: '1000em !important',
-  // },
-});
+import { NOTE_NO_SELECTED_MOVIE } from '../constants';
 
 const Movies = () => {
-  const classes = useStyles();
 
   return (
     <>
-      Movie Content!
+      <Note details={NOTE_NO_SELECTED_MOVIE} />
     </>
   );
 };

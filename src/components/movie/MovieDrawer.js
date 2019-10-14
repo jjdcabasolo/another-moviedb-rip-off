@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Chip from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  Drawer,
+  Grid,
+  IconButton,
+  Chip,
+  Typography,
+} from '@material-ui/core';
+import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
 import MovieCard from './MovieCard';
+import Note from '../common/Note';
 
 import {
   getNowPlayingMovies,
@@ -23,9 +24,9 @@ import {
 import { decryptKey } from '../../utils/encrypt';
 
 import {
-  SIDEBAR_WIDTH,
   MOVIE_DRAWER_WIDTH,
   MOVIE_DRAWER_CATEGORY_CHIPS,
+  NOTE_NO_API_KEY,
 } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
@@ -121,6 +122,30 @@ const MovieDrawer = () => {
 
   const handleChipClick = category => setMoviePage({ ...moviePage, category });
 
+  const renderMovieCards = () => {
+    if (moviesToDisplay.length <= 0) {
+      return <Note details={NOTE_NO_API_KEY} />;
+    }
+    else if (movieDrawerOpen) {
+      return (
+        <Grid container spacing={2}>
+          <Grid item container direction="row" justify="center" alignItems="flex-start">
+            {moviesToDisplay.slice(0, 5).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
+          </Grid>
+          <Grid item container direction="row" justify="center" alignItems="flex-start">
+            {moviesToDisplay.slice(5, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
+          </Grid>
+        </Grid>
+      );
+    } else {
+      return (
+        <Grid item container justify="center" spacing={2}>
+          {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
+        </Grid>
+      );
+    }
+  };
+
   return (
     <Drawer
       className={clsx(
@@ -144,7 +169,7 @@ const MovieDrawer = () => {
         </Grid>
         <Grid item>
           <IconButton onClick={handleDrawerToggle}>
-            {movieDrawerOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {movieDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>
         </Grid>
         <Grid item>
@@ -160,23 +185,7 @@ const MovieDrawer = () => {
         </Grid>
       </Grid>
 
-      { movieDrawerOpen
-        ? (
-          <Grid container spacing={2}>
-            <Grid item container direction="row" justify="center" alignItems="flex-start">
-              {moviesToDisplay.slice(0, 5).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
-            </Grid>
-            <Grid item container direction="row" justify="center" alignItems="flex-start">
-              {moviesToDisplay.slice(5, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
-            </Grid>
-          </Grid>
-        )
-        : (
-          <Grid item container justify="center" spacing={2}>
-            {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
-          </Grid>
-        )
-      }
+      {renderMovieCards()}
     </Drawer>
   );
 };
