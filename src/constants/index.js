@@ -17,7 +17,7 @@ export {
   MOVIE_DRAWER_TMDB_IMAGE_PREFIX,
   MOVIE_DRAWER_WIDTH,
   MOVIE_DRAWER_CATEGORY_CHIPS,
-} from './movie';
+} from './movies';
 
 export {
   NOTE_NO_API_KEY,

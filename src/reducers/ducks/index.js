@@ -1,15 +1,14 @@
-import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+export {
+  moviesActions,
+  moviesReducer,
+} from './movies';
 
-import { sidebarReducer } from './sidebar';
-import { snackbarReducer } from './snackbar';
+export {
+  sidebarActions,
+  sidebarReducer,
+} from './sidebar';
 
-const appReducer = combineReducers({
-  router: routerReducer,
-  sidebar: sidebarReducer,
-  snackbar: snackbarReducer,
-});
-
-const rootReducer = (state, action) => appReducer(action.type === 'USER_LOGOUT' ? undefined : state, action);
-
-export default rootReducer;
+export {
+  snackbarActions,
+  snackbarReducer,
+} from './snackbar';

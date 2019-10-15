@@ -123,26 +123,30 @@ const MovieDrawer = () => {
   const handleChipClick = category => setMoviePage({ ...moviePage, category });
 
   const renderMovieCards = () => {
-    if (moviesToDisplay.length <= 0) {
-      return <Note details={NOTE_NO_API_KEY} />;
-    }
-    else if (movieDrawerOpen) {
-      return (
-        <Grid container spacing={2}>
-          <Grid item container direction="row" justify="center" alignItems="flex-start">
-            {moviesToDisplay.slice(0, 5).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
+    if (moviesToDisplay.length > 0) {
+      if (movieDrawerOpen) {
+        console.log('if (movieDrawerOpen) {');
+        return (
+          <Grid container spacing={2}>
+            <Grid item container direction="row" justify="center" alignItems="flex-start">
+              {moviesToDisplay.slice(0, 5).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
+            </Grid>
+            <Grid item container direction="row" justify="center" alignItems="flex-start">
+              {moviesToDisplay.slice(5, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
+            </Grid>
           </Grid>
-          <Grid item container direction="row" justify="center" alignItems="flex-start">
-            {moviesToDisplay.slice(5, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
+        );
+      } else {
+        console.log('} else if (!movieDrawerOpen) {');
+        return (
+          <Grid item container justify="center" spacing={2}>
+            {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
           </Grid>
-        </Grid>
-      );
+        );
+      }
     } else {
-      return (
-        <Grid item container justify="center" spacing={2}>
-          {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
-        </Grid>
-      );
+      console.log('} else if (moviesToDisplay.length <= 0) {');
+      return <Note details={NOTE_NO_API_KEY} />;
     }
   };
 
