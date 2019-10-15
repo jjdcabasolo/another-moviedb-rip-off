@@ -142,6 +142,7 @@ export default function APIKeyDialog() {
     if (hasApiKey) {
       dispatch(snackbarActions.showSnackbar('Your API key has been cleared!', 'success'));
       dispatch(sidebarActions.clearAPIKey());
+      setTimeout(() => dispatch({ type: 'CLEAR_REDUX_STATES' }), 1500);
     } else {
       setUsernameState({ ...usernameState, value: '' });
       setApiKeyState({ ...apiKeyState, value: '' });

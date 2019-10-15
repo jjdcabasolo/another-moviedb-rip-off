@@ -14,6 +14,6 @@ const appReducer = combineReducers({
   snackbar: snackbarReducer,
 });
 
-const rootReducer = (state, action) => appReducer(action.type === 'USER_LOGOUT' ? undefined : state, action);
+const rootReducer = (state, action) => appReducer(action.type === 'CLEAR_REDUX_STATES' ? undefined : state, action);
 
 export default rootReducer;
