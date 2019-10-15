@@ -25,7 +25,7 @@ import {
 import APIKeyDialog from './APIKeyDialog';
 import MovieDrawer from '../movie/MovieDrawer';
 
-import { sidebarActions } from '../../reducers/ducks/sidebar';
+import { sidebarActions } from '../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,

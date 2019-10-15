@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import { moviesReducer } from './ducks';
-import { sidebarReducer } from './ducks';
-import { snackbarReducer } from './ducks';
+import {
+  moviesReducer,
+  sidebarReducer,
+  snackbarReducer,
+} from './ducks';
 
 const appReducer = combineReducers({
   router: routerReducer,

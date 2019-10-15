@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import CustomSnackbar from '../components/common/CustomSnackbar.js';
 
-import { snackbarActions } from '../reducers/ducks/snackbar';
+import { snackbarActions } from '../reducers/ducks';
 
 const Snackbars = () => {
   const isShown = useSelector(state => state.snackbar.isShown);
