@@ -72,11 +72,15 @@ const useStyles = makeStyles(theme => ({
   chip: {
     margin: theme.spacing(0.5),
   },
+  extendItem: {
+    flex: 1,
+  },
 }));
 
 const MovieDrawer = () => {
   const classes = useStyles();
 
+  const apiKey = useSelector(state => state.sidebar.apiKey);
   const category = useSelector(state => state.movies.category);
   const list = useSelector(state => state.movies.list);
 
@@ -112,7 +116,7 @@ const MovieDrawer = () => {
       console.log(error.response);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
-  }, []);
+  }, [apiKey]);
 
   const moviesToDisplay = list[category];
 
@@ -167,11 +171,6 @@ const MovieDrawer = () => {
           <Typography variant="h6">Movies</Typography>
         </Grid>
         <Grid item>
-          <IconButton onClick={handleDrawerToggle}>
-            {movieDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
-        </Grid>
-        <Grid item>
           {MOVIE_DRAWER_CATEGORY_CHIPS.map(e => (
             <Chip
               variant="outlined"
@@ -181,6 +180,11 @@ const MovieDrawer = () => {
               onClick={() => handleChipClick(e.identifier)}
             />
           ))}
+        </Grid>
+        <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
+          <IconButton onClick={handleDrawerToggle}>
+            {movieDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
+          </IconButton>
         </Grid>
       </Grid>
 
