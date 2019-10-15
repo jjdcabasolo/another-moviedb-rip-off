@@ -29,8 +29,7 @@ import {
 
 import { getPopularMovies } from '../../api/movie';
 
-import { sidebarActions } from '../../reducers/ducks/sidebar';
-import { snackbarActions } from '../../reducers/ducks/snackbar';
+import { sidebarActions, snackbarActions } from '../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TITLE,

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,6 +21,8 @@ import {
   getTopRatedMovies,
   getUpcomingMovies
 } from '../../api/movie';
+
+import { moviesActions } from '../../reducers/ducks';
 
 import { decryptKey } from '../../utils/encrypt';
 
@@ -74,58 +77,52 @@ const useStyles = makeStyles(theme => ({
 const MovieDrawer = () => {
   const classes = useStyles();
 
+  const category = useSelector(state => state.movies.category);
+  const list = useSelector(state => state.movies.list);
+
+  const dispatch = useDispatch();
+
   const [movieDrawerOpen, setMovieDrawerOpen] = React.useState(false);
-  const [moviePage, setMoviePage] = useState({
-    category: 'nowPlaying',
-    content: {
-      nowPlaying: [],
-      popular: [],
-      topRated: [],
-      upcoming: [],
-    },
-    pageNumber: 1,
-  });
 
   useEffect(() => {
     getNowPlayingMovies(decryptKey(), response => {
-      setMoviePage({ ...moviePage, content: {...moviePage.content, nowPlaying: response.data.results} });
+      dispatch(moviesActions.setMovieList('nowPlaying', response.data.results));
     }, error => {
       console.log(error.response);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
     getPopularMovies(decryptKey(), response => {
-      setMoviePage({ ...moviePage, content: {...moviePage.content, popular: response.data.results} });
+      dispatch(moviesActions.setMovieList('popular', response.data.results));
     }, error => {
       console.log(error.response);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
     getTopRatedMovies(decryptKey(), response => {
-      setMoviePage({ ...moviePage, content: {...moviePage.content, topRated: response.data.results} });
+      dispatch(moviesActions.setMovieList('topRated', response.data.results));
     }, error => {
       console.log(error.response);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
     getUpcomingMovies(decryptKey(), response => {
-      setMoviePage({ ...moviePage, content: {...moviePage.content, upcoming: response.data.results} });
+      dispatch(moviesActions.setMovieList('upcoming', response.data.results));
     }, error => {
       console.log(error.response);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
   }, []);
 
-  const moviesToDisplay = moviePage.content[moviePage.category];
+  const moviesToDisplay = list[category];
 
   const handleDrawerToggle = () => setMovieDrawerOpen(!movieDrawerOpen);
 
-  const handleChipClick = category => setMoviePage({ ...moviePage, category });
+  const handleChipClick = category => dispatch(moviesActions.setCategory(category));
 
   const renderMovieCards = () => {
     if (moviesToDisplay.length > 0) {
       if (movieDrawerOpen) {
-        console.log('if (movieDrawerOpen) {');
         return (
           <Grid container spacing={2}>
             <Grid item container direction="row" justify="center" alignItems="flex-start">
@@ -137,7 +134,6 @@ const MovieDrawer = () => {
           </Grid>
         );
       } else {
-        console.log('} else if (!movieDrawerOpen) {');
         return (
           <Grid item container justify="center" spacing={2}>
             {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen}/> )}
@@ -145,7 +141,6 @@ const MovieDrawer = () => {
         );
       }
     } else {
-      console.log('} else if (moviesToDisplay.length <= 0) {');
       return <Note details={NOTE_NO_API_KEY} />;
     }
   };
@@ -181,7 +176,7 @@ const MovieDrawer = () => {
             <Chip
               variant="outlined"
               label={e.label}
-              color={e.isActive(moviePage.category) ? 'secondary' : 'default'}
+              color={e.isActive(category) ? 'secondary' : 'default'}
               className={classes.chip}
               onClick={() => handleChipClick(e.identifier)}
             />
