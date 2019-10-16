@@ -18,7 +18,9 @@ export const API_KEY_DIALOG_HAS_KEY = 'You had already entered your API key. You
 
 export const MOVIE_DRAWER_TMDB_IMAGE_PREFIX = 'http://image.tmdb.org/t/p/w780';
 
-export const MOVIE_DRAWER_WIDTH = window.innerWidth - (SIDEBAR_WIDTH + 10);
+export const MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR = window.innerWidth - SIDEBAR_WIDTH;
+
+export const MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR = window.innerWidth - 56; // theme.spacing(7)
 
 export const MOVIE_DRAWER_CATEGORY_CHIPS = [
   {

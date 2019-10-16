@@ -27,18 +27,29 @@ import { moviesActions } from '../../../reducers/ducks';
 import { decryptKey } from '../../../utils/encrypt';
 
 import {
-  MOVIE_DRAWER_WIDTH,
+  MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR,
+  MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR,
   NOTE_NO_API_KEY,
 } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
+  drawerOpenWidthOpenSidebar: {
+    width: MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR,
+  },
+  drawerOpenWidthClosedSidebar: {
+    width: MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR,
+  },
+  drawerCloseWidthOpenSidebar: {
+    width: MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR / 3,
+  },
+  drawerCloseWidthClosedSidebar: {
+    width: MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR / 3,
+  },
   drawer: {
-    width: MOVIE_DRAWER_WIDTH,
     flexShrink: 0,
   },
   drawerPaper: {
     position: 'inherit',
-    width: MOVIE_DRAWER_WIDTH,
     padding: theme.spacing(5),
   },
   drawerHeader: {
@@ -55,7 +66,6 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: MOVIE_DRAWER_WIDTH / 3,
   },
   drawerOpen: {
     overflow: 'hidden',
@@ -63,7 +73,6 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    width: MOVIE_DRAWER_WIDTH,
   },
   toolbar: {
     marginBottom: theme.spacing(1),
@@ -81,6 +90,7 @@ const MovieDrawer = () => {
 
   const apiKey = useSelector(state => state.sidebar.apiKey);
   const category = useSelector(state => state.movies.category);
+  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const list = useSelector(state => state.movies.list);
 
   const dispatch = useDispatch();
@@ -153,7 +163,12 @@ const MovieDrawer = () => {
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: movieDrawerOpen },
+        { [classes.drawerOpenWidthOpenSidebar]: movieDrawerOpen && drawerOpen },
+        { [classes.drawerOpenWidthClosedSidebar]: movieDrawerOpen && !drawerOpen },
+
         { [classes.drawerClose]: !movieDrawerOpen },
+        { [classes.drawerCloseWidthOpenSidebar]: !movieDrawerOpen && drawerOpen },
+        { [classes.drawerCloseWidthClosedSidebar]: !movieDrawerOpen && !drawerOpen },
       )}
       variant="permanent"
       movieDrawerOpen={movieDrawerOpen}
@@ -161,7 +176,12 @@ const MovieDrawer = () => {
         paper: clsx(
           classes.drawerPaper,
           { [classes.drawerOpen]: movieDrawerOpen },
+          { [classes.drawerOpenWidthOpenSidebar]: movieDrawerOpen && drawerOpen },
+          { [classes.drawerOpenWidthClosedSidebar]: movieDrawerOpen && !drawerOpen },
+
           { [classes.drawerClose]: !movieDrawerOpen },
+          { [classes.drawerCloseWidthOpenSidebar]: !movieDrawerOpen && drawerOpen },
+          { [classes.drawerCloseWidthClosedSidebar]: !movieDrawerOpen && !drawerOpen },
         ),
       }}
     >
