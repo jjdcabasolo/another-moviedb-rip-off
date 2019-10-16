@@ -7,30 +7,29 @@ import {
   Drawer,
   Grid,
   IconButton,
-  Chip,
   Typography,
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
-import MovieCard from './MovieCard';
-import Note from '../common/Note';
+import Category from './Category';
+import MovieCard from '../MovieCard';
+import Note from '../../common/Note';
 
 import {
   getNowPlayingMovies,
   getPopularMovies,
   getTopRatedMovies,
   getUpcomingMovies
-} from '../../api/movie';
+} from '../../../api/movie';
 
-import { moviesActions } from '../../reducers/ducks';
+import { moviesActions } from '../../../reducers/ducks';
 
-import { decryptKey } from '../../utils/encrypt';
+import { decryptKey } from '../../../utils/encrypt';
 
 import {
   MOVIE_DRAWER_WIDTH,
-  MOVIE_DRAWER_CATEGORY_CHIPS,
   NOTE_NO_API_KEY,
-} from '../../constants';
+} from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -56,7 +55,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: MOVIE_DRAWER_WIDTH / 2,
+    width: MOVIE_DRAWER_WIDTH / 3,
   },
   drawerOpen: {
     overflow: 'hidden',
@@ -86,7 +85,7 @@ const MovieDrawer = () => {
 
   const dispatch = useDispatch();
 
-  const [movieDrawerOpen, setMovieDrawerOpen] = React.useState(false);
+  const [movieDrawerOpen, setMovieDrawerOpen] = useState(true);
 
   useEffect(() => {
     getNowPlayingMovies(decryptKey(), response => {
@@ -170,18 +169,8 @@ const MovieDrawer = () => {
         <Grid item>
           <Typography variant="h6">Movies</Typography>
         </Grid>
-        <Grid item>
-          {MOVIE_DRAWER_CATEGORY_CHIPS.map(e => (
-            <Chip
-              variant="outlined"
-              label={e.label}
-              color={e.isActive(category) ? 'secondary' : 'default'}
-              className={classes.chip}
-              onClick={() => handleChipClick(e.identifier)}
-            />
-          ))}
-        </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
+          <Category movieDrawerOpen={movieDrawerOpen} />
           <IconButton onClick={handleDrawerToggle}>
             {movieDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>

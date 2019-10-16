@@ -23,7 +23,7 @@ import {
 } from '@material-ui/icons';
 
 import APIKeyDialog from './APIKeyDialog';
-import MovieDrawer from '../movie/MovieDrawer';
+import MovieDrawer from '../movie/MovieDrawer/MovieDrawer';
 
 import { sidebarActions } from '../../reducers/ducks';
 

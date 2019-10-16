@@ -59,8 +59,8 @@ const MovieCard = ({movie, movieDrawerOpen}) => {
               { [classes.mediaDrawerOpen]: movieDrawerOpen },
               { [classes.mediaDrawerClosed]: !movieDrawerOpen },
             )}
-            // image={`${1}${movie.poster_path}`}
-            image={imagePath}
+            image={`${1}${movie.poster_path}`}
+            // image={imagePath}
           />
           <Typography gutterBottom variant="button" className={classes.typoOverlay}>
             {truncateText(movie.title, movieDrawerOpen ? 25 : 100)}
