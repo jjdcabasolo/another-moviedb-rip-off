@@ -89,9 +89,7 @@ const useStyles = makeStyles(theme => ({
 const MovieDrawer = () => {
   const theme = useTheme();
 
-  const desktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const tablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
+  const hideMovieDrawer = useMediaQuery(theme.breakpoints.down('md'));
 
   const classes = useStyles();
 
@@ -99,10 +97,16 @@ const MovieDrawer = () => {
   const category = useSelector(state => state.movies.category);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const list = useSelector(state => state.movies.list);
+  const width = useSelector(state => state.browser.width);
 
   const dispatch = useDispatch();
 
   const [movieDrawerOpen, setMovieDrawerOpen] = useState(true);
+
+  useEffect(() => {
+    console.log(hideMovieDrawer);
+    setMovieDrawerOpen(hideMovieDrawer);
+  }, [width]);
 
   useEffect(() => {
     getNowPlayingMovies(decryptKey(), response => {
@@ -137,6 +141,12 @@ const MovieDrawer = () => {
   const moviesToDisplay = list[category];
 
   const handleDrawerToggle = () => setMovieDrawerOpen(!movieDrawerOpen);
+
+  const renderToggleMovieDrawer = () => (
+    <IconButton onClick={handleDrawerToggle}>
+      {movieDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
+    </IconButton>
+  );
 
   const renderMovieCards = () => {
     if (moviesToDisplay.length > 0) {
@@ -220,9 +230,11 @@ const MovieDrawer = () => {
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
           <Category movieDrawerOpen={movieDrawerOpen} />
-          <IconButton onClick={handleDrawerToggle}>
-            {movieDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
+          <ResponsiveComponent
+            mobileComponent={null}
+            tabletComponent={null}
+            desktopComponent={renderToggleMovieDrawer()}
+          />
         </Grid>
       </Grid>
 

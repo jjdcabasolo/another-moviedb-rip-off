@@ -92,11 +92,11 @@ const Category = ({ movieDrawerOpen }) => {
       { movieDrawerOpen
         ? (
           <ResponsiveComponent
-              mobileComponent={collapsedCategoryChips()}
-              tabletComponent={renderCategoryChips()}
-              desktopComponent={renderCategoryChips()}
-            />
-          )
+            mobileComponent={collapsedCategoryChips()}
+            tabletComponent={renderCategoryChips()}
+            desktopComponent={renderCategoryChips()}
+          />
+        )
         : collapsedCategoryChips()
       }
     </>

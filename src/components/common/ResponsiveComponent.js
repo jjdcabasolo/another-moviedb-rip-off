@@ -3,7 +3,11 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 
-const ResponsiveComponent = ({mobileComponent, tabletComponent, desktopComponent}) => {
+const ResponsiveComponent = ({
+  mobileComponent,
+  tabletComponent,
+  desktopComponent
+}) => {
   const theme = useTheme();
 
   // https://material-ui.com/customization/breakpoints/
@@ -11,13 +15,16 @@ const ResponsiveComponent = ({mobileComponent, tabletComponent, desktopComponent
   // key           |xs      sm       md       lg       xl
   // screen width  |--------|--------|--------|--------|-------->
   // range         |   xs   |   sm   |   md   |   lg   |   xl
+  // responsiveComp|-----mobile------|-tablet-|-----desktop-----
+
   const desktop = useMediaQuery(theme.breakpoints.up('lg'));
   const tablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
+  // const mobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  // if all components are declared/specified
   if (desktop) return desktopComponent;
   else if (tablet) return tabletComponent;
-  else return mobileComponent;
+  return mobileComponent;
 };
 
 export default ResponsiveComponent;
