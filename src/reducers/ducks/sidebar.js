@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from '../../utils/encrypt';
+import { encrypt, decrypt } from '../../utils/functions/encrypt';
 
 // ACTION TYPE
 const sidebarActionType = {

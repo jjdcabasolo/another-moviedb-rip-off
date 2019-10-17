@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 
@@ -15,11 +13,11 @@ const ResponsiveComponent = ({
   // key           |xs      sm       md       lg       xl
   // screen width  |--------|--------|--------|--------|-------->
   // range         |   xs   |   sm   |   md   |   lg   |   xl
-  // responsiveComp|-----mobile------|-tablet-|-----desktop-----
+  // responsiveComp|-mobile-|-----tablet------|-----desktop-----
 
   const desktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const tablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-  // const mobile = useMediaQuery(theme.breakpoints.down('md'));
+  const tablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
+  // const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // if all components are declared/specified
   if (desktop) return desktopComponent;

@@ -11,7 +11,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import { truncateText } from '../../utils/text';
+import { truncateText } from '../../utils/functions';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
@@ -26,11 +26,11 @@ const useStyles = makeStyles(theme => ({
     // theme.breakpoints.up('lg')
     // theme.breakpoints.between('md', 'lg')
     // theme.breakpoints.down('md')
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
     },
-    [theme.breakpoints.between('md', 'lg')]: {
-      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
+    [theme.breakpoints.down('md')]: {
+      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 5.5,
     },
     width: '100%',
   },

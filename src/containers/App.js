@@ -7,11 +7,13 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import Snackbars from './Snackbars';
-import Movies from './Movies';
-import TVShows from './TVShows';
-import Sidebar from '../components/sidebar/Sidebar';
+import Sidebar from '../components/navigation/Sidebar';
+import Appbar from '../components/navigation/Appbar';
+import ResponsiveComponent from '../utils/components/ResponsiveComponent';
 
 import { browserActions } from '../reducers/ducks';
+
+import { routes } from '../routes';
 
 const App = () => {
   const darkMode = useSelector(state => state.sidebar.darkMode);
@@ -34,23 +36,25 @@ const App = () => {
     browserSize: { width, height },
   });
 
+  const renderRoutes = () => (
+    <Switch>
+      { routes.map(e => (
+        <Route exact path={e.path}>
+          {e.component}
+        </Route>
+      )) }
+    </Switch>
+  );
+
   return (
     <MuiThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Router basename="/">
-          <Sidebar>
-            <Switch>
-              <Route exact path="/">
-                <Movies />
-              </Route>
-              <Route exact path="/movies">
-                <Movies />
-              </Route>
-              <Route exact path="/tvshows">
-                <TVShows />
-              </Route>
-            </Switch>
-          </Sidebar>
+          <ResponsiveComponent
+            mobileComponent={<Appbar>{renderRoutes()}</Appbar>}
+            tabletComponent={<Sidebar>{renderRoutes()}</Sidebar>}
+            desktopComponent={<Sidebar>{renderRoutes()}</Sidebar>}
+          />
         </Router>
         <Snackbars />
       </MuiPickersUtilsProvider>

@@ -15,7 +15,7 @@ import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import Category from './Category';
 import MovieCard from '../MovieCard';
 import Note from '../../common/Note';
-import ResponsiveComponent from '../../common/ResponsiveComponent';
+import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
 
 import {
   getNowPlayingMovies,
@@ -26,7 +26,7 @@ import {
 
 import { moviesActions } from '../../../reducers/ducks';
 
-import { decryptKey } from '../../../utils';
+import { decryptKey } from '../../../utils/functions';
 
 import {
   SIDEBAR_WIDTH,
@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
 const MovieDrawer = () => {
   const theme = useTheme();
 
-  const hideMovieDrawer = useMediaQuery(theme.breakpoints.down('md'));
+  const hideMovieDrawer = useMediaQuery(theme.breakpoints.up('lg'));
 
   const classes = useStyles();
 
@@ -104,8 +104,7 @@ const MovieDrawer = () => {
   const [movieDrawerOpen, setMovieDrawerOpen] = useState(true);
 
   useEffect(() => {
-    console.log(hideMovieDrawer);
-    setMovieDrawerOpen(hideMovieDrawer);
+    setMovieDrawerOpen(!hideMovieDrawer);
   }, [width]);
 
   useEffect(() => {

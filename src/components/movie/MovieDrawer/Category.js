@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { CategoryTwoTone } from '@material-ui/icons';
 
-import ResponsiveComponent from '../../common/ResponsiveComponent';
+import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
 
 import { moviesActions } from '../../../reducers/ducks';
 
