@@ -28,9 +28,7 @@ import { moviesActions } from '../../../reducers/ducks';
 import { decryptKey } from '../../../utils/encrypt';
 
 import {
-  MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR,
   SIDEBAR_WIDTH,
-  MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR,
   NOTE_NO_API_KEY,
 } from '../../../constants';
 

@@ -39,10 +39,17 @@ const useStyles = makeStyles(theme => ({
   },
   typoOverlay: {
     position: 'absolute',
-    marginTop: theme.spacing(-4),
-    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(-5),
+    padding: theme.spacing(1, 2),
     color: theme.palette.common.white,
     pointerEvents: 'none',
+
+    display: 'block',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    width: '-webkit-fill-available',
+    backgroundImage: `linear-gradient(to top, ${theme.palette.grey[900]} , #0000)`,
   },
 }));
 
