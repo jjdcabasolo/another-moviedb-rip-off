@@ -16,10 +16,6 @@ import { truncateText } from '../../utils/text';
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
-  card: {
-    margin: theme.spacing(0, 1),
-  },
-  // TO DO: update image height to browser height jsq auq n
   mediaHover: {
     '&:hover': {
       filter: 'blur(1px) brightness(80%)',
@@ -27,10 +23,16 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerOpen: {
     height: 0,
-    paddingTop: '30em',
-    [theme.breakpoints.down('xl')]: {
-      width: '100%',
+    // theme.breakpoints.up('lg')
+    // theme.breakpoints.between('md', 'lg')
+    // theme.breakpoints.down('md')
+    [theme.breakpoints.up('lg')]: {
+      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
     },
+    [theme.breakpoints.between('md', 'lg')]: {
+      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
+    },
+    width: '100%',
   },
   mediaDrawerClosed: {
     height: 0,
@@ -53,13 +55,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieCard = ({movie, movieDrawerOpen}) => {
+const MovieCard = ({movie, movieDrawerOpen, col}) => {
   const classes = useStyles();
 
-  const imagePath = `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}${movieDrawerOpen ? movie.poster_path : movie.backdrop_path}`;
+  let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+  if (col === 2) {
+    imagePath += movie.poster_path
+  } else {
+    imagePath += movie.backdrop_path
+  }
 
   return (
-    <Grid item xs={movieDrawerOpen ? 2 : 12} className={classes.card}>
+    <Grid item xs={col} className={classes.card}>
       <Card>
         <CardActionArea>
           <CardMedia
