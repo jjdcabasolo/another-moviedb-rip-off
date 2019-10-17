@@ -175,16 +175,6 @@ const MovieDrawer = () => {
             )}
           />
         );
-        return (
-          <Grid container spacing={2}>
-            <Grid item container direction="row" justify="center" alignItems="flex-start">
-              {moviesToDisplay.slice(0, 5).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={2}/> )}
-            </Grid>
-            <Grid item container direction="row" justify="center" alignItems="flex-start">
-              {moviesToDisplay.slice(5, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={2}/> )}
-            </Grid>
-          </Grid>
-        );
       } else {
         return (
           <Grid item container justify="center" spacing={2}>

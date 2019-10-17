@@ -17,14 +17,14 @@ import localComponent from './path_to_component';
 // api imports: rename apiName, add proper path
 import apiName from './path_to_api';
 
-// redux ducks action imports: rename component
-import { componentActions } from '../../../reducers/ducks/component';
+// redux ducks action imports
+import { componentActions } from '../../../reducers/ducks';
 
-// utils imports: replace functionUtil, rename file
-import { functionUtil } from '../../../utils/file';
+// utils imports: replace functionUtil
+import { functionUtil } from '../../../utils';
 
-// constants imports: replace VARIABLE, rename file
-import { VARIABLE } from '../../../constants/file';
+// constants imports: replace VARIABLE
+import { VARIABLE } from '../../../constants';
 
 // mui styling hook API usage
 const useStyles = makeStyles(theme => ({
@@ -32,10 +32,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // functional component declaration: rename FunctionalComponent
-const FunctionalComponent = (props) => {
-  // props declaration
-  const { } = props;
-
+// props declaration
+const FunctionalComponent = ({ }) => {
   // theme variable usage variable declaration
   const theme = useTheme();
 

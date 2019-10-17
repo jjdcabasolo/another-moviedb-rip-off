@@ -11,11 +11,11 @@ import {
 } from '@material-ui/core';
 import { CategoryTwoTone } from '@material-ui/icons';
 
+import ResponsiveComponent from '../../common/ResponsiveComponent';
+
 import { moviesActions } from '../../../reducers/ducks';
 
-import {
-  MOVIE_DRAWER_CATEGORY_CHIPS,
-} from '../../../constants';
+import { MOVIE_DRAWER_CATEGORY_CHIPS } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   chip: {
@@ -57,39 +57,47 @@ const Category = ({ movieDrawerOpen }) => {
     ))
   );
 
+  const collapsedCategoryChips = () => (
+    <>
+      <Tooltip title="Set category">
+        <IconButton aria-label="setCategory" onClick={handleClick}>
+          <CategoryTwoTone />
+        </IconButton>
+      </Tooltip>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        classes={{
+          paper: classes.popover
+        }}
+      >
+        <Typography variant="body2" gutterBottom>Set category:</Typography>
+        {renderCategoryChips()}
+      </Popover>
+    </>
+  );
+
   return (
     <>
       { movieDrawerOpen
-        ? renderCategoryChips()
-        : (
-          <>
-          <Tooltip title="Set category">
-            <IconButton aria-label="setCategory" onClick={handleClick}>
-              <CategoryTwoTone />
-            </IconButton>
-          </Tooltip>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              classes={{
-                paper: classes.popover
-              }}
-            >
-              <Typography variant="body2" gutterBottom>Set category:</Typography>
-              {renderCategoryChips()}
-            </Popover>
-          </>
-        )
+        ? (
+          <ResponsiveComponent
+              mobileComponent={collapsedCategoryChips()}
+              tabletComponent={renderCategoryChips()}
+              desktopComponent={renderCategoryChips()}
+            />
+          )
+        : collapsedCategoryChips()
       }
     </>
   );
