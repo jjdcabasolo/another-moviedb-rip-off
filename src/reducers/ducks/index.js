@@ -1,4 +1,9 @@
 export {
+  browserActions,
+  browserReducer,
+} from './browser';
+
+export {
   moviesActions,
   moviesReducer,
 } from './movies';

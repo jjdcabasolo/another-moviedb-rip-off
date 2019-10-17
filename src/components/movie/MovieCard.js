@@ -28,7 +28,9 @@ const useStyles = makeStyles(theme => ({
   mediaDrawerOpen: {
     height: 0,
     paddingTop: '30em',
-    width: '21em',
+    [theme.breakpoints.down('xl')]: {
+      width: '100%',
+    },
   },
   mediaDrawerClosed: {
     height: 0,
@@ -59,8 +61,8 @@ const MovieCard = ({movie, movieDrawerOpen}) => {
               { [classes.mediaDrawerOpen]: movieDrawerOpen },
               { [classes.mediaDrawerClosed]: !movieDrawerOpen },
             )}
-            image={`${1}${movie.poster_path}`}
-            // image={imagePath}
+            // image={`${1}${movie.poster_path}`}
+            image={imagePath}
           />
           <Typography gutterBottom variant="button" className={classes.typoOverlay}>
             {truncateText(movie.title, movieDrawerOpen ? 25 : 100)}

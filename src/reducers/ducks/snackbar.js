@@ -1,7 +1,7 @@
 // ACTION TYPE
 const snackbarActionType = {
-  HIDE_SNACKBAR: '@snackbar/hide_snackbar',
-  SHOW_SNACKBAR: '@snackbar/show_snackbar',
+  HIDE_SNACKBAR: '@snackbar/HIDE_SNACKBAR',
+  SHOW_SNACKBAR: '@snackbar/SHOW_SNACKBAR',
 };
 
 // ACTIONS

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Drawer,
   Grid,
   IconButton,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
@@ -28,22 +29,23 @@ import { decryptKey } from '../../../utils/encrypt';
 
 import {
   MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR,
+  SIDEBAR_WIDTH,
   MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR,
   NOTE_NO_API_KEY,
 } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   drawerOpenWidthOpenSidebar: {
-    width: MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR,
+    width: theme.browserSize.width - SIDEBAR_WIDTH,
   },
   drawerOpenWidthClosedSidebar: {
-    width: MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR,
+    width: theme.browserSize.width - 56,
   },
   drawerCloseWidthOpenSidebar: {
-    width: MOVIE_DRAWER_WIDTH_OPEN_SIDEBAR / 3,
+    width: (theme.browserSize.width - SIDEBAR_WIDTH) / 3,
   },
   drawerCloseWidthClosedSidebar: {
-    width: MOVIE_DRAWER_WIDTH_CLOSED_SIDEBAR / 3,
+    width: (theme.browserSize.width - 56) / 3,
   },
   drawer: {
     flexShrink: 0,
@@ -86,6 +88,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MovieDrawer = () => {
+  const theme = useTheme();
+
+  const matches = useMediaQuery(theme.breakpoints.up('lg'));
+
   const classes = useStyles();
 
   const apiKey = useSelector(state => state.sidebar.apiKey);

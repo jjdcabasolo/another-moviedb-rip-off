@@ -5,10 +5,12 @@ import {
   moviesReducer,
   sidebarReducer,
   snackbarReducer,
+  browserReducer,
 } from './ducks';
 
 const appReducer = combineReducers({
   router: routerReducer,
+  browser: browserReducer,
   movies: moviesReducer,
   sidebar: sidebarReducer,
   snackbar: snackbarReducer,
