@@ -26,8 +26,11 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.between('sm', 'md')]: {
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 5.5,
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.browserSize.height / 4,
     },
     width: '100%',
   },

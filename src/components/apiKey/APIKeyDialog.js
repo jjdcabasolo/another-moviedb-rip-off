@@ -29,9 +29,11 @@ import {
   VisibilityOffTwoTone,
 } from '@material-ui/icons';
 
-import { getPopularMovies } from '../../../api/movie';
+import { getPopularMovies } from '../../api/movie';
 
-import { sidebarActions, snackbarActions } from '../../../reducers/ducks';
+import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
+
+import { sidebarActions, snackbarActions } from '../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TITLE,
@@ -42,7 +44,7 @@ import {
   API_KEY_DIALOG_MISSING_API_KEY,
   API_KEY_DIALOG_HAS_KEY,
   API_KEY_DIALOG_TMDB_LINK,
-} from '../../../constants';
+} from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
@@ -64,6 +66,11 @@ const useStyles = makeStyles(theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
+  },
+  paper: {
+    [theme.breakpoints.down('sm')]: {
+      margin: 0,
+    },
   },
 }));
 
@@ -97,7 +104,7 @@ export default function APIKeyDialog() {
   useEffect(() => {
     setApiKeyState({ ...apiKeyState, value: apiKey });
     setUsernameState({ ...usernameState, value: username });
-  }, [apiKeyState, apiKey, usernameState, username]);
+  }, [username]);
 
   const handleClickOpen = () => setOpen(true);
 
@@ -151,17 +158,31 @@ export default function APIKeyDialog() {
     }
   };
 
+  const renderListItem = () => (
+    <ListItem button onClick={handleClickOpen}>
+      <ListItemIcon>
+        { apiKey === '' ? (<ErrorOutlineTwoTone />) : (<AccountCircleTwoTone />) }
+      </ListItemIcon>
+      <ListItemText
+        primary={username === '' ? 'No API key entered yet' : username}
+        secondary={username === '' ? 'Click here to add one.' : ''}
+      />
+    </ListItem>
+  );
+
+  const renderIconButton = () => (
+    <IconButton edge="end" onClick={handleClickOpen}>
+      { apiKey === '' ? (<ErrorOutlineTwoTone />) : (<AccountCircleTwoTone />) }
+    </IconButton>
+  );
+
   return (
     <>
-      <ListItem button onClick={handleClickOpen}>
-        <ListItemIcon>
-          { apiKey === '' ? (<ErrorOutlineTwoTone />) : (<AccountCircleTwoTone />) }
-        </ListItemIcon>
-        <ListItemText
-          primary={username === '' ? 'No API key entered yet' : username}
-          secondary={username === '' ? 'Click here to add one.' : ''}
-        />
-      </ListItem>
+      <ResponsiveComponent
+        mobileComponent={renderIconButton()}
+        tabletComponent={renderListItem()}
+        desktopComponent={renderListItem()}
+      />
 
       <Dialog
         open={open}
@@ -170,6 +191,7 @@ export default function APIKeyDialog() {
         aria-labelledby="form-dialog-title"
         disableBackdropClick={isApplyingKey}
         disableEscapeKeyDown={isApplyingKey}
+        classes={{ paper: classes.paper }}
       >
         <DialogTitle id="form-dialog-title">
           {API_KEY_DIALOG_TITLE}

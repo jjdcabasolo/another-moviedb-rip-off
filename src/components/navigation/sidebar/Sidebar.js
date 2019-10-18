@@ -22,7 +22,7 @@ import {
   MenuTwoTone
 } from '@material-ui/icons';
 
-import APIKeyDialog from './APIKeyDialog';
+import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieDrawer from '../../movie/MovieDrawer/MovieDrawer';
 
 import { sidebarActions } from '../../../reducers/ducks';
