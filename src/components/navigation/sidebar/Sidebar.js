@@ -97,10 +97,8 @@ const WithTooltip = ({ children, title, withTooltip }) => (withTooltip
   : children
 );
 
-const Sidebar = (props) => {
+const Sidebar = ({ children }) => {
   const classes = useStyles();
-
-  const { children } = props;
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
