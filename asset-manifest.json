@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/atmdbro/static/css/main.8ffea05d.chunk.css",
+    "main.js": "/atmdbro/static/js/main.23a7fdc3.chunk.js",
+    "main.js.map": "/atmdbro/static/js/main.23a7fdc3.chunk.js.map",
+    "runtime-main.js": "/atmdbro/static/js/runtime-main.461afe6e.js",
+    "runtime-main.js.map": "/atmdbro/static/js/runtime-main.461afe6e.js.map",
+    "static/js/2.292afd0f.chunk.js": "/atmdbro/static/js/2.292afd0f.chunk.js",
+    "static/js/2.292afd0f.chunk.js.map": "/atmdbro/static/js/2.292afd0f.chunk.js.map",
+    "index.html": "/atmdbro/index.html",
+    "precache-manifest.288f6e03f6f102596b89fde806cea8fc.js": "/atmdbro/precache-manifest.288f6e03f6f102596b89fde806cea8fc.js",
+    "service-worker.js": "/atmdbro/service-worker.js",
+    "static/css/main.8ffea05d.chunk.css.map": "/atmdbro/static/css/main.8ffea05d.chunk.css.map"
+  }
+}
