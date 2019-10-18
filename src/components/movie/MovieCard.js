@@ -6,10 +6,7 @@ import {
   Card,
   Grid,
   CardActionArea,
-  CardActions,
-  CardContent,
   CardMedia,
-  Button,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';

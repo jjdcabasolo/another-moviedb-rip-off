@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Drawer,
   Grid,
   IconButton,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
@@ -16,17 +15,6 @@ import Category from './Category';
 import MovieCard from '../MovieCard';
 import Note from '../../common/Note';
 import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
-
-import {
-  getNowPlayingMovies,
-  getPopularMovies,
-  getTopRatedMovies,
-  getUpcomingMovies
-} from '../../../api/movie';
-
-import { moviesActions } from '../../../reducers/ducks';
-
-import { decryptKey } from '../../../utils/functions';
 
 import {
   SIDEBAR_WIDTH,
@@ -87,53 +75,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MovieDrawer = () => {
-  const theme = useTheme();
-  const hideMovieDrawer = useMediaQuery(theme.breakpoints.up('lg'));
   const classes = useStyles();
 
-  const apiKey = useSelector(state => state.sidebar.apiKey);
   const category = useSelector(state => state.movies.category);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const list = useSelector(state => state.movies.list);
-  const width = useSelector(state => state.browser.width);
-
-  const dispatch = useDispatch();
 
   const [movieDrawerOpen, setMovieDrawerOpen] = useState(true);
-
-  // useEffect(() => {
-  //   setMovieDrawerOpen(!hideMovieDrawer);
-  // }, [width]);
-
-  useEffect(() => {
-    getNowPlayingMovies(decryptKey(), response => {
-      dispatch(moviesActions.setMovieList('nowPlaying', response.data.results));
-    }, error => {
-      console.log(error.response);
-      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-    });
-
-    getPopularMovies(decryptKey(), response => {
-      dispatch(moviesActions.setMovieList('popular', response.data.results));
-    }, error => {
-      console.log(error.response);
-      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-    });
-
-    getTopRatedMovies(decryptKey(), response => {
-      dispatch(moviesActions.setMovieList('topRated', response.data.results));
-    }, error => {
-      console.log(error.response);
-      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-    });
-
-    getUpcomingMovies(decryptKey(), response => {
-      dispatch(moviesActions.setMovieList('upcoming', response.data.results));
-    }, error => {
-      console.log(error.response);
-      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-    });
-  }, [apiKey]);
 
   const moviesToDisplay = list[category];
 
@@ -150,7 +98,7 @@ const MovieDrawer = () => {
       if (movieDrawerOpen) {
         return (
           <ResponsiveComponent
-            mobileComponent={<p>no mobile view yet biyatch</p>}
+            mobileComponent={<></>}
             tabletComponent={(
               <Grid container spacing={2}>
                 <Grid item container spacing={2}>

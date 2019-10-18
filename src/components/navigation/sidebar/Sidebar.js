@@ -29,7 +29,6 @@ import { sidebarActions } from '../../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,
-  SIDEBAR_UPPER_TABS,
   SIDEBAR_WIDTH,
   SIDEBAR_TMDB_LOGO_DARK,
   SIDEBAR_TMDB_LOGO,

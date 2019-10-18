@@ -33,6 +33,10 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
+  container: {
+    paddingTop: theme.spacing(7),
+    // height: theme.spacing(1000),
+  },
 }));
 
 const Appbar = ({ children, window }) => {
@@ -62,7 +66,7 @@ const Appbar = ({ children, window }) => {
       <CssBaseline />
       <HideOnScroll window={window}>
         <AppBar color="default">
-          <Toolbar>
+          <Toolbar variant="dense">
             <Typography variant="h6" className={classes.title}> ATMDbRo </Typography>
             <div>
               <IconButton
@@ -79,22 +83,20 @@ const Appbar = ({ children, window }) => {
         </AppBar>
       </HideOnScroll>
 
-      {/* <Toolbar /> */}
-
-      <Container>
+      <Container className={classes.container}>
         { children }
       </Container>
 
       <BottomNavigation
-        value={activeTab}
-        onChange={(_, index) => handleBottomNavigationClick(index)}
-        showLabels
         className={classes.bottomNavigation}
+        onChange={(_, index) => handleBottomNavigationClick(index)}
+        showLabels={false}
+        value={activeTab}
       >
         {routes.map((element, index) => (index !== 0) && (
           <BottomNavigationAction
-            label={element.title}
             icon={element.icon}
+            label={element.title}
           />
         ))}
       </BottomNavigation>

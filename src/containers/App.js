@@ -7,6 +7,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import Snackbars from './Snackbars';
+import InitAPICalls from './InitAPICalls';
 import Sidebar from '../components/navigation/sidebar/Sidebar';
 import Appbar from '../components/navigation/appbar/Appbar';
 import ResponsiveComponent from '../utils/components/ResponsiveComponent';
@@ -29,7 +30,7 @@ const App = () => {
     window.addEventListener('resize', updateSize);
     updateSize();
     return () => window.removeEventListener('resize', updateSize);
-  }, []);
+  }, [dispatch]);
 
   const theme = createMuiTheme({
     palette: { type: darkMode ? 'dark' : 'light' },
@@ -57,6 +58,7 @@ const App = () => {
           />
         </Router>
         <Snackbars />
+        <InitAPICalls />
       </MuiPickersUtilsProvider>
     </MuiThemeProvider>
   );
