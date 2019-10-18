@@ -53,7 +53,7 @@ const Category = ({ movieDrawerOpen }) => {
         variant="outlined"
         label={e.label}
         key={e.label}
-        color={e.isActive(category) ? 'secondary' : 'default'}
+        color={e.isActive(category) ? 'primary' : 'default'}
         className={classes.chip}
         onClick={() => handleChipClick(e.identifier)}
       />

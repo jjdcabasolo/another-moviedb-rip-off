@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import teal from '@material-ui/core/colors/teal';
 
 import Snackbars from './Snackbars';
 import InitAPICalls from './InitAPICalls';
@@ -33,7 +34,10 @@ const App = () => {
   }, [dispatch]);
 
   const theme = createMuiTheme({
-    palette: { type: darkMode ? 'dark' : 'light' },
+    palette: {
+      primary: { main: darkMode ? teal[200] : teal[500] },
+      type: darkMode ? 'dark' : 'light',
+    },
     browserSize: { width, height },
   });
 

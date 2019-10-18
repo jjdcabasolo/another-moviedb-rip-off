@@ -10,6 +10,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
+import { BrokenImageOutlined } from '@material-ui/icons';
 
 import { truncateText } from '../../utils/functions';
 
@@ -56,6 +57,12 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '20%',
     flexBasis: '20%',
   },
+  brokenImgContainer: {
+    position: 'absolute',
+  },
+  brokenImg: {
+    fontSize: theme.typography.h3.fontSize,
+  },
 }));
 
 const MovieCard = ({movie, movieDrawerOpen, col}) => {
@@ -63,17 +70,26 @@ const MovieCard = ({movie, movieDrawerOpen, col}) => {
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const classes = useStyles();
 
+  const renderBrokenImage = () => (
+    <div className={classes.brokenImgContainer}>
+      <Typography variant="body1">Image not loaded.</Typography>
+    </div>
+  );
+
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
   if (col === 2) {
-    imagePath += movie.poster_path
+    if (movie.poster_path) imagePath += movie.poster_path;
+    else imagePath = renderBrokenImage();
   } else {
-    imagePath += movie.backdrop_path
+    if (movie.backdrop_path) imagePath += movie.backdrop_path;
+    else imagePath = renderBrokenImage();
   }
 
   return (
     <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
       <Card>
         <CardActionArea>
+          { !(typeof (imagePath) === 'string') && imagePath}
           <CardMedia
             className={clsx(
               classes.mediaHover,
