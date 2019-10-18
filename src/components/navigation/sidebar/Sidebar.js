@@ -23,9 +23,9 @@ import {
 } from '@material-ui/icons';
 
 import APIKeyDialog from './APIKeyDialog';
-import MovieDrawer from '../movie/MovieDrawer/MovieDrawer';
+import MovieDrawer from '../../movie/MovieDrawer/MovieDrawer';
 
-import { sidebarActions } from '../../reducers/ducks';
+import { sidebarActions } from '../../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,
@@ -33,7 +33,8 @@ import {
   SIDEBAR_WIDTH,
   SIDEBAR_TMDB_LOGO_DARK,
   SIDEBAR_TMDB_LOGO,
-} from '../../constants';
+} from '../../../constants';
+import { routes } from '../../../routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -82,7 +83,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0 4px',
     ...theme.mixins.toolbar,
   },
-  tmdblogo: {
+  tmdbLogo: {
     width: '1.6em',
   },
 }));
@@ -144,7 +145,8 @@ const Sidebar = (props) => {
         </div>
 
         <List>
-          { SIDEBAR_UPPER_TABS.map((element, index) => (
+          {/* change to routes */}
+          { routes.map((element, index) => (index !== 0) && (
             <ListItem
               button
               classes={{ selected: classes.activeTab }}
@@ -177,7 +179,7 @@ const Sidebar = (props) => {
               <ListItemIcon>
                 <img
                   alt="TMDb Logo"
-                  className={classes.tmdblogo}
+                  className={classes.tmdbLogo}
                   src={darkMode ? SIDEBAR_TMDB_LOGO_DARK : SIDEBAR_TMDB_LOGO}
                 />
               </ListItemIcon>

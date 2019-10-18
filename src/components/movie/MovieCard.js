@@ -1,15 +1,18 @@
 import React from 'react';
 
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {
+  Card,
+  Grid,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
 
 import { truncateText } from '../../utils/functions';
 
@@ -23,9 +26,6 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerOpen: {
     height: 0,
-    // theme.breakpoints.up('lg')
-    // theme.breakpoints.between('md', 'lg')
-    // theme.breakpoints.down('md')
     [theme.breakpoints.up('md')]: {
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
     },
@@ -45,7 +45,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 2),
     color: theme.palette.common.white,
     pointerEvents: 'none',
-
     display: 'block',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -53,9 +52,15 @@ const useStyles = makeStyles(theme => ({
     width: '-webkit-fill-available',
     backgroundImage: `linear-gradient(to top, ${theme.palette.grey[900]} , #0000)`,
   },
+  itemExtension: {
+    maxWidth: '20%',
+    flexBasis: '20%',
+  },
 }));
 
 const MovieCard = ({movie, movieDrawerOpen, col}) => {
+  const theme = useTheme();
+  const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const classes = useStyles();
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
@@ -66,7 +71,7 @@ const MovieCard = ({movie, movieDrawerOpen, col}) => {
   }
 
   return (
-    <Grid item xs={col} className={classes.card}>
+    <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
       <Card>
         <CardActionArea>
           <CardMedia

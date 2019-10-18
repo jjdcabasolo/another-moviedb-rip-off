@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Chip,
   Tooltip,
   IconButton,
   Popover,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import { CategoryTwoTone } from '@material-ui/icons';
 
@@ -27,10 +28,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Category = ({ movieDrawerOpen }) => {
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
   const category = useSelector(state => state.movies.category);
-
+  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -69,23 +72,17 @@ const Category = ({ movieDrawerOpen }) => {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        classes={{
-          paper: classes.popover
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left', }}
+        classes={{ paper: classes.popover }}
       >
         <Typography variant="body2" gutterBottom>Set category:</Typography>
         {renderCategoryChips()}
       </Popover>
     </>
   );
+
+  if (isTablet && drawerOpen) return collapsedCategoryChips();
 
   return (
     <>

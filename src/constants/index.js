@@ -1,6 +1,5 @@
 export {
   SIDEBAR_WIDTH,
-  SIDEBAR_UPPER_TABS,
   SIDEBAR_TMDB_LOGO_DARK,
   SIDEBAR_TMDB_LOGO,
 } from './sidebar';

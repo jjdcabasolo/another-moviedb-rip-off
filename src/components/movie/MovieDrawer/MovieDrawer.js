@@ -88,9 +88,7 @@ const useStyles = makeStyles(theme => ({
 
 const MovieDrawer = () => {
   const theme = useTheme();
-
   const hideMovieDrawer = useMediaQuery(theme.breakpoints.up('lg'));
-
   const classes = useStyles();
 
   const apiKey = useSelector(state => state.sidebar.apiKey);
@@ -103,9 +101,9 @@ const MovieDrawer = () => {
 
   const [movieDrawerOpen, setMovieDrawerOpen] = useState(true);
 
-  useEffect(() => {
-    setMovieDrawerOpen(!hideMovieDrawer);
-  }, [width]);
+  // useEffect(() => {
+  //   setMovieDrawerOpen(!hideMovieDrawer);
+  // }, [width]);
 
   useEffect(() => {
     getNowPlayingMovies(decryptKey(), response => {

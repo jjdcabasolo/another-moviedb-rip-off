@@ -2,24 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Link from '@material-ui/core/Link';
-import InputLabel from '@material-ui/core/InputLabel';
-import FilledInput from '@material-ui/core/FilledInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Link,
+  InputLabel,
+  FilledInput,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+  CircularProgress,
+  FormControl,
+} from '@material-ui/core';
 import {
   ErrorOutlineTwoTone,
   AccountCircleTwoTone,
@@ -27,9 +29,9 @@ import {
   VisibilityOffTwoTone,
 } from '@material-ui/icons';
 
-import { getPopularMovies } from '../../api/movie';
+import { getPopularMovies } from '../../../api/movie';
 
-import { sidebarActions, snackbarActions } from '../../reducers/ducks';
+import { sidebarActions, snackbarActions } from '../../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TITLE,
@@ -40,7 +42,7 @@ import {
   API_KEY_DIALOG_MISSING_API_KEY,
   API_KEY_DIALOG_HAS_KEY,
   API_KEY_DIALOG_TMDB_LINK,
-} from '../../constants';
+} from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
