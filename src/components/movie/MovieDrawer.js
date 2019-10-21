@@ -11,15 +11,15 @@ import {
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
-import Category from './Category';
-import MovieCard from '../MovieCard';
-import Note from '../../common/Note';
-import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
+import MovieCategory from './MovieCategory';
+import MovieCard from './MovieCard';
+import Note from '../common/Note';
+import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 
 import {
   SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
-} from '../../../constants';
+} from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   drawerOpenWidthOpenSidebar: {
@@ -174,7 +174,7 @@ const MovieDrawer = () => {
           <Typography variant="h6">Movies</Typography>
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
-          <Category movieDrawerOpen={movieDrawerOpen} />
+          <MovieCategory isDrawer={movieDrawerOpen} />
           <ResponsiveComponent
             mobileComponent={null}
             tabletComponent={null}
