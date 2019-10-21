@@ -35,7 +35,7 @@ export const sidebarActions = {
 };
 
 // REDUCER
-const initialTab = window.location.pathname.replace('/', '');
+const initialTab = window.location.hash.replace('#/', '');
 const initialApiKey = localStorage.getItem('apiKey') || '';
 const initialUsername = localStorage.getItem('username') || '';
 

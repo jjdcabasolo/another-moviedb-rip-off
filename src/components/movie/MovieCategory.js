@@ -12,11 +12,11 @@ import {
 } from '@material-ui/core';
 import { CategoryTwoTone } from '@material-ui/icons';
 
-import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
+import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 
-import { moviesActions } from '../../../reducers/ducks';
+import { moviesActions } from '../../reducers/ducks';
 
-import { MOVIE_DRAWER_CATEGORY_CHIPS } from '../../../constants';
+import { MOVIE_DRAWER_CATEGORY_CHIPS } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   chip: {
@@ -25,9 +25,12 @@ const useStyles = makeStyles(theme => ({
   popover: {
     padding: theme.spacing(2),
   },
+  topCategories: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
-const Category = ({ movieDrawerOpen }) => {
+const MovieCategory = ({ isList, isDrawer }) => {
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
@@ -82,22 +85,23 @@ const Category = ({ movieDrawerOpen }) => {
     </>
   );
 
+  if (isList) return (
+    <div className={classes.topCategories}>
+      {renderCategoryChips()}
+    </div>
+  );
+
   if (isTablet && drawerOpen) return collapsedCategoryChips();
 
-  return (
-    <>
-      { movieDrawerOpen
-        ? (
-          <ResponsiveComponent
-            mobileComponent={collapsedCategoryChips()}
-            tabletComponent={renderCategoryChips()}
-            desktopComponent={renderCategoryChips()}
-          />
-        )
-        : collapsedCategoryChips()
-      }
-    </>
+  if (isDrawer) return (
+    <ResponsiveComponent
+      mobileComponent={collapsedCategoryChips()}
+      tabletComponent={renderCategoryChips()}
+      desktopComponent={renderCategoryChips()}
+    />
   );
+
+  return collapsedCategoryChips();
 };
 
-export default Category;
+export default MovieCategory;

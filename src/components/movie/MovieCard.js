@@ -17,11 +17,6 @@ import { truncateText } from '../../utils/functions';
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
-  mediaHover: {
-    '&:hover': {
-      filter: 'blur(1px) brightness(80%)',
-    },
-  },
   mediaDrawerOpen: {
     height: 0,
     [theme.breakpoints.up('md')]: {
@@ -31,7 +26,7 @@ const useStyles = makeStyles(theme => ({
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 5.5,
     },
     [theme.breakpoints.down('sm')]: {
-      paddingTop: theme.browserSize.height / 4,
+      paddingTop: window.innerHeight / 4,
     },
     width: '100%',
   },
@@ -92,7 +87,6 @@ const MovieCard = ({movie, movieDrawerOpen, col}) => {
           { !(typeof (imagePath) === 'string') && imagePath}
           <CardMedia
             className={clsx(
-              classes.mediaHover,
               { [classes.mediaDrawerOpen]: movieDrawerOpen },
               { [classes.mediaDrawerClosed]: !movieDrawerOpen },
             )}

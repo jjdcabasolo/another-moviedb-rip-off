@@ -23,7 +23,7 @@ import {
 } from '@material-ui/icons';
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import MovieDrawer from '../../movie/MovieDrawer/MovieDrawer';
+import MovieDrawer from '../../movie/MovieDrawer';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -142,7 +142,6 @@ const Sidebar = ({ children }) => {
         </div>
 
         <List>
-          {/* change to routes */}
           { routes.map((element, index) => (index !== 0) && (
             <ListItem
               button
