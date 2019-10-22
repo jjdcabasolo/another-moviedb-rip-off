@@ -17,3 +17,8 @@ export {
   snackbarActions,
   snackbarReducer,
 } from './snackbar';
+
+export {
+  tvShowsActions,
+  tvShowsReducer,
+} from './tvShows';

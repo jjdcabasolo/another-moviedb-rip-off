@@ -7,9 +7,14 @@ import {
   getTopRatedMovies,
   getUpcomingMovies,
   getHighestGrossingMovies,
-} from '../api/movie';
 
-import { moviesActions } from '../reducers/ducks';
+  getAiringTodayShows,
+  getOnTheAirShows,
+  getPopularShows,
+  getTopRatedShows,
+} from '../api';
+
+import { moviesActions, tvShowsActions } from '../reducers/ducks';
 
 import { decryptKey } from '../utils/functions';
 
@@ -18,6 +23,7 @@ const InitAPICalls = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // movies
     getNowPlayingMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('nowPlaying', response.data.results));
     }, error => {
@@ -48,6 +54,36 @@ const InitAPICalls = () => {
 
     getHighestGrossingMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('highestGrossing', response.data.results));
+    }, error => {
+      console.log(error.response);
+      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+    });
+
+    // tv shows
+    getAiringTodayShows(decryptKey(), response => {
+      console.log(response)
+      dispatch(tvShowsActions.setTVShowsList('airingToday', response.data.results));
+    }, error => {
+      console.log(error.response);
+      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+    });
+
+    getOnTheAirShows(decryptKey(), response => {
+      dispatch(tvShowsActions.setTVShowsList('onTheAir', response.data.results));
+    }, error => {
+      console.log(error.response);
+      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+    });
+
+    getPopularShows(decryptKey(), response => {
+      dispatch(tvShowsActions.setTVShowsList('popular', response.data.results));
+    }, error => {
+      console.log(error.response);
+      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+    });
+
+    getTopRatedShows(decryptKey(), response => {
+      dispatch(tvShowsActions.setTVShowsList('topRated', response.data.results));
     }, error => {
       console.log(error.response);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
