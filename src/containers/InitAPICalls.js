@@ -5,7 +5,8 @@ import {
   getNowPlayingMovies,
   getPopularMovies,
   getTopRatedMovies,
-  getUpcomingMovies
+  getUpcomingMovies,
+  getHighestGrossingMovies,
 } from '../api/movie';
 
 import { moviesActions } from '../reducers/ducks';
@@ -40,6 +41,13 @@ const InitAPICalls = () => {
 
     getUpcomingMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('upcoming', response.data.results));
+    }, error => {
+      console.log(error.response);
+      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+    });
+
+    getHighestGrossingMovies(decryptKey(), response => {
+      dispatch(moviesActions.setMovieList('highestGrossing', response.data.results));
     }, error => {
       console.log(error.response);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
