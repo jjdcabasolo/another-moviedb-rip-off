@@ -19,7 +19,6 @@ import {
 } from '@material-ui/icons';
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import MovieCategory from '../../movie/MovieCategory';
 import MovieList from '../../movie/MovieList';
 
 import { sidebarActions } from '../../../reducers/ducks';
@@ -88,12 +87,7 @@ const Appbar = ({ children, window }) => {
       </HideOnScroll>
 
       <Container className={classes.container}>
-        {activeTab === 'movies' && (
-          <>
-            <MovieCategory isList />
-            <MovieList />
-          </>
-        )}
+        {activeTab === 'movies' && <MovieList />}
         {/* { children } */}
       </Container>
 

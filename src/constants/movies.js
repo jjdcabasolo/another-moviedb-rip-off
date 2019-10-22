@@ -37,4 +37,9 @@ export const MOVIE_DRAWER_CATEGORY_CHIPS = [
     identifier: 'topRated',
     isActive: e => e === 'topRated',
   },
+  {
+    label: 'Highest Grossing',
+    identifier: 'highestGrossing',
+    isActive: e => e === 'highestGrossing',
+  },
 ];

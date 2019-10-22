@@ -10,7 +10,6 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { BrokenImageOutlined } from '@material-ui/icons';
 
 import { truncateText } from '../../utils/functions';
 
@@ -26,14 +25,14 @@ const useStyles = makeStyles(theme => ({
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 5.5,
     },
     [theme.breakpoints.down('sm')]: {
-      paddingTop: window.innerHeight / 4,
+      paddingTop: window.innerHeight / 3.5,
     },
     width: '100%',
   },
   mediaDrawerClosed: {
     height: 0,
-    paddingTop: '5em',
-    width: '60em',
+    paddingTop: '12em',
+    width: '100%',
   },
   typoOverlay: {
     position: 'absolute',
