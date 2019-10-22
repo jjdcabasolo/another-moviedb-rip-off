@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   IconButton,
   Slide,
   Snackbar,
   SnackbarContent,
+  useMediaQuery,
 } from '@material-ui/core';
 import {
   Close,
@@ -29,6 +30,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CustomSnackbar = (props) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const classes = useStyles();
 
   const {
@@ -74,7 +77,10 @@ const CustomSnackbar = (props) => {
 
   return (
     <Snackbar
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      anchorOrigin={isMobile
+        ? { vertical: 'bottom', horizontal: 'left' }
+        : { vertical: 'top', horizontal: 'center' }
+      }
       autoHideDuration={snackbarSettings[variant].autoHideDuration}
       onClose={handleOnClose}
       open={isOpen}

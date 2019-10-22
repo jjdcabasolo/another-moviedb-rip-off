@@ -27,6 +27,8 @@ const useStyles = makeStyles(theme => ({
   },
   topCategories: {
     marginBottom: theme.spacing(2),
+    display: 'flex',
+    overflowX: 'auto',
   },
 }));
 

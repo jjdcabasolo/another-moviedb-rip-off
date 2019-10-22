@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     [theme.breakpoints.down('sm')]: {
-      margin: 0,
+      margin: theme.spacing(2),
     },
   },
 }));
