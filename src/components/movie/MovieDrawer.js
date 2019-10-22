@@ -72,6 +72,10 @@ const useStyles = makeStyles(theme => ({
   extendItem: {
     flex: 1,
   },
+  desktopDrawerClosedContainer: {
+    maxHeight: '86vh',
+    overflowY: 'auto',
+  },
 }));
 
 const MovieDrawer = () => {
@@ -132,7 +136,7 @@ const MovieDrawer = () => {
         );
       } else {
         return (
-          <Grid item container justify="center" spacing={2}>
+          <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
             {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={12}/> )}
           </Grid>
         );

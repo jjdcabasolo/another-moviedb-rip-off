@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerClosed: {
     height: 0,
-    paddingTop: '5em',
-    width: '60em',
+    paddingTop: '12em',
+    width: '100%',
   },
   typoOverlay: {
     position: 'absolute',
