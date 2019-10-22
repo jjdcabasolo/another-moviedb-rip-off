@@ -14,7 +14,7 @@ import { CategoryTwoTone } from '@material-ui/icons';
 
 import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 
-import { moviesActions } from '../../reducers/ducks';
+import { tvShowsActions } from '../../reducers/ducks';
 
 import { MOVIE_DRAWER_CATEGORY_CHIPS } from '../../constants';
 
@@ -37,7 +37,7 @@ const MovieCategory = ({ isList, isDrawer }) => {
   const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
-  const category = useSelector(state => state.movies.category);
+  const category = useSelector(state => state.tvShows.category);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const dispatch = useDispatch();
 
@@ -50,7 +50,7 @@ const MovieCategory = ({ isList, isDrawer }) => {
 
   const handleClose = () => setAnchorEl(null);
 
-  const handleChipClick = category => dispatch(moviesActions.setCategory(category));
+  const handleChipClick = category => dispatch(tvShowsActions.setCategory(category));
 
   const renderCategoryChips = () => (
     MOVIE_DRAWER_CATEGORY_CHIPS.map(e => (

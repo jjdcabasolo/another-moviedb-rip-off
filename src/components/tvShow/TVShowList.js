@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 import MovieCard from './MovieCard';
-import MovieCategory from './MovieCategory';
+import MovieCategory from './TVShowCategory';
 import Note from '../common/Note';
 
 import { NOTE_NO_API_KEY } from '../../constants';

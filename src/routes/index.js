@@ -1,30 +1,19 @@
 import React from 'react';
 
-import {
-  MovieTwoTone,
-  LiveTvTwoTone,
-} from '@material-ui/icons';
+import { Route, Switch } from 'react-router-dom';
 
-import Movies from '../containers/Movies';
-import TVShows from '../containers/TVShows';
+import { routes } from './config';
 
-export const routes = [
-  {
-    component: <Movies />,
-    path: "/",
-  },
-  {
-    component: <Movies />,
-    icon: (<MovieTwoTone />),
-    title: "Movies",
-    path: "/movies",
-    key: "movies",
-  },
-  {
-    component: <TVShows />,
-    icon: (<LiveTvTwoTone />),
-    title: "TV Shows",
-    path: "/tvshows",
-    key: "tvShows",
-  },
-];
+const Routes = () => {
+  return (
+    <Switch>
+      { routes.map(e => (
+        <Route exact path={e.path}>
+          {e.component}
+        </Route>
+      )) }
+    </Switch>
+  );
+};
+
+export default Routes;

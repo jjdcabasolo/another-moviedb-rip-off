@@ -86,7 +86,7 @@ const MovieDrawer = () => {
   const list = useSelector(state => state.movies.list);
 
   const getLocalStorage = localStorage.getItem('movieDrawerOpen');
-  const [movieDrawerOpen, setMovieDrawerOpen] = useState(getLocalStorage == null ? true : getLocalStorage == 'true');
+  const [movieDrawerOpen, setMovieDrawerOpen] = useState(getLocalStorage === null ? true : getLocalStorage === 'true');
 
   const moviesToDisplay = list[category];
 
@@ -182,7 +182,7 @@ const MovieDrawer = () => {
           <Typography variant="h6">Movies</Typography>
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
-          <MovieCategory isDrawer={movieDrawerOpen} />
+          {moviesToDisplay.length > 0 && <MovieCategory isDrawer={movieDrawerOpen} />}
           <ResponsiveComponent
             mobileComponent={null}
             tabletComponent={null}

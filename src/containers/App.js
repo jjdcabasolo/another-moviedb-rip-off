@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -15,7 +15,7 @@ import ResponsiveComponent from '../utils/components/ResponsiveComponent';
 
 import { browserActions } from '../reducers/ducks';
 
-import { routes } from '../routes';
+import Routes from '../routes';
 
 const App = () => {
   const darkMode = useSelector(state => state.sidebar.darkMode);
@@ -41,24 +41,14 @@ const App = () => {
     browserSize: { width, height },
   });
 
-  const renderRoutes = () => (
-    <Switch>
-      { routes.map(e => (
-        <Route exact path={e.path}>
-          {e.component}
-        </Route>
-      )) }
-    </Switch>
-  );
-
   return (
     <MuiThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Router basename="/">
           <ResponsiveComponent
-            mobileComponent={<Appbar>{renderRoutes()}</Appbar>}
-            tabletComponent={<Sidebar>{renderRoutes()}</Sidebar>}
-            desktopComponent={<Sidebar>{renderRoutes()}</Sidebar>}
+            mobileComponent={<Appbar><Routes/></Appbar>}
+            tabletComponent={<Sidebar><Routes/></Sidebar>}
+            desktopComponent={<Sidebar><Routes/></Sidebar>}
           />
         </Router>
         <Snackbars />

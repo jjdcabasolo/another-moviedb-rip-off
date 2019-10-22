@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieCard = ({movie, movieDrawerOpen, col}) => {
+const TVShowCard = ({movie, movieDrawerOpen, col}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const classes = useStyles();
@@ -93,7 +93,7 @@ const MovieCard = ({movie, movieDrawerOpen, col}) => {
             image={imagePath}
           />
           <Typography gutterBottom variant="button" className={classes.typoOverlay}>
-            {truncateText(movie.title, movieDrawerOpen ? 25 : 100)}
+            {truncateText(movie.original_name, movieDrawerOpen ? 25 : 100)}
           </Typography>
         </CardActionArea>
       </Card>
@@ -101,4 +101,4 @@ const MovieCard = ({movie, movieDrawerOpen, col}) => {
   );
 };
 
-export default MovieCard;
+export default TVShowCard;
