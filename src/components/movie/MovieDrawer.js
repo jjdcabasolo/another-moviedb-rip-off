@@ -85,11 +85,15 @@ const MovieDrawer = () => {
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const list = useSelector(state => state.movies.list);
 
-  const [movieDrawerOpen, setMovieDrawerOpen] = useState(true);
+  const getLocalStorage = localStorage.getItem('movieDrawerOpen');
+  const [movieDrawerOpen, setMovieDrawerOpen] = useState(getLocalStorage == null ? true : getLocalStorage == 'true');
 
   const moviesToDisplay = list[category];
 
-  const handleDrawerToggle = () => setMovieDrawerOpen(!movieDrawerOpen);
+  const handleDrawerToggle = () => {
+    localStorage.setItem('movieDrawerOpen', !movieDrawerOpen);
+    setMovieDrawerOpen(!movieDrawerOpen);
+  };
 
   const renderToggleMovieDrawer = () => (
     <IconButton onClick={handleDrawerToggle}>
@@ -159,7 +163,7 @@ const MovieDrawer = () => {
         { [classes.drawerCloseWidthClosedSidebar]: !movieDrawerOpen && !drawerOpen },
       )}
       variant="permanent"
-      movieDrawerOpen={movieDrawerOpen}
+      open={movieDrawerOpen}
       classes={{
         paper: clsx(
           classes.drawerPaper,
