@@ -20,6 +20,7 @@ import {
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieList from '../../movie/MovieList';
+import TVShowList from '../../tvShow/TVShowList';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -87,6 +88,7 @@ const Appbar = ({ children, window }) => {
 
       <Container className={classes.container}>
         {activeTab === 'movies' && <MovieList />}
+        {activeTab === 'tvshows' && <TVShowList />}
         {/* { children } */}
       </Container>
 

@@ -43,12 +43,16 @@ const App = () => {
     browserSize: { width, height },
   });
 
+  // TODO: offline view Issue #1
+  // console.log('connectivity:', window.navigator.onLine);
+
   return (
     <>
       <Helmet>
         <title>Another TMDb Rip-off</title>
         <meta name="description" content="Another The Movie Database Rip-off lists movies and TV shows of different categories - all coming from TMDb. It is TMDb, but it is a rip-off." />
       </Helmet>
+
       <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Router basename="/">

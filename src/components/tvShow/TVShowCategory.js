@@ -16,7 +16,7 @@ import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 
 import { tvShowsActions } from '../../reducers/ducks';
 
-import { MOVIE_DRAWER_CATEGORY_CHIPS } from '../../constants';
+import { TV_SHOW_DRAWER_CATEGORY_CHIPS } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   chip: {
@@ -32,9 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieCategory = ({ isList, isDrawer }) => {
+const TVShowCategory = ({ isList, isDrawer }) => {
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
   const category = useSelector(state => state.tvShows.category);
@@ -53,7 +53,7 @@ const MovieCategory = ({ isList, isDrawer }) => {
   const handleChipClick = category => dispatch(tvShowsActions.setCategory(category));
 
   const renderCategoryChips = () => (
-    MOVIE_DRAWER_CATEGORY_CHIPS.map(e => (
+    TV_SHOW_DRAWER_CATEGORY_CHIPS.map(e => (
       <Chip
         variant="outlined"
         label={e.label}
@@ -93,7 +93,7 @@ const MovieCategory = ({ isList, isDrawer }) => {
     </div>
   );
 
-  if (isTablet && drawerOpen) return collapsedCategoryChips();
+  if (isTabletBelow && drawerOpen) return collapsedCategoryChips();
 
   if (isDrawer) return (
     <ResponsiveComponent
@@ -106,4 +106,4 @@ const MovieCategory = ({ isList, isDrawer }) => {
   return collapsedCategoryChips();
 };
 
-export default MovieCategory;
+export default TVShowCategory;

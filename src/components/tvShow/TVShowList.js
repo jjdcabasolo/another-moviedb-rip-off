@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
-import MovieCard from './MovieCard';
-import MovieCategory from './TVShowCategory';
+import TVShowCard from './TVShowCard';
+import TVShowCategory from './TVShowCategory';
 import Note from '../common/Note';
 
 import { NOTE_NO_API_KEY } from '../../constants';
@@ -16,15 +16,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieList = () => {
+const TVShowList = () => {
   const classes = useStyles();
 
-  const category = useSelector(state => state.movies.category);
-  const list = useSelector(state => state.movies.list);
+  const category = useSelector(state => state.tvShows.category);
+  const list = useSelector(state => state.tvShows.list);
 
-  const moviesToDisplay = list[category];
+  const tvShowsToDisplay = list[category];
 
-  if (moviesToDisplay.length <= 0) return (
+  if (tvShowsToDisplay.length <= 0) return (
     <div className={classes.note}>
       <Note details={NOTE_NO_API_KEY} />
     </div>
@@ -32,12 +32,12 @@ const MovieList = () => {
 
   return (
     <>
-      <MovieCategory isList />
+      <TVShowCategory isList />
       <Grid item container justify="center" spacing={2}>
-        {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen col={12}/> )}
+        {tvShowsToDisplay.slice(0, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen col={12} />)}
       </Grid>
     </>
   );
 };
 
-export default MovieList;
+export default TVShowList;

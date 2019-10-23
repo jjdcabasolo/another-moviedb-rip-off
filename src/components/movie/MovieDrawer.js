@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Drawer,
   Grid,
   IconButton,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
@@ -79,6 +80,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MovieDrawer = () => {
+  const theme = useTheme();
+  const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
   const category = useSelector(state => state.movies.category);
@@ -86,7 +89,8 @@ const MovieDrawer = () => {
   const list = useSelector(state => state.movies.list);
 
   const getLocalStorage = localStorage.getItem('movieDrawerOpen');
-  const [movieDrawerOpen, setMovieDrawerOpen] = useState(getLocalStorage === null ? true : getLocalStorage === 'true');
+  const finalDrawerState = (getLocalStorage === null ? true : getLocalStorage === 'true') || isTabletBelow;
+  const [movieDrawerOpen, setMovieDrawerOpen] = useState(finalDrawerState);
 
   const moviesToDisplay = list[category];
 

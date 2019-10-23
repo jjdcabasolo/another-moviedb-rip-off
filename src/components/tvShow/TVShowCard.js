@@ -18,14 +18,17 @@ import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 const useStyles = makeStyles(theme => ({
   mediaDrawerOpen: {
     height: 0,
-    [theme.breakpoints.up('md')]: {
-      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(25),
     },
     [theme.breakpoints.between('sm', 'md')]: {
-      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 5.5,
+      paddingTop: theme.spacing(60),
     },
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: window.innerHeight / 3.5,
+    [theme.breakpoints.between('md', 'lg')]: {
+      paddingTop: theme.spacing(35),
+    },
+    [theme.breakpoints.up('lg')]: {
+      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
     },
     width: '100%',
   },
@@ -59,9 +62,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TVShowCard = ({movie, movieDrawerOpen, col}) => {
+const TVShowCard = ({tvShow, tvShowDrawerOpen, col}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
+  const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const classes = useStyles();
 
   const renderBrokenImage = () => (
@@ -71,11 +75,13 @@ const TVShowCard = ({movie, movieDrawerOpen, col}) => {
   );
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
-  if (col === 2) {
-    if (movie.poster_path) imagePath += movie.poster_path;
+  if (col === 2 || (col === 6 && !landscapeTablet)) {
+    console.log('poster');
+    if (tvShow.poster_path) imagePath += tvShow.poster_path;
     else imagePath = renderBrokenImage();
   } else {
-    if (movie.backdrop_path) imagePath += movie.backdrop_path;
+    console.log('backdrop');
+    if (tvShow.backdrop_path) imagePath += tvShow.backdrop_path;
     else imagePath = renderBrokenImage();
   }
 
@@ -86,14 +92,14 @@ const TVShowCard = ({movie, movieDrawerOpen, col}) => {
           { !(typeof (imagePath) === 'string') && imagePath}
           <CardMedia
             className={clsx(
-              { [classes.mediaDrawerOpen]: movieDrawerOpen },
-              { [classes.mediaDrawerClosed]: !movieDrawerOpen },
+              { [classes.mediaDrawerOpen]: tvShowDrawerOpen },
+              { [classes.mediaDrawerClosed]: !tvShowDrawerOpen },
             )}
-            // image={`${1}${movie.poster_path}`}
+            // image={`${1}${tvShow.poster_path}`}
             image={imagePath}
           />
           <Typography gutterBottom variant="button" className={classes.typoOverlay}>
-            {truncateText(movie.original_name, movieDrawerOpen ? 25 : 100)}
+            {truncateText(tvShow.original_name, tvShowDrawerOpen ? 25 : 100)}
           </Typography>
         </CardActionArea>
       </Card>
