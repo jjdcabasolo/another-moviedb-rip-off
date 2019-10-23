@@ -60,9 +60,13 @@ const useStyles = makeStyles(theme => ({
   brokenImg: {
     fontSize: theme.typography.h3.fontSize,
   },
+  rank: {
+    fontWeight: '400',
+    paddingRight: theme.spacing(1),
+  },
 }));
 
-const MovieCard = ({movie, movieDrawerOpen, col}) => {
+const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
@@ -87,7 +91,7 @@ const MovieCard = ({movie, movieDrawerOpen, col}) => {
     <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
       <Card>
         <CardActionArea>
-          { !(typeof (imagePath) === 'string') && imagePath}
+          { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia
             className={clsx(
               { [classes.mediaDrawerOpen]: movieDrawerOpen },
@@ -97,6 +101,7 @@ const MovieCard = ({movie, movieDrawerOpen, col}) => {
             image={imagePath}
           />
           <Typography gutterBottom variant="button" className={classes.typoOverlay}>
+            <span className={classes.rank}>{rank}</span>
             {truncateText(movie.title, movieDrawerOpen ? 25 : 100)}
           </Typography>
         </CardActionArea>

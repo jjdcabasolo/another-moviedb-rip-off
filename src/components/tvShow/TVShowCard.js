@@ -60,9 +60,13 @@ const useStyles = makeStyles(theme => ({
   brokenImg: {
     fontSize: theme.typography.h3.fontSize,
   },
+  rank: {
+    fontWeight: '400',
+    paddingRight: theme.spacing(1),
+  },
 }));
 
-const TVShowCard = ({tvShow, tvShowDrawerOpen, col}) => {
+const TVShowCard = ({tvShow, tvShowDrawerOpen, col, rank}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
@@ -76,11 +80,9 @@ const TVShowCard = ({tvShow, tvShowDrawerOpen, col}) => {
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
   if (col === 2 || (col === 6 && !landscapeTablet)) {
-    console.log('poster');
     if (tvShow.poster_path) imagePath += tvShow.poster_path;
     else imagePath = renderBrokenImage();
   } else {
-    console.log('backdrop');
     if (tvShow.backdrop_path) imagePath += tvShow.backdrop_path;
     else imagePath = renderBrokenImage();
   }
@@ -89,7 +91,7 @@ const TVShowCard = ({tvShow, tvShowDrawerOpen, col}) => {
     <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
       <Card>
         <CardActionArea>
-          { !(typeof (imagePath) === 'string') && imagePath}
+          { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia
             className={clsx(
               { [classes.mediaDrawerOpen]: tvShowDrawerOpen },
@@ -99,6 +101,7 @@ const TVShowCard = ({tvShow, tvShowDrawerOpen, col}) => {
             image={imagePath}
           />
           <Typography gutterBottom variant="button" className={classes.typoOverlay}>
+            <span className={classes.rank}>{rank}</span>
             {truncateText(tvShow.original_name, tvShowDrawerOpen ? 25 : 100)}
           </Typography>
         </CardActionArea>

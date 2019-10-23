@@ -2,7 +2,6 @@ import React, { useLayoutEffect } from 'react';
 
 import { HashRouter as Router } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Helmet } from 'react-helmet';
 
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -13,6 +12,7 @@ import Snackbars from './Snackbars';
 import InitAPICalls from './InitAPICalls';
 import Sidebar from '../components/navigation/sidebar/Sidebar';
 import Appbar from '../components/navigation/appbar/Appbar';
+import Helmet from '../components/navigation/Helmet';
 import ResponsiveComponent from '../utils/components/ResponsiveComponent';
 
 import { browserActions } from '../reducers/ducks';
@@ -48,10 +48,7 @@ const App = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Another TMDb Rip-off</title>
-        <meta name="description" content="Another The Movie Database Rip-off lists movies and TV shows of different categories - all coming from TMDb. It is TMDb, but it is a rip-off." />
-      </Helmet>
+      <Helmet isDefault />
 
       <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>

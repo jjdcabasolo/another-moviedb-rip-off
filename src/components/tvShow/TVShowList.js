@@ -34,7 +34,7 @@ const TVShowList = () => {
     <>
       <TVShowCategory isList />
       <Grid item container justify="center" spacing={2}>
-        {tvShowsToDisplay.slice(0, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen col={12} />)}
+        {tvShowsToDisplay.slice(0, 10).map((tvShow, rank) => <TVShowCard tvShow={tvShow} tvShowDrawerOpen col={12} rank={rank + 1} />)}
       </Grid>
     </>
   );

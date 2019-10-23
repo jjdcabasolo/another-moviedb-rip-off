@@ -113,31 +113,20 @@ const TVShowDrawer = () => {
             mobileComponent={<></>}
             tabletComponent={(
               <Grid container spacing={2}>
-                <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(0, 2).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(2, 4).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(4, 6).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(6, 8).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(8, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
-                </Grid>
+                {new Array(5).fill({}).map((_, index) => (
+                  <Grid item container spacing={2}>
+                    {tvShowsToDisplay.slice((2 * index), (2 * index) + 2).map((tvShow, rank) => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6}  rank={(2 * index) + rank + 1}/> )}
+                  </Grid>
+                ))}
               </Grid>
             )}
             desktopComponent={(
               <Grid container spacing={2}>
-                <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {tvShowsToDisplay.slice(0, 5).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
-                </Grid>
-                <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {tvShowsToDisplay.slice(5, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
-                </Grid>
+                {new Array(2).fill({}).map((_, index) => (
+                  <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
+                    {tvShowsToDisplay.slice((5 * index), (5 * index) + 5).map((tvShow, rank) => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={2}  rank={(5 * index) + rank + 1}/> )}
+                  </Grid>
+                ))}
               </Grid>
             )}
           />
@@ -145,7 +134,7 @@ const TVShowDrawer = () => {
       } else {
         return (
           <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
-            {tvShowsToDisplay.slice(0, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={12}/> )}
+            {tvShowsToDisplay.slice(0, 10).map((tvShow, rank) => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={12} rank={rank + 1} /> )}
           </Grid>
         );
       }

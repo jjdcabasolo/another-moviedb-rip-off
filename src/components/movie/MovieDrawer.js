@@ -113,31 +113,20 @@ const MovieDrawer = () => {
             mobileComponent={<></>}
             tabletComponent={(
               <Grid container spacing={2}>
-                <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(0, 2).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(2, 4).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(4, 6).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(6, 8).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
-                </Grid>
-                <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(8, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
-                </Grid>
+                {new Array(5).fill({}).map((_, index) => (
+                  <Grid item container spacing={2}>
+                    {moviesToDisplay.slice((2 * index), (2 * index) + 2).map((movie, rank) => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} rank={(2 * index) + rank + 1}/> )}
+                  </Grid>
+                ))}
               </Grid>
             )}
             desktopComponent={(
               <Grid container spacing={2}>
-                <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {moviesToDisplay.slice(0, 5).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={2}/> )}
-                </Grid>
-                <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {moviesToDisplay.slice(5, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={2}/> )}
-                </Grid>
+                {new Array(2).fill({}).map((_, index) => (
+                  <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
+                    {moviesToDisplay.slice((5 * index), (5 * index) + 5).map((movie, rank) => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={2} rank={(5 * index) + rank + 1}/> )}
+                  </Grid>
+                ))}
               </Grid>
             )}
           />
@@ -145,7 +134,7 @@ const MovieDrawer = () => {
       } else {
         return (
           <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
-            {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={12}/> )}
+            {moviesToDisplay.slice(0, 10).map((movie, rank) => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={12} rank={rank + 1} /> )}
           </Grid>
         );
       }
