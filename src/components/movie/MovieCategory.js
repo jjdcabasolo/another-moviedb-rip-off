@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 const MovieCategory = ({ isList, isDrawer }) => {
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
+  const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
   const category = useSelector(state => state.movies.category);
@@ -93,7 +93,7 @@ const MovieCategory = ({ isList, isDrawer }) => {
     </div>
   );
 
-  if (isTablet && drawerOpen) return collapsedCategoryChips();
+  if (isTabletBelow && drawerOpen) return collapsedCategoryChips();
 
   if (isDrawer) return (
     <ResponsiveComponent

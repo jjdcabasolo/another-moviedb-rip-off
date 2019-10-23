@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Drawer,
   Grid,
   IconButton,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
@@ -79,6 +80,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TVShowDrawer = () => {
+  const theme = useTheme();
+  const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
   const category = useSelector(state => state.tvShows.category);
@@ -86,13 +89,14 @@ const TVShowDrawer = () => {
   const list = useSelector(state => state.tvShows.list);
 
   const getLocalStorage = localStorage.getItem('tvShowDrawerOpen');
-  const [tvShowDrawerOpen, setTVShowDrawerOpen] = useState(getLocalStorage === null ? true : getLocalStorage === 'true');
+  const finalDrawerState = (getLocalStorage === null ? true : getLocalStorage === 'true') || isTabletBelow;
+  const [tvShowDrawerOpen, setTVShowDrawerOpen] = useState(finalDrawerState);
 
   const tvShowsToDisplay = list[category];
 
   const handleDrawerToggle = () => {
     localStorage.setItem('tvShowDrawerOpen', !tvShowDrawerOpen);
-    setTVShowDrawerOpen(!tvShowDrawerOpen)
+    setTVShowDrawerOpen(!tvShowDrawerOpen);
   };
 
   const renderToggleTVShowDrawer = () => (

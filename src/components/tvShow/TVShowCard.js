@@ -18,14 +18,17 @@ import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 const useStyles = makeStyles(theme => ({
   mediaDrawerOpen: {
     height: 0,
-    [theme.breakpoints.up('md')]: {
-      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(25),
     },
     [theme.breakpoints.between('sm', 'md')]: {
-      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 5.5,
+      paddingTop: theme.spacing(60),
     },
-    [theme.breakpoints.down('sm')]: {
-      paddingTop: window.innerHeight / 3.5,
+    [theme.breakpoints.between('md', 'lg')]: {
+      paddingTop: theme.spacing(35),
+    },
+    [theme.breakpoints.up('lg')]: {
+      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
     },
     width: '100%',
   },
@@ -62,6 +65,7 @@ const useStyles = makeStyles(theme => ({
 const TVShowCard = ({tvShow, tvShowDrawerOpen, col}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
+  const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const classes = useStyles();
 
   const renderBrokenImage = () => (
@@ -71,10 +75,12 @@ const TVShowCard = ({tvShow, tvShowDrawerOpen, col}) => {
   );
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
-  if (col === 2) {
+  if (col === 2 || (col === 6 && !landscapeTablet)) {
+    console.log('poster');
     if (tvShow.poster_path) imagePath += tvShow.poster_path;
     else imagePath = renderBrokenImage();
   } else {
+    console.log('backdrop');
     if (tvShow.backdrop_path) imagePath += tvShow.backdrop_path;
     else imagePath = renderBrokenImage();
   }
