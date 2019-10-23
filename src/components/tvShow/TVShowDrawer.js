@@ -110,29 +110,29 @@ const TVShowDrawer = () => {
             tabletComponent={(
               <Grid container spacing={2}>
                 <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(0, 2).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(0, 2).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(2, 4).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(2, 4).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(4, 6).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(4, 6).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(6, 8).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(6, 8).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {tvShowsToDisplay.slice(8, 10).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(8, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
               </Grid>
             )}
             desktopComponent={(
               <Grid container spacing={2}>
                 <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {tvShowsToDisplay.slice(0, 5).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
+                  {tvShowsToDisplay.slice(0, 5).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
                 </Grid>
                 <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {tvShowsToDisplay.slice(5, 10).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
+                  {tvShowsToDisplay.slice(5, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
                 </Grid>
               </Grid>
             )}
@@ -141,7 +141,7 @@ const TVShowDrawer = () => {
       } else {
         return (
           <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
-            {tvShowsToDisplay.slice(0, 10).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={12}/> )}
+            {tvShowsToDisplay.slice(0, 10).map(tvShow => <TVShowCard tvShow={tvShow} tvShowDrawerOpen={tvShowDrawerOpen} col={12}/> )}
           </Grid>
         );
       }
@@ -163,7 +163,7 @@ const TVShowDrawer = () => {
         { [classes.drawerCloseWidthClosedSidebar]: !tvShowDrawerOpen && !drawerOpen },
       )}
       variant="permanent"
-      tvShowDrawerOpen={tvShowDrawerOpen}
+      open={tvShowDrawerOpen}
       classes={{
         paper: clsx(
           classes.drawerPaper,

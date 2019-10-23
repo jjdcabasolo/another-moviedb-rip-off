@@ -49,6 +49,7 @@ const App = () => {
         <title>Another TMDb Rip-off</title>
         <meta name="description" content="Another The Movie Database Rip-off lists movies and TV shows of different categories - all coming from TMDb. It is TMDb, but it is a rip-off." />
       </Helmet>
+
       <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Router basename="/">

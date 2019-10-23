@@ -22,3 +22,7 @@ export {
   NOTE_NO_SELECTED_MOVIE,
   NOTE_NO_SELECTED_TV_SHOW,
 } from './note';
+
+export {
+  TV_SHOW_DRAWER_CATEGORY_CHIPS,
+} from './tvShows';
