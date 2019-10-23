@@ -91,7 +91,7 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
     <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
       <Card>
         <CardActionArea>
-          { !(typeof (imagePath) === 'string') && imagePath}
+          { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia
             className={clsx(
               { [classes.mediaDrawerOpen]: movieDrawerOpen },

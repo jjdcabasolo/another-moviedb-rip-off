@@ -18,6 +18,7 @@ import {
   BrightnessLowTwoTone,
 } from '@material-ui/icons';
 
+import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieList from '../../movie/MovieList';
 import TVShowList from '../../tvShow/TVShowList';
@@ -66,6 +67,8 @@ const Appbar = ({ children, window }) => {
 
   return (
     <>
+      <Helmet />
+
       <CssBaseline />
       <HideOnScroll window={window}>
         <AppBar color="default">

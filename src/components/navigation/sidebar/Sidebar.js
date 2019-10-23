@@ -22,6 +22,7 @@ import {
   MenuTwoTone
 } from '@material-ui/icons';
 
+import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieDrawer from '../../movie/MovieDrawer';
 import TVShowDrawer from '../../tvShow/TVShowDrawer';
@@ -117,6 +118,8 @@ const Sidebar = ({ children }) => {
 
   return (
     <div className={classes.root}>
+      <Helmet />
+
       <CssBaseline />
       <Drawer
         variant="permanent"
