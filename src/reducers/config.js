@@ -6,6 +6,7 @@ import {
   sidebarReducer,
   snackbarReducer,
   browserReducer,
+  tvShowsReducer,
 } from './ducks';
 
 const appReducer = combineReducers({
@@ -14,6 +15,7 @@ const appReducer = combineReducers({
   movies: moviesReducer,
   sidebar: sidebarReducer,
   snackbar: snackbarReducer,
+  tvShows: tvShowsReducer,
 });
 
 const rootReducer = (state, action) => appReducer(action.type === 'CLEAR_REDUX_STATES' ? undefined : state, action);

@@ -24,6 +24,7 @@ import {
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieDrawer from '../../movie/MovieDrawer';
+import TVShowDrawer from '../../tvShow/TVShowDrawer';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -33,7 +34,7 @@ import {
   SIDEBAR_TMDB_LOGO_DARK,
   SIDEBAR_TMDB_LOGO,
 } from '../../../constants';
-import { routes } from '../../../routes';
+import { routes } from '../../../routes/config';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -186,6 +187,7 @@ const Sidebar = ({ children }) => {
       </Drawer>
 
       {activeTab === 'movies' && <MovieDrawer />}
+      {activeTab === 'tvshows' && <TVShowDrawer />}
 
       <main className={classes.content}>
         { children }

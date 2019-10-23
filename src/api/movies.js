@@ -1,4 +1,4 @@
-import axios from './axiosConfig';
+import axios from './config';
 
 export const getPopularMovies = (api_key, success, fail, after = () => {}) => axios
   .get('/movie/popular', { params: { api_key } })

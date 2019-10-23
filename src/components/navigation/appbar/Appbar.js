@@ -25,7 +25,7 @@ import { sidebarActions } from '../../../reducers/ducks';
 
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
-import { routes } from '../../../routes';
+import { routes } from '../../../routes/config';
 
 const useStyles = makeStyles(theme => ({
   bottomNavigation: {
@@ -39,7 +39,6 @@ const useStyles = makeStyles(theme => ({
   container: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(9),
-    // height: theme.spacing(1000),
   },
 }));
 

@@ -11,8 +11,8 @@ import {
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
-import MovieCategory from './MovieCategory';
-import MovieCard from './MovieCard';
+import TVShowCategory from './TVShowCategory';
+import TVShowCard from './TVShowCard';
 import Note from '../common/Note';
 import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 
@@ -78,61 +78,61 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieDrawer = () => {
+const TVShowDrawer = () => {
   const classes = useStyles();
 
-  const category = useSelector(state => state.movies.category);
+  const category = useSelector(state => state.tvShows.category);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
-  const list = useSelector(state => state.movies.list);
+  const list = useSelector(state => state.tvShows.list);
 
-  const getLocalStorage = localStorage.getItem('movieDrawerOpen');
-  const [movieDrawerOpen, setMovieDrawerOpen] = useState(getLocalStorage === null ? true : getLocalStorage === 'true');
+  const getLocalStorage = localStorage.getItem('tvShowDrawerOpen');
+  const [tvShowDrawerOpen, setTVShowDrawerOpen] = useState(getLocalStorage === null ? true : getLocalStorage === 'true');
 
-  const moviesToDisplay = list[category];
+  const tvShowsToDisplay = list[category];
 
   const handleDrawerToggle = () => {
-    localStorage.setItem('movieDrawerOpen', !movieDrawerOpen);
-    setMovieDrawerOpen(!movieDrawerOpen);
+    localStorage.setItem('tvShowDrawerOpen', !tvShowDrawerOpen);
+    setTVShowDrawerOpen(!tvShowDrawerOpen)
   };
 
-  const renderToggleMovieDrawer = () => (
+  const renderToggleTVShowDrawer = () => (
     <IconButton onClick={handleDrawerToggle}>
-      {movieDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
+      {tvShowDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
     </IconButton>
   );
 
-  const renderMovieCards = () => {
-    if (moviesToDisplay.length > 0) {
-      if (movieDrawerOpen) {
+  const renderTVShowCards = () => {
+    if (tvShowsToDisplay.length > 0) {
+      if (tvShowDrawerOpen) {
         return (
           <ResponsiveComponent
             mobileComponent={<></>}
             tabletComponent={(
               <Grid container spacing={2}>
                 <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(0, 2).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(0, 2).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(2, 4).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(2, 4).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(4, 6).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(4, 6).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(6, 8).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(6, 8).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
                 <Grid item container spacing={2}>
-                  {moviesToDisplay.slice(8, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={6} /> )}
+                  {tvShowsToDisplay.slice(8, 10).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={6} /> )}
                 </Grid>
               </Grid>
             )}
             desktopComponent={(
               <Grid container spacing={2}>
                 <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {moviesToDisplay.slice(0, 5).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={2}/> )}
+                  {tvShowsToDisplay.slice(0, 5).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
                 </Grid>
                 <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {moviesToDisplay.slice(5, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={2}/> )}
+                  {tvShowsToDisplay.slice(5, 10).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={2}/> )}
                 </Grid>
               </Grid>
             )}
@@ -141,7 +141,7 @@ const MovieDrawer = () => {
       } else {
         return (
           <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
-            {moviesToDisplay.slice(0, 10).map(movie => <MovieCard movie={movie} movieDrawerOpen={movieDrawerOpen} col={12}/> )}
+            {tvShowsToDisplay.slice(0, 10).map(movie => <TVShowCard movie={movie} tvShowDrawerOpen={tvShowDrawerOpen} col={12}/> )}
           </Grid>
         );
       }
@@ -154,46 +154,46 @@ const MovieDrawer = () => {
     <Drawer
       className={clsx(
         classes.drawer,
-        { [classes.drawerOpen]: movieDrawerOpen },
-        { [classes.drawerOpenWidthOpenSidebar]: movieDrawerOpen && drawerOpen },
-        { [classes.drawerOpenWidthClosedSidebar]: movieDrawerOpen && !drawerOpen },
+        { [classes.drawerOpen]: tvShowDrawerOpen },
+        { [classes.drawerOpenWidthOpenSidebar]: tvShowDrawerOpen && drawerOpen },
+        { [classes.drawerOpenWidthClosedSidebar]: tvShowDrawerOpen && !drawerOpen },
 
-        { [classes.drawerClose]: !movieDrawerOpen },
-        { [classes.drawerCloseWidthOpenSidebar]: !movieDrawerOpen && drawerOpen },
-        { [classes.drawerCloseWidthClosedSidebar]: !movieDrawerOpen && !drawerOpen },
+        { [classes.drawerClose]: !tvShowDrawerOpen },
+        { [classes.drawerCloseWidthOpenSidebar]: !tvShowDrawerOpen && drawerOpen },
+        { [classes.drawerCloseWidthClosedSidebar]: !tvShowDrawerOpen && !drawerOpen },
       )}
       variant="permanent"
-      open={movieDrawerOpen}
+      tvShowDrawerOpen={tvShowDrawerOpen}
       classes={{
         paper: clsx(
           classes.drawerPaper,
-          { [classes.drawerOpen]: movieDrawerOpen },
-          { [classes.drawerOpenWidthOpenSidebar]: movieDrawerOpen && drawerOpen },
-          { [classes.drawerOpenWidthClosedSidebar]: movieDrawerOpen && !drawerOpen },
+          { [classes.drawerOpen]: tvShowDrawerOpen },
+          { [classes.drawerOpenWidthOpenSidebar]: tvShowDrawerOpen && drawerOpen },
+          { [classes.drawerOpenWidthClosedSidebar]: tvShowDrawerOpen && !drawerOpen },
 
-          { [classes.drawerClose]: !movieDrawerOpen },
-          { [classes.drawerCloseWidthOpenSidebar]: !movieDrawerOpen && drawerOpen },
-          { [classes.drawerCloseWidthClosedSidebar]: !movieDrawerOpen && !drawerOpen },
+          { [classes.drawerClose]: !tvShowDrawerOpen },
+          { [classes.drawerCloseWidthOpenSidebar]: !tvShowDrawerOpen && drawerOpen },
+          { [classes.drawerCloseWidthClosedSidebar]: !tvShowDrawerOpen && !drawerOpen },
         ),
       }}
     >
       <Grid container direction="row" alignItems="center" spacing={2} className={classes.toolbar}>
         <Grid item>
-          <Typography variant="h6">Movies</Typography>
+          <Typography variant="h6">TV Shows</Typography>
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
-          {moviesToDisplay.length > 0 && <MovieCategory isDrawer={movieDrawerOpen} />}
+          {tvShowsToDisplay.length > 0 && <TVShowCategory isDrawer={tvShowDrawerOpen} />}
           <ResponsiveComponent
             mobileComponent={null}
             tabletComponent={null}
-            desktopComponent={renderToggleMovieDrawer()}
+            desktopComponent={renderToggleTVShowDrawer()}
           />
         </Grid>
       </Grid>
 
-      {renderMovieCards()}
+      {renderTVShowCards()}
     </Drawer>
   );
 };
 
-export default MovieDrawer;
+export default TVShowDrawer;

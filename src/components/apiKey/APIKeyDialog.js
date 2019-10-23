@@ -29,7 +29,7 @@ import {
   VisibilityOffTwoTone,
 } from '@material-ui/icons';
 
-import { getPopularMovies } from '../../api/movie';
+import { getPopularMovies } from '../../api';
 
 import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 
