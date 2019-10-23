@@ -77,7 +77,6 @@ const Appbar = ({ children, window }) => {
             <div>
               <IconButton
                 className={classes.menuButton}
-                color="inherit"
                 aria-label="menu"
                 onClick={() => dispatch(sidebarActions.toggleLights())}
               >
