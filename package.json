@@ -21,6 +21,7 @@
     "react-router": "^5.1.1",
     "react-router-dom": "^5.1.1",
     "react-router-redux": "^4.0.8",
+    "react-router-sitemap": "^1.2.0",
     "react-scripts": "3.1.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
@@ -31,7 +32,8 @@
     "test": "react-scripts test",
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sitemap": "babel-node ./src/routes/sitemapGenerator.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,6 +51,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2",
     "eslint-config-airbnb": "^18.0.1"
-  }
+  },
 }

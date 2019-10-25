@@ -1,6 +1,7 @@
 import React from 'react';
-
+import moment from 'moment';
 import clsx from 'clsx';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Card,
@@ -19,13 +20,13 @@ const useStyles = makeStyles(theme => ({
   mediaDrawerOpen: {
     height: 0,
     [theme.breakpoints.down('sm')]: {
-      paddingTop: theme.spacing(25),
+      paddingTop: theme.spacing(30),
     },
     [theme.breakpoints.between('sm', 'md')]: {
       paddingTop: theme.spacing(60),
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      paddingTop: theme.spacing(35),
+      paddingTop: theme.spacing(40),
     },
     [theme.breakpoints.up('lg')]: {
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
@@ -34,13 +35,13 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerClosed: {
     height: 0,
-    paddingTop: '12em',
+    paddingTop: theme.spacing(30),
     width: '100%',
   },
   typoOverlay: {
     position: 'absolute',
-    marginTop: theme.spacing(-5),
-    padding: theme.spacing(1, 2),
+    marginTop: theme.spacing(-7),
+    padding: theme.spacing(3, 2, 1, 2),
     color: theme.palette.common.white,
     pointerEvents: 'none',
     display: 'block',
@@ -63,6 +64,12 @@ const useStyles = makeStyles(theme => ({
   rank: {
     fontWeight: '400',
     paddingRight: theme.spacing(1),
+  },
+  releaseDate: {
+    position: 'absolute',
+    top: theme.spacing(0.5),
+    fontSize: theme.typography.caption.fontSize,
+    fontWeight: theme.typography.caption.fontWeight,
   },
 }));
 
@@ -101,6 +108,7 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
             image={imagePath}
           />
           <Typography gutterBottom variant="button" className={classes.typoOverlay}>
+            <span className={classes.releaseDate}>{moment(movie.release_date).format('MMM D, YYYY')}</span>
             <span className={classes.rank}>{rank}</span>
             {truncateText(movie.title, movieDrawerOpen ? 25 : 100)}
           </Typography>
