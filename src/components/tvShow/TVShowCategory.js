@@ -24,11 +24,15 @@ const useStyles = makeStyles(theme => ({
   },
   popover: {
     padding: theme.spacing(2),
+    maxWidth: theme.spacing(25),
   },
   topCategories: {
     marginBottom: theme.spacing(2),
     display: 'flex',
     overflowX: 'auto',
+  },
+  category: {
+    fontWeight: theme.typography.h6.fontWeight,
   },
 }));
 
@@ -81,7 +85,7 @@ const TVShowCategory = ({ isList, isDrawer }) => {
         transformOrigin={{ vertical: 'top', horizontal: 'left', }}
         classes={{ paper: classes.popover }}
       >
-        <Typography variant="body2" gutterBottom>Set category:</Typography>
+        <Typography variant="body1" className={classes.category} gutterBottom>Set category:</Typography>
         {renderCategoryChips()}
       </Popover>
     </>

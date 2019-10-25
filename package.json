@@ -56,5 +56,5 @@
     "@babel/preset-env": "^7.6.3",
     "@babel/register": "^7.6.2",
     "eslint-config-airbnb": "^18.0.1"
-  },
+  }
 }

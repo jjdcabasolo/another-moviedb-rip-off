@@ -19,13 +19,13 @@ const useStyles = makeStyles(theme => ({
   mediaDrawerOpen: {
     height: 0,
     [theme.breakpoints.down('sm')]: {
-      paddingTop: theme.spacing(25),
+      paddingTop: theme.spacing(30),
     },
     [theme.breakpoints.between('sm', 'md')]: {
       paddingTop: theme.spacing(60),
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      paddingTop: theme.spacing(35),
+      paddingTop: theme.spacing(40),
     },
     [theme.breakpoints.up('lg')]: {
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerClosed: {
     height: 0,
-    paddingTop: '12em',
+    paddingTop: theme.spacing(30),
     width: '100%',
   },
   typoOverlay: {

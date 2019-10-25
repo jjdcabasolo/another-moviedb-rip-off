@@ -73,7 +73,7 @@ const Appbar = ({ children, window }) => {
       <HideOnScroll window={window}>
         <AppBar color="default">
           <Toolbar variant="dense">
-            <Typography variant="h6" className={classes.title}> ATMDbRo </Typography>
+            <Typography component="h1" variant="h6" className={classes.title}> ATMDbRo </Typography>
             <div>
               <IconButton
                 className={classes.menuButton}

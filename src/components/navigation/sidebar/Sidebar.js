@@ -142,7 +142,7 @@ const Sidebar = ({ children }) => {
           <IconButton className={classes.appTitle} onClick={handleDrawerState}>
             <MenuTwoTone />
           </IconButton>
-          <Typography variant="h6"> ATMDbRo </Typography>
+          <Typography component="h1" variant="h6"> ATMDbRo </Typography>
         </div>
 
         <List>
