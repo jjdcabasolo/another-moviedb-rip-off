@@ -41,14 +41,7 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     position: 'inherit',
     padding: theme.spacing(5),
-  },
-  drawerHeader: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    position: 'fixed',
-    bottom: theme.spacing(4),
-    padding: theme.spacing(0, 5),
-    backgroundColor: theme.palette.background.paper,
+    height: theme.browserSize.height,
   },
   drawerClose: {
     overflow: 'hidden',
@@ -74,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   desktopDrawerClosedContainer: {
-    maxHeight: '86vh',
+    maxHeight: '85vh',
     overflowY: 'auto',
   },
 }));
