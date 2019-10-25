@@ -3,7 +3,7 @@ require('@babel/register')({
 })
 
 import Sitemap from 'react-router-sitemap';
-import routes from './index';
+import routes from './routes';
 
 function generateSitemap() {
   return (
