@@ -41,7 +41,9 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     position: 'inherit',
     padding: theme.spacing(5),
-    height: theme.browserSize.height,
+    [theme.breakpoints.up('lg')]: {
+      height: theme.browserSize.height,
+    },
   },
   drawerClose: {
     overflow: 'hidden',
