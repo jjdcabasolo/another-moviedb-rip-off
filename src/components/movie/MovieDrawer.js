@@ -20,6 +20,7 @@ import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 import {
   SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
+  NOTE_OFFLINE,
 } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
@@ -101,6 +102,9 @@ const MovieDrawer = () => {
   );
 
   const renderMovieCards = () => {
+    if (!window.navigator.onLine) {
+      return <Note details={NOTE_OFFLINE} />;
+    }
     if (moviesToDisplay.length > 0) {
       if (movieDrawerOpen) {
         return (
@@ -171,11 +175,7 @@ const MovieDrawer = () => {
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
           {moviesToDisplay.length > 0 && <MovieCategory isDrawer={movieDrawerOpen} />}
-          <ResponsiveComponent
-            mobileComponent={null}
-            tabletComponent={null}
-            desktopComponent={renderToggleMovieDrawer()}
-          />
+          {renderToggleMovieDrawer()}
         </Grid>
       </Grid>
 

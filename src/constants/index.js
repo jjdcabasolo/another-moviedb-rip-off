@@ -21,6 +21,7 @@ export {
   NOTE_NO_API_KEY,
   NOTE_NO_SELECTED_MOVIE,
   NOTE_NO_SELECTED_TV_SHOW,
+  NOTE_OFFLINE,
 } from './note';
 
 export {

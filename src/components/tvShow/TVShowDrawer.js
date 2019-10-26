@@ -20,6 +20,7 @@ import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 import {
   SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
+  NOTE_OFFLINE,
 } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
@@ -101,6 +102,9 @@ const TVShowDrawer = () => {
   );
 
   const renderTVShowCards = () => {
+    if (!window.navigator.onLine) {
+      return <Note details={NOTE_OFFLINE} />;
+    }
     if (tvShowsToDisplay.length > 0) {
       if (tvShowDrawerOpen) {
         return (
@@ -171,11 +175,7 @@ const TVShowDrawer = () => {
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
           {tvShowsToDisplay.length > 0 && <TVShowCategory isDrawer={tvShowDrawerOpen} />}
-          <ResponsiveComponent
-            mobileComponent={null}
-            tabletComponent={null}
-            desktopComponent={renderToggleTVShowDrawer()}
-          />
+          {renderToggleTVShowDrawer()}
         </Grid>
       </Grid>
 

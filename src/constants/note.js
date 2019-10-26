@@ -3,6 +3,7 @@ import {
   MovieTwoTone,
   LiveTvTwoTone,
   VpnKeyTwoTone,
+  CloudOffTwoTone,
 } from '@material-ui/icons';
 
 export const NOTE_NO_API_KEY = {
@@ -27,5 +28,14 @@ export const NOTE_NO_SELECTED_TV_SHOW = {
   header: 'No TV Show selected yet.',
   content: [
     'To view a TV Show detail, select one from the left panel.',
+  ],
+};
+
+export const NOTE_OFFLINE = {
+  icon: className => <CloudOffTwoTone className={className} />,
+  header: 'You are offline.',
+  content: [
+    'Check your device\'s internet connection.',
+    'Contents will load once you go online.',
   ],
 };

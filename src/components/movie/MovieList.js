@@ -8,7 +8,7 @@ import MovieCard from './MovieCard';
 import MovieCategory from './MovieCategory';
 import Note from '../common/Note';
 
-import { NOTE_NO_API_KEY } from '../../constants';
+import { NOTE_NO_API_KEY, NOTE_OFFLINE } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
@@ -23,6 +23,12 @@ const MovieList = () => {
   const list = useSelector(state => state.movies.list);
 
   const moviesToDisplay = list[category];
+
+  if (!window.navigator.onLine) return (
+    <div className={classes.note}>
+      <Note details={NOTE_OFFLINE} />
+    </div>
+  );
 
   if (moviesToDisplay.length <= 0) return (
     <div className={classes.note}>

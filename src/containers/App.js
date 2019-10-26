@@ -43,9 +43,6 @@ const App = () => {
     browserSize: { width, height },
   });
 
-  // TODO: offline view Issue #1
-  // console.log('connectivity:', window.navigator.onLine);
-
   return (
     <>
       <Helmet isDefault />
