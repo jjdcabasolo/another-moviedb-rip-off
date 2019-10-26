@@ -4,6 +4,7 @@ import {
   LiveTvTwoTone,
   VpnKeyTwoTone,
   CloudOffTwoTone,
+  NaturePeopleTwoTone,
 } from '@material-ui/icons';
 
 export const NOTE_NO_API_KEY = {
@@ -37,5 +38,14 @@ export const NOTE_OFFLINE = {
   content: [
     'Check your device\'s internet connection.',
     'Contents will load once you go online.',
+  ],
+};
+
+export const NOTE_NOT_FOUND = {
+  icon: className => <NaturePeopleTwoTone className={className} />,
+  header: 'Rooftrellen awakens.',
+  content: [
+    <span><i>Are you lost?</i> said the guised protector, as it emerges from invisibility.</span>,
+    <i>Be careful where you wander.</i>,
   ],
 };

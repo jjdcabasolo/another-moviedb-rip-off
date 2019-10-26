@@ -1,6 +1,7 @@
 import React from 'react';
-
 import { Route, Switch } from 'react-router-dom';
+
+import NotFound from '../components/notFound/NotFound';
 
 import { routes } from './config';
 
@@ -12,6 +13,7 @@ const Routes = () => {
           {e.component}
         </Route>
       )) }
+      <Route component={NotFound} />
     </Switch>
   );
 };

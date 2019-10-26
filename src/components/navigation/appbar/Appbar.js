@@ -28,6 +28,7 @@ import { sidebarActions } from '../../../reducers/ducks';
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
 import { routes } from '../../../routes/config';
+import NotFound from '../../notFound/NotFound';
 
 const useStyles = makeStyles(theme => ({
   bottomNavigation: {
@@ -65,6 +66,12 @@ const Appbar = ({ children, window }) => {
     history.push(tab);
   };
 
+  const renderList = () => {
+    if (activeTab === 'movies') return <MovieList />;
+    else if (activeTab === 'tvshows') return <TVShowList />;
+    else return <NotFound />
+  };
+
   return (
     <>
       <Helmet />
@@ -89,9 +96,7 @@ const Appbar = ({ children, window }) => {
       </HideOnScroll>
 
       <Container className={classes.container}>
-        {activeTab === 'movies' && <MovieList />}
-        {activeTab === 'tvshows' && <TVShowList />}
-        {/* { children } */}
+        {renderList()}
       </Container>
 
       <BottomNavigation
