@@ -1,10 +1,13 @@
 import React from 'react';
+
+import { IconButton } from '@material-ui/core';
 import {
   MovieTwoTone,
   LiveTvTwoTone,
   VpnKeyTwoTone,
   CloudOffTwoTone,
   NaturePeopleTwoTone,
+  PlayCircleFilledTwoTone
 } from '@material-ui/icons';
 
 export const NOTE_NO_API_KEY = {
@@ -41,11 +44,36 @@ export const NOTE_OFFLINE = {
   ],
 };
 
+const awaken = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/4/4c/Treant_happy_09.mp3');
+const areYouLost = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/1/12/Treant_attack_07.mp3');
+const beCareful = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/2/20/Treant_attack_06.mp3');
+
 export const NOTE_NOT_FOUND = {
   icon: className => <NaturePeopleTwoTone className={className} />,
-  header: 'Rooftrellen awakens.',
+  header: (
+    <span>
+      Rooftrellen awakens.
+      <IconButton aria-label="playAwaken" size="small" onClick={() => awaken.play()}>
+        <PlayCircleFilledTwoTone fontSize="inherit" />
+      </IconButton>
+    </span>
+  ),
   content: [
-    <span><i>Are you lost?</i> said the guised protector, as it emerges from invisibility.</span>,
-    <i>Be careful where you wander.</i>,
+    (
+      <span>
+        <IconButton aria-label="playAreYouLost" size="small" onClick={() => areYouLost.play()}>
+          <PlayCircleFilledTwoTone fontSize="inherit" />
+        </IconButton>
+        said the guised protector, as it emerges from invisibility.
+      </span>
+    ),
+    (
+      <span>
+        <IconButton aria-label="playBeCareful" size="small" onClick={() => beCareful.play()}>
+          <PlayCircleFilledTwoTone fontSize="inherit" />
+        </IconButton>
+        Indeed.
+      </span>
+    ),
   ],
 };
