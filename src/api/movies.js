@@ -29,3 +29,9 @@ export const getHighestGrossingMovies = (api_key, success, fail, after = () => {
   .then(response => success(response))
   .catch(error => fail(error))
   .finally(() => after());
+
+export const getMovieDetails = (api_key, movie_id, success, fail, after = () => {}) => axios
+  .get(`/movie/${movie_id}`, { params: { api_key } })
+  .then(response => success(response))
+  .catch(error => fail(error))
+  .finally(() => after());

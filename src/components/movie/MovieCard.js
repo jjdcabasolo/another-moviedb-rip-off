@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import clsx from 'clsx';
 
@@ -12,7 +13,11 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
-import { truncateText } from '../../utils/functions';
+import { getMovieDetails } from '../../api';
+
+import { moviesActions } from '../../reducers/ducks';
+
+import { decryptKey, truncateText } from '../../utils/functions';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
@@ -79,6 +84,17 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
+  const handleGetMovieDetails = () => {
+    getMovieDetails(decryptKey(), movie.id, response => {
+      dispatch(moviesActions.setActiveMovie(response.data));
+    }, error => {
+      console.log(error.response);
+      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+    });
+  };
+
   const renderBrokenImage = () => (
     <div className={classes.brokenImgContainer}>
       <Typography variant="body1">Image not loaded.</Typography>
@@ -96,7 +112,7 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
 
   return (
     <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
-      <Card>
+      <Card onClick={handleGetMovieDetails}>
         <CardActionArea>
           { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia
