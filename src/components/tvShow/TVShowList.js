@@ -8,7 +8,7 @@ import TVShowCard from './TVShowCard';
 import TVShowCategory from './TVShowCategory';
 import Note from '../common/Note';
 
-import { NOTE_NO_API_KEY } from '../../constants';
+import { NOTE_NO_API_KEY, NOTE_OFFLINE } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
@@ -23,6 +23,12 @@ const TVShowList = () => {
   const list = useSelector(state => state.tvShows.list);
 
   const tvShowsToDisplay = list[category];
+
+  if (!window.navigator.onLine) return (
+    <div className={classes.note}>
+      <Note details={NOTE_OFFLINE} />
+    </div>
+  );
 
   if (tvShowsToDisplay.length <= 0) return (
     <div className={classes.note}>

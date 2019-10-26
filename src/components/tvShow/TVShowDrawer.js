@@ -20,6 +20,7 @@ import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 import {
   SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
+  NOTE_OFFLINE,
 } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
@@ -41,14 +42,9 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     position: 'inherit',
     padding: theme.spacing(5),
-  },
-  drawerHeader: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    position: 'fixed',
-    bottom: theme.spacing(4),
-    padding: theme.spacing(0, 5),
-    backgroundColor: theme.palette.background.paper,
+    [theme.breakpoints.up('lg')]: {
+      height: theme.browserSize.height,
+    },
   },
   drawerClose: {
     overflow: 'hidden',
@@ -74,7 +70,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   desktopDrawerClosedContainer: {
-    maxHeight: '86vh',
+    maxHeight: '85vh',
     overflowY: 'auto',
   },
 }));
@@ -106,6 +102,9 @@ const TVShowDrawer = () => {
   );
 
   const renderTVShowCards = () => {
+    if (!window.navigator.onLine) {
+      return <Note details={NOTE_OFFLINE} />;
+    }
     if (tvShowsToDisplay.length > 0) {
       if (tvShowDrawerOpen) {
         return (
@@ -176,11 +175,7 @@ const TVShowDrawer = () => {
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
           {tvShowsToDisplay.length > 0 && <TVShowCategory isDrawer={tvShowDrawerOpen} />}
-          <ResponsiveComponent
-            mobileComponent={null}
-            tabletComponent={null}
-            desktopComponent={renderToggleTVShowDrawer()}
-          />
+          {renderToggleTVShowDrawer()}
         </Grid>
       </Grid>
 
