@@ -40,7 +40,14 @@ const MovieList = () => {
     <>
       <MovieCategory isList />
       <Grid item container justify="center" spacing={2}>
-        {moviesToDisplay.slice(0, 10).map((movie, rank) => <MovieCard movie={movie} movieDrawerOpen col={12} rank={rank + 1}/> )}
+        {moviesToDisplay.slice(0, 10).map((movie, rank) => (
+          <MovieCard
+            movie={movie}
+            movieDrawerOpen
+            col={12}
+            rank={rank + 1}
+          />
+        ))}
       </Grid>
     </>
   );

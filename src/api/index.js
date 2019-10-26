@@ -4,6 +4,7 @@ export {
   getTopRatedMovies,
   getUpcomingMovies,
   getHighestGrossingMovies,
+  getMovieDetails,
 } from './movies';
 
 export {
