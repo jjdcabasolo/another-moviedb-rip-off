@@ -67,13 +67,14 @@ const Appbar = ({ children }) => {
   };
 
   useEffect(() => {
-    window.onpopstate = e => {
-      history.push('movies');
-
-      // event is reversed here so variables are reversed
-      if (!isMovieSelected) goBack();
+    const handleBack = () => {
+      if ('id' in movie) history.push('movies');
+      if (isMovieSelected) goBack();
     };
-  }, [window]);
+
+    window.addEventListener('popstate', handleBack);
+    return () => window.removeEventListener('popstate', handleBack);
+  }, [movie]);
 
   useLayoutEffect(() => {
     const handleScroll = () => {
