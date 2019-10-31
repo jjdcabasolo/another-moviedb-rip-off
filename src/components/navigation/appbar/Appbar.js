@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory, Route, useRouteMatch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -24,9 +24,8 @@ import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieList from '../../movie/MovieList';
 import TVShowList from '../../tvShow/TVShowList';
 import NotFound from '../../notFound/NotFound';
-import MovieDetails from '../../movie/MovieDetails';
 
-import { moviesActions, sidebarActions } from '../../../reducers/ducks';
+import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
@@ -47,19 +46,44 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Appbar = ({ children, window }) => {
+const Appbar = ({ children }) => {
   const classes = useStyles();
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const darkMode = useSelector(state => state.sidebar.darkMode);
   const movie = useSelector(state => state.movies.movie);
+  const scrollY = useSelector(state => state.browser.scrollY);
   const dispatch = useDispatch();
-
-  const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const history = useHistory();
 
   const isMovieSelected = 'id' in movie;
+
+  const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
+
+  const goBack = () => {
+    dispatch(moviesActions.setActiveMovie({}));
+    setTimeout(() => window.scrollTo(0, scrollY), 100);
+  };
+
+  useEffect(() => {
+    const handleBack = () => {
+      if ('id' in movie) history.push('movies');
+      if (isMovieSelected) goBack();
+    };
+
+    window.addEventListener('popstate', handleBack);
+    return () => window.removeEventListener('popstate', handleBack);
+  }, [movie]);
+
+  useLayoutEffect(() => {
+    const handleScroll = () => {
+      if (!('id' in movie)) dispatch(browserActions.changeBrowserScrollY(window.pageYOffset));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [movie]);
 
   const handleBottomNavigationClick = index => {
     setActiveBottomTab(index);
@@ -77,12 +101,12 @@ const Appbar = ({ children, window }) => {
         <>
           <IconButton
             aria-label="back"
-            edge="start" 
-            onClick = {() => dispatch(moviesActions.setActiveMovie({}))}
+            edge="start"
+            onClick = {goBack}
           >
             <ArrowBackTwoTone />
           </IconButton>
-          <Typography component="h1" variant="h6">{movie.title}</Typography>        
+          <Typography component="h1" variant="h6">{movie.title}</Typography>
         </>
       );
     }
@@ -106,11 +130,11 @@ const Appbar = ({ children, window }) => {
 
   const renderList = () => {
     if (activeTab === 'movies') {
-      if (isMovieSelected) return <MovieDetails />
+      if (isMovieSelected) return children;
       return <MovieList />;
     }
     else if (activeTab === 'tvshows') return <TVShowList />;
-    else return <NotFound />
+    else return <NotFound />;
   };
 
   return (
@@ -118,7 +142,7 @@ const Appbar = ({ children, window }) => {
       <Helmet />
       <CssBaseline />
 
-      <HideOnScroll window={window}>
+      <HideOnScroll>
         <AppBar color="default">
           <Toolbar variant="dense">
             {renderToolbar()}

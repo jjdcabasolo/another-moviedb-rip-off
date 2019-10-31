@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +21,18 @@ const MovieList = () => {
 
   const category = useSelector(state => state.movies.category);
   const list = useSelector(state => state.movies.list);
+
+  // const [scroll, setScroll] = useState(window.pageYOffset);
+
+  // useLayoutEffect(() => {
+  //   const handleScroll = () => {
+  //     setScroll(window.pageYOffset);
+  //   };
+
+  //   window.addEventListener('scroll', handleScroll);
+
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [])
 
   const moviesToDisplay = list[category];
 

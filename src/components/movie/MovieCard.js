@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, Route, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import clsx from 'clsx';
@@ -86,6 +87,8 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
 
   const dispatch = useDispatch();
 
+  if (!movie) return <></>;
+
   const handleGetMovieDetails = () => {
     getMovieDetails(decryptKey(), movie.id, response => {
       dispatch(moviesActions.setActiveMovie(response.data));
@@ -103,10 +106,10 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
   if (col === 2 || (col === 6 && !landscapeTablet)) {
-    if (movie.poster_path) imagePath += movie.poster_path;
+    if (movie && movie.poster_path) imagePath += movie.poster_path;
     else imagePath = renderBrokenImage();
   } else {
-    if (movie.backdrop_path) imagePath += movie.backdrop_path;
+    if (movie && movie.backdrop_path) imagePath += movie.backdrop_path;
     else imagePath = renderBrokenImage();
   }
 
