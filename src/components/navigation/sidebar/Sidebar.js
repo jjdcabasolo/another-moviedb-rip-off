@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    height: '100vh',
+    height: '60vh',
     padding: theme.spacing(5),
   },
   contentTopPadding: {
@@ -122,12 +122,14 @@ const Sidebar = ({ children }) => {
   const history = useHistory();
 
   const isMovieSelected = 'id' in movie;
+  const isMovieTabActive = activeTab === 'movies';
+  const isTVShowsTabActive = activeTab === 'tvshows';
 
   const evaluateDrawerVisibility = () => {
-    if (activeTab === 'movies') {
+    if (isMovieTabActive) {
       if (isTablet && isMovieSelected) return <SidebarTitlebar />;
       return <MovieDrawer />;
-    } else if (activeTab === 'tvshows') {
+    } else if (isTVShowsTabActive) {
       if (isTablet) return <SidebarTitlebar />;
       return <TVShowDrawer />;
     }
@@ -216,7 +218,9 @@ const Sidebar = ({ children }) => {
       {evaluateDrawerVisibility()}
 
       <div>
-        <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.backdrop_path}`} />
+        { isMovieTabActive && isMovieSelected && (
+          <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.backdrop_path}`} />
+        )}
         <main className={classes.content}>
           { children }
         </main>
