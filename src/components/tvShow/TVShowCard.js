@@ -80,10 +80,10 @@ const TVShowCard = ({tvShow, tvShowDrawerOpen, col, rank}) => {
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
   if (col === 2 || (col === 6 && !landscapeTablet)) {
-    if (tvShow.poster_path) imagePath += tvShow.poster_path;
+    if (tvShow.poster_path) imagePath += `/w780${tvShow.poster_path}`;
     else imagePath = renderBrokenImage();
   } else {
-    if (tvShow.backdrop_path) imagePath += tvShow.backdrop_path;
+    if (tvShow.backdrop_path) imagePath += `/w780${tvShow.backdrop_path}`;
     else imagePath = renderBrokenImage();
   }
 

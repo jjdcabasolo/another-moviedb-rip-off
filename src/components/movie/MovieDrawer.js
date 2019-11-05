@@ -77,6 +77,7 @@ const useStyles = makeStyles(theme => ({
 
 const MovieDrawer = () => {
   const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
@@ -175,7 +176,7 @@ const MovieDrawer = () => {
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
           {moviesToDisplay.length > 0 && <MovieCategory isDrawer={movieDrawerOpen} />}
-          {renderToggleMovieDrawer()}
+          {isDesktop && renderToggleMovieDrawer()}
         </Grid>
       </Grid>
 

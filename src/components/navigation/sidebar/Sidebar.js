@@ -1,10 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
-import clsx from 'clsx';
 
-import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { useHistory } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   CssBaseline,
   Drawer,
@@ -12,9 +13,11 @@ import {
   List,
   ListItem,
   ListItemIcon,
+  Grid,
   ListItemText,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import {
   BrightnessLowTwoTone,
@@ -23,9 +26,11 @@ import {
 } from '@material-ui/icons';
 
 import Helmet from '../Helmet';
+import SidebarTitlebar from './SidebarTitlebar';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieDrawer from '../../movie/MovieDrawer';
 import TVShowDrawer from '../../tvShow/TVShowDrawer';
+import ParallaxBackdrop from '../../common/ParallaxBackdrop';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -34,6 +39,7 @@ import {
   SIDEBAR_WIDTH,
   SIDEBAR_TMDB_LOGO_DARK,
   SIDEBAR_TMDB_LOGO,
+  MOVIE_DRAWER_TMDB_IMAGE_PREFIX,
 } from '../../../constants';
 import { routes } from '../../../routes/config';
 
@@ -54,6 +60,9 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     height: '100vh',
     padding: theme.spacing(5),
+  },
+  contentTopPadding: {
+    paddingTop: theme.spacing(11),
   },
   drawer: {
     display: 'flex',
@@ -100,14 +109,29 @@ const WithTooltip = ({ children, title, withTooltip }) => (withTooltip
 
 const Sidebar = ({ children }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const darkMode = useSelector(state => state.sidebar.darkMode);
+  const movie = useSelector(state => state.movies.movie);
 
   const dispatch = useDispatch();
 
   const history = useHistory();
+
+  const isMovieSelected = 'id' in movie;
+
+  const evaluateDrawerVisibility = () => {
+    if (activeTab === 'movies') {
+      if (isTablet && isMovieSelected) return <SidebarTitlebar />;
+      return <MovieDrawer />;
+    } else if (activeTab === 'tvshows') {
+      if (isTablet) return <SidebarTitlebar />;
+      return <TVShowDrawer />;
+    }
+  };
 
   const handleListItemClick = tab => {
     dispatch(sidebarActions.setActiveTab(tab.toLowerCase()));
@@ -189,12 +213,14 @@ const Sidebar = ({ children }) => {
         </List>
       </Drawer>
 
-      {activeTab === 'movies' && <MovieDrawer />}
-      {activeTab === 'tvshows' && <TVShowDrawer />}
+      {evaluateDrawerVisibility()}
 
-      <main className={classes.content}>
-        { children }
-      </main>
+      <div>
+        <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.backdrop_path}`} />
+        <main className={classes.content}>
+          { children }
+        </main>
+      </div>
     </div>
   );
 };

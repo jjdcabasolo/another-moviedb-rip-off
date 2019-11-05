@@ -8,10 +8,14 @@ import { NOTE_NO_SELECTED_MOVIE } from '../constants';
 const Movies = () => {
   const movie = useSelector(state => state.movies.movie);
 
+  const isMovieSelected = 'id' in movie;
+
   return (
     <>
-      { JSON.stringify(movie) }
-      <Note details={NOTE_NO_SELECTED_MOVIE} />
+      { isMovieSelected
+        ? JSON.stringify(movie)
+        : <Note details={NOTE_NO_SELECTED_MOVIE} />
+      }
     </>
   );
 };
