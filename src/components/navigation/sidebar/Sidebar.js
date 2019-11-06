@@ -60,6 +60,9 @@ const useStyles = makeStyles(theme => ({
     height: '60vh',
     padding: theme.spacing(5),
   },
+  contentMovieSelected: {
+    marginTop: -theme.spacing(15),
+  },
   contentTopPadding: {
     paddingTop: theme.spacing(11),
   },
@@ -220,7 +223,12 @@ const Sidebar = ({ children }) => {
         { isMovieTabActive && isMovieSelected && (
           <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie.backdrop_path}`} />
         )}
-        <main className={classes.content}>
+        <main
+          className={clsx(
+            classes.content,
+            { [classes.contentMovieSelected]: isMovieSelected }
+          )}
+        >
           { children }
         </main>
       </div>
