@@ -26,7 +26,7 @@ import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieList from '../../movie/MovieList';
 import TVShowList from '../../tvShow/TVShowList';
 import NotFound from '../../notFound/NotFound';
-import ParallaxBackdrop from '../../common/ParallaxBackdrop';
+import GradientBackground from '../../common/GradientBackground';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(9),
   },
   containerMovieSelected: {
-    paddingTop: theme.spacing(2),
+    marginTop: -theme.spacing(15),
   },
 }));
 
@@ -159,7 +159,7 @@ const Appbar = ({ children }) => {
       </HideOnScroll>
 
       { isMovieTabActive && isMovieSelected && (
-        <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.backdrop_path}`} />
+        <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.poster_path}`} />
       )}
 
       <Container

@@ -28,13 +28,13 @@ const useStyles = makeStyles(theme => ({
     width: theme.browserSize.width - SIDEBAR_WIDTH,
   },
   drawerOpenWidthClosedSidebar: {
-    width: theme.browserSize.width - 56,
+    width: theme.browserSize.width - theme.spacing(7),
   },
   drawerCloseWidthOpenSidebar: {
     width: (theme.browserSize.width - SIDEBAR_WIDTH) / 3,
   },
   drawerCloseWidthClosedSidebar: {
-    width: (theme.browserSize.width - 56) / 3,
+    width: (theme.browserSize.width - theme.spacing(7)) / 3,
   },
   drawer: {
     flexShrink: 0,

@@ -13,7 +13,6 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  Grid,
   ListItemText,
   Tooltip,
   Typography,
@@ -30,7 +29,7 @@ import SidebarTitlebar from './SidebarTitlebar';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieDrawer from '../../movie/MovieDrawer';
 import TVShowDrawer from '../../tvShow/TVShowDrawer';
-import ParallaxBackdrop from '../../common/ParallaxBackdrop';
+import ParallaxBackdrop from '../../common/GradientBackground';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -219,7 +218,7 @@ const Sidebar = ({ children }) => {
 
       <div>
         { isMovieTabActive && isMovieSelected && (
-          <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.backdrop_path}`} />
+          <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie.backdrop_path}`} />
         )}
         <main className={classes.content}>
           { children }
