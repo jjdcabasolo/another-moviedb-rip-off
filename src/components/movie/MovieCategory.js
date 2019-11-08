@@ -27,9 +27,14 @@ const useStyles = makeStyles(theme => ({
     maxWidth: theme.spacing(25),
   },
   topCategories: {
-    marginBottom: theme.spacing(2),
+    // marginBottom: theme.spacing(2),
     display: 'flex',
+    margin: theme.spacing(0, 1, 2, 1),
     overflowX: 'auto',
+    'scrollbar-width': 'none',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
   },
   category: {
     fontWeight: theme.typography.h6.fontWeight,
@@ -39,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 const MovieCategory = ({ isList, isDrawer }) => {
   const theme = useTheme();
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const category = useSelector(state => state.movies.category);
@@ -59,12 +65,13 @@ const MovieCategory = ({ isList, isDrawer }) => {
   const renderCategoryChips = () => (
     MOVIE_DRAWER_CATEGORY_CHIPS.map(e => (
       <Chip
-        variant="outlined"
+        variant={e.isActive(category) ? 'default' : 'outlined'}
         label={e.label}
         key={e.label}
         color={e.isActive(category) ? 'primary' : 'default'}
         className={classes.chip}
         onClick={() => handleChipClick(e.identifier)}
+        size={isMobile ? "small" : "medium"}
       />
     ))
   );

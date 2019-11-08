@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 const TVShowCategory = ({ isList, isDrawer }) => {
   const theme = useTheme();
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const category = useSelector(state => state.tvShows.category);
@@ -65,6 +66,7 @@ const TVShowCategory = ({ isList, isDrawer }) => {
         color={e.isActive(category) ? 'primary' : 'default'}
         className={classes.chip}
         onClick={() => handleChipClick(e.identifier)}
+        size={isMobile ? "small" : "medium"}
       />
     ))
   );

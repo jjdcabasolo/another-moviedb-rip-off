@@ -9,7 +9,6 @@ import {
   AppBar,
   Toolbar,
   CssBaseline,
-  Container,
   BottomNavigation,
   BottomNavigationAction,
   Typography,
@@ -162,14 +161,14 @@ const Appbar = ({ children }) => {
         <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.poster_path}`} />
       )}
 
-      <Container
+      <div
         className={clsx(
           classes.container,
           { [classes.containerMovieSelected]: isMovieSelected }
         )}
       >
         {renderList()}
-      </Container>
+      </div>
 
       { !isMovieSelected && (
         <BottomNavigation

@@ -76,9 +76,12 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.caption.fontSize,
     fontWeight: theme.typography.caption.fontWeight,
   },
+  mobile: {
+    // padding: `${theme.spacing(0.25)}px 0 !important`,
+  },
 }));
 
-const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
+const MovieCard = ({movie, movieDrawerOpen, col, rank, mobile}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
@@ -113,7 +116,14 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
   }
 
   return (
-    <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
+    <Grid
+      item
+      xs={col}
+      className={clsx(
+        { [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) },
+        { [classes.mobile]: mobile },
+      )}
+    >
       <Card onClick={handleGetMovieDetails}>
         <CardActionArea>
           { !(typeof (imagePath) === 'string') && imagePath }

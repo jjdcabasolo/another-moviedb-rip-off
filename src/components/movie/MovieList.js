@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import SwipeableViews from 'react-swipeable-views';
 import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,7 +10,11 @@ import MovieCard from './MovieCard';
 import MovieCategory from './MovieCategory';
 import Note from '../common/Note';
 
-import { NOTE_NO_API_KEY, NOTE_OFFLINE } from '../../constants';
+import {
+  MOVIE_DRAWER_CATEGORY_CHIPS,
+  NOTE_NO_API_KEY,
+  NOTE_OFFLINE,
+} from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
@@ -21,6 +27,8 @@ const MovieList = () => {
 
   const category = useSelector(state => state.movies.category);
   const list = useSelector(state => state.movies.list);
+
+  const [categoryIndex, setCategoryIndex] = useState(0);
 
   const moviesToDisplay = list[category];
 
@@ -39,16 +47,23 @@ const MovieList = () => {
   return (
     <>
       <MovieCategory isList />
-      <Grid item container justify="center" spacing={2}>
-        {moviesToDisplay.slice(0, 10).map((movie, rank) => (
-          <MovieCard
-            movie={movie}
-            movieDrawerOpen
-            col={12}
-            rank={rank + 1}
-          />
+      <SwipeableViews enableMouseEvents index={categoryIndex} onChangeIndex={i => setCategoryIndex(i)}>
+        {MOVIE_DRAWER_CATEGORY_CHIPS.map(cat => (
+          <div>
+            <Grid container justify="center" spacing={2}>
+              {list[cat.identifier].slice(0, 10).map((movie, rank) => (
+                <MovieCard
+                  movie={movie}
+                  movieDrawerOpen
+                  col={12}
+                  rank={rank + 1}
+                  mobile
+                />
+              ))}
+            </Grid>
+          </div>
         ))}
-      </Grid>
+      </SwipeableViews>
     </>
   );
 };
