@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -27,21 +29,23 @@ const useStyles = makeStyles(theme => ({
     maxWidth: theme.spacing(25),
   },
   topCategories: {
-    // marginBottom: theme.spacing(2),
     display: 'flex',
-    margin: theme.spacing(0, 1, 2, 1),
+    margin: theme.spacing(0, 1, 1, 1),
     overflowX: 'auto',
     'scrollbar-width': 'none',
     '&::-webkit-scrollbar': {
       display: 'none',
     },
   },
+  topCategoriesReplacement: {
+    margin: 0,
+  },
   category: {
     fontWeight: theme.typography.h6.fontWeight,
   },
 }));
 
-const MovieCategory = ({ isList, isDrawer }) => {
+const MovieCategory = ({ isList, isDrawer, replacement }) => {
   const theme = useTheme();
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -99,7 +103,12 @@ const MovieCategory = ({ isList, isDrawer }) => {
   );
 
   if (isList) return (
-    <div className={classes.topCategories}>
+    <div
+      className={clsx(
+        classes.topCategories,
+        { [classes.topCategoriesReplacement]: replacement },
+      )}
+    >
       {renderCategoryChips()}
     </div>
   );

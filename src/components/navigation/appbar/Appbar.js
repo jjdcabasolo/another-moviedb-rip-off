@@ -23,6 +23,7 @@ import {
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieList from '../../movie/MovieList';
+import MovieCategory from '../../movie/MovieCategory';
 import TVShowList from '../../tvShow/TVShowList';
 import NotFound from '../../notFound/NotFound';
 import GradientBackground from '../../common/GradientBackground';
@@ -149,7 +150,15 @@ const Appbar = ({ children }) => {
       <Helmet />
       <CssBaseline />
 
-      <HideOnScroll>
+      <HideOnScroll
+        replacement={
+          <AppBar color="default">
+            <Toolbar variant="dense">
+              <MovieCategory isList replacement />
+            </Toolbar>
+          </AppBar>
+        }
+      >
         <AppBar color="default">
           <Toolbar variant="dense">
             {renderToolbar()}

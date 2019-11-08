@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1, 0),
   },
   chip: {
-    marginRight: theme.spacing(0.5),
+    margin: theme.spacing(0.25, 0.5, 0.25, 0),
   },
   description: {
     margin: theme.spacing(2, 0),

@@ -77,7 +77,12 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.caption.fontWeight,
   },
   mobile: {
-    // padding: `${theme.spacing(0.25)}px 0 !important`,
+    padding: `${theme.spacing(0.125)}px 0 !important`,
+  },
+  card: {
+    [theme.breakpoints.down('sm')]: {
+      borderRadius: 0,
+    },
   },
 }));
 
@@ -124,7 +129,10 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank, mobile}) => {
         { [classes.mobile]: mobile },
       )}
     >
-      <Card onClick={handleGetMovieDetails}>
+      <Card
+        onClick={handleGetMovieDetails}
+        className={classes.card}
+      >
         <CardActionArea>
           { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia
