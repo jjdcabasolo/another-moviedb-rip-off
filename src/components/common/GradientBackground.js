@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     objectFit: 'cover',
     [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(6),
-      height: theme.spacing(80),
+      height: '70vh',
       width: '100%',
     },
     [theme.breakpoints.between('sm', 'md')]: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 const GradientBackground = ({ src }) => {
   const classes = useStyles();
 
-  return <img src={src} className={classes.img} />;
+  return <img src={src} alt={`Poster not loading? Visit ${src} to view.`} className={classes.img} />;
 };
 
 export default GradientBackground;

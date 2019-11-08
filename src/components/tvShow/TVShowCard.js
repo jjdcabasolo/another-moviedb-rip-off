@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    width: '-webkit-fill-available',
+    width: '100%',
     backgroundImage: `linear-gradient(to top, ${theme.palette.grey[900]} , #0000)`,
   },
   itemExtension: {

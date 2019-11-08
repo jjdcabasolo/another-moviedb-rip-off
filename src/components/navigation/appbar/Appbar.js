@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(9),
   },
   containerMovieSelected: {
-    marginTop: -theme.spacing(15),
+    marginTop: -theme.spacing(12),
   },
 }));
 
