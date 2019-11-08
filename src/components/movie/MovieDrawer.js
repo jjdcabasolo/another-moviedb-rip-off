@@ -28,13 +28,13 @@ const useStyles = makeStyles(theme => ({
     width: theme.browserSize.width - SIDEBAR_WIDTH,
   },
   drawerOpenWidthClosedSidebar: {
-    width: theme.browserSize.width - 56,
+    width: theme.browserSize.width - theme.spacing(7),
   },
   drawerCloseWidthOpenSidebar: {
     width: (theme.browserSize.width - SIDEBAR_WIDTH) / 3,
   },
   drawerCloseWidthClosedSidebar: {
-    width: (theme.browserSize.width - 56) / 3,
+    width: (theme.browserSize.width - theme.spacing(7)) / 3,
   },
   drawer: {
     flexShrink: 0,
@@ -77,6 +77,7 @@ const useStyles = makeStyles(theme => ({
 
 const MovieDrawer = () => {
   const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
@@ -175,7 +176,7 @@ const MovieDrawer = () => {
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
           {moviesToDisplay.length > 0 && <MovieCategory isDrawer={movieDrawerOpen} />}
-          {renderToggleMovieDrawer()}
+          {isDesktop && renderToggleMovieDrawer()}
         </Grid>
       </Grid>
 

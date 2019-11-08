@@ -1,14 +1,22 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+
+import SwipeableViews from 'react-swipeable-views';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, AppBar, Toolbar } from '@material-ui/core';
 
 import MovieCard from './MovieCard';
 import MovieCategory from './MovieCategory';
 import Note from '../common/Note';
 
-import { NOTE_NO_API_KEY, NOTE_OFFLINE } from '../../constants';
+import { moviesActions } from '../../reducers/ducks';
+
+import {
+  MOVIE_DRAWER_CATEGORY_CHIPS,
+  NOTE_NO_API_KEY,
+  NOTE_OFFLINE,
+} from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
@@ -21,20 +29,16 @@ const MovieList = () => {
 
   const category = useSelector(state => state.movies.category);
   const list = useSelector(state => state.movies.list);
+  const dispatch = useDispatch();
 
-  // const [scroll, setScroll] = useState(window.pageYOffset);
-
-  // useLayoutEffect(() => {
-  //   const handleScroll = () => {
-  //     setScroll(window.pageYOffset);
-  //   };
-
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, [])
+  const [categoryIndex, setCategoryIndex] = useState(0);
 
   const moviesToDisplay = list[category];
+
+  const handleSwipe = index => {
+    setCategoryIndex(index);
+    dispatch(moviesActions.setCategory(MOVIE_DRAWER_CATEGORY_CHIPS[index].identifier));
+  };
 
   if (!window.navigator.onLine) return (
     <div className={classes.note}>
@@ -51,16 +55,23 @@ const MovieList = () => {
   return (
     <>
       <MovieCategory isList />
-      <Grid item container justify="center" spacing={2}>
-        {moviesToDisplay.slice(0, 10).map((movie, rank) => (
-          <MovieCard
-            movie={movie}
-            movieDrawerOpen
-            col={12}
-            rank={rank + 1}
-          />
+      <SwipeableViews enableMouseEvents index={categoryIndex} onChangeIndex={handleSwipe}>
+        {MOVIE_DRAWER_CATEGORY_CHIPS.map(cat => (
+          <div>
+            <Grid container justify="center">
+              {list[cat.identifier].slice(0, 10).map((movie, rank) => (
+                <MovieCard
+                  movie={movie}
+                  movieDrawerOpen
+                  col={12}
+                  rank={rank + 1}
+                  mobile
+                />
+              ))}
+            </Grid>
+          </div>
         ))}
-      </Grid>
+      </SwipeableViews>
     </>
   );
 };

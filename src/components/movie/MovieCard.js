@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, Route, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import clsx from 'clsx';
@@ -54,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    width: '-webkit-fill-available',
+    width: '100%',
     backgroundImage: `linear-gradient(to top, ${theme.palette.grey[900]} , #0000)`,
   },
   itemExtension: {
@@ -77,9 +76,17 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.caption.fontSize,
     fontWeight: theme.typography.caption.fontWeight,
   },
+  mobile: {
+    padding: `${theme.spacing(0.125)}px 0 !important`,
+  },
+  card: {
+    [theme.breakpoints.down('sm')]: {
+      borderRadius: 0,
+    },
+  },
 }));
 
-const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
+const MovieCard = ({movie, movieDrawerOpen, col, rank, mobile}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
@@ -106,16 +113,26 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank}) => {
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
   if (col === 2 || (col === 6 && !landscapeTablet)) {
-    if (movie && movie.poster_path) imagePath += movie.poster_path;
+    if (movie && movie.poster_path) imagePath += `/w780${movie.poster_path}`;
     else imagePath = renderBrokenImage();
   } else {
-    if (movie && movie.backdrop_path) imagePath += movie.backdrop_path;
+    if (movie && movie.backdrop_path) imagePath += `/w780${movie.backdrop_path}`;
     else imagePath = renderBrokenImage();
   }
 
   return (
-    <Grid item xs={col} className={clsx({ [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) })}>
-      <Card onClick={handleGetMovieDetails}>
+    <Grid
+      item
+      xs={col}
+      className={clsx(
+        { [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) },
+        { [classes.mobile]: mobile },
+      )}
+    >
+      <Card
+        onClick={handleGetMovieDetails}
+        className={classes.card}
+      >
         <CardActionArea>
           { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia

@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
+
+import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, Route, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
   Toolbar,
   CssBaseline,
-  Container,
   BottomNavigation,
   BottomNavigationAction,
   Typography,
@@ -22,14 +23,17 @@ import {
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import MovieList from '../../movie/MovieList';
+import MovieCategory from '../../movie/MovieCategory';
 import TVShowList from '../../tvShow/TVShowList';
 import NotFound from '../../notFound/NotFound';
+import GradientBackground from '../../common/GradientBackground';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
 import { routes } from '../../../routes/config';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   bottomNavigation: {
@@ -43,6 +47,9 @@ const useStyles = makeStyles(theme => ({
   container: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(9),
+  },
+  containerMovieSelected: {
+    marginTop: -theme.spacing(12),
   },
 }));
 
@@ -58,23 +65,27 @@ const Appbar = ({ children }) => {
   const history = useHistory();
 
   const isMovieSelected = 'id' in movie;
+  const isMovieTabActive = activeTab === 'movies';
+  const isTVShowsTabActive = activeTab === 'tvshows';
 
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
     setTimeout(() => window.scrollTo(0, scrollY), 100);
-  };
+  }, [dispatch, scrollY]);
 
   useEffect(() => {
     const handleBack = () => {
-      if ('id' in movie) history.push('movies');
-      if (isMovieSelected) goBack();
+      if ('id' in movie) {
+        history.push('movies');
+        goBack();
+      }
     };
 
     window.addEventListener('popstate', handleBack);
     return () => window.removeEventListener('popstate', handleBack);
-  }, [movie]);
+  }, [goBack, history, movie]);
 
   useLayoutEffect(() => {
     const handleScroll = () => {
@@ -83,14 +94,11 @@ const Appbar = ({ children }) => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [movie]);
+  }, [dispatch, movie]);
 
   const handleBottomNavigationClick = index => {
     setActiveBottomTab(index);
-
-    let tab;
-    if (index === 1) tab = 'movies';
-    if (index === 2) tab = 'tvshows';
+    const tab = index === 1 ? 'movies' : 'tvshows';
     dispatch(sidebarActions.setActiveTab(tab));
     history.push(tab);
   };
@@ -129,11 +137,11 @@ const Appbar = ({ children }) => {
   };
 
   const renderList = () => {
-    if (activeTab === 'movies') {
+    if (isMovieTabActive) {
       if (isMovieSelected) return children;
       return <MovieList />;
     }
-    else if (activeTab === 'tvshows') return <TVShowList />;
+    else if (isTVShowsTabActive) return <TVShowList />;
     else return <NotFound />;
   };
 
@@ -142,7 +150,15 @@ const Appbar = ({ children }) => {
       <Helmet />
       <CssBaseline />
 
-      <HideOnScroll>
+      <HideOnScroll
+        replacement={
+          <AppBar color="default">
+            <Toolbar variant="dense">
+              <MovieCategory isList replacement />
+            </Toolbar>
+          </AppBar>
+        }
+      >
         <AppBar color="default">
           <Toolbar variant="dense">
             {renderToolbar()}
@@ -150,9 +166,18 @@ const Appbar = ({ children }) => {
         </AppBar>
       </HideOnScroll>
 
-      <Container className={classes.container}>
+      { isMovieTabActive && isMovieSelected && (
+        <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.poster_path}`} />
+      )}
+
+      <div
+        className={clsx(
+          classes.container,
+          { [classes.containerMovieSelected]: isMovieSelected }
+        )}
+      >
         {renderList()}
-      </Container>
+      </div>
 
       { !isMovieSelected && (
         <BottomNavigation

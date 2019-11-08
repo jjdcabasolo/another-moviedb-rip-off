@@ -25,7 +25,7 @@ const Helmet = ({ isDefault }) => {
     );
   }
   return (
-    <ReactHelmet titleTemplate="%s - Another TMDb Rip-off" defaultTitle="Another TMDb Rip-off">
+    <ReactHelmet titleTemplate="%s - Another TMDb Rip-off (ATMDbRo)" defaultTitle="Another TMDb Rip-off (ATMDbRo)">
       <meta name="description" content="Another The Movie Database Rip-off (ATMDbRo) lists movies and TV shows of different categories - all coming from TMDb. It is TMDb, but it is a rip-off." />
       <meta name="keywords" content="ATMDbRo,atmdbro,Another The Movie Database Rip-off,another the movie database rip-off" />
       <link rel="canonical" href="https://jjdcabasolo.github.io/another-moviedb-rip-off/" />
