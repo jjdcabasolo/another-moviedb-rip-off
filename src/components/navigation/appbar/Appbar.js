@@ -26,6 +26,8 @@ import MovieList from '../../movie/MovieList';
 import MovieCategory from '../../movie/MovieCategory';
 import TVShowList from '../../tvShow/TVShowList';
 import NotFound from '../../notFound/NotFound';
+import ItemCategory from '../../common/item/ItemCategory';
+import ItemList from '../../common/item/ItemList';
 import GradientBackground from '../../common/GradientBackground';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
@@ -50,6 +52,9 @@ const useStyles = makeStyles(theme => ({
   },
   containerMovieSelected: {
     marginTop: -theme.spacing(12),
+  },
+  category: {
+    padding: theme.spacing(0, 1),
   },
 }));
 
@@ -139,9 +144,9 @@ const Appbar = ({ children }) => {
   const renderList = () => {
     if (isMovieTabActive) {
       if (isMovieSelected) return children;
-      return <MovieList />;
+      return <ItemList type="movie" />;
     }
-    else if (isTVShowsTabActive) return <TVShowList />;
+    else if (isTVShowsTabActive) return <ItemList type="tvshow" />;
     else return <NotFound />;
   };
 
@@ -153,11 +158,12 @@ const Appbar = ({ children }) => {
       <HideOnScroll
         replacement={
           <AppBar color="default">
-            <Toolbar variant="dense">
-              <MovieCategory isList replacement />
+            <Toolbar variant="dense" className={classes.category}>
+              <ItemCategory isList replacement type={isMovieTabActive ? 'movie' : 'tvshow'} />
             </Toolbar>
           </AppBar>
         }
+        willReplace={!isMovieSelected}
       >
         <AppBar color="default">
           <Toolbar variant="dense">

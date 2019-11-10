@@ -1,7 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import moment from 'moment';
+
 import clsx from 'clsx';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -13,13 +14,13 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
-import { getMovieDetails } from '../../api';
+import { getMovieDetails } from '../../../api';
 
-import { moviesActions } from '../../reducers/ducks';
+import { moviesActions } from '../../../reducers/ducks';
 
-import { decryptKey, truncateText } from '../../utils/functions';
+import { decryptKey, truncateText } from '../../../utils/functions';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   mediaDrawerOpen: {
@@ -45,14 +46,11 @@ const useStyles = makeStyles(theme => ({
   },
   typoOverlay: {
     position: 'absolute',
-    marginTop: theme.spacing(-7),
-    padding: theme.spacing(3, 2, 1, 2),
+    marginTop: theme.spacing(-12.5),
+    padding: theme.spacing(4, 2, 2, 2),
     color: theme.palette.common.white,
     pointerEvents: 'none',
-    display: 'block',
-    whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
     width: '100%',
     backgroundImage: `linear-gradient(to top, ${theme.palette.grey[900]} , #0000)`,
   },
@@ -68,7 +66,8 @@ const useStyles = makeStyles(theme => ({
   },
   rank: {
     fontWeight: '400',
-    paddingRight: theme.spacing(1),
+    fontSize: theme.typography.body1.fontSize,
+    marginRight: theme.spacing(1),
   },
   releaseDate: {
     position: 'absolute',
@@ -79,14 +78,12 @@ const useStyles = makeStyles(theme => ({
   mobile: {
     padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px !important`,
   },
-  card: {
-    [theme.breakpoints.down('sm')]: {
-      // borderRadius: 0,
-    },
+  cardTitle: {
+    letterSpacing: '0.03em',
   },
 }));
 
-const MovieCard = ({movie, movieDrawerOpen, col, rank, mobile}) => {
+const ItemCard = ({content, drawerOpen, col, rank, mobile, type}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
@@ -94,15 +91,27 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank, mobile}) => {
 
   const dispatch = useDispatch();
 
-  if (!movie) return <></>;
+  if (!content) return <></>;
 
-  const handleGetMovieDetails = () => {
-    getMovieDetails(decryptKey(), movie.id, response => {
-      dispatch(moviesActions.setActiveMovie(response.data));
-    }, error => {
-      console.log(error.response);
-      // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-    });
+  const isMovie = type === 'movie';
+  const isTVShow = type === 'tvshow';
+
+  const handleGetDetails = () => {
+    if (isMovie) {
+      getMovieDetails(decryptKey(), content.id, response => {
+        dispatch(moviesActions.setActiveMovie(response.data));
+      }, error => {
+        console.log(error.response);
+        // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+      });
+    } else if (isTVShow) {
+      // getMovieDetails(decryptKey(), content.id, response => {
+      //   dispatch(moviesActions.setActiveMovie(response.data));
+      // }, error => {
+      //   console.log(error.response);
+      //   // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
+      // });
+    }
   };
 
   const renderBrokenImage = () => (
@@ -113,10 +122,10 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank, mobile}) => {
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
   if (col === 2 || (col === 6 && !landscapeTablet)) {
-    if (movie && movie.poster_path) imagePath += `/w780${movie.poster_path}`;
+    if (content && content.poster_path) imagePath += `/w780${content.poster_path}`;
     else imagePath = renderBrokenImage();
   } else {
-    if (movie && movie.backdrop_path) imagePath += `/w780${movie.backdrop_path}`;
+    if (content && content.backdrop_path) imagePath += `/w780${content.backdrop_path}`;
     else imagePath = renderBrokenImage();
   }
 
@@ -129,29 +138,33 @@ const MovieCard = ({movie, movieDrawerOpen, col, rank, mobile}) => {
         { [classes.mobile]: mobile },
       )}
     >
-      <Card
-        onClick={handleGetMovieDetails}
-        className={classes.card}
-      >
+      <Card onClick={handleGetDetails}>
         <CardActionArea>
           { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia
             className={clsx(
-              { [classes.mediaDrawerOpen]: movieDrawerOpen },
-              { [classes.mediaDrawerClosed]: !movieDrawerOpen },
+              { [classes.mediaDrawerOpen]: drawerOpen },
+              { [classes.mediaDrawerClosed]: !drawerOpen },
             )}
-            // image={`${1}${movie.poster_path}`}
             image={imagePath}
           />
-          <Typography gutterBottom variant="button" className={classes.typoOverlay}>
-            <span className={classes.releaseDate}>{moment(movie.release_date).format('MMM D, YYYY')}</span>
-            <span className={classes.rank}>{rank}</span>
-            {truncateText(movie.title, movieDrawerOpen ? 25 : 100)}
-          </Typography>
+          <div gutterBottom variant="button" className={classes.typoOverlay}>
+            {/* { isMovie && (
+              <span className={classes.releaseDate}>
+                {}
+              </span>
+            )} */}
+            <Typography variant="h5" className={classes.cardTitle} noWrap>
+              {truncateText(isMovie ? content.title : content.name, drawerOpen ? 25 : 100)}
+            </Typography>
+            <Typography className={classes.rank}>
+              {`${rank} • ${moment(isMovie ? content.release_date : content.first_air_date).format('MMM D, YYYY')}`}
+            </Typography>
+          </div>
         </CardActionArea>
       </Card>
     </Grid>
   );
 };
 
-export default MovieCard;
+export default ItemCard;

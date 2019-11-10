@@ -27,35 +27,35 @@ const InitAPICalls = () => {
     getNowPlayingMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('nowPlaying', response.data.results));
     }, error => {
-      console.log(error.response);
+      console.log(error);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
     getPopularMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('popular', response.data.results));
     }, error => {
-      console.log(error.response);
+      console.log(error);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
     getTopRatedMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('topRated', response.data.results));
     }, error => {
-      console.log(error.response);
+      console.log(error);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
     getUpcomingMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('upcoming', response.data.results));
     }, error => {
-      console.log(error.response);
+      console.log(error);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
     getHighestGrossingMovies(decryptKey(), response => {
       dispatch(moviesActions.setMovieList('highestGrossing', response.data.results));
     }, error => {
-      console.log(error.response);
+      console.log(error);
       // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
     });
 
