@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, AppBar, Toolbar } from '@material-ui/core';
 
 import MovieCard from './MovieCard';
+import ItemCard from '../common/item/ItemCard';
 import MovieCategory from './MovieCategory';
 import Note from '../common/Note';
 
@@ -60,12 +61,13 @@ const MovieList = () => {
           <div>
             <Grid container justify="center">
               {list[cat.identifier].slice(0, 10).map((movie, rank) => (
-                <MovieCard
-                  movie={movie}
-                  movieDrawerOpen
+                <ItemCard
                   col={12}
-                  rank={rank + 1}
+                  content={movie}
+                  drawerOpen
                   mobile
+                  rank={rank + 1}
+                  type="movie"
                 />
               ))}
             </Grid>

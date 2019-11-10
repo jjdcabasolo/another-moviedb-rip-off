@@ -5,7 +5,7 @@ import {
   useScrollTrigger,
 } from '@material-ui/core';
 
-const HideOnScroll = ({ children, window, replacement }) => {
+const HideOnScroll = ({ children, window, replacement, willReplace }) => {
   const trigger = useScrollTrigger({ target: window ? window() : undefined });
 
   return (
@@ -13,9 +13,11 @@ const HideOnScroll = ({ children, window, replacement }) => {
       <Slide appear={false} direction="down" in={!trigger}>
         {children}
       </Slide>
-      <Slide appear={false} direction="down" in={trigger}>
-        {replacement}
-      </Slide>
+      { willReplace && (
+        <Slide appear={false} direction="down" in={trigger}>
+          {replacement}
+        </Slide>
+      )}
     </>
   );
 };

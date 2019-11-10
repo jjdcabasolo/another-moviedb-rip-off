@@ -25,6 +25,8 @@ const initialState = {
     popular: [],
     topRated: [],
   },
+  tvShow: {},
+  loadedContent: 0,
 };
 
 const setCategory = (state, action) => ({
@@ -38,6 +40,7 @@ const setTVShowsList = (state, action) => ({
     ...state.list,
     [action.payload.category]: action.payload.list,
   },
+  loadedContent: state.loadedContent + 1,
 });
 
 export const tvShowsReducer = (state = initialState, action) => {

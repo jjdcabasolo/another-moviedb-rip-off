@@ -32,6 +32,7 @@ const initialState = {
     highestGrossing: [],
   },
   movie: {},
+  loadedContent: 0,
 };
 
 const setCategory = (state, action) => ({
@@ -45,6 +46,7 @@ const setMovieList = (state, action) => ({
     ...state.list,
     [action.payload.category]: action.payload.list,
   },
+  loadedContent: state.loadedContent + 1,
 });
 
 const setActiveMovie = (state, action) => ({
