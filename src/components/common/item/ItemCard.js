@@ -46,14 +46,11 @@ const useStyles = makeStyles(theme => ({
   },
   typoOverlay: {
     position: 'absolute',
-    marginTop: theme.spacing(-7),
-    padding: theme.spacing(3, 2, 1, 2),
+    marginTop: theme.spacing(-12.5),
+    padding: theme.spacing(4, 2, 2, 2),
     color: theme.palette.common.white,
     pointerEvents: 'none',
-    display: 'block',
-    whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
     width: '100%',
     backgroundImage: `linear-gradient(to top, ${theme.palette.grey[900]} , #0000)`,
   },
@@ -69,7 +66,8 @@ const useStyles = makeStyles(theme => ({
   },
   rank: {
     fontWeight: '400',
-    paddingRight: theme.spacing(1),
+    fontSize: theme.typography.body1.fontSize,
+    marginRight: theme.spacing(1),
   },
   releaseDate: {
     position: 'absolute',
@@ -79,6 +77,9 @@ const useStyles = makeStyles(theme => ({
   },
   mobile: {
     padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px !important`,
+  },
+  cardTitle: {
+    letterSpacing: '0.03em',
   },
 }));
 
@@ -147,15 +148,19 @@ const ItemCard = ({content, drawerOpen, col, rank, mobile, type}) => {
             )}
             image={imagePath}
           />
-          <Typography gutterBottom variant="button" className={classes.typoOverlay}>
-            { isMovie && (
+          <div gutterBottom variant="button" className={classes.typoOverlay}>
+            {/* { isMovie && (
               <span className={classes.releaseDate}>
-                {moment(content.release_date).format('MMM D, YYYY')}
+                {}
               </span>
-            )}
-            <span className={classes.rank}>{rank}</span>
-            {truncateText(isMovie ? content.title : content.name, drawerOpen ? 25 : 100)}
-          </Typography>
+            )} */}
+            <Typography variant="h5" className={classes.cardTitle} noWrap>
+              {truncateText(isMovie ? content.title : content.name, drawerOpen ? 25 : 100)}
+            </Typography>
+            <Typography className={classes.rank}>
+              {`${rank} • ${moment(isMovie ? content.release_date : content.first_air_date).format('MMM D, YYYY')}`}
+            </Typography>
+          </div>
         </CardActionArea>
       </Card>
     </Grid>
