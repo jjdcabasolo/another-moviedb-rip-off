@@ -51,7 +51,6 @@ const useStyles = makeStyles(theme => ({
 const ItemCategory = ({ isList, isDrawer, replacement, type }) => {
   const theme = useTheme();
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const movieCategory = useSelector(state => state.movies.category);

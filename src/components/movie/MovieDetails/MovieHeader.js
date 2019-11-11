@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(0.25, 0.5, 0.25, 0),
   },
   description: {
-    margin: theme.spacing(2, 0),
+    marginTop: theme.spacing(2),
   },
 }));
 
