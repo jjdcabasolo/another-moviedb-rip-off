@@ -6452,6 +6452,11 @@ load-json-file@^4.0.0:
     pify "^3.0.0"
     strip-bom "^3.0.0"
 
+load-script@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/load-script/-/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
+  integrity sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ=
+
 loader-fs-cache@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/loader-fs-cache/-/loader-fs-cache-1.0.2.tgz#54cedf6b727e1779fd8f01205f05f6e88706f086"
@@ -8696,6 +8701,15 @@ react-parallax@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/react-parallax/-/react-parallax-2.2.4.tgz#c02e2e550c701c82d6febbf426f288b75c9cfd95"
   integrity sha512-HdKyD845NmaxN+zOFcGPereG59DEgCB0wXJvvOomgwISMr4tVyTlspJGviVl5JVVCER5bmG6crMkDhBkJPRZvQ==
+
+react-player@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/react-player/-/react-player-1.14.0.tgz#22ffce326bd2e88217579278b16cc62146e42d73"
+  integrity sha512-qqpMxFQgW1ZK9zhQawwRwXOEziiK2F+63dIC2cVOU5lghGN9anMlxHqij89twOITZK/Wl+5+LssQVBLeqfvlPg==
+  dependencies:
+    deepmerge "^4.0.0"
+    load-script "^1.0.0"
+    prop-types "^15.7.2"
 
 react-redux@^7.1.1:
   version "7.1.1"

@@ -27,9 +27,8 @@ import {
 import Helmet from '../Helmet';
 import SidebarTitlebar from './SidebarTitlebar';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import MovieDrawer from '../../movie/MovieDrawer';
-import TVShowDrawer from '../../tvShow/TVShowDrawer';
-import ParallaxBackdrop from '../../common/GradientBackground';
+import GradientBackground from '../../common/GradientBackground';
+import ItemDrawer from '../../common/item/ItemDrawer';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -99,6 +98,9 @@ const useStyles = makeStyles(theme => ({
   tmdbLogo: {
     width: '1.6em',
   },
+  itemContainer: {
+    overflowY: 'auto',
+  },
 }));
 
 const WithTooltip = ({ children, title, withTooltip }) => (withTooltip
@@ -113,7 +115,7 @@ const WithTooltip = ({ children, title, withTooltip }) => (withTooltip
 const Sidebar = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
@@ -130,11 +132,11 @@ const Sidebar = ({ children }) => {
 
   const evaluateDrawerVisibility = () => {
     if (isMovieTabActive) {
-      if (isTablet && isMovieSelected) return <SidebarTitlebar />;
-      return <MovieDrawer />;
+      if (!isDesktop && isMovieSelected) return <SidebarTitlebar />;
+      return <ItemDrawer type="movie" />;
     } else if (isTVShowsTabActive) {
-      if (isTablet) return <SidebarTitlebar />;
-      return <TVShowDrawer />;
+      // if (!isDesktop) return <SidebarTitlebar />;
+      return <ItemDrawer type="tvshow" />;
     }
   };
 
@@ -220,9 +222,9 @@ const Sidebar = ({ children }) => {
 
       {evaluateDrawerVisibility()}
 
-      <div>
+      <div className={classes.itemContainer}>
         { isMovieTabActive && isMovieSelected && (
-          <ParallaxBackdrop src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie.backdrop_path}`} />
+          <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie.backdrop_path}`} />
         )}
         <main
           className={clsx(

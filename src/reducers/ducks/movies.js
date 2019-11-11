@@ -26,9 +26,9 @@ const initialState = {
   category: 'nowPlaying',
   list: {
     nowPlaying: [],
+    upcoming: [],
     popular: [],
     topRated: [],
-    upcoming: [],
     highestGrossing: [],
   },
   movie: {},

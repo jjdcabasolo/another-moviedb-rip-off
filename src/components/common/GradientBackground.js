@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   img: {
-    maskImage: 'linear-gradient(to top, #0000 0%, #000 25%)',
+    maskImage: 'linear-gradient(to top, #0000 0%, #000 30%)',
     objectFit: 'cover',
     [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(6),
