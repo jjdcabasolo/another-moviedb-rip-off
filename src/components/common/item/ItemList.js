@@ -75,6 +75,18 @@ const ItemList = ({ type }) => {
     if (isTVShow) dispatch(tvShowsActions.setCategory(categoryChips[index].identifier));
   };
 
+  if (!window.navigator.onLine) return (
+    <div className={classes.note}>
+      <Note details={NOTE_OFFLINE} />
+    </div>
+  );
+
+  if (localStorage.getItem('apiKey') === null) return (
+    <div className={classes.note}>
+      <Note details={NOTE_NO_API_KEY} />
+    </div>
+  );
+
   if (loadedContent !== categoryChips.length) return (
     <Grid className={classes.loaderContainer} container justify="center" alignItems="center" direction="column">
       <Grid item>
@@ -84,18 +96,6 @@ const ItemList = ({ type }) => {
         <Typography className={classes.loaderText} variant="body2">Hang tight! Contents are loading.</Typography>
       </Grid>
     </Grid>
-  );
-
-  if (!window.navigator.onLine) return (
-    <div className={classes.note}>
-      <Note details={NOTE_OFFLINE} />
-    </div>
-  );
-
-  if (localStorage.getItem('apiKey') === undefined) return (
-    <div className={classes.note}>
-      <Note details={NOTE_NO_API_KEY} />
-    </div>
   );
 
   return (

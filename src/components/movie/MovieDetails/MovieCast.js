@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieHeader = () => {
+const MovieCast = () => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -36,27 +36,10 @@ const MovieHeader = () => {
   const runtimeMinutes = movie.runtime % 60;
 
   return (
-    <Grid item xs={12}>
-      <Typography variant={isMobile ? "h4" : "h2"} className={classes.title}>{movie.title}</Typography>
-      <div>
-        <Typography variant={isMobile ? "body1" : "h5"}>
-          {moment(movie.date).format('YYYY')}&nbsp;
-          &middot;&nbsp;
-          {hasRuntime ? `${runtimeHours} hr ${runtimeMinutes} min` : 'No runtime yet.'}
-        </Typography>
-      </div>
-      { movie.genres.length > 0 && (
-        <div className={classes.chipContainer}>
-          { movie.genres.map(i => (
-            <Chip label={i.name} className={classes.chip} size={isMobile ? "small" : "medium"} />
-          )) }
-        </div>
-      )}
-      <div className={classes.description}>
-        <Typography variant="body1">{movie.overview}</Typography>
-      </div>
-    </Grid>
+    <>
+      {JSON.stringify(movie.cast)}
+    </>
   );
 };
 
-export default MovieHeader;
+export default MovieCast;
