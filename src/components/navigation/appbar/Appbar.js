@@ -22,9 +22,6 @@ import {
 
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import MovieList from '../../movie/MovieList';
-import MovieCategory from '../../movie/MovieCategory';
-import TVShowList from '../../tvShow/TVShowList';
 import NotFound from '../../notFound/NotFound';
 import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';

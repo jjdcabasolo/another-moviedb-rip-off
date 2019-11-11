@@ -1,13 +1,47 @@
 import React, { useState } from 'react';
 
+import moment from 'moment';
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
-import { Grid, Button, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Collapse, Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import MovieCastCard from './MovieCastCard';
 
-const MovieCast = () => {
+const useStyles = makeStyles(theme => ({
+
+}));
+
+// CREW PLAN
+// // default
+// department: "Directing",
+//   job: "Director",
+// department: "Writing",
+// department: "Production",
+//   job: "Producer",
+//   job: "Co-Producer",
+//   job: "Executive Producer",
+//   job: "Casting",
+// // see more
+// department: "Sound",
+//   job: "Original Music Composer",
+// department: "Camera",
+//   job: "Director of Photography",
+// department: "Editing",
+//   job: "Editor",
+// department: "Art",
+//   job: "Production Design",
+//   job: "Art Direction",
+// department: "Costume & Make-Up",
+//   job: "Costume Design",
+//   job: "Makeup Artist",
+// department: "Crew", // count
+// department: "Lighting", // count
+// department: "Visual Effects", // count
+// // total count of crew at the end
+
+const MovieCrew = () => {
+  const classes = useStyles();
   const theme = useTheme();
   const highResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isMidTabletDesktop = useMediaQuery(theme.breakpoints.between('md', 'xl'));
@@ -29,14 +63,17 @@ const MovieCast = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {movie.cast.slice(0, maxVisibleCards).map(cast => (
+        {/* {movie.cast.slice(0, maxVisibleCards).map(cast => (
           <MovieCastCard content={cast} col={12 / cardCol} />
         ))}
         { showMore && (
           movie.cast.slice(maxVisibleCards, movie.cast.length).map(cast => (
             <MovieCastCard content={cast} col={12 / cardCol} />
           ))
-        )}
+        )} */}
+        <Grid item xs={12} container justify="flex-end">
+          {`A total of ${movie.crew.length} crew worked on this movie.`}
+        </Grid>
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>
             {showMore ? 'Show less' : 'Show all'}
@@ -47,4 +84,4 @@ const MovieCast = () => {
   );
 };
 
-export default MovieCast;
+export default MovieCrew;

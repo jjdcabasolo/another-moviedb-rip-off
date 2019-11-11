@@ -9,6 +9,7 @@ import { Grid } from '@material-ui/core';
 import Note from '../components/common/Note';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
+import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import Section from '../components/movie/MovieDetails/Section';
 
 import { NOTE_NO_SELECTED_MOVIE } from '../constants';
@@ -50,6 +51,11 @@ const Movies = () => {
 
       <Section title="Cast">
         <MovieCast />
+      </Section>
+
+      <Section title="Crew">
+        Under construction
+        {/* <MovieCrew /> */}
       </Section>
     </Grid>
   );
