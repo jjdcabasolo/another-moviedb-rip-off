@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/another-moviedb-rip-off/static/css/main.8ffea05d.chunk.css",
-    "main.js": "/another-moviedb-rip-off/static/js/main.4d6bcd18.chunk.js",
-    "main.js.map": "/another-moviedb-rip-off/static/js/main.4d6bcd18.chunk.js.map",
+    "main.js": "/another-moviedb-rip-off/static/js/main.794db220.chunk.js",
+    "main.js.map": "/another-moviedb-rip-off/static/js/main.794db220.chunk.js.map",
     "runtime-main.js": "/another-moviedb-rip-off/static/js/runtime-main.b5369840.js",
     "runtime-main.js.map": "/another-moviedb-rip-off/static/js/runtime-main.b5369840.js.map",
-    "static/js/2.30727e25.chunk.js": "/another-moviedb-rip-off/static/js/2.30727e25.chunk.js",
-    "static/js/2.30727e25.chunk.js.map": "/another-moviedb-rip-off/static/js/2.30727e25.chunk.js.map",
+    "static/js/2.5c5f2ac3.chunk.js": "/another-moviedb-rip-off/static/js/2.5c5f2ac3.chunk.js",
+    "static/js/2.5c5f2ac3.chunk.js.map": "/another-moviedb-rip-off/static/js/2.5c5f2ac3.chunk.js.map",
     "index.html": "/another-moviedb-rip-off/index.html",
-    "precache-manifest.b162861d05a202cbf25b320c23d640ff.js": "/another-moviedb-rip-off/precache-manifest.b162861d05a202cbf25b320c23d640ff.js",
+    "precache-manifest.7c1f54f4013c8e14281190eec1b5063a.js": "/another-moviedb-rip-off/precache-manifest.7c1f54f4013c8e14281190eec1b5063a.js",
     "service-worker.js": "/another-moviedb-rip-off/service-worker.js",
     "static/css/main.8ffea05d.chunk.css.map": "/another-moviedb-rip-off/static/css/main.8ffea05d.chunk.css.map"
   }
