@@ -4,10 +4,11 @@ import SwipeableViews from 'react-swipeable-views';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 import ItemCard from './ItemCard';
 import ItemCategory from './ItemCategory';
+import ComponentLoader from '../ComponentLoader';
 import Note from '../../common/Note';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
@@ -88,14 +89,7 @@ const ItemList = ({ type }) => {
   );
 
   if (loadedContent !== categoryChips.length) return (
-    <Grid className={classes.loaderContainer} container justify="center" alignItems="center" direction="column">
-      <Grid item>
-        <CircularProgress size={80} thickness={4}/>
-      </Grid>
-      <Grid item>
-        <Typography className={classes.loaderText} variant="body2">Hang tight! Contents are loading.</Typography>
-      </Grid>
-    </Grid>
+    <ComponentLoader />
   );
 
   return (

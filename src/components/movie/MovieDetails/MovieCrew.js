@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 
-import moment from 'moment';
 import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography, Grid, Button, useMediaQuery } from '@material-ui/core';
 
-import MovieCastCard from './MovieCastCard';
-
-const useStyles = makeStyles(theme => ({
-
-}));
+// const useStyles = makeStyles(theme => ({
+// }));
 
 // CREW PLAN
 // // default
@@ -41,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 // // total count of crew at the end
 
 const MovieCrew = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const theme = useTheme();
   const highResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isMidTabletDesktop = useMediaQuery(theme.breakpoints.between('md', 'xl'));
@@ -58,7 +54,7 @@ const MovieCrew = () => {
   };
 
   const cardCol = getCardCol();
-  const maxVisibleCards = cardCol * 2;
+  // const maxVisibleCards = cardCol * 2;
 
   return (
     <>

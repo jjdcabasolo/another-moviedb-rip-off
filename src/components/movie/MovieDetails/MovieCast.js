@@ -9,18 +9,18 @@ import MovieCastCard from './MovieCastCard';
 
 const MovieCast = () => {
   const theme = useTheme();
-  const highResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
-  const isMidTabletDesktop = useMediaQuery(theme.breakpoints.between('md', 'xl'));
-  const isMidTabletBelow = useMediaQuery(theme.breakpoints.down('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const movie = useSelector(state => state.movies.movie);
 
   const [showMore, setShowMore] = useState(false);
 
   const getCardCol = () => {
-    if (highResolutionDesktop) return 4;
-    if (isMidTabletDesktop) return 3;
-    if (isMidTabletBelow) return 2;
+    if (isDesktop) return 4;
+    if (isTablet) return 3;
+    if (isMobile) return 2;
   };
 
   const cardCol = getCardCol();

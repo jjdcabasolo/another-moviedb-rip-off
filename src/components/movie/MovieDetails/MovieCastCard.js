@@ -17,11 +17,8 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       paddingTop: theme.spacing(30),
     },
-    [theme.breakpoints.between('sm', 'lg')]: {
+    [theme.breakpoints.up('sm')]: {
       paddingTop: theme.spacing(35),
-    },
-    [theme.breakpoints.up('lg')]: {
-      paddingTop: theme.spacing(40),
     },
     width: '100%',
   },
