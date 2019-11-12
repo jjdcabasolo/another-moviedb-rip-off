@@ -141,9 +141,9 @@ const Appbar = ({ children }) => {
   const renderList = () => {
     if (isMovieTabActive) {
       if (isMovieSelected) return children;
-      return <ItemList type="movie" />;
+      return <ItemList type="movie"/>;
     }
-    else if (isTVShowsTabActive) return <ItemList type="tvshow" />;
+    else if (isTVShowsTabActive) return <ItemList type="tvshow"/>;
     else return <NotFound />;
   };
 

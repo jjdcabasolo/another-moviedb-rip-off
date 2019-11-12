@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Collapse, Grid, Button, useMediaQuery } from '@material-ui/core';
+import { Typography, Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import MovieCastCard from './MovieCastCard';
 
@@ -71,8 +71,13 @@ const MovieCrew = () => {
             <MovieCastCard content={cast} col={12 / cardCol} />
           ))
         )} */}
-        <Grid item xs={12} container justify="flex-end">
-          {`A total of ${movie.crew.length} crew worked on this movie.`}
+        <Grid item xs={12} container justify="center" alignItems="center" direction="column">
+          <Grid item>
+            <Typography variant="h2">{movie.crew.length}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="button">Crew Members</Typography>
+          </Grid>
         </Grid>
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>

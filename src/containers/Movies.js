@@ -34,6 +34,8 @@ const Movies = () => {
 
   if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
 
+  setTimeout(() => window.scrollTo(0, 0), 100);
+
   return (
     <Grid container spacing={4} className={classes.root}>
       <MovieHeader />
@@ -54,9 +56,10 @@ const Movies = () => {
       </Section>
 
       <Section title="Crew">
-        Under construction
-        {/* <MovieCrew /> */}
+        <MovieCrew />
       </Section>
+
+      {console.log('movie container render finishedt')}
     </Grid>
   );
 };
