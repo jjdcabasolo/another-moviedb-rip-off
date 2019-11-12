@@ -45,7 +45,7 @@ const Movies = () => {
 
   useEffect(() => {
     dispatch(moviesActions.setDetailsLoading(false));
-  }, [isMovieLoading]);
+  }, [dispatch, isMovieLoading]);
 
   if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
 
