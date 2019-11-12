@@ -5,6 +5,10 @@ import { useSelector } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Typography, Grid, Button, useMediaQuery } from '@material-ui/core';
 
+import CrewAvatarList from './CrewAvatarList';
+
+import { getCrewMembers, getCrewCount } from '../../../utils/functions';
+
 // const useStyles = makeStyles(theme => ({
 // }));
 
@@ -39,30 +43,47 @@ import { Typography, Grid, Button, useMediaQuery } from '@material-ui/core';
 const MovieCrew = () => {
   // const classes = useStyles();
   const theme = useTheme();
-  const highResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
-  const isMidTabletDesktop = useMediaQuery(theme.breakpoints.between('md', 'xl'));
-  const isMidTabletBelow = useMediaQuery(theme.breakpoints.down('md'));
+  // const highResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
+  // const isMidTabletDesktop = useMediaQuery(theme.breakpoints.between('md', 'xl'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const movie = useSelector(state => state.movies.movie);
 
+  const { crew } = movie;
+  const [director] = getCrewMembers(crew, 'directing', ['director']);
+  const [writer] = getCrewMembers(crew, 'writing');
+  // const [producer, coProducer, executiveProducer, casting] = getCrewMembers(crew, 'production', ['producer', 'co-producer', 'executive producer', 'casting']);
+  // const [composer] = getCrewMembers(crew, 'sound', ['original music composer']);
+  // const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
+  // const [editor] = getCrewMembers(crew, 'editing', ['editor']);
+  // const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
+  // const [mainCrew] = getCrewMembers(crew, 'crew');
+  // const [lighting] = getCrewMembers(crew, 'lighting');
+  // const [visualEffects] = getCrewMembers(crew, 'visual effects');
+
+  // console.log('director', director)
+  // console.log('writer', writer)
+  // console.log('producer', producer)
+  // console.log('coProducer', coProducer)
+  // console.log('executiveProducer', executiveProducer)
+  // console.log('casting', casting)
+  // console.log('composer', composer)
+  // console.log('cinematography', cinematography)
+  // console.log('editor', editor)
+  // console.log('costume', costume)
+  // console.log('makeup', makeup)
+  // console.log('mainCrew', mainCrew)
+  // console.log('lighting', lighting)
+  // console.log('visualEffects', visualEffects)
+
   const [showMore, setShowMore] = useState(false);
-
-  const getCardCol = () => {
-    if (highResolutionDesktop) return 4;
-    if (isMidTabletDesktop) return 3;
-    if (isMidTabletBelow) return 2;
-  };
-
-  const cardCol = getCardCol();
-  // const maxVisibleCards = cardCol * 2;
 
   return (
     <>
       <Grid container spacing={2}>
-        {/* {movie.cast.slice(0, maxVisibleCards).map(cast => (
-          <MovieCastCard content={cast} col={12 / cardCol} />
-        ))}
-        { showMore && (
+        <CrewAvatarList title={`Director${director.length > 1 ? 's' : ''}`} content={director} />
+        <CrewAvatarList title={`Writer${writer.length > 1 ? 's' : ''}`} content={writer} />
+        {/* { showMore && (
           movie.cast.slice(maxVisibleCards, movie.cast.length).map(cast => (
             <MovieCastCard content={cast} col={12 / cardCol} />
           ))

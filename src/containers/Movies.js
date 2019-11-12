@@ -51,7 +51,7 @@ const Movies = () => {
 
   if (isMovieLoading) return <ComponentLoader />;
 
-  setTimeout(() => window.scrollTo(0, 0), 100);
+  setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
 
   return (
     <Grid container spacing={4} className={classes.root}>
