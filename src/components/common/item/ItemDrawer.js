@@ -12,12 +12,15 @@ import {
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
+import ComponentLoader from '../ComponentLoader';
 import ItemCategory from './ItemCategory';
 import ItemCard from './ItemCard';
 import Note from '../Note';
 import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
 
 import {
+  MOVIE_DRAWER_CATEGORY_CHIPS,
+  TV_SHOW_DRAWER_CATEGORY_CHIPS,
   SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
   NOTE_OFFLINE,
@@ -83,8 +86,10 @@ const ItemDrawer = ({ type }) => {
 
   const movieCategory = useSelector(state => state.movies.category);
   const movieList = useSelector(state => state.movies.list);
+  const movieLoadedContent = useSelector(state => state.movies.loadedContent);
   const tvShowCategory = useSelector(state => state.tvShows.category);
   const tvShowList = useSelector(state => state.tvShows.list);
+  const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);  
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
 
   const isMovie = type === 'movie';
@@ -94,6 +99,8 @@ const ItemDrawer = ({ type }) => {
   const [itemDrawerOpen, setItemDrawerOpen] = useState(finalDrawerState);
 
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
+  const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
+  const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
 
   const handleDrawerToggle = () => {
     localStorage.setItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen', !itemDrawerOpen);
@@ -114,6 +121,10 @@ const ItemDrawer = ({ type }) => {
     if (localStorage.getItem('apiKey') === null) {
       return <Note details={NOTE_NO_API_KEY} />;
     }
+
+    if (loadedContent !== categoryChips.length) return (
+      <ComponentLoader />
+    );
 
     if (itemDrawerOpen) {
       return (

@@ -17,17 +17,14 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       paddingTop: theme.spacing(30),
     },
-    [theme.breakpoints.between('sm', 'lg')]: {
+    [theme.breakpoints.up('sm')]: {
       paddingTop: theme.spacing(35),
-    },
-    [theme.breakpoints.up('lg')]: {
-      paddingTop: theme.spacing(40),
     },
     width: '100%',
   },
   typoOverlay: {
     position: 'absolute',
-    marginTop: theme.spacing(-12.5),
+    marginTop: theme.spacing(-11),
     padding: theme.spacing(4, 2, 2, 2),
     color: theme.palette.common.white,
     pointerEvents: 'none',
@@ -41,8 +38,6 @@ const useStyles = makeStyles(theme => ({
   },
   subtitle: {
     fontWeight: '400',
-    fontSize: theme.typography.body1.fontSize,
-    marginRight: theme.spacing(1),
   },
   title: {
     letterSpacing: '0.03em',
@@ -71,11 +66,11 @@ const MovieCastCard = ({ content, col }) => {
         <CardActionArea>
           { !(typeof (imagePath) === 'string') && imagePath }
           <CardMedia className={classes.mediaCard} image={imagePath} />
-          <div gutterBottom variant="button" className={classes.typoOverlay}>
-            <Typography variant="h5" className={classes.title} noWrap>
+          <div variant="button" className={classes.typoOverlay}>
+            <Typography variant="body1" className={classes.title} noWrap>
               {content.character}
             </Typography>
-            <Typography className={classes.subtitle} noWrap>
+            <Typography vairant="body2" className={classes.subtitle} noWrap>
               {content.name}
             </Typography>
           </div>

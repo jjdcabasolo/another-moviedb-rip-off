@@ -5,5 +5,10 @@ export {
 } from './encrypt';
 
 export {
+  getCrewMembers,
+  getCrewCount,
+} from './extractCrew';
+
+export {
   truncateText,
 } from './text';

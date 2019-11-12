@@ -62,6 +62,7 @@ const Appbar = ({ children }) => {
   const darkMode = useSelector(state => state.sidebar.darkMode);
   const movie = useSelector(state => state.movies.movie);
   const scrollY = useSelector(state => state.browser.scrollY);
+  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -141,9 +142,9 @@ const Appbar = ({ children }) => {
   const renderList = () => {
     if (isMovieTabActive) {
       if (isMovieSelected) return children;
-      return <ItemList type="movie" />;
+      return <ItemList type="movie"/>;
     }
-    else if (isTVShowsTabActive) return <ItemList type="tvshow" />;
+    else if (isTVShowsTabActive) return <ItemList type="tvshow"/>;
     else return <NotFound />;
   };
 
@@ -169,7 +170,7 @@ const Appbar = ({ children }) => {
         </AppBar>
       </HideOnScroll>
 
-      { isMovieTabActive && isMovieSelected && (
+      { isMovieTabActive && isMovieSelected && !isMovieLoading && (
         <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.poster_path}`} />
       )}
 

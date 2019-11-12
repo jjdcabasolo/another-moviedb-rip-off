@@ -100,6 +100,7 @@ const useStyles = makeStyles(theme => ({
   },
   itemContainer: {
     overflowY: 'auto',
+    width: '100%',
   },
 }));
 
@@ -121,6 +122,7 @@ const Sidebar = ({ children }) => {
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const darkMode = useSelector(state => state.sidebar.darkMode);
   const movie = useSelector(state => state.movies.movie);
+  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
 
   const dispatch = useDispatch();
 
@@ -223,7 +225,7 @@ const Sidebar = ({ children }) => {
       {evaluateDrawerVisibility()}
 
       <div className={classes.itemContainer}>
-        { isMovieTabActive && isMovieSelected && (
+        { isMovieTabActive && isMovieSelected && !isMovieLoading && (
           <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie.backdrop_path}`} />
         )}
         <main
