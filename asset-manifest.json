@@ -1,15 +1,19 @@
 {
   "files": {
     "main.css": "/another-moviedb-rip-off/static/css/main.8ffea05d.chunk.css",
-    "main.js": "/another-moviedb-rip-off/static/js/main.bf38ecae.chunk.js",
-    "main.js.map": "/another-moviedb-rip-off/static/js/main.bf38ecae.chunk.js.map",
+    "main.js": "/another-moviedb-rip-off/static/js/main.2b7f747b.chunk.js",
+    "main.js.map": "/another-moviedb-rip-off/static/js/main.2b7f747b.chunk.js.map",
     "runtime-main.js": "/another-moviedb-rip-off/static/js/runtime-main.b5369840.js",
     "runtime-main.js.map": "/another-moviedb-rip-off/static/js/runtime-main.b5369840.js.map",
-    "static/js/2.a29d716e.chunk.js": "/another-moviedb-rip-off/static/js/2.a29d716e.chunk.js",
-    "static/js/2.a29d716e.chunk.js.map": "/another-moviedb-rip-off/static/js/2.a29d716e.chunk.js.map",
+    "static/js/2.32563a1a.chunk.js": "/another-moviedb-rip-off/static/js/2.32563a1a.chunk.js",
+    "static/js/2.32563a1a.chunk.js.map": "/another-moviedb-rip-off/static/js/2.32563a1a.chunk.js.map",
     "index.html": "/another-moviedb-rip-off/index.html",
-    "precache-manifest.24e0743afec6a637750a91c2740312e7.js": "/another-moviedb-rip-off/precache-manifest.24e0743afec6a637750a91c2740312e7.js",
+    "precache-manifest.da4326f7d93f8685d30f95fdc15fa498.js": "/another-moviedb-rip-off/precache-manifest.da4326f7d93f8685d30f95fdc15fa498.js",
     "service-worker.js": "/another-moviedb-rip-off/service-worker.js",
-    "static/css/main.8ffea05d.chunk.css.map": "/another-moviedb-rip-off/static/css/main.8ffea05d.chunk.css.map"
+    "static/css/main.8ffea05d.chunk.css.map": "/another-moviedb-rip-off/static/css/main.8ffea05d.chunk.css.map",
+    "static/media/004-twitter.svg": "/another-moviedb-rip-off/static/media/004-twitter.a3c2c916.svg",
+    "static/media/013-facebook.svg": "/another-moviedb-rip-off/static/media/013-facebook.c14da210.svg",
+    "static/media/014-instagram.svg": "/another-moviedb-rip-off/static/media/014-instagram.62593ffa.svg",
+    "static/media/018-youtube.svg": "/another-moviedb-rip-off/static/media/018-youtube.194f6450.svg"
   }
 }
