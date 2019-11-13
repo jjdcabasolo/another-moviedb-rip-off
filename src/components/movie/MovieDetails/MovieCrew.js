@@ -42,23 +42,23 @@ import ComponentLoader from '../../common/ComponentLoader';
 const CREW_TO_DISPLAY = [
   {
     identifier: 'director',
-    label: a => `Director${a > 0 ? 's' : ''}`,
+    label: a => `Director${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'writer',
-    label: a => `Writer${a > 0 ? 's' : ''}`,
+    label: a => `Writer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'producer',
-    label: a => `Producer${a > 0 ? 's' : ''}`,
+    label: a => `Producer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'coProducer',
-    label: a => `Co-Producer${a > 0 ? 's' : ''}`,
+    label: a => `Co-Producer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'executiveProducer',
-    label: a => `Executive Producer${a > 0 ? 's' : ''}`,
+    label: a => `Executive Producer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'casting',
@@ -66,7 +66,7 @@ const CREW_TO_DISPLAY = [
   },
   {
     identifier: 'composer',
-    label: a => `Original Music Composer${a > 0 ? 's' : ''}`,
+    label: a => `Original Music Composer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'cinematography',
@@ -74,7 +74,7 @@ const CREW_TO_DISPLAY = [
   },
   {
     identifier: 'editor',
-    label: a => `Editor${a > 0 ? 's' : ''}`,
+    label: a => `Editor${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'costume',
@@ -82,7 +82,7 @@ const CREW_TO_DISPLAY = [
   },
   {
     identifier: 'makeup',
-    label: a => `Makeup Artist${a > 0 ? 's' : ''}`,
+    label: a => `Makeup Artist${a > 1 ? 's' : ''}`,
   },
 ];
 
@@ -142,7 +142,7 @@ const MovieCrew = () => {
         }
         const members = crewMembers[masonryConfig[a]];
         const title = CREW_TO_DISPLAY.filter(c => c.identifier === masonryConfig[a])[0];
-        colItem.push(<CrewAvatarList title={title.label(masonryConfig[a].length)} content={members} />);
+        colItem.push(<CrewAvatarList title={title.label(members.length)} content={members} />);
       }
       col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
     }
