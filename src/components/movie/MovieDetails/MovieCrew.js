@@ -114,10 +114,9 @@ const MovieCrew = () => {
     const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
     const [editor] = getCrewMembers(crew, 'editing', ['editor']);
     const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
-    const [mainCrew] = getCrewMembers(crew, 'crew');
     const [lighting] = getCrewMembers(crew, 'lighting');
     const [visualEffects] = getCrewMembers(crew, 'visual effects');
-    const finalCrew = {director, writer, producer, coProducer, executiveProducer, casting, composer, cinematography, editor, costume, makeup, mainCrew, lighting, visualEffects};
+    const finalCrew = {director, writer, producer, coProducer, executiveProducer, casting, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
     setCrewMembers(finalCrew);
 
     setMasonryConfig([]);
@@ -126,7 +125,7 @@ const MovieCrew = () => {
     });
   }, [movie]);
 
-  const constructMasonry = () => {
+  const constructMasonryGrid = () => {
     const col = [];
     for (let i = 0; i < crewCol; ++i) {
       const colItem = [];
@@ -149,21 +148,26 @@ const MovieCrew = () => {
     return col;
   };
 
+  const renderCrewCount = () => {
+    const hasLighting = lighting.length > 0;
+    const hasVE = visualEffects.length > 0;
+    let count = 0;
+    if (hasLighting) count++;
+    if (hasVE) count++;
+    return [
+      (hasLighting && <CrewCount col={12 / count} count={lighting.length} label="Lighting" />),
+      (hasVE && <CrewCount col={12 / count} count={visualEffects.length} label="Visual Effects" /> ),
+    ];
+  };
+
   if (!('director' in crewMembers)) return <ComponentLoader />
 
   return (
     <>
       <Grid container spacing={2}>
-        { constructMasonry() }
-
-        { showMore && (
-          <>
-            { mainCrew.length > 0 && <CrewCount count={mainCrew.length} label="Other Crew" /> }
-            { lighting.length > 0 && <CrewCount count={lighting.length} label="Lighting" /> }
-            { visualEffects.length > 0 && <CrewCount count={visualEffects.length} label="Visual Effects" /> }
-            <CrewCount count={movie.crew.length} label="Total Crew Members" />
-          </>
-        )}
+        { constructMasonryGrid() }
+        { showMore && renderCrewCount() }
+        <CrewCount count={movie.crew.length} label="Total Crew Members" isTotal />
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>
             {showMore ? 'Show less' : 'Show all'}
