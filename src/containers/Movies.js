@@ -11,6 +11,7 @@ import ComponentLoader from '../components/common/ComponentLoader';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
+import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import Section from '../components/movie/MovieDetails/Section';
 
 import { moviesActions } from '../reducers/ducks';
@@ -48,7 +49,8 @@ const Movies = () => {
   }, [dispatch, isMovieLoading]);
 
   useEffect(() => {
-    setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
+    setTimeout(() => window.scrollTo(0, 0), 100);
+    // setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
   }, []);
 
   if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
@@ -76,6 +78,10 @@ const Movies = () => {
 
       <Section title="Crew">
         <MovieCrew />
+      </Section>
+
+      <Section title="External Links">
+        <MovieLinks />
       </Section>
     </Grid>
   );

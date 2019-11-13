@@ -42,23 +42,23 @@ import ComponentLoader from '../../common/ComponentLoader';
 const CREW_TO_DISPLAY = [
   {
     identifier: 'director',
-    label: a => `Director${a > 0 ? 's' : ''}`,
+    label: a => `Director${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'writer',
-    label: a => `Writer${a > 0 ? 's' : ''}`,
+    label: a => `Writer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'producer',
-    label: a => `Producer${a > 0 ? 's' : ''}`,
+    label: a => `Producer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'coProducer',
-    label: a => `Co-Producer${a > 0 ? 's' : ''}`,
+    label: a => `Co-Producer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'executiveProducer',
-    label: a => `Executive Producer${a > 0 ? 's' : ''}`,
+    label: a => `Executive Producer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'casting',
@@ -66,7 +66,7 @@ const CREW_TO_DISPLAY = [
   },
   {
     identifier: 'composer',
-    label: a => `Original Music Composer${a > 0 ? 's' : ''}`,
+    label: a => `Original Music Composer${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'cinematography',
@@ -74,7 +74,7 @@ const CREW_TO_DISPLAY = [
   },
   {
     identifier: 'editor',
-    label: a => `Editor${a > 0 ? 's' : ''}`,
+    label: a => `Editor${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'costume',
@@ -82,7 +82,7 @@ const CREW_TO_DISPLAY = [
   },
   {
     identifier: 'makeup',
-    label: a => `Makeup Artist${a > 0 ? 's' : ''}`,
+    label: a => `Makeup Artist${a > 1 ? 's' : ''}`,
   },
 ];
 
@@ -103,7 +103,7 @@ const MovieCrew = () => {
     if (isMobile) return 1;
   });
 
-  const {mainCrew, lighting, visualEffects} = crewMembers;
+  const {lighting, visualEffects} = crewMembers;
 
   useEffect(() => {
     const { crew } = movie;
@@ -114,10 +114,9 @@ const MovieCrew = () => {
     const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
     const [editor] = getCrewMembers(crew, 'editing', ['editor']);
     const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
-    const [mainCrew] = getCrewMembers(crew, 'crew');
     const [lighting] = getCrewMembers(crew, 'lighting');
     const [visualEffects] = getCrewMembers(crew, 'visual effects');
-    const finalCrew = {director, writer, producer, coProducer, executiveProducer, casting, composer, cinematography, editor, costume, makeup, mainCrew, lighting, visualEffects};
+    const finalCrew = {director, writer, producer, coProducer, executiveProducer, casting, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
     setCrewMembers(finalCrew);
 
     setMasonryConfig([]);
@@ -126,7 +125,7 @@ const MovieCrew = () => {
     });
   }, [movie]);
 
-  const constructMasonry = () => {
+  const constructMasonryGrid = () => {
     const col = [];
     for (let i = 0; i < crewCol; ++i) {
       const colItem = [];
@@ -142,11 +141,23 @@ const MovieCrew = () => {
         }
         const members = crewMembers[masonryConfig[a]];
         const title = CREW_TO_DISPLAY.filter(c => c.identifier === masonryConfig[a])[0];
-        colItem.push(<CrewAvatarList title={title.label(masonryConfig[a].length)} content={members} />);
+        colItem.push(<CrewAvatarList title={title.label(members.length)} content={members} />);
       }
       col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
     }
     return col;
+  };
+
+  const renderCrewCount = () => {
+    const hasLighting = lighting.length > 0;
+    const hasVE = visualEffects.length > 0;
+    let count = 0;
+    if (hasLighting) count++;
+    if (hasVE) count++;
+    return [
+      (hasLighting && <CrewCount col={12 / count} count={lighting.length} label="Lighting" />),
+      (hasVE && <CrewCount col={12 / count} count={visualEffects.length} label="Visual Effects" /> ),
+    ];
   };
 
   if (!('director' in crewMembers)) return <ComponentLoader />
@@ -154,16 +165,9 @@ const MovieCrew = () => {
   return (
     <>
       <Grid container spacing={2}>
-        { constructMasonry() }
-
-        { showMore && (
-          <>
-            { mainCrew.length > 0 && <CrewCount count={mainCrew.length} label="Other Crew" /> }
-            { lighting.length > 0 && <CrewCount count={lighting.length} label="Lighting" /> }
-            { visualEffects.length > 0 && <CrewCount count={visualEffects.length} label="Visual Effects" /> }
-            <CrewCount count={movie.crew.length} label="Total Crew Members" />
-          </>
-        )}
+        { constructMasonryGrid() }
+        { showMore && renderCrewCount() }
+        <CrewCount count={movie.crew.length} label="Total Crew Members" isTotal />
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>
             {showMore ? 'Show less' : 'Show all'}

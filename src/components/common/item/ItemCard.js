@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px !important`,
   },
   cardTitle: {
-    letterSpacing: '0.03em',
+    letterSpacing: '0.02em',
     fontWeight: theme.typography.fontWeightMedium,
   },
 }));

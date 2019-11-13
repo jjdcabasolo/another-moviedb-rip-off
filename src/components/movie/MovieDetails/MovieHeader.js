@@ -35,26 +35,39 @@ const MovieHeader = () => {
   const runtimeHours = ~~(movie.runtime / 60);
   const runtimeMinutes = movie.runtime % 60;
 
+  console.log(movie);
+
   return (
-    <Grid item xs={12}>
-      <Typography variant={isMobile ? "h4" : "h2"} className={classes.title}>{movie.title}</Typography>
-      <div>
-        <Typography variant={isMobile ? "body1" : "h5"}>
-          {moment(movie.date).format('YYYY')}&nbsp;
-          &middot;&nbsp;
-          {hasRuntime ? `${runtimeHours} hr ${runtimeMinutes} min` : 'No runtime yet.'}
-        </Typography>
-      </div>
+    <Grid item xs={12} container spacing={1}>
+      <Grid item xs={12}>
+        <Typography variant={isMobile ? "h4" : "h2"} className={classes.title}>{movie.title}</Typography>
+      </Grid>
+      <Grid item xs={12} container alignItems="center">
+        { movie.status === 'Released' && (
+          <Grid item>
+            <Chip label="Released" variant="outlined" size={isMobile ? "small" : "medium"} />
+            &nbsp;
+          </Grid>
+        )}
+        <Grid item>
+          <Typography variant={isMobile ? "body1" : "h5"}>
+            &middot;&nbsp;
+            {moment(movie.date).format('YYYY')}&nbsp;
+            &middot;&nbsp;
+            {hasRuntime ? `${runtimeHours} hr ${runtimeMinutes} min` : 'No runtime yet.'}
+          </Typography>
+        </Grid>
+      </Grid>
       { movie.genres.length > 0 && (
-        <div className={classes.chipContainer}>
+        <Grid item xs={12}>
           { movie.genres.map(i => (
             <Chip label={i.name} className={classes.chip} size={isMobile ? "small" : "medium"} />
           )) }
-        </div>
+        </Grid>
       )}
-      <div className={classes.description}>
+      <Grid item xs={12} className={classes.description}>
         <Typography variant="body1">{movie.overview}</Typography>
-      </div>
+      </Grid>
     </Grid>
   );
 };
