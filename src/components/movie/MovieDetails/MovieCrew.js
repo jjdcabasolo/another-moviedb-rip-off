@@ -103,7 +103,7 @@ const MovieCrew = () => {
     if (isMobile) return 1;
   });
 
-  const {mainCrew, lighting, visualEffects} = crewMembers;
+  const {lighting, visualEffects} = crewMembers;
 
   useEffect(() => {
     const { crew } = movie;

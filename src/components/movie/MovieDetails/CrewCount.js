@@ -2,7 +2,7 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Tooltip } from '@material-ui/core';
-import { HelpOutlined } from '@material-ui/icons';
+import { HelpTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -24,13 +24,11 @@ const CrewCount = ({ count, col, label, isTotal }) => {
           { label }
           { isTotal && (
             <Tooltip
-              interactive
               enterTouchDelay={0}
-              leaveDelay={3000}
-              leaveTouchDelay={3000}
+              leaveTouchDelay={2500}
               title="Crew count is wholly based on the efforts of the TMDb community. It may or may not reflect the exact head count."
             >
-              <HelpOutlined className={classes.icon} />
+              <HelpTwoTone className={classes.icon} />
             </Tooltip>
           )}
         </Typography>

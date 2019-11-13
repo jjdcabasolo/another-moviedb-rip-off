@@ -35,13 +35,20 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
     axios.get(`/movie/${movie_id}`, { params: { api_key } }),
     axios.get(`/movie/${movie_id}/videos`, { params: { api_key } }),
     axios.get(`/movie/${movie_id}/credits`, { params: { api_key } }),
+    axios.get(`/movie/${movie_id}/external_ids`, { params: { api_key } }),
   ])
-  .then(axios.spread((details, videos, credits) => {
+  .then(axios.spread((details, videos, credits, external_ids) => {
+    const externalLinks = external_ids.data;
     const movieDetails = {
       ...details.data,
       youtube: `https://www.youtube.com/watch?v=${videos.data.results[0].key}`,
       cast: credits.data.cast,
       crew: credits.data.crew,
+      facebook: external_ids.data.facebook_id !== null ? `https://www.facebook.com/${externalLinks.facebook_id}` : null,
+      instagram: external_ids.data.instagram_id !== null ? `https://www.instagram.com/${externalLinks.instagram_id}` : null,
+      twitter: external_ids.data.twitter_id !== null ? `https://www.twitter.com/${externalLinks.twitter_id}` : null,
+      imdb: external_ids.data.imdb_id !== null ? `https://www.imdb.com/title/${externalLinks.imdb_id}` : null,
+      tmdb: external_ids.data.id !== null ? `https://www.themoviedb.org/movie/${externalLinks.id}` : null,
     };
     success(movieDetails);
   }))
