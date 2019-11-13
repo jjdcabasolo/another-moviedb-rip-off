@@ -6,7 +6,6 @@ export {
 
 export {
   getCrewMembers,
-  getCrewCount,
 } from './extractCrew';
 
 export {

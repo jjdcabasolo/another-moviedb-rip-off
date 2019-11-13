@@ -16,14 +16,12 @@ const MovieCast = () => {
   const movie = useSelector(state => state.movies.movie);
 
   const [showMore, setShowMore] = useState(false);
-
-  const getCardCol = () => {
+  const [cardCol] = useState(() => {
     if (isDesktop) return 4;
     if (isTablet) return 3;
     if (isMobile) return 2;
-  };
+  });
 
-  const cardCol = getCardCol();
   const maxVisibleCards = cardCol * 2;
 
   return (
