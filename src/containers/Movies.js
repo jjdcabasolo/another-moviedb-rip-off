@@ -47,11 +47,13 @@ const Movies = () => {
     dispatch(moviesActions.setDetailsLoading(false));
   }, [dispatch, isMovieLoading]);
 
+  useEffect(() => {
+    setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
+  }, []);
+
   if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
 
   if (isMovieLoading) return <ComponentLoader />;
-
-  setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
 
   return (
     <Grid container spacing={4} className={classes.root}>

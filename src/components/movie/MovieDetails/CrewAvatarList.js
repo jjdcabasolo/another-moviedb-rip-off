@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
   List,
@@ -9,7 +9,6 @@ import {
   Avatar,
   ListItemText,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core';
 import { BrokenImage } from '@material-ui/icons';
 
@@ -22,18 +21,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     fontWeight: theme.typography.h6.fontWeight,
   },
-  avatar: {
-    height: theme.spacing(7.5),
-    width: theme.spacing(7.5),
-  },
-  itemText: {
-    paddingLeft: theme.spacing(2),
-  },
 }));
 
 const CrewAvatarList = ({ title, content }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   return (
@@ -49,13 +39,12 @@ const CrewAvatarList = ({ title, content }) => {
               <ListItemAvatar>
                 <Avatar
                   alt={doesPathExist ? `Image not loading? Visit ${crew.profile_path} to view.` : `${crew.name}'s avatar.`}
-                  src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w300${crew.profile_path}` : ''}
-                  className={classes.avatar}
+                  src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${crew.profile_path}` : ''}
                 >
-                  {!doesPathExist && <BrokenImage fontSize="large" />}
+                  {!doesPathExist && <BrokenImage />}
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={crew.name} secondary={crew.job} className={classes.itemText}/>
+              <ListItemText primary={crew.name} secondary={crew.job} />
             </ListItem>
           );
         })}

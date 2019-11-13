@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Typography, Grid, Button, useMediaQuery } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CrewAvatarList from './CrewAvatarList';
+import CrewCount from './CrewCount';
 
-import { getCrewMembers, getCrewCount } from '../../../utils/functions';
-
-// const useStyles = makeStyles(theme => ({
-// }));
+import { getCrewMembers } from '../../../utils/functions';
+import ComponentLoader from '../../common/ComponentLoader';
 
 // CREW PLAN
 // // default
@@ -40,62 +39,131 @@ import { getCrewMembers, getCrewCount } from '../../../utils/functions';
 // department: "Visual Effects", // count
 // // total count of crew at the end
 
+const CREW_TO_DISPLAY = [
+  {
+    identifier: 'director',
+    label: a => `Director${a > 0 ? 's' : ''}`,
+  },
+  {
+    identifier: 'writer',
+    label: a => `Writer${a > 0 ? 's' : ''}`,
+  },
+  {
+    identifier: 'producer',
+    label: a => `Producer${a > 0 ? 's' : ''}`,
+  },
+  {
+    identifier: 'coProducer',
+    label: a => `Co-Producer${a > 0 ? 's' : ''}`,
+  },
+  {
+    identifier: 'executiveProducer',
+    label: a => `Executive Producer${a > 0 ? 's' : ''}`,
+  },
+  {
+    identifier: 'casting',
+    label: () => 'Casting',
+  },
+  {
+    identifier: 'composer',
+    label: a => `Original Music Composer${a > 0 ? 's' : ''}`,
+  },
+  {
+    identifier: 'cinematography',
+    label: () => 'Cinematography',
+  },
+  {
+    identifier: 'editor',
+    label: a => `Editor${a > 0 ? 's' : ''}`,
+  },
+  {
+    identifier: 'costume',
+    label: () => 'Costume Design',
+  },
+  {
+    identifier: 'makeup',
+    label: a => `Makeup Artist${a > 0 ? 's' : ''}`,
+  },
+];
+
 const MovieCrew = () => {
-  // const classes = useStyles();
   const theme = useTheme();
-  // const highResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
-  // const isMidTabletDesktop = useMediaQuery(theme.breakpoints.between('md', 'xl'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const movie = useSelector(state => state.movies.movie);
 
-  const { crew } = movie;
-  const [director] = getCrewMembers(crew, 'directing', ['director']);
-  const [writer] = getCrewMembers(crew, 'writing');
-  // const [producer, coProducer, executiveProducer, casting] = getCrewMembers(crew, 'production', ['producer', 'co-producer', 'executive producer', 'casting']);
-  // const [composer] = getCrewMembers(crew, 'sound', ['original music composer']);
-  // const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
-  // const [editor] = getCrewMembers(crew, 'editing', ['editor']);
-  // const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
-  // const [mainCrew] = getCrewMembers(crew, 'crew');
-  // const [lighting] = getCrewMembers(crew, 'lighting');
-  // const [visualEffects] = getCrewMembers(crew, 'visual effects');
-
-  // console.log('director', director)
-  // console.log('writer', writer)
-  // console.log('producer', producer)
-  // console.log('coProducer', coProducer)
-  // console.log('executiveProducer', executiveProducer)
-  // console.log('casting', casting)
-  // console.log('composer', composer)
-  // console.log('cinematography', cinematography)
-  // console.log('editor', editor)
-  // console.log('costume', costume)
-  // console.log('makeup', makeup)
-  // console.log('mainCrew', mainCrew)
-  // console.log('lighting', lighting)
-  // console.log('visualEffects', visualEffects)
-
+  const [crewMembers, setCrewMembers] = useState({});
+  const [masonryConfig, setMasonryConfig] = useState([]);
   const [showMore, setShowMore] = useState(false);
+  const [crewCol] = useState(() => {
+    if (isDesktop) return 3;
+    if (isTablet) return 2;
+    if (isMobile) return 1;
+  });
+
+  const {mainCrew, lighting, visualEffects} = crewMembers;
+
+  useEffect(() => {
+    const { crew } = movie;
+    const [director] = getCrewMembers(crew, 'directing', ['director']);
+    const [writer] = getCrewMembers(crew, 'writing');
+    const [producer, coProducer, executiveProducer, casting] = getCrewMembers(crew, 'production', ['producer', 'co-producer', 'executive producer', 'casting']);
+    const [composer] = getCrewMembers(crew, 'sound', ['original music composer']);
+    const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
+    const [editor] = getCrewMembers(crew, 'editing', ['editor']);
+    const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
+    const [mainCrew] = getCrewMembers(crew, 'crew');
+    const [lighting] = getCrewMembers(crew, 'lighting');
+    const [visualEffects] = getCrewMembers(crew, 'visual effects');
+    const finalCrew = {director, writer, producer, coProducer, executiveProducer, casting, composer, cinematography, editor, costume, makeup, mainCrew, lighting, visualEffects};
+    setCrewMembers(finalCrew);
+
+    setMasonryConfig([]);
+    CREW_TO_DISPLAY.forEach(e => {
+      if (finalCrew[e.identifier].length > 0) setMasonryConfig(a => [...a, e.identifier]);
+    });
+  }, [movie]);
+
+  const constructMasonry = () => {
+    const col = [];
+    for (let i = 0; i < crewCol; ++i) {
+      const colItem = [];
+      for (let a = i; a < masonryConfig.length; a += crewCol) {
+        if (!showMore) {
+          if (masonryConfig[a] === 'executiveProducer'
+          || masonryConfig[a] === 'casting'
+          || masonryConfig[a] === 'composer'
+          || masonryConfig[a] === 'cinematography'
+          || masonryConfig[a] === 'editor'
+          || masonryConfig[a] === 'costume'
+          || masonryConfig[a] === 'makeup') break;
+        }
+        const members = crewMembers[masonryConfig[a]];
+        const title = CREW_TO_DISPLAY.filter(c => c.identifier === masonryConfig[a])[0];
+        colItem.push(<CrewAvatarList title={title.label(masonryConfig[a].length)} content={members} />);
+      }
+      col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
+    }
+    return col;
+  };
+
+  if (!('director' in crewMembers)) return <ComponentLoader />
 
   return (
     <>
       <Grid container spacing={2}>
-        <CrewAvatarList title={`Director${director.length > 1 ? 's' : ''}`} content={director} />
-        <CrewAvatarList title={`Writer${writer.length > 1 ? 's' : ''}`} content={writer} />
-        {/* { showMore && (
-          movie.cast.slice(maxVisibleCards, movie.cast.length).map(cast => (
-            <MovieCastCard content={cast} col={12 / cardCol} />
-          ))
-        )} */}
-        <Grid item xs={12} container justify="center" alignItems="center" direction="column">
-          <Grid item>
-            <Typography variant="h2">{movie.crew.length}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="button">Crew Members</Typography>
-          </Grid>
-        </Grid>
+        { constructMasonry() }
+
+        { showMore && (
+          <>
+            { mainCrew.length > 0 && <CrewCount count={mainCrew.length} label="Other Crew" /> }
+            { lighting.length > 0 && <CrewCount count={lighting.length} label="Lighting" /> }
+            { visualEffects.length > 0 && <CrewCount count={visualEffects.length} label="Visual Effects" /> }
+            <CrewCount count={movie.crew.length} label="Total Crew Members" />
+          </>
+        )}
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>
             {showMore ? 'Show less' : 'Show all'}

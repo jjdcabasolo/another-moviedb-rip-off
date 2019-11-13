@@ -23,8 +23,3 @@ export const getCrewMembers = (crew, department, job = ['']) => {
 
   return crewMembers;
 };
-
-export const getCrewCount = (crew, department) => {
-  const departmentCrew = crew.filter(crew => crew.department.toLowerCase() === department.toLowerCase());
-  return departmentCrew.length;
-};
