@@ -7,14 +7,11 @@ export const getCrewMembers = (crew, department, job = ['']) => {
     crewMembers[index] = crew.filter(crew => crew.department.toLowerCase() === department.toLowerCase() && evaluateJob(crew.job, element));
 
     crewMembers[index] = crewMembers[index].reduce((accumulator, current) => {
-      if (accumulator.length > 1) {
-        const index = accumulator.map(a => a.name).findIndex(e => e.toLowerCase() === current.name.toLowerCase())
-        const isExisting = index !== -1;
-        if (isExisting) {
-          accumulator[index].job = `${accumulator[index].job}, ${current.job}`;
-          return accumulator;
-        }
-        return accumulator.concat([current]);
+      const index = accumulator.map(a => a.id).findIndex(e => e === current.id);
+      const isExisting = index !== -1;
+      if (isExisting) {
+        accumulator[index].job = `${accumulator[index].job}, ${current.job}`;
+        return accumulator;
       }
       return accumulator.concat([current]);
     }, []);

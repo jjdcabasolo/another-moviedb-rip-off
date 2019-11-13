@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieCastCard = ({ content, col }) => {
+const CastCard = ({ content, col }) => {
   const classes = useStyles();
 
   if (!content) return <></>;
@@ -80,4 +80,4 @@ const MovieCastCard = ({ content, col }) => {
   );
 };
 
-export default MovieCastCard;
+export default CastCard;
