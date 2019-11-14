@@ -12,18 +12,23 @@ import Instagram from '../../../assets/images/014-instagram';
 import Twitter from '../../../assets/images/004-twitter';
 import YouTube from '../../../assets/images/018-youtube';
 
+import { 
+  IMDB_LOGO_DARK,
+  IMDB_LOGO,
+  TMDB_LOGO_DARK,
+  TMDB_LOGO,
+} from '../../../constants';
+
 const useStyles = makeStyles(theme => ({
-  imageIcon: {
-    height: '100%'
-  },
-  iconRoot: {
-    textAlign: 'center'
+  logo: {
+    width: '1em',
   },
 }));
 
 const MovieLinks = () => {
   const classes = useStyles();
 
+  const darkMode = useSelector(state => state.sidebar.darkMode);
   const movie = useSelector(state => state.movies.movie);
 
   const facebookLink = movie.facebook;
@@ -33,16 +38,10 @@ const MovieLinks = () => {
   const imdbLink = movie.imdb;
   const tmdbLink = movie.tmdb;
 
-  const renderSocialNetworkLinks = (src, link) => (
+  const renderSocialNetworkLinks = (src, link, isImg) => (
     <IconButton onClick={() => window.open(link, '_blank')}>
-      <SvgIcon>{src}</SvgIcon>
+      { isImg ? src : <SvgIcon>{src}</SvgIcon> }
     </IconButton>
-  );
-
-  const renderTextButtonLinks = (content, link) => (
-    <Button onClick={() => window.open(link, '_blank')}>
-      { content }
-    </Button>
   );
 
   return (
@@ -53,8 +52,20 @@ const MovieLinks = () => {
           { instagramLink !== null && renderSocialNetworkLinks(<Instagram />, instagramLink) }
           { twitterLink !== null && renderSocialNetworkLinks(<Twitter />, twitterLink) }
           { youtubeLink !== null && renderSocialNetworkLinks(<YouTube />, youtubeLink) }
-          { imdbLink !== null && renderTextButtonLinks('IMDb', imdbLink) }
-          { tmdbLink !== null && renderTextButtonLinks('TMDb', tmdbLink) }
+          { imdbLink !== null && renderSocialNetworkLinks((
+            <img
+              alt="TMDb Logo"
+              className={classes.logo}
+              src={darkMode ? IMDB_LOGO_DARK : IMDB_LOGO}
+            />
+          ), imdbLink, true) }
+          { tmdbLink !== null && renderSocialNetworkLinks((
+            <img
+              alt="TMDb Logo"
+              className={classes.logo}
+              src={darkMode ? TMDB_LOGO_DARK : TMDB_LOGO}
+            />
+          ), tmdbLink, true) }
         </Grid>
         <Grid item>
           <Typography variant="caption">

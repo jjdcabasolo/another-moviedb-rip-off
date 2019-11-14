@@ -53,9 +53,9 @@ const Movies = () => {
     // setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
   }, []);
 
-  if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
-
   if (isMovieLoading) return <ComponentLoader />;
+
+  if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
 
   return (
     <Grid container spacing={4} className={classes.root}>

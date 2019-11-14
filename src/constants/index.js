@@ -1,7 +1,5 @@
 export {
   SIDEBAR_WIDTH,
-  SIDEBAR_TMDB_LOGO_DARK,
-  SIDEBAR_TMDB_LOGO,
 } from './sidebar';
 
 export {
@@ -28,3 +26,10 @@ export {
 export {
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
 } from './tvShows';
+
+export {
+  TMDB_LOGO_DARK,
+  TMDB_LOGO,
+  IMDB_LOGO_DARK,
+  IMDB_LOGO,
+} from './logo';

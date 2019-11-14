@@ -35,8 +35,8 @@ import { sidebarActions } from '../../../reducers/ducks';
 import {
   API_KEY_DIALOG_TMDB_LINK,
   SIDEBAR_WIDTH,
-  SIDEBAR_TMDB_LOGO_DARK,
-  SIDEBAR_TMDB_LOGO,
+  TMDB_LOGO_DARK,
+  TMDB_LOGO,
   MOVIE_DRAWER_TMDB_IMAGE_PREFIX,
 } from '../../../constants';
 import { routes } from '../../../routes/config';
@@ -213,7 +213,7 @@ const Sidebar = ({ children }) => {
                 <img
                   alt="TMDb Logo"
                   className={classes.tmdbLogo}
-                  src={darkMode ? SIDEBAR_TMDB_LOGO_DARK : SIDEBAR_TMDB_LOGO}
+                  src={darkMode ? TMDB_LOGO_DARK : TMDB_LOGO}
                 />
               </ListItemIcon>
             </WithTooltip>
