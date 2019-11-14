@@ -49,12 +49,8 @@ const CREW_TO_DISPLAY = [
     label: a => `Screenwriter${a > 1 ? 's' : ''}`,
   },
   {
-    identifier: 'Production',
-    label: a => 'Key Prodution',
-  },
-  {
-    identifier: 'casting',
-    label: () => 'Casting',
+    identifier: 'production',
+    label: a => 'Key Production',
   },
   {
     identifier: 'composer',
@@ -108,8 +104,8 @@ const MovieCrew = () => {
     const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
     const [lighting] = getCrewMembers(crew, 'lighting');
     const [visualEffects] = getCrewMembers(crew, 'visual effects');
-    const production = {producer, coProducer, executiveProducer};
-    const finalCrew = {director, writer, production, casting, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
+    const production = [...producer, ...coProducer, ...executiveProducer, ...casting];
+    const finalCrew = {director, writer, production: production, casting, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
     setCrewMembers(finalCrew);
 
     setMasonryConfig([]);
@@ -124,7 +120,7 @@ const MovieCrew = () => {
       const colItem = [];
       for (let a = i; a < masonryConfig.length; a += crewCol) {
         if (!showMore) {
-          if (masonryConfig[a] === 'casting'
+          if (masonryConfig[a] === 'production'
           || masonryConfig[a] === 'composer'
           || masonryConfig[a] === 'cinematography'
           || masonryConfig[a] === 'editor'
