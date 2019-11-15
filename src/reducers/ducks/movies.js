@@ -20,10 +20,10 @@ export const moviesActions = {
     type: moviesActionType.SET_ACTIVE_MOVIE,
     payload: { movie },
   }),
-  setDetailsLoading: isMovieLoading => ({
-    type: moviesActionType.SET_DETAILS_LOADING,
-    payload: { isMovieLoading },
-  }),
+  // setDetailsLoading: isMovieLoading => ({
+  //   type: moviesActionType.SET_DETAILS_LOADING,
+  //   payload: { isMovieLoading },
+  // }),
 };
 
 // REDUCER
@@ -38,7 +38,7 @@ const initialState = {
   },
   movie: {},
   loadedContent: 0,
-  isMovieLoading: false,
+  // isMovieLoading: false,
 };
 
 const setCategory = (state, action) => ({
@@ -60,17 +60,17 @@ const setActiveMovie = (state, action) => ({
   movie: action.payload.movie,
 });
 
-const setDetailsLoading = (state, action) => ({
-  ...state,
-  isMovieLoading: action.payload.isMovieLoading,
-});
+// const setDetailsLoading = (state, action) => ({
+//   ...state,
+//   isMovieLoading: action.payload.isMovieLoading,
+// });
 
 export const moviesReducer = (state = initialState, action) => {
   switch (action.type) {
     case moviesActionType.SET_CATEGORY: return setCategory(state, action);
     case moviesActionType.SET_MOVIE_LIST: return setMovieList(state, action);
     case moviesActionType.SET_ACTIVE_MOVIE: return setActiveMovie(state, action);
-    case moviesActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
+    // case moviesActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
     default: return state;
   }
 };

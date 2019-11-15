@@ -52,7 +52,7 @@ const MovieHeader = () => {
         <Grid item>
           <Typography variant={isMobile ? "body1" : "h5"}>
             &middot;&nbsp;
-            {moment(movie.date).format('YYYY')}&nbsp;
+            {moment(movie.release_date).format('YYYY')}&nbsp;
             &middot;&nbsp;
             {hasRuntime ? `${runtimeHours} hr ${runtimeMinutes} min` : 'No runtime yet.'}
           </Typography>

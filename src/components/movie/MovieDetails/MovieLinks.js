@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, IconButton, Button, Typography, Link, SvgIcon } from '@material-ui/core';
-
-import CastCard from './CastCard';
+import { Grid, IconButton, Typography, Link, SvgIcon } from '@material-ui/core';
 
 import Facebook from '../../../assets/images/013-facebook';
 import Instagram from '../../../assets/images/014-instagram';

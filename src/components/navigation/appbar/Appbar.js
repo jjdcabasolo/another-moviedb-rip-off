@@ -62,7 +62,6 @@ const Appbar = ({ children }) => {
   const darkMode = useSelector(state => state.sidebar.darkMode);
   const movie = useSelector(state => state.movies.movie);
   const scrollY = useSelector(state => state.browser.scrollY);
-  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -170,7 +169,7 @@ const Appbar = ({ children }) => {
         </AppBar>
       </HideOnScroll>
 
-      { isMovieTabActive && isMovieSelected && !isMovieLoading && (
+      { isMovieTabActive && isMovieSelected && (
         <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.poster_path}`} />
       )}
 

@@ -1,20 +1,17 @@
 import React, { useEffect } from 'react';
 
 import ReactPlayer from 'react-player'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 import Note from '../components/common/Note';
-import ComponentLoader from '../components/common/ComponentLoader';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import Section from '../components/movie/MovieDetails/Section';
-
-import { moviesActions } from '../reducers/ducks';
 
 import { NOTE_NO_SELECTED_MOVIE } from '../constants';
 
@@ -39,21 +36,13 @@ const Movies = () => {
   const classes = useStyles();
 
   const movie = useSelector(state => state.movies.movie);
-  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
-  const dispatch = useDispatch();
 
   const isMovieSelected = 'id' in movie;
-
-  useEffect(() => {
-    dispatch(moviesActions.setDetailsLoading(false));
-  }, [dispatch, isMovieLoading]);
 
   useEffect(() => {
     setTimeout(() => window.scrollTo(0, 0), 100);
     // setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
   }, []);
-
-  if (isMovieLoading) return <ComponentLoader />;
 
   if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
 

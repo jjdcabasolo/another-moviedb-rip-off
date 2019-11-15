@@ -114,7 +114,7 @@ const ItemCard = ({content, drawerOpen, col, rank, mobile, type, handleDrawerTog
       // });
     }
     if (drawerOpen && handleDrawerToggle) handleDrawerToggle();
-    dispatch(moviesActions.setDetailsLoading(true));
+    // dispatch(moviesActions.setDetailsLoading(true));
   };
 
   const renderBrokenImage = () => (
