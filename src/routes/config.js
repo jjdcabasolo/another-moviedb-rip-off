@@ -32,7 +32,7 @@ export const routes = [
     key: "tvShows",
     child: {
       component: <TVShows />,
-      path: "/tvshows/:mtvshowId",
+      path: "/tvshows/:tvshowId",
     },
   },
 ];
