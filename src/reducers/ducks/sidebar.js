@@ -35,12 +35,19 @@ export const sidebarActions = {
 };
 
 // REDUCER
-const initialTab = window.location.hash.replace('#/', '');
+const evaluateInitialTab = () => {
+  const initialTab = window.location.hash.replace('#/', '');
+
+  if (initialTab === '') return 'movies';
+  if (initialTab.toLowerCase().includes('movies')) return 'movies';
+  return 'tvshows';
+};
+
 const initialApiKey = localStorage.getItem('apiKey') || '';
 const initialUsername = localStorage.getItem('username') || '';
 
 const initialState = {
-  activeTab: initialTab === '' ? 'movies' : initialTab,
+  activeTab: evaluateInitialTab(),
   apiKey: initialApiKey,
   darkMode: localStorage.getItem('darkMode') === 'true',
   drawerOpen: localStorage.getItem('drawerOpen') === 'true',
