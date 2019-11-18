@@ -10,7 +10,7 @@ import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 
 import { sidebarActions } from '../../reducers/ducks';
 
-import { NOTE_NOT_FOUND } from '../../constants';
+import { NOTE_PAGE_NOT_FOUND } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   note: {
@@ -35,7 +35,7 @@ const NotFound = () => {
 
   const renderNote = () => (
     <>
-      <Note details={NOTE_NOT_FOUND} />
+      <Note details={NOTE_PAGE_NOT_FOUND} />
       <Button className={classes.button} onClick={useTP}>Use TP</Button>
     </>
   );

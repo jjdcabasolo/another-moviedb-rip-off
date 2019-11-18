@@ -17,6 +17,5 @@ export const getCrewMembers = (crew, department, job = ['']) => {
     }, []);
   });
 
-
   return crewMembers;
 };

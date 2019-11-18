@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ReactPlayer from 'react-player'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
@@ -13,7 +14,13 @@ import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import Section from '../components/movie/MovieDetails/Section';
 
-import { NOTE_NO_SELECTED_MOVIE } from '../constants';
+import { getMovieDetails } from '../api';
+
+import { moviesActions } from '../reducers/ducks';
+
+import { decryptKey } from '../utils/functions';
+
+import { NOTE_NO_SELECTED_MOVIE, NOTE_MOVIE_NOT_FOUND } from '../constants';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,15 +43,27 @@ const Movies = () => {
   const classes = useStyles();
 
   const movie = useSelector(state => state.movies.movie);
+  const dispatch = useDispatch();
+
+  const [isLoaded, setIsLoaded] = useState(true);
 
   const isMovieSelected = 'id' in movie;
 
+  const { movieId } = useParams();
   useEffect(() => {
-    setTimeout(() => window.scrollTo(0, 0), 100);
-    // setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
-  }, []);
+    getMovieDetails(decryptKey(), movieId, response => {
+      dispatch(moviesActions.setActiveMovie(response));
+      setTimeout(() => window.scrollTo(0, 0), 100);
+      setIsLoaded(true);
+    }, error => {
+      setIsLoaded(false);
+    });
+  }, [movieId]);
 
-  if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
+  if (!isMovieSelected) {
+    if (isLoaded) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
+    return <Note details={NOTE_MOVIE_NOT_FOUND} />;
+  }
 
   return (
     <Grid container spacing={4} className={classes.root}>
@@ -69,7 +88,7 @@ const Movies = () => {
         <MovieCrew />
       </Section>
 
-      <Section title="External Links">
+      <Section>
         <MovieLinks />
       </Section>
     </Grid>

@@ -3,6 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -141,26 +142,28 @@ const ItemCard = ({content, drawerOpen, col, rank, mobile, type, handleDrawerTog
         { [classes.mobile]: mobile },
       )}
     >
-      <Card onClick={handleGetDetails}>
-        <CardActionArea>
-          { !(typeof (imagePath) === 'string') && imagePath }
-          <CardMedia
-            className={clsx(
-              { [classes.mediaDrawerOpen]: drawerOpen },
-              { [classes.mediaDrawerClosed]: !drawerOpen },
-            )}
-            image={imagePath}
-          />
-          <div gutterBottom variant="button" className={classes.typoOverlay}>
-            <Typography variant="h5" className={classes.cardTitle} noWrap>
-              {truncateText(isMovie ? content.title : content.name, drawerOpen ? 25 : 100)}
-            </Typography>
-            <Typography className={classes.rank}>
-              {`${rank} • ${moment(isMovie ? content.release_date : content.first_air_date).format('MMM D, YYYY')}`}
-            </Typography>
-          </div>
-        </CardActionArea>
-      </Card>
+      <Link to={`/${type}s/${content.id}`}>
+        <Card>
+          <CardActionArea>
+            { !(typeof (imagePath) === 'string') && imagePath }
+            <CardMedia
+              className={clsx(
+                { [classes.mediaDrawerOpen]: drawerOpen },
+                { [classes.mediaDrawerClosed]: !drawerOpen },
+              )}
+              image={imagePath}
+            />
+            <div gutterBottom variant="button" className={classes.typoOverlay}>
+              <Typography variant="h5" className={classes.cardTitle} noWrap>
+                {truncateText(isMovie ? content.title : content.name, drawerOpen ? 25 : 100)}
+              </Typography>
+              <Typography className={classes.rank}>
+                {`${rank} • ${moment(isMovie ? content.release_date : content.first_air_date).format('MMM D, YYYY')}`}
+              </Typography>
+            </div>
+          </CardActionArea>
+        </Card>
+      </Link>
     </Grid>
   );
 };
