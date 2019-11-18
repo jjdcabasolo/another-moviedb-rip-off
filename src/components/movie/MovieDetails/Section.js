@@ -9,7 +9,9 @@ const Section = ({ title, children }) => {
 
   return (
     <Grid item xs={12}>
-      <Typography variant={isMobile ? "h5" : "h4"} gutterBottom>{title}</Typography>
+      { title && (
+        <Typography variant={isMobile ? "h5" : "h4"} gutterBottom>{title}</Typography>
+      )}
       {children}
     </Grid>
   );
