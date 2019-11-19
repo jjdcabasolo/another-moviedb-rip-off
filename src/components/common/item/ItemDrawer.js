@@ -122,9 +122,9 @@ const ItemDrawer = ({ type }) => {
       return <Note details={NOTE_NO_API_KEY} />;
     }
 
-    if (loadedContent !== categoryChips.length) return (
-      <ComponentLoader />
-    );
+    if (loadedContent !== categoryChips.length) {
+      return <ComponentLoader />;
+    }
 
     if (itemDrawerOpen) {
       return (

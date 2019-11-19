@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import {
   MovieTwoTone,
   LiveTvTwoTone,
 } from '@material-ui/icons';
 
-import Movies from '../containers/Movies';
-import TVShows from '../containers/TVShows';
+const Movies = lazy(() => import('../containers/Movies'));
+const TVShows = lazy(() => import('../containers/TVShows'));
 
 export const routes = [
   {
@@ -19,6 +19,10 @@ export const routes = [
     title: "Movies",
     path: "/movies",
     key: "movies",
+    child: {
+      component: <Movies />,
+      path: "/movies/:movieId",
+    },
   },
   {
     component: <TVShows />,
@@ -26,5 +30,9 @@ export const routes = [
     title: "TV Shows",
     path: "/tvshows",
     key: "tvShows",
+    child: {
+      component: <TVShows />,
+      path: "/tvshows/:tvshowId",
+    },
   },
 ];

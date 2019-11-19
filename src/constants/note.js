@@ -2,6 +2,7 @@ import React from 'react';
 
 import { IconButton } from '@material-ui/core';
 import {
+  ErrorTwoTone,
   MovieTwoTone,
   LiveTvTwoTone,
   VpnKeyTwoTone,
@@ -48,7 +49,7 @@ const awaken = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/4/4c/Tr
 const areYouLost = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/1/12/Treant_attack_07.mp3');
 const beCareful = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/2/20/Treant_attack_06.mp3');
 
-export const NOTE_NOT_FOUND = {
+export const NOTE_PAGE_NOT_FOUND = {
   icon: className => <NaturePeopleTwoTone className={className} />,
   header: (
     <span>
@@ -77,3 +78,12 @@ export const NOTE_NOT_FOUND = {
     ),
   ],
 };
+
+export const NOTE_MOVIE_NOT_FOUND = {
+  icon: className => <ErrorTwoTone className={className} />,
+  header: 'Movie does not exist.',
+  content: [
+    'The movie you are trying to access is not found on the TMDb Database.',
+    'Try searching for it on the search tab.',
+  ],
+}

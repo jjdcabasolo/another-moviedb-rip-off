@@ -35,8 +35,6 @@ const MovieHeader = () => {
   const runtimeHours = ~~(movie.runtime / 60);
   const runtimeMinutes = movie.runtime % 60;
 
-  console.log(movie);
-
   return (
     <Grid item xs={12} container spacing={1}>
       <Grid item xs={12}>
@@ -52,7 +50,7 @@ const MovieHeader = () => {
         <Grid item>
           <Typography variant={isMobile ? "body1" : "h5"}>
             &middot;&nbsp;
-            {moment(movie.date).format('YYYY')}&nbsp;
+            {moment(movie.release_date).format('YYYY')}&nbsp;
             &middot;&nbsp;
             {hasRuntime ? `${runtimeHours} hr ${runtimeMinutes} min` : 'No runtime yet.'}
           </Typography>

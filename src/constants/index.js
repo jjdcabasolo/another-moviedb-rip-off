@@ -1,7 +1,5 @@
 export {
   SIDEBAR_WIDTH,
-  SIDEBAR_TMDB_LOGO_DARK,
-  SIDEBAR_TMDB_LOGO,
 } from './sidebar';
 
 export {
@@ -22,9 +20,17 @@ export {
   NOTE_NO_SELECTED_MOVIE,
   NOTE_NO_SELECTED_TV_SHOW,
   NOTE_OFFLINE,
-  NOTE_NOT_FOUND,
+  NOTE_PAGE_NOT_FOUND,
+  NOTE_MOVIE_NOT_FOUND,
 } from './note';
 
 export {
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
 } from './tvShows';
+
+export {
+  TMDB_LOGO_DARK,
+  TMDB_LOGO,
+  IMDB_LOGO_DARK,
+  IMDB_LOGO,
+} from './logo';

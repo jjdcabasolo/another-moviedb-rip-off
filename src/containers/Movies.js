@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import ReactPlayer from 'react-player'
 import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
-import Note from '../components/common/Note';
 import ComponentLoader from '../components/common/ComponentLoader';
+import Note from '../components/common/Note';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import Section from '../components/movie/MovieDetails/Section';
 
+import { getMovieDetails } from '../api';
+
 import { moviesActions } from '../reducers/ducks';
 
-import { NOTE_NO_SELECTED_MOVIE } from '../constants';
+import { decryptKey } from '../utils/functions';
+
+import { NOTE_NO_SELECTED_MOVIE, NOTE_MOVIE_NOT_FOUND } from '../constants';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,21 +47,29 @@ const Movies = () => {
   const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const dispatch = useDispatch();
 
-  const isMovieSelected = 'id' in movie;
+  const [isLoaded, setIsLoaded] = useState(true);
+
+  const { movieId } = useParams();
 
   useEffect(() => {
-    dispatch(moviesActions.setDetailsLoading(false));
-  }, [dispatch, isMovieLoading]);
+    getMovieDetails(decryptKey(), movieId, response => {
+      dispatch(moviesActions.setActiveMovie(response));
+      dispatch(moviesActions.setDetailsLoading(false));
+      setIsLoaded(true);
+    }, error => {
+      setIsLoaded(error.response.data.status_code);
+    });
+    // setTimeout(() => window.scrollTo(0, 0), 100);    
+  }, [movieId, dispatch]);
 
-  useEffect(() => {
-    setTimeout(() => window.scrollTo(0, 0), 100);
-    // setTimeout(() => window.scrollTo(0, window.innerHeight * 10000), 100);
-  }, []);
-
-  if (!isMovieSelected) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
+  if (movieId === undefined) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
 
   if (isMovieLoading) return <ComponentLoader />;
 
+  if (isLoaded === 34) return <Note details={NOTE_MOVIE_NOT_FOUND} />;
+
+  if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;
+    
   return (
     <Grid container spacing={4} className={classes.root}>
       <MovieHeader />
@@ -80,7 +93,7 @@ const Movies = () => {
         <MovieCrew />
       </Section>
 
-      <Section title="External Links">
+      <Section>
         <MovieLinks />
       </Section>
     </Grid>

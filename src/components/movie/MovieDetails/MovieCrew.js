@@ -42,31 +42,19 @@ import ComponentLoader from '../../common/ComponentLoader';
 const CREW_TO_DISPLAY = [
   {
     identifier: 'director',
-    label: a => `Director${a > 1 ? 's' : ''}`,
+    label: a => 'Film Direction',
   },
   {
     identifier: 'writer',
-    label: a => `Writer${a > 1 ? 's' : ''}`,
+    label: a => `Screenwriter${a > 1 ? 's' : ''}`,
   },
   {
-    identifier: 'producer',
-    label: a => `Producer${a > 1 ? 's' : ''}`,
-  },
-  {
-    identifier: 'coProducer',
-    label: a => `Co-Producer${a > 1 ? 's' : ''}`,
-  },
-  {
-    identifier: 'executiveProducer',
-    label: a => `Executive Producer${a > 1 ? 's' : ''}`,
-  },
-  {
-    identifier: 'casting',
-    label: () => 'Casting',
+    identifier: 'production',
+    label: a => 'Key Production',
   },
   {
     identifier: 'composer',
-    label: a => `Original Music Composer${a > 1 ? 's' : ''}`,
+    label: a => 'Music',
   },
   {
     identifier: 'cinematography',
@@ -74,15 +62,15 @@ const CREW_TO_DISPLAY = [
   },
   {
     identifier: 'editor',
-    label: a => `Editor${a > 1 ? 's' : ''}`,
+    label: a => `Film Editor${a > 1 ? 's' : ''}`,
   },
   {
     identifier: 'costume',
-    label: () => 'Costume Design',
+    label: () => 'Art',
   },
   {
     identifier: 'makeup',
-    label: a => `Makeup Artist${a > 1 ? 's' : ''}`,
+    label: a => 'Hair and Make-up',
   },
 ];
 
@@ -116,7 +104,8 @@ const MovieCrew = () => {
     const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
     const [lighting] = getCrewMembers(crew, 'lighting');
     const [visualEffects] = getCrewMembers(crew, 'visual effects');
-    const finalCrew = {director, writer, producer, coProducer, executiveProducer, casting, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
+    const production = [...producer, ...coProducer, ...executiveProducer, ...casting];
+    const finalCrew = {director, writer, production: production, casting, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
     setCrewMembers(finalCrew);
 
     setMasonryConfig([]);
@@ -131,8 +120,7 @@ const MovieCrew = () => {
       const colItem = [];
       for (let a = i; a < masonryConfig.length; a += crewCol) {
         if (!showMore) {
-          if (masonryConfig[a] === 'executiveProducer'
-          || masonryConfig[a] === 'casting'
+          if (masonryConfig[a] === 'production'
           || masonryConfig[a] === 'composer'
           || masonryConfig[a] === 'cinematography'
           || masonryConfig[a] === 'editor'

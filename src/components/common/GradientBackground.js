@@ -1,6 +1,10 @@
 import React from 'react';
 
+import { useSelector } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
+
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   img: {
@@ -28,10 +32,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const GradientBackground = ({ src }) => {
+const GradientBackground = ({ isVisible }) => {
   const classes = useStyles();
 
-  return <img src={src} alt={`Poster not loading? Visit ${src} to view.`} className={classes.img} />;
+  const activeTab = useSelector(state => state.sidebar.activeTab);
+  const movie = useSelector(state => state.movies.movie);
+
+  const src = activeTab === 'movies'
+    ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie.backdrop_path}`
+    : '';
+
+  if (isVisible) return <img src={src} alt={src} className={classes.img} />;
+  return <></>;
 };
 
 export default GradientBackground;
