@@ -15,11 +15,9 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
-import { getMovieDetails } from '../../../api';
+import { truncateText } from '../../../utils/functions';
 
 import { moviesActions } from '../../../reducers/ducks';
-
-import { decryptKey, truncateText } from '../../../utils/functions';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
@@ -62,19 +60,10 @@ const useStyles = makeStyles(theme => ({
   brokenImgContainer: {
     position: 'absolute',
   },
-  brokenImg: {
-    fontSize: theme.typography.h3.fontSize,
-  },
   rank: {
     fontWeight: '400',
     fontSize: theme.typography.body1.fontSize,
     marginRight: theme.spacing(1),
-  },
-  releaseDate: {
-    position: 'absolute',
-    top: theme.spacing(0.5),
-    fontSize: theme.typography.caption.fontSize,
-    fontWeight: theme.typography.caption.fontWeight,
   },
   mobile: {
     padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px !important`,
@@ -85,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ItemCard = ({content, drawerOpen, col, rank, mobile, type, handleDrawerToggle}) => {
+const ItemCard = ({ content, drawerOpen, col, rank, mobile, type }) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
@@ -93,30 +82,11 @@ const ItemCard = ({content, drawerOpen, col, rank, mobile, type, handleDrawerTog
 
   const dispatch = useDispatch();
 
+  const isMovie = type === 'movie';
+
   if (!content) return <></>;
 
-  const isMovie = type === 'movie';
-  const isTVShow = type === 'tvshow';
-
-  const handleGetDetails = () => {
-    if (isMovie) {
-      getMovieDetails(decryptKey(), content.id, response => {
-        dispatch(moviesActions.setActiveMovie(response));
-      }, error => {
-        console.log(error.response);
-        // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-      });
-    } else if (isTVShow) {
-      // getMovieDetails(decryptKey(), content.id, response => {
-      //   dispatch(moviesActions.setActiveMovie(response.data));
-      // }, error => {
-      //   console.log(error.response);
-      //   // dispatch(snackbarActions.showSnackbar('Your API key is invalid!', 'error'));
-      // });
-    }
-    if (drawerOpen && handleDrawerToggle) handleDrawerToggle();
-    // dispatch(moviesActions.setDetailsLoading(true));
-  };
+  const handleCardClick = () => dispatch(moviesActions.setDetailsLoading(true));
 
   const renderBrokenImage = () => (
     <div className={classes.brokenImgContainer}>
@@ -143,7 +113,7 @@ const ItemCard = ({content, drawerOpen, col, rank, mobile, type, handleDrawerTog
       )}
     >
       <Link to={`/${type}s/${content.id}`}>
-        <Card>
+        <Card onClick={handleCardClick}>
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }
             <CardMedia

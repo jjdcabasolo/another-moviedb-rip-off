@@ -4,10 +4,8 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import NotFound from '../components/notFound/NotFound';
 import ComponentLoader from '../components/common/ComponentLoader';
 
-import { routes } from './config';
-
 const Movies = lazy(() => import('../containers/Movies'));
-const TVShows = lazy(() => import('../containers/TVShows'));
+// const TVShows = lazy(() => import('../containers/TVShows'));
 
 const renderMovies = () => (
   <Suspense fallback={<ComponentLoader />}>

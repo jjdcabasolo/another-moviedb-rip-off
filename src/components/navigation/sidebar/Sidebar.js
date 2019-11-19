@@ -2,7 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { useHistory } from 'react-router';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -30,15 +30,15 @@ import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import GradientBackground from '../../common/GradientBackground';
 import ItemDrawer from '../../common/item/ItemDrawer';
 
-import { sidebarActions } from '../../../reducers/ducks';
+import { moviesActions, sidebarActions } from '../../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,
   SIDEBAR_WIDTH,
   TMDB_LOGO_DARK,
   TMDB_LOGO,
-  MOVIE_DRAWER_TMDB_IMAGE_PREFIX,
 } from '../../../constants';
+
 import { routes } from '../../../routes/config';
 
 const useStyles = makeStyles(theme => ({
@@ -121,11 +121,12 @@ const Sidebar = ({ children }) => {
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const darkMode = useSelector(state => state.sidebar.darkMode);
+  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const movie = useSelector(state => state.movies.movie);
 
   const dispatch = useDispatch();
 
-  const history = useHistory();
+  const { movieId } = useParams();
 
   const isMovieSelected = 'id' in movie;
   const isMovieTabActive = activeTab === 'movies';
@@ -142,8 +143,8 @@ const Sidebar = ({ children }) => {
   };
 
   const handleListItemClick = tab => {
-    dispatch(sidebarActions.setActiveTab(tab.toLowerCase()));
-    history.push(tab.toLowerCase().replace(/ /, ''));
+    dispatch(moviesActions.setActiveMovie({}));  
+    dispatch(sidebarActions.setActiveTab(tab.toLowerCase()))
   };
 
   const handleDrawerState = () => dispatch(sidebarActions.toggleDrawer());
@@ -179,18 +180,20 @@ const Sidebar = ({ children }) => {
 
         <List>
           { routes.map((element, index) => (index !== 0) && (
-            <ListItem
-              button
-              classes={{ selected: classes.activeTab }}
-              key={element.key}
-              onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase())}
-              selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
-            >
-              <WithTooltip title={element.title} withTooltip={!drawerOpen}>
-                <ListItemIcon>{element.icon}</ListItemIcon>
-              </WithTooltip>
-              <ListItemText primary={element.title} />
-            </ListItem>
+            <Link to={element.path}>
+              <ListItem
+                button
+                classes={{ selected: classes.activeTab }}
+                key={element.key}
+                onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase())}
+                selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
+              >
+                <WithTooltip title={element.title} withTooltip={!drawerOpen}>
+                  <ListItemIcon>{element.icon}</ListItemIcon>
+                </WithTooltip>
+                <ListItemText primary={element.title} />
+              </ListItem>
+            </Link>
           )) }
         </List>
 
@@ -224,9 +227,7 @@ const Sidebar = ({ children }) => {
       {evaluateDrawerVisibility()}
 
       <div className={classes.itemContainer}>
-        { isMovieTabActive && isMovieSelected && (
-          <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie.backdrop_path}`} />
-        )}
+        <GradientBackground isVisible={isMovieSelected && !movieId && !isMovieLoading} />
         <main
           className={clsx(
             classes.content,

@@ -35,8 +35,6 @@ const MovieHeader = () => {
   const runtimeHours = ~~(movie.runtime / 60);
   const runtimeMinutes = movie.runtime % 60;
 
-  console.log(movie);
-
   return (
     <Grid item xs={12} container spacing={1}>
       <Grid item xs={12}>

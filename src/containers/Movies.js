@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
+import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
@@ -43,28 +44,32 @@ const Movies = () => {
   const classes = useStyles();
 
   const movie = useSelector(state => state.movies.movie);
+  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const dispatch = useDispatch();
 
   const [isLoaded, setIsLoaded] = useState(true);
 
-  const isMovieSelected = 'id' in movie;
-
   const { movieId } = useParams();
+
   useEffect(() => {
     getMovieDetails(decryptKey(), movieId, response => {
       dispatch(moviesActions.setActiveMovie(response));
-      setTimeout(() => window.scrollTo(0, 0), 100);
+      dispatch(moviesActions.setDetailsLoading(false));
       setIsLoaded(true);
     }, error => {
-      setIsLoaded(false);
+      setIsLoaded(error.response.data.status_code);
     });
-  }, [movieId]);
+    // setTimeout(() => window.scrollTo(0, 0), 100);    
+  }, [movieId, dispatch]);
 
-  if (!isMovieSelected) {
-    if (isLoaded) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
-    return <Note details={NOTE_MOVIE_NOT_FOUND} />;
-  }
+  if (movieId === undefined) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
 
+  if (isMovieLoading) return <ComponentLoader />;
+
+  if (isLoaded === 34) return <Note details={NOTE_MOVIE_NOT_FOUND} />;
+
+  if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;
+    
   return (
     <Grid container spacing={4} className={classes.root}>
       <MovieHeader />
