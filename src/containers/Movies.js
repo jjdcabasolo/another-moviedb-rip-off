@@ -57,6 +57,7 @@ const Movies = () => {
       dispatch(moviesActions.setDetailsLoading(false));
       setIsLoaded(true);
     }, error => {
+      dispatch(moviesActions.setActiveMovie({}));
       setIsLoaded(error.response.data.status_code);
     });
     // setTimeout(() => window.scrollTo(0, 0), 100);    
