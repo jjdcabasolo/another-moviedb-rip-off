@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ItemCard = ({ content, drawerOpen, col, rank, mobile, type }) => {
+const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerToggle }) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
@@ -86,7 +86,10 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type }) => {
 
   if (!content) return <></>;
 
-  const handleCardClick = () => dispatch(moviesActions.setDetailsLoading(true));
+  const handleCardClick = () => {
+    if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
+    dispatch(moviesActions.setDetailsLoading(true));
+  };
 
   const renderBrokenImage = () => (
     <div className={classes.brokenImgContainer}>

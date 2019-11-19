@@ -8,8 +8,11 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       height: theme.browserSize.height - theme.spacing(17),
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.between('sm', 'lg')]: {
       height: theme.browserSize.height - theme.spacing(6),
+    },
+    [theme.breakpoints.up('lg')]: {
+      height: theme.browserSize.height,
     },
   },
   loaderText: {
