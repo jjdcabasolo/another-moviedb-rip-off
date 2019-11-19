@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 
 import clsx from 'clsx';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -32,7 +32,6 @@ import { browserActions, moviesActions, sidebarActions } from '../../../reducers
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
 import { routes } from '../../../routes/config';
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   bottomNavigation: {
@@ -61,12 +60,14 @@ const Appbar = ({ children }) => {
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const darkMode = useSelector(state => state.sidebar.darkMode);
   const movie = useSelector(state => state.movies.movie);
+  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const scrollY = useSelector(state => state.browser.scrollY);
   const dispatch = useDispatch();
 
+  const location = useLocation();
   const history = useHistory();
 
-  const isMovieSelected = 'id' in movie;
+  const isMovieSelected = location.pathname.replace(/movies\/?/, '').length > 1;
   const isMovieTabActive = activeTab === 'movies';
   const isTVShowsTabActive = activeTab === 'tvshows';
 
@@ -77,17 +78,17 @@ const Appbar = ({ children }) => {
     setTimeout(() => window.scrollTo(0, scrollY), 100);
   }, [dispatch, scrollY]);
 
-  useEffect(() => {
-    const handleBack = () => {
-      if ('id' in movie) {
-        history.push('movies');
-        goBack();
-      }
-    };
+  // useEffect(() => {
+  //   const handleBack = () => {
+  //     if ('id' in movie) {
+  //       history.push('movies');
+  //       goBack();
+  //     }
+  //   };
 
-    window.addEventListener('popstate', handleBack);
-    return () => window.removeEventListener('popstate', handleBack);
-  }, [goBack, history, movie]);
+  //   window.addEventListener('popstate', handleBack);
+  //   return () => window.removeEventListener('popstate', handleBack);
+  // }, [goBack, history, movie]);
 
   useLayoutEffect(() => {
     const handleScroll = () => {
@@ -169,9 +170,7 @@ const Appbar = ({ children }) => {
         </AppBar>
       </HideOnScroll>
 
-      { isMovieTabActive && isMovieSelected && (
-        <GradientBackground src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/original${movie.poster_path}`} />
-      )}
+      <GradientBackground isVisible={isMovieSelected && !isMovieLoading} image="poster_path" />
 
       <div
         className={clsx(
@@ -193,6 +192,8 @@ const Appbar = ({ children }) => {
             <BottomNavigationAction
               icon={element.icon}
               label={element.title}
+              component={Link}
+              to={element.path}
             />
           ))}
         </BottomNavigation>
