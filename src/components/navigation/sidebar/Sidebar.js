@@ -102,6 +102,10 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'auto',
     width: '100%',
   },
+  link: {
+    textDecoration: 'none',
+    color: 'unset',
+  },
 }));
 
 const WithTooltip = ({ children, title, withTooltip }) => (withTooltip
@@ -180,7 +184,7 @@ const Sidebar = ({ children }) => {
 
         <List>
           { routes.map((element, index) => (index !== 0) && (
-            <Link to={element.path}>
+            <Link to={element.path} className={classes.link}>
               <ListItem
                 button
                 classes={{ selected: classes.activeTab }}
