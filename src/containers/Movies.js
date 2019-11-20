@@ -4,8 +4,8 @@ import ReactPlayer from 'react-player'
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
@@ -38,9 +38,14 @@ const useStyles = makeStyles(theme => ({
       height: `${theme.spacing(50)}px !important`,
     },
   },
+  note: {
+    padding: theme.spacing(8, 2),
+  },
 }));
 
 const Movies = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const movie = useSelector(state => state.movies.movie);
@@ -63,11 +68,23 @@ const Movies = () => {
     // setTimeout(() => window.scrollTo(0, 0), 100);    
   }, [movieId, dispatch]);
 
-  if (movieId === undefined) return <Note details={NOTE_NO_SELECTED_MOVIE} />;
+  const WithNoteContainer = ({ children }) => isMobile
+    ? <div className={classes.note}>{children}</div>
+    : children;
+
+  if (movieId === undefined) return (
+    <WithNoteContainer>
+      <Note details={NOTE_NO_SELECTED_MOVIE} />
+    </WithNoteContainer>
+  );
 
   if (isMovieLoading) return <ComponentLoader />;
 
-  if (isLoaded === 34) return <Note details={NOTE_MOVIE_NOT_FOUND} />;
+  if (isLoaded === 34) return (
+    <WithNoteContainer>
+      <Note details={NOTE_MOVIE_NOT_FOUND} />
+    </WithNoteContainer>
+  );
 
   if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;
     

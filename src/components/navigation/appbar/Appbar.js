@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
+import React, { useState, useLayoutEffect, useCallback } from 'react';
 
 import clsx from 'clsx';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -30,6 +30,7 @@ import GradientBackground from '../../common/GradientBackground';
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
 import HideOnScroll from '../../../utils/components/HideOnScroll';
+import { evaluateLocation } from '../../../utils/functions';
 
 import { routes } from '../../../routes/config';
 
@@ -67,28 +68,18 @@ const Appbar = ({ children }) => {
   const location = useLocation();
   const history = useHistory();
 
-  const isMovieSelected = location.pathname.replace(/movies\/?/, '').length > 1;
-  const isMovieTabActive = activeTab === 'movies';
-  const isTVShowsTabActive = activeTab === 'tvshows';
+  const currentLocation = evaluateLocation(location);
+  const isMovieSelected = 'movieId' in currentLocation;
+  const isMovieTabActive = 'movie' in currentLocation;
+  const isTVShowsTabActive = 'tvShow' in currentLocation;
 
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
     setTimeout(() => window.scrollTo(0, scrollY), 100);
-  }, [dispatch, scrollY]);
-
-  // useEffect(() => {
-  //   const handleBack = () => {
-  //     if ('id' in movie) {
-  //       history.push('movies');
-  //       goBack();
-  //     }
-  //   };
-
-  //   window.addEventListener('popstate', handleBack);
-  //   return () => window.removeEventListener('popstate', handleBack);
-  // }, [goBack, history, movie]);
+    history.goBack();
+  }, [dispatch, scrollY, history]);
 
   useLayoutEffect(() => {
     const handleScroll = () => {
@@ -170,12 +161,12 @@ const Appbar = ({ children }) => {
         </AppBar>
       </HideOnScroll>
 
-      <GradientBackground isVisible={isMovieSelected && !isMovieLoading} image="poster_path" />
+      <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" />
 
       <div
         className={clsx(
           classes.container,
-          { [classes.containerMovieSelected]: isMovieSelected }
+          { [classes.containerMovieSelected]: isMovieSelected && 'id' in movie }
         )}
       >
         {renderList()}

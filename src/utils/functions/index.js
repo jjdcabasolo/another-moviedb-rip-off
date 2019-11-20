@@ -9,5 +9,6 @@ export {
 } from './extractCrew';
 
 export {
+  evaluateLocation,
   truncateText,
 } from './text';
