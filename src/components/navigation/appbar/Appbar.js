@@ -69,6 +69,7 @@ const Appbar = ({ children }) => {
   const history = useHistory();
 
   const currentLocation = evaluateLocation(location);
+  console.log(currentLocation, 'movieId' in currentLocation)
   const isMovieSelected = 'movieId' in currentLocation;
   const isMovieTabActive = 'movie' in currentLocation;
   const isTVShowsTabActive = 'tvShow' in currentLocation;
@@ -136,7 +137,7 @@ const Appbar = ({ children }) => {
       return <ItemList type="movie"/>;
     }
     else if (isTVShowsTabActive) return <ItemList type="tvshow"/>;
-    else return <NotFound />;
+    else return children;
   };
 
   return (
