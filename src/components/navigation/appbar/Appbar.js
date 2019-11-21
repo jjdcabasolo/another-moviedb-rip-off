@@ -14,6 +14,7 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import {
   ArrowBackTwoTone,
   Brightness2TwoTone,
@@ -69,7 +70,6 @@ const Appbar = ({ children }) => {
   const history = useHistory();
 
   const currentLocation = evaluateLocation(location);
-  console.log(currentLocation, 'movieId' in currentLocation)
   const isMovieSelected = 'movieId' in currentLocation;
   const isMovieTabActive = 'movie' in currentLocation;
   const isTVShowsTabActive = 'tvShow' in currentLocation;
@@ -109,7 +109,14 @@ const Appbar = ({ children }) => {
           >
             <ArrowBackTwoTone />
           </IconButton>
-          <Typography component="h1" variant="h6">{movie.title}</Typography>
+          { isMovieLoading
+            ? <Skeleton width="60%" />
+            : (
+              <Typography component="h1" variant="h6">
+                {movie.title}
+              </Typography>
+            )
+          }
         </>
       );
     }
