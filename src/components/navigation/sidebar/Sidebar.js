@@ -2,7 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -130,8 +130,6 @@ const Sidebar = ({ children }) => {
 
   const dispatch = useDispatch();
 
-  const { movieId } = useParams();
-
   const isMovieSelected = 'id' in movie;
   const isMovieTabActive = activeTab === 'movies';
   const isTVShowsTabActive = activeTab === 'tvshows';
@@ -231,7 +229,7 @@ const Sidebar = ({ children }) => {
       {evaluateDrawerVisibility()}
 
       <div className={classes.itemContainer}>
-        <GradientBackground isVisible={isMovieSelected && !movieId && !isMovieLoading} />
+        <GradientBackground isVisible={isMovieSelected && !isMovieLoading} image="backdrop_path"/>
         <main
           className={clsx(
             classes.content,
