@@ -6,73 +6,12 @@ import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CrewAvatarList from './CrewAvatarList';
-import CrewCount from './CrewCount';
-
-import { getCrewMembers } from '../../../utils/functions';
+import Statistic from './Statistic';
 import ComponentLoader from '../../common/ComponentLoader';
 
-// CREW PLAN
-// // default
-// department: "Directing",
-//   job: "Director",
-// department: "Writing",
-// department: "Production",
-//   job: "Producer",
-//   job: "Co-Producer",
-//   job: "Executive Producer",
-//   job: "Casting",
-// // see more
-// department: "Sound",
-//   job: "Original Music Composer",
-// department: "Camera",
-//   job: "Director of Photography",
-// department: "Editing",
-//   job: "Editor",
-// department: "Art",
-//   job: "Production Design",
-//   job: "Art Direction",
-// department: "Costume & Make-Up",
-//   job: "Costume Design",
-//   job: "Makeup Artist",
-// department: "Crew", // count
-// department: "Lighting", // count
-// department: "Visual Effects", // count
-// // total count of crew at the end
+import { getCrewMembers } from '../../../utils/functions';
 
-const CREW_TO_DISPLAY = [
-  {
-    identifier: 'director',
-    label: a => 'Film Direction',
-  },
-  {
-    identifier: 'writer',
-    label: a => `Screenwriter${a > 1 ? 's' : ''}`,
-  },
-  {
-    identifier: 'production',
-    label: a => 'Key Production',
-  },
-  {
-    identifier: 'composer',
-    label: a => 'Music',
-  },
-  {
-    identifier: 'cinematography',
-    label: () => 'Cinematography',
-  },
-  {
-    identifier: 'editor',
-    label: a => `Film Editor${a > 1 ? 's' : ''}`,
-  },
-  {
-    identifier: 'costume',
-    label: () => 'Art',
-  },
-  {
-    identifier: 'makeup',
-    label: a => 'Hair and Make-up',
-  },
-];
+import { CREW_TO_DISPLAY } from '../../../constants';
 
 const MovieCrew = () => {
   const theme = useTheme();
@@ -136,26 +75,30 @@ const MovieCrew = () => {
     return col;
   };
 
-  const renderCrewCount = () => {
+  const renderStatistic = () => {
     const hasLighting = lighting.length > 0;
     const hasVE = visualEffects.length > 0;
-    let count = 0;
+    let count = 1;
     if (hasLighting) count++;
     if (hasVE) count++;
+    const col = 12 / count;
     return [
-      (hasLighting && <CrewCount col={12 / count} count={lighting.length} label="Lighting" />),
-      (hasVE && <CrewCount col={12 / count} count={visualEffects.length} label="Visual Effects" /> ),
+      (hasLighting && <Statistic col={col} count={lighting.length} label="Lighting" divider />),
+      (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider /> ),
+      <Statistic col={col} count={movie.crew.length} label="Total" isTotal />,
     ];
   };
 
-  if (!('director' in crewMembers)) return <ComponentLoader />
+  if (!('director' in crewMembers)) return <ComponentLoader />;
 
   return (
     <>
       <Grid container spacing={2}>
         { constructMasonryGrid() }
-        { showMore && renderCrewCount() }
-        <CrewCount count={movie.crew.length} label="Total Crew Members" isTotal />
+        { showMore
+          ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
+          : <Statistic count={movie.crew.length} label="Total Crew" isTotal />
+        }
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>
             {showMore ? 'Show less' : 'Show all'}

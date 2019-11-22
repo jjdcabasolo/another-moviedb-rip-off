@@ -13,6 +13,7 @@ import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
+import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import Section from '../components/movie/MovieDetails/Section';
 
 import { getMovieDetails } from '../api';
@@ -56,6 +57,8 @@ const Movies = () => {
 
   const { movieId } = useParams();
 
+  const { budget, revenue, youtube } = movie;
+
   useEffect(() => {
     getMovieDetails(decryptKey(), movieId, response => {
       dispatch(moviesActions.setActiveMovie(response));
@@ -92,13 +95,17 @@ const Movies = () => {
     <Grid container spacing={4} className={classes.root}>
       <MovieHeader />
 
-      <Section title="Trailer">
+      <Section visible={budget && revenue}>
+        <MovieBudget />
+      </Section>
+
+      <Section title="Trailer" visible={youtube}>
         <ReactPlayer
           className={classes.trailer}
           controls
           light
           pip
-          url={movie.youtube}
+          url={youtube}
           width="100%"
         />
       </Section>

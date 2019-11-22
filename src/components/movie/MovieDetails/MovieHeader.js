@@ -52,7 +52,7 @@ const MovieHeader = () => {
             &middot;&nbsp;
             {moment(movie.release_date).format('YYYY')}&nbsp;
             &middot;&nbsp;
-            {hasRuntime ? `${runtimeHours} hr ${runtimeMinutes} min` : 'No runtime yet.'}
+            {hasRuntime ? `${runtimeHours}hr ${runtimeMinutes}min` : 'No runtime yet.'}
           </Typography>
         </Grid>
       </Grid>

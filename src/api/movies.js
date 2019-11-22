@@ -41,7 +41,7 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
     const externalLinks = external_ids.data;
     const movieDetails = {
       ...details.data,
-      youtube: `https://www.youtube.com/watch?v=${videos.data.results[0].key}`,
+      youtube: videos.data.results[0] ? `https://www.youtube.com/watch?v=${videos.data.results[0].key}` : null,
       cast: credits.data.cast,
       crew: credits.data.crew,
       facebook: external_ids.data.facebook_id !== null ? `https://www.facebook.com/${externalLinks.facebook_id}` : null,

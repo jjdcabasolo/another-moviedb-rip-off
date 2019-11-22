@@ -12,3 +12,7 @@ export {
   evaluateLocation,
   truncateText,
 } from './text';
+
+export {
+  toMillionsOrBillions,
+} from './monetary';

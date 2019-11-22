@@ -84,7 +84,7 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
 
   const isMovie = type === 'movie';
 
-  if (!content) return <></>;
+  if (!content) return null;
 
   const handleCardClick = () => {
     if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
