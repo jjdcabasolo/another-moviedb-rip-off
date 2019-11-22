@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 const CastAvatar = ({ content, col }) => {
   const classes = useStyles();
 
-  if (!content) return <></>;
+  if (!content) return null;
 
   return (
     <Grid item xs={col} container justify="center" alignItems="center" direction="column" wrap="nowrap">

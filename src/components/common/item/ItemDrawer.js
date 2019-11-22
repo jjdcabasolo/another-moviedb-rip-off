@@ -129,7 +129,7 @@ const ItemDrawer = ({ type }) => {
     if (itemDrawerOpen) {
       return (
         <ResponsiveComponent
-          mobileComponent={<></>}
+          mobileComponent={null}
           tabletComponent={(
             <Grid container spacing={2}>
               {new Array(5).fill({}).map((_, index) => (

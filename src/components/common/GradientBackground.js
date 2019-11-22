@@ -43,7 +43,7 @@ const GradientBackground = ({ isVisible, image }) => {
     : '';
 
   if (isVisible) return <img src={src} alt={src} className={classes.img} />;
-  return <></>;
+  return null;
 };
 
 export default GradientBackground;

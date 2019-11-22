@@ -2,25 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, Button, Divider, useMediaQuery } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
+import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CrewAvatarList from './CrewAvatarList';
-import CrewCount from './CrewCount';
+import Statistic from './Statistic';
 import ComponentLoader from '../../common/ComponentLoader';
 
 import { getCrewMembers } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
-const useStyles = makeStyles(theme => ({
-  divider: {
-    height: 'inherit',
-  },
-}));
-
 const MovieCrew = () => {
-  const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
@@ -82,7 +75,7 @@ const MovieCrew = () => {
     return col;
   };
 
-  const renderCrewCount = () => {
+  const renderStatistic = () => {
     const hasLighting = lighting.length > 0;
     const hasVE = visualEffects.length > 0;
     let count = 1;
@@ -90,9 +83,9 @@ const MovieCrew = () => {
     if (hasVE) count++;
     const col = 12 / count;
     return [
-      (hasLighting && <CrewCount col={col} count={lighting.length} label="Lighting" divider />),
-      (hasVE && <CrewCount col={col} count={visualEffects.length} label="VFX" divider /> ),
-      <CrewCount col={col} count={movie.crew.length} label="Total" isTotal />,
+      (hasLighting && <Statistic col={col} count={lighting.length} label="Lighting" divider />),
+      (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider /> ),
+      <Statistic col={col} count={movie.crew.length} label="Total" isTotal />,
     ];
   };
 
@@ -103,8 +96,8 @@ const MovieCrew = () => {
       <Grid container spacing={2}>
         { constructMasonryGrid() }
         { showMore
-          ? <Grid item container justify="center" alignItems="center">{renderCrewCount()}</Grid>
-          : <CrewCount count={movie.crew.length} label="Total Crew" isTotal />
+          ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
+          : <Statistic count={movie.crew.length} label="Total Crew" isTotal />
         }
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>

@@ -1,7 +1,9 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Divider, Grid, Tooltip, Typography } from '@material-ui/core';
+import clsx from 'clsx';
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Divider, Grid, Tooltip, Typography, useMediaQuery } from '@material-ui/core';
 import { HelpTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
@@ -12,19 +14,36 @@ const useStyles = makeStyles(theme => ({
   divider: {
     height: theme.spacing(4),
   },
+  cols3Adjustment: {
+    maxWidth: '33%',
+    flexBasis: '33%',
+  },
 }));
 
-const CrewCount = ({ count, col, label, isTotal, divider }) => {
+const Statistic = ({ count, col, label, isTotal, divider }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const xs = col - 1;
   return (
     <>
-      <Grid item xs={col - 1} container justify="center" alignItems="center" direction="column">
+      <Grid
+        item
+        xs={xs}
+        container
+        justify="center"
+        alignItems="center"
+        direction="column"
+        className={clsx(
+          { [classes.cols3Adjustment]: xs === 3 },
+        )}
+      >
         <Grid item>
-          <Typography variant="h4">{count}</Typography>
+          <Typography variant={isMobile ? "h5" : "h4"}>{count}</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="overline">
+          <Typography variant="overline" color="textSecondary">
             {label}
             {isTotal && (
               <Tooltip
@@ -47,4 +66,4 @@ const CrewCount = ({ count, col, label, isTotal, divider }) => {
   );
 };
 
-export default CrewCount;
+export default Statistic;

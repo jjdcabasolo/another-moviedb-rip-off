@@ -89,7 +89,7 @@ const InitAPICalls = () => {
     });
   }, [apiKey, dispatch]);
 
-  return <></>;
+  return null;
 };
 
 export default InitAPICalls;
