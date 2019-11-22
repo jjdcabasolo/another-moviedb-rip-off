@@ -14,6 +14,7 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import {
   ArrowBackTwoTone,
   Brightness2TwoTone,
@@ -22,7 +23,6 @@ import {
 
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import NotFound from '../../notFound/NotFound';
 import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
 import GradientBackground from '../../common/GradientBackground';
@@ -108,7 +108,14 @@ const Appbar = ({ children }) => {
           >
             <ArrowBackTwoTone />
           </IconButton>
-          <Typography component="h1" variant="h6">{movie.title}</Typography>
+          { isMovieLoading
+            ? <Skeleton width="60%" />
+            : (
+              <Typography component="h1" variant="h6" noWrap>
+                {movie.title}
+              </Typography>
+            )
+          }
         </>
       );
     }
@@ -136,7 +143,7 @@ const Appbar = ({ children }) => {
       return <ItemList type="movie"/>;
     }
     else if (isTVShowsTabActive) return <ItemList type="tvshow"/>;
-    else return <NotFound />;
+    else return children;
   };
 
   return (

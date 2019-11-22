@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
-import CastCard from './CastCard';
+import CastAvatar from './CastAvatar';
 
 const MovieCast = () => {
   const theme = useTheme();
@@ -28,11 +28,11 @@ const MovieCast = () => {
     <>
       <Grid container spacing={2}>
         {movie.cast.slice(0, maxVisibleCards).map(cast => (
-          <CastCard content={cast} col={12 / cardCol} />
+          <CastAvatar content={cast} col={12 / cardCol} />
         ))}
         { showMore && (
           movie.cast.slice(maxVisibleCards, movie.cast.length).map(cast => (
-            <CastCard content={cast} col={12 / cardCol} />
+            <CastAvatar content={cast} col={12 / cardCol} />
           ))
         )}
         <Grid item xs={12} container justify="flex-end">
