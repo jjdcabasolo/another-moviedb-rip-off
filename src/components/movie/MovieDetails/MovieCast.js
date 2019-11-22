@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -6,6 +6,12 @@ import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CastAvatar from './CastAvatar';
+
+const getCardCol = (isMobile, isTablet, isDesktop) => {
+  if (isMobile) return 2;
+  if (isTablet) return 3;
+  if (isDesktop) return 4;
+};
 
 const MovieCast = () => {
   const theme = useTheme();
@@ -16,13 +22,13 @@ const MovieCast = () => {
   const movie = useSelector(state => state.movies.movie);
 
   const [showMore, setShowMore] = useState(false);
-  const [cardCol] = useState(() => {
-    if (isDesktop) return 4;
-    if (isTablet) return 3;
-    if (isMobile) return 2;
-  });
+  const [cardCol, setCardCol] = useState(0);
 
   const maxVisibleCards = cardCol * 2;
+
+  useEffect(() => {
+    setCardCol(getCardCol(isMobile, isTablet, isDesktop));
+  }, [isDesktop, isTablet, isMobile]);
 
   return (
     <>

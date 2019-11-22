@@ -13,6 +13,12 @@ import { getCrewMembers } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
+const getCrewCol = (isMobile, isTablet, isDesktop) => {
+  if (isMobile) return 1;
+  if (isTablet) return 2;
+  if (isDesktop) return 3;
+};
+
 const MovieCrew = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
@@ -24,13 +30,13 @@ const MovieCrew = () => {
   const [crewMembers, setCrewMembers] = useState({});
   const [masonryConfig, setMasonryConfig] = useState([]);
   const [showMore, setShowMore] = useState(false);
-  const [crewCol] = useState(() => {
-    if (isDesktop) return 3;
-    if (isTablet) return 2;
-    if (isMobile) return 1;
-  });
+  const [crewCol, setCrewCol] = useState(getCrewCol());
 
   const {lighting, visualEffects} = crewMembers;
+
+  useEffect(() => {
+    setCrewCol(getCrewCol(isMobile, isTablet, isDesktop));
+  }, [isDesktop, isTablet, isMobile]);
 
   useEffect(() => {
     const { crew } = movie;
