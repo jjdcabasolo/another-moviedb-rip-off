@@ -23,7 +23,6 @@ import {
 
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import NotFound from '../../notFound/NotFound';
 import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
 import GradientBackground from '../../common/GradientBackground';
@@ -112,7 +111,7 @@ const Appbar = ({ children }) => {
           { isMovieLoading
             ? <Skeleton width="60%" />
             : (
-              <Typography component="h1" variant="h6">
+              <Typography component="h1" variant="h6" noWrap>
                 {movie.title}
               </Typography>
             )
