@@ -34,10 +34,10 @@ const useStyles = makeStyles(theme => ({
     width: theme.browserSize.width - theme.spacing(7),
   },
   drawerCloseWidthOpenSidebar: {
-    width: (theme.browserSize.width - SIDEBAR_WIDTH) / 3,
+    width: (theme.browserSize.width - SIDEBAR_WIDTH) / 4,
   },
   drawerCloseWidthClosedSidebar: {
-    width: (theme.browserSize.width - theme.spacing(7)) / 3,
+    width: (theme.browserSize.width - theme.spacing(7)) / 4,
   },
   drawer: {
     flexShrink: 0,

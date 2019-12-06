@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
+  Container,
   CssBaseline,
   Drawer,
   IconButton,
@@ -60,7 +61,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(5),
   },
   contentMovieSelected: {
-    padding: '0 10%',
     marginTop: theme.spacing(-5),
   },
   contentTopPadding: {
@@ -236,7 +236,9 @@ const Sidebar = ({ children }) => {
             { [classes.contentMovieSelected]: isMovieSelected }
           )}
         >
-          { children }
+          <Container maxWidth="md">
+            { children }
+          </Container>
         </main>
       </div>
     </div>

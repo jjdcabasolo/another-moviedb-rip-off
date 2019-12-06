@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 const MovieHeader = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
 
   const movie = useSelector(state => state.movies.movie);
 

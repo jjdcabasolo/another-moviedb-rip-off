@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerClosed: {
     height: 0,
-    paddingTop: theme.spacing(30),
+    paddingTop: theme.spacing(20),
     width: '100%',
   },
   typoOverlay: {
@@ -77,6 +77,7 @@ const useStyles = makeStyles(theme => ({
 const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerToggle }) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const classes = useStyles();
 
@@ -98,7 +99,7 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
   );
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
-  if (col === 2 || (col === 6 && !landscapeTablet)) {
+  if (col === 2 || (col === 6 && !landscapeTablet) || isDesktop) {
     if (content && content.poster_path) imagePath += `/w780${content.poster_path}`;
     else imagePath = renderBrokenImage();
   } else {
