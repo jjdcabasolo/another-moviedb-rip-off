@@ -14,6 +14,7 @@ import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
+import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
 import Section from '../components/movie/MovieDetails/Section';
 
 import { getMovieDetails } from '../api';
@@ -65,8 +66,10 @@ const Movies = () => {
       dispatch(moviesActions.setDetailsLoading(false));
       setIsLoaded(true);
     }, error => {
-      dispatch(moviesActions.setActiveMovie({}));
-      setIsLoaded(error.response.data.status_code);
+      if (error.response) {
+        dispatch(moviesActions.setActiveMovie({}));
+        setIsLoaded(error.response.data.status_code);
+      }
     });
     // setTimeout(() => window.scrollTo(0, 0), 100);    
   }, [movieId, dispatch]);
@@ -116,6 +119,10 @@ const Movies = () => {
 
       <Section title="Crew">
         <MovieCrew />
+      </Section>
+
+      <Section title="Production">
+        <MovieProduction />
       </Section>
 
       <Section>

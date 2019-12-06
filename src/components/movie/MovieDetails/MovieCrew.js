@@ -13,6 +13,12 @@ import { getCrewMembers } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
+const getCrewCol = (isMobile, isTablet, isDesktop) => {
+  if (isMobile) return 1;
+  if (isTablet) return 2;
+  if (isDesktop) return 3;
+};
+
 const MovieCrew = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
@@ -24,27 +30,27 @@ const MovieCrew = () => {
   const [crewMembers, setCrewMembers] = useState({});
   const [masonryConfig, setMasonryConfig] = useState([]);
   const [showMore, setShowMore] = useState(false);
-  const [crewCol] = useState(() => {
-    if (isDesktop) return 3;
-    if (isTablet) return 2;
-    if (isMobile) return 1;
-  });
+  const [crewCol, setCrewCol] = useState(getCrewCol());
 
   const {lighting, visualEffects} = crewMembers;
+
+  useEffect(() => {
+    setCrewCol(getCrewCol(isMobile, isTablet, isDesktop));
+  }, [isDesktop, isTablet, isMobile]);
 
   useEffect(() => {
     const { crew } = movie;
     const [director] = getCrewMembers(crew, 'directing', ['director']);
     const [writer] = getCrewMembers(crew, 'writing');
-    const [producer, coProducer, executiveProducer, casting] = getCrewMembers(crew, 'production', ['producer', 'co-producer', 'executive producer', 'casting']);
+    const [producer, executiveProducer] = getCrewMembers(crew, 'production', ['producer', 'executive producer']);
     const [composer] = getCrewMembers(crew, 'sound', ['original music composer']);
     const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
     const [editor] = getCrewMembers(crew, 'editing', ['editor']);
     const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
     const [lighting] = getCrewMembers(crew, 'lighting');
     const [visualEffects] = getCrewMembers(crew, 'visual effects');
-    const production = [...producer, ...coProducer, ...executiveProducer, ...casting];
-    const finalCrew = {director, writer, production: production, casting, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
+    const production = [...producer, ...executiveProducer];
+    const finalCrew = {director, writer, production: production, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
     setCrewMembers(finalCrew);
 
     setMasonryConfig([]);

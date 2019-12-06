@@ -34,9 +34,6 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  parallax: {
-    width: `${theme.browserSize.width}px !important`,
-  },
 }));
 
 const SidebarTitlebar = () => {

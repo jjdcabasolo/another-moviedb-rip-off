@@ -12,12 +12,21 @@ const MovieBudget = () => {
   const movie = useSelector(state => state.movies.movie);
 
   const { budget, revenue } = movie;
+  
+  const renderStatistics = () => {
+    const income = revenue - budget;
+    const hasIncome = income > 0;
+
+    return [
+      <Statistic col={4} count={toMillionsOrBillions(revenue)} label="Revenue" divider />,
+      <Statistic col={4} count={toMillionsOrBillions(budget)} label="Budget" divider={revenue && hasIncome} />,
+      (hasIncome && <Statistic col={4} count={toMillionsOrBillions(income)} label="Income" />),
+    ];
+  };
 
   return (
     <Grid item container justify="center" alignItems="center">
-      <Statistic col={4} count={toMillionsOrBillions(revenue)} label="Revenue" divider />
-      <Statistic col={4} count={toMillionsOrBillions(budget)} label="Budget" divider={revenue} />
-      <Statistic col={4} count={toMillionsOrBillions(revenue - budget)} label="Income" />
+      {renderStatistics()}
     </Grid>
   );
 };

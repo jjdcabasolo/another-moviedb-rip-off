@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
       height: '35vh',
       width: theme.browserSize.width - theme.spacing(7),
     },
-    [`${theme.breakpoints.between('md', 'lg')} and (orientation: landscape)`]: {
+    [`${theme.breakpoints.only('md')} and (orientation: landscape)`]: {
       marginTop: theme.spacing(6),
       height: '50vh',
       width: '100%',
