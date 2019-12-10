@@ -21,8 +21,8 @@ const getCrewCol = (isMobile, isTablet, isDesktop) => {
 
 const MovieCrew = () => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const movie = useSelector(state => state.movies.movie);

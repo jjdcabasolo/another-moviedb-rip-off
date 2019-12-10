@@ -58,7 +58,7 @@ const Movies = () => {
 
   const { movieId } = useParams();
 
-  const { budget, revenue, youtube } = movie;
+  const { budget, revenue, youtube, production_companies } = movie;
 
   useEffect(() => {
     getMovieDetails(decryptKey(), movieId, response => {
@@ -121,7 +121,7 @@ const Movies = () => {
         <MovieCrew />
       </Section>
 
-      <Section title="Production">
+      <Section visible={production_companies} title="Production">
         <MovieProduction />
       </Section>
 
