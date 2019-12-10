@@ -7,17 +7,18 @@ import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CastAvatar from './CastAvatar';
 
-const getCardCol = (isMobile, isTablet, isDesktop) => {
+const getCardCol = (isMobile, isLowerTablet) => {
   if (isMobile) return 2;
-  if (isTablet) return 3;
-  if (isDesktop) return 4;
+  if (isLowerTablet) return 3;
+  return 4;
 };
 
 const MovieCast = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
+  const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const movie = useSelector(state => state.movies.movie);
 
@@ -27,8 +28,8 @@ const MovieCast = () => {
   const maxVisibleCards = cardCol * 2;
 
   useEffect(() => {
-    setCardCol(getCardCol(isMobile, isTablet, isDesktop));
-  }, [isDesktop, isTablet, isMobile]);
+    setCardCol(getCardCol(isMobile, isLowerTablet));
+  }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
 
   return (
     <>

@@ -14,8 +14,8 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightMedium,
   },
   avatar: {
-    width: theme.spacing(15),
-    height: theme.spacing(15),
+    width: theme.spacing(12),
+    height: theme.spacing(12),
   },
   text: {
     marginTop: theme.spacing(1),
