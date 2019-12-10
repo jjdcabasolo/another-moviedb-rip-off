@@ -9,21 +9,16 @@ import CrewAvatarList from './CrewAvatarList';
 import Statistic from './Statistic';
 import ComponentLoader from '../../common/ComponentLoader';
 
-import { getCrewMembers } from '../../../utils/functions';
+import { getCrewMembers, getCrewCol } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
-const getCrewCol = (isMobile, isTablet, isDesktop) => {
-  if (isMobile) return 1;
-  if (isTablet) return 2;
-  if (isDesktop) return 3;
-};
-
 const MovieCrew = () => {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
+  const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
   const movie = useSelector(state => state.movies.movie);
 
@@ -35,8 +30,8 @@ const MovieCrew = () => {
   const {lighting, visualEffects} = crewMembers;
 
   useEffect(() => {
-    setCrewCol(getCrewCol(isMobile, isTablet, isDesktop));
-  }, [isDesktop, isTablet, isMobile]);
+    setCrewCol(getCrewCol(isMobile, isLowerTablet));
+  }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
 
   useEffect(() => {
     const { crew } = movie;

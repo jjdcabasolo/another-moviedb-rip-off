@@ -7,11 +7,7 @@ import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CastAvatar from './CastAvatar';
 
-const getCardCol = (isMobile, isLowerTablet) => {
-  if (isMobile) return 2;
-  if (isLowerTablet) return 3;
-  return 4;
-};
+import { getCastCol } from '../../../utils/functions';
 
 const MovieCast = () => {
   const theme = useTheme();
@@ -28,7 +24,7 @@ const MovieCast = () => {
   const maxVisibleCards = cardCol * 2;
 
   useEffect(() => {
-    setCardCol(getCardCol(isMobile, isLowerTablet));
+    setCardCol(getCastCol(isMobile, isLowerTablet));
   }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
 
   return (
