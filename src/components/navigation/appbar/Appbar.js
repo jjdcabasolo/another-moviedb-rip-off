@@ -65,6 +65,8 @@ const Appbar = ({ children }) => {
   const scrollY = useSelector(state => state.browser.scrollY);
   const dispatch = useDispatch();
 
+  const { title, original_title } = movie;
+
   const location = useLocation();
   const history = useHistory();
 
@@ -112,7 +114,7 @@ const Appbar = ({ children }) => {
             ? <Skeleton width="60%" />
             : (
               <Typography component="h1" variant="h6" noWrap>
-                {movie.title}
+                {title || original_title}
               </Typography>
             )
           }

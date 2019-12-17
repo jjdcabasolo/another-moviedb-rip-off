@@ -43,6 +43,8 @@ const SidebarTitlebar = () => {
   const movie = useSelector(state => state.movies.movie);
   const dispatch = useDispatch();
 
+  const { title, original_title, date } = movie;
+
   const isMovieSelected = 'id' in movie;
 
   const goBack = useCallback(() => {
@@ -67,7 +69,7 @@ const SidebarTitlebar = () => {
             <ArrowBackTwoTone />
           </IconButton>
           <Typography component="h1" variant="h6">
-            {isMovieSelected && `${movie.title} (${moment(movie.date).format('YYYY')})`}
+            {isMovieSelected && `${title || original_title} (${moment(date).format('YYYY')})`}
           </Typography>
         </Toolbar>
       </AppBar>

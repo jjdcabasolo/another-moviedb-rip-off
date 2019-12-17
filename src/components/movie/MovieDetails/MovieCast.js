@@ -18,6 +18,8 @@ const MovieCast = () => {
 
   const movie = useSelector(state => state.movies.movie);
 
+  const { cast } = movie;
+
   const [showMore, setShowMore] = useState(false);
   const [cardCol, setCardCol] = useState(0);
 
@@ -30,11 +32,11 @@ const MovieCast = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {movie.cast.slice(0, maxVisibleCards).map(cast => (
+        {cast.slice(0, maxVisibleCards).map(cast => (
           <CastAvatar content={cast} col={12 / cardCol} />
         ))}
         { showMore && (
-          movie.cast.slice(maxVisibleCards, movie.cast.length).map(cast => (
+          cast.slice(maxVisibleCards, cast.length).map(cast => (
             <CastAvatar content={cast} col={12 / cardCol} />
           ))
         )}

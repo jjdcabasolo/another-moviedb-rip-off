@@ -22,6 +22,8 @@ const MovieCrew = () => {
 
   const movie = useSelector(state => state.movies.movie);
 
+  const { crew } = movie;
+
   const [crewMembers, setCrewMembers] = useState({});
   const [masonryConfig, setMasonryConfig] = useState([]);
   const [showMore, setShowMore] = useState(false);
@@ -86,7 +88,7 @@ const MovieCrew = () => {
     return [
       (hasLighting && <Statistic col={col} count={lighting.length} label="Lighting" divider />),
       (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider /> ),
-      <Statistic col={col} count={movie.crew.length} label="Total" isTotal />,
+      <Statistic col={col} count={crew.length} label="Total" isTotal />,
     ];
   };
 
@@ -98,7 +100,7 @@ const MovieCrew = () => {
         { constructMasonryGrid() }
         { showMore
           ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
-          : <Statistic count={movie.crew.length} label="Total Crew" isTotal />
+          : <Statistic count={crew.length} label="Total Crew" isTotal />
         }
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>
