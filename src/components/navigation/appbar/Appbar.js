@@ -78,7 +78,7 @@ const Appbar = ({ children }) => {
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const goBack = useCallback(() => {
-    dispatch(moviesActions.setActiveMovie({}));
+  dispatch(moviesActions.setActiveMovie({}));
     setTimeout(() => window.scrollTo(0, scrollY), 100);
     history.goBack();
   }, [dispatch, scrollY, history]);
@@ -170,7 +170,7 @@ const Appbar = ({ children }) => {
         </AppBar>
       </HideOnScroll>
 
-      <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" />
+      <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" isMovieSelected={isMovieSelected} />
 
       <div
         className={clsx(
