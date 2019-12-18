@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { Divider, Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
@@ -80,6 +80,8 @@ const Movies = () => {
     ? <div className={classes.note}>{children}</div>
     : children;
 
+  const renderDivider = () => <Section><Divider/></Section>;
+
   if (movieId === undefined) return (
     <WithNoteContainer>
       <Note details={NOTE_NO_SELECTED_MOVIE} />
@@ -97,12 +99,14 @@ const Movies = () => {
   if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;
     
   return (
-    <Grid container spacing={4} className={classes.root}>
+    <Grid container spacing={8} className={classes.root}>
       <MovieHeader />
 
       <Section visible={budget && revenue}>
         <MovieBudget />
       </Section>
+
+      {renderDivider()}
 
       <Section title="Trailer" visible={youtube}>
         <ReactPlayer
@@ -115,13 +119,19 @@ const Movies = () => {
         />
       </Section>
 
+      {renderDivider()}
+
       <Section title="Cast">
         <MovieCast />
       </Section>
 
+      {renderDivider()}
+
       <Section title="Crew">
         <MovieCrew />
       </Section>
+
+      {renderDivider()}
 
       <Section visible={belongs_to_collection} title="Collection" col={isTabletAbove ? 6 : 12}>
         <MovieCollection />
