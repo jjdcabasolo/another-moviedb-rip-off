@@ -16,3 +16,8 @@ export {
 export {
   toMillionsOrBillions,
 } from './monetary';
+
+export {
+  getCastCol,
+  getCrewCol,
+} from './movies';

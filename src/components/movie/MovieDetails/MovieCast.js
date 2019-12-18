@@ -7,19 +7,18 @@ import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CastAvatar from './CastAvatar';
 
-const getCardCol = (isMobile, isTablet, isDesktop) => {
-  if (isMobile) return 2;
-  if (isTablet) return 3;
-  if (isDesktop) return 4;
-};
+import { getCastCol } from '../../../utils/functions';
 
 const MovieCast = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
+  const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const movie = useSelector(state => state.movies.movie);
+
+  const { cast } = movie;
 
   const [showMore, setShowMore] = useState(false);
   const [cardCol, setCardCol] = useState(0);
@@ -27,17 +26,17 @@ const MovieCast = () => {
   const maxVisibleCards = cardCol * 2;
 
   useEffect(() => {
-    setCardCol(getCardCol(isMobile, isTablet, isDesktop));
-  }, [isDesktop, isTablet, isMobile]);
+    setCardCol(getCastCol(isMobile, isLowerTablet));
+  }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
 
   return (
     <>
       <Grid container spacing={2}>
-        {movie.cast.slice(0, maxVisibleCards).map(cast => (
+        {cast.slice(0, maxVisibleCards).map(cast => (
           <CastAvatar content={cast} col={12 / cardCol} />
         ))}
         { showMore && (
-          movie.cast.slice(maxVisibleCards, movie.cast.length).map(cast => (
+          cast.slice(maxVisibleCards, cast.length).map(cast => (
             <CastAvatar content={cast} col={12 / cardCol} />
           ))
         )}

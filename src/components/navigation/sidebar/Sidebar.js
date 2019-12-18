@@ -229,7 +229,7 @@ const Sidebar = ({ children }) => {
       {evaluateDrawerVisibility()}
 
       <div className={classes.itemContainer}>
-        <GradientBackground isVisible={isMovieSelected && !isMovieLoading} image="backdrop_path"/>
+        <GradientBackground isVisible={isMovieSelected && !isMovieLoading} image="backdrop_path" isMovieSelected={isMovieSelected} />
         <main
           className={clsx(
             classes.content,

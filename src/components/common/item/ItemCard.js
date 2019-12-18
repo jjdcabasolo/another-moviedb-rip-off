@@ -25,13 +25,13 @@ const useStyles = makeStyles(theme => ({
   mediaDrawerOpen: {
     height: 0,
     [theme.breakpoints.down('sm')]: {
-      paddingTop: theme.spacing(30),
+      paddingTop: theme.spacing(25),
     },
     [theme.breakpoints.between('sm', 'md')]: {
-      paddingTop: theme.spacing(60),
+      paddingTop: theme.spacing(50),
     },
     [theme.breakpoints.between('md', 'lg')]: {
-      paddingTop: theme.spacing(40),
+      paddingTop: theme.spacing(30),
     },
     [theme.breakpoints.up('lg')]: {
       paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,

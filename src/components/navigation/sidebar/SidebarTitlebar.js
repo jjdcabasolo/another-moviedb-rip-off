@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -43,10 +44,15 @@ const SidebarTitlebar = () => {
   const movie = useSelector(state => state.movies.movie);
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
+  const { title, original_title, date } = movie;
+
   const isMovieSelected = 'id' in movie;
 
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
+    history.goBack();
   }, [dispatch]);
 
   return (
@@ -67,7 +73,7 @@ const SidebarTitlebar = () => {
             <ArrowBackTwoTone />
           </IconButton>
           <Typography component="h1" variant="h6">
-            {isMovieSelected && `${movie.title} (${moment(movie.date).format('YYYY')})`}
+            {isMovieSelected && `${title || original_title} (${moment(date).format('YYYY')})`}
           </Typography>
         </Toolbar>
       </AppBar>

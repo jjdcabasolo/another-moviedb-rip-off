@@ -9,23 +9,20 @@ import CrewAvatarList from './CrewAvatarList';
 import Statistic from './Statistic';
 import ComponentLoader from '../../common/ComponentLoader';
 
-import { getCrewMembers } from '../../../utils/functions';
+import { getCrewMembers, getCrewCol } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
-const getCrewCol = (isMobile, isTablet, isDesktop) => {
-  if (isMobile) return 1;
-  if (isTablet) return 2;
-  if (isDesktop) return 3;
-};
-
 const MovieCrew = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
+  const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const movie = useSelector(state => state.movies.movie);
+
+  const { crew } = movie;
 
   const [crewMembers, setCrewMembers] = useState({});
   const [masonryConfig, setMasonryConfig] = useState([]);
@@ -35,8 +32,8 @@ const MovieCrew = () => {
   const {lighting, visualEffects} = crewMembers;
 
   useEffect(() => {
-    setCrewCol(getCrewCol(isMobile, isTablet, isDesktop));
-  }, [isDesktop, isTablet, isMobile]);
+    setCrewCol(getCrewCol(isMobile, isLowerTablet));
+  }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
 
   useEffect(() => {
     const { crew } = movie;
@@ -91,7 +88,7 @@ const MovieCrew = () => {
     return [
       (hasLighting && <Statistic col={col} count={lighting.length} label="Lighting" divider />),
       (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider /> ),
-      <Statistic col={col} count={movie.crew.length} label="Total" isTotal />,
+      <Statistic col={col} count={crew.length} label="Total" isTotal />,
     ];
   };
 
@@ -103,7 +100,7 @@ const MovieCrew = () => {
         { constructMasonryGrid() }
         { showMore
           ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
-          : <Statistic count={movie.crew.length} label="Total Crew" isTotal />
+          : <Statistic count={crew.length} label="Total Crew" isTotal />
         }
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => setShowMore(!showMore)}>

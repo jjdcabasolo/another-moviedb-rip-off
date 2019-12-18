@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { Divider, Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
@@ -15,6 +15,7 @@ import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
+import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
 import Section from '../components/movie/MovieDetails/Section';
 
 import { getMovieDetails } from '../api';
@@ -48,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 const Movies = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
   const classes = useStyles();
 
   const movie = useSelector(state => state.movies.movie);
@@ -58,7 +60,7 @@ const Movies = () => {
 
   const { movieId } = useParams();
 
-  const { budget, revenue, youtube } = movie;
+  const { budget, revenue, youtube, production_companies, belongs_to_collection } = movie;
 
   useEffect(() => {
     getMovieDetails(decryptKey(), movieId, response => {
@@ -78,6 +80,8 @@ const Movies = () => {
     ? <div className={classes.note}>{children}</div>
     : children;
 
+  const renderDivider = () => <Section><Divider/></Section>;
+
   if (movieId === undefined) return (
     <WithNoteContainer>
       <Note details={NOTE_NO_SELECTED_MOVIE} />
@@ -95,12 +99,14 @@ const Movies = () => {
   if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;
     
   return (
-    <Grid container spacing={4} className={classes.root}>
+    <Grid container spacing={8} className={classes.root}>
       <MovieHeader />
 
       <Section visible={budget && revenue}>
         <MovieBudget />
       </Section>
+
+      {renderDivider()}
 
       <Section title="Trailer" visible={youtube}>
         <ReactPlayer
@@ -113,15 +119,25 @@ const Movies = () => {
         />
       </Section>
 
+      {renderDivider()}
+
       <Section title="Cast">
         <MovieCast />
       </Section>
+
+      {renderDivider()}
 
       <Section title="Crew">
         <MovieCrew />
       </Section>
 
-      <Section title="Production">
+      {renderDivider()}
+
+      <Section visible={belongs_to_collection} title="Collection" col={isTabletAbove ? 6 : 12}>
+        <MovieCollection />
+      </Section>
+
+      <Section visible={production_companies} title="Production" col={isTabletAbove && belongs_to_collection ? 6 : 12}>
         <MovieProduction />
       </Section>
 

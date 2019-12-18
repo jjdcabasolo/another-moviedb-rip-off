@@ -65,6 +65,8 @@ const Appbar = ({ children }) => {
   const scrollY = useSelector(state => state.browser.scrollY);
   const dispatch = useDispatch();
 
+  const { title, original_title } = movie;
+
   const location = useLocation();
   const history = useHistory();
 
@@ -76,7 +78,7 @@ const Appbar = ({ children }) => {
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const goBack = useCallback(() => {
-    dispatch(moviesActions.setActiveMovie({}));
+  dispatch(moviesActions.setActiveMovie({}));
     setTimeout(() => window.scrollTo(0, scrollY), 100);
     history.goBack();
   }, [dispatch, scrollY, history]);
@@ -112,7 +114,7 @@ const Appbar = ({ children }) => {
             ? <Skeleton width="60%" />
             : (
               <Typography component="h1" variant="h6" noWrap>
-                {movie.title}
+                {title || original_title}
               </Typography>
             )
           }
@@ -168,7 +170,7 @@ const Appbar = ({ children }) => {
         </AppBar>
       </HideOnScroll>
 
-      <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" />
+      <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" isMovieSelected={isMovieSelected} />
 
       <div
         className={clsx(

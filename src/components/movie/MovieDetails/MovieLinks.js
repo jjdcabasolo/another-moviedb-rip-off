@@ -17,7 +17,7 @@ import {
   TMDB_LOGO,
 } from '../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   logo: {
     width: '1em',
   },
@@ -29,12 +29,7 @@ const MovieLinks = () => {
   const darkMode = useSelector(state => state.sidebar.darkMode);
   const movie = useSelector(state => state.movies.movie);
 
-  const facebookLink = movie.facebook;
-  const instagramLink = movie.instagram;
-  const twitterLink = movie.twitter;
-  const youtubeLink = movie.youtube;
-  const imdbLink = movie.imdb;
-  const tmdbLink = movie.tmdb;
+  const { facebook, instagram, twitter, youtube, imdb, tmdb } = movie;
 
   const renderSocialNetworkLinks = (src, link, isImg) => (
     <IconButton onClick={() => window.open(link, '_blank')}>
@@ -42,34 +37,30 @@ const MovieLinks = () => {
     </IconButton>
   );
 
+  const renderImgLogo = (alt, logoDark, logo) => (
+    <img
+      alt={alt}
+      className={classes.logo}
+      src={darkMode ? logoDark : logo}
+    />
+  );
+
   return (
     <>
       <Grid container spacing={2}>
         <Grid container xs={12} item>
-          { facebookLink !== null && renderSocialNetworkLinks(<Facebook />, facebookLink) }
-          { instagramLink !== null && renderSocialNetworkLinks(<Instagram />, instagramLink) }
-          { twitterLink !== null && renderSocialNetworkLinks(<Twitter />, twitterLink) }
-          { youtubeLink !== null && renderSocialNetworkLinks(<YouTube />, youtubeLink) }
-          { imdbLink !== null && renderSocialNetworkLinks((
-            <img
-              alt="TMDb Logo"
-              className={classes.logo}
-              src={darkMode ? IMDB_LOGO_DARK : IMDB_LOGO}
-            />
-          ), imdbLink, true) }
-          { tmdbLink !== null && renderSocialNetworkLinks((
-            <img
-              alt="TMDb Logo"
-              className={classes.logo}
-              src={darkMode ? TMDB_LOGO_DARK : TMDB_LOGO}
-            />
-          ), tmdbLink, true) }
+          { facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook) }
+          { instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram) }
+          { twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter) }
+          { youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube) }
+          { imdb !== null && renderSocialNetworkLinks(renderImgLogo("IMDb Logo", IMDB_LOGO_DARK, IMDB_LOGO), imdb, true) }
+          { tmdb !== null && renderSocialNetworkLinks(renderImgLogo("TMDb Logo", TMDB_LOGO_DARK, TMDB_LOGO), tmdb, true) }
         </Grid>
         <Grid item>
           <Typography variant="caption">
             Icons made by&nbsp;
-            <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>&nbsp;
-            from&nbsp;
+            <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>
+            &nbsp;from&nbsp;
             <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link>
           </Typography>
         </Grid>

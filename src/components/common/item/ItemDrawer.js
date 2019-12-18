@@ -81,7 +81,6 @@ const useStyles = makeStyles(theme => ({
 const ItemDrawer = ({ type }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
   const movieCategory = useSelector(state => state.movies.category);
@@ -95,7 +94,7 @@ const ItemDrawer = ({ type }) => {
   const isMovie = type === 'movie';
 
   const getLocalStorage = localStorage.getItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen');
-  const finalDrawerState = (getLocalStorage === null ? true : getLocalStorage === 'true') || isTabletBelow;
+  const finalDrawerState = (getLocalStorage === null ? true : getLocalStorage === 'true') || !isDesktop;
   const [itemDrawerOpen, setItemDrawerOpen] = useState(finalDrawerState);
 
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
