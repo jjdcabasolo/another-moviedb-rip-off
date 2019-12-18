@@ -59,8 +59,8 @@ const MovieLinks = () => {
         <Grid item>
           <Typography variant="caption">
             Icons made by&nbsp;
-            <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>&nbsp;
-            from&nbsp;
+            <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>
+            &nbsp;from&nbsp;
             <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link>
           </Typography>
         </Grid>

@@ -15,6 +15,7 @@ import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
+import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
 import Section from '../components/movie/MovieDetails/Section';
 
 import { getMovieDetails } from '../api';
@@ -48,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 const Movies = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
   const classes = useStyles();
 
   const movie = useSelector(state => state.movies.movie);
@@ -58,7 +60,7 @@ const Movies = () => {
 
   const { movieId } = useParams();
 
-  const { budget, revenue, youtube, production_companies } = movie;
+  const { budget, revenue, youtube, production_companies, belongs_to_collection } = movie;
 
   useEffect(() => {
     getMovieDetails(decryptKey(), movieId, response => {
@@ -121,7 +123,11 @@ const Movies = () => {
         <MovieCrew />
       </Section>
 
-      <Section visible={production_companies} title="Production">
+      <Section visible={belongs_to_collection} title="Collection" col={isTabletAbove ? 6 : 12}>
+        <MovieCollection />
+      </Section>
+
+      <Section visible={production_companies} title="Production" col={isTabletAbove && belongs_to_collection ? 6 : 12}>
         <MovieProduction />
       </Section>
 
