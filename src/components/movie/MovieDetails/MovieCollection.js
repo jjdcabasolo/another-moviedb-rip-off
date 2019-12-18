@@ -34,7 +34,7 @@ const MovieCollection = () => {
 
   const renderBrokenImage = () => (
     <div className={classes.brokenImgContainer}>
-      <Typography variant="body1">Image not loaded.</Typography>
+      <Typography variant="body1">No image available.</Typography>
     </div>
   );
 
