@@ -5,11 +5,12 @@ import NotFound from '../components/notFound/NotFound';
 import ComponentLoader from '../components/common/ComponentLoader';
 
 const Movies = lazy(() => import('../containers/Movies'));
-// const TVShows = lazy(() => import('../containers/TVShows'));
+const TVShows = lazy(() => import('../containers/TVShows'));
 
-const renderMovies = () => (
+const renderComponent = component => (
   <Suspense fallback={<ComponentLoader />}>
-    <Movies />
+    {component === 'movies' && <Movies />}
+    {component === 'tvshows' && <TVShows />}
   </Suspense>
 );
 
@@ -33,10 +34,17 @@ const Routes = () => {
       <Route component={NotFound} /> */}
       <Redirect exact from='/' to='/movies'/>
       <Route exact path="/movies">
-        {renderMovies()}
+        {renderComponent('movies')}
       </Route>
       <Route exact path="/movies/:movieId">
-        {renderMovies()}
+        {renderComponent('movies')}
+      </Route>
+      <Redirect exact from='/' to='/tvshows'/>
+      <Route exact path="/tvshows">
+        {renderComponent('tvshows')}
+      </Route>
+      <Route exact path="/tvshows/:movieId">
+        {renderComponent('tvshows')}
       </Route>
       <Route>
         <NotFound />
