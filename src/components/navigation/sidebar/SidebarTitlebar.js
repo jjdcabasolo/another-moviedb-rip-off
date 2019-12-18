@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import clsx from 'clsx';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -43,12 +44,15 @@ const SidebarTitlebar = () => {
   const movie = useSelector(state => state.movies.movie);
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
   const { title, original_title, date } = movie;
 
   const isMovieSelected = 'id' in movie;
 
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
+    history.goBack();
   }, [dispatch]);
 
   return (
