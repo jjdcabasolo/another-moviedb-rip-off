@@ -57,11 +57,10 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    height: '60vh',
     padding: theme.spacing(5),
   },
   contentMovieSelected: {
-    marginTop: theme.spacing(-5),
+    marginTop: theme.spacing(-8),
   },
   contentTopPadding: {
     paddingTop: theme.spacing(11),
@@ -101,6 +100,7 @@ const useStyles = makeStyles(theme => ({
   itemContainer: {
     overflowY: 'auto',
     width: '100%',
+    height: theme.browserSize.height,
   },
   link: {
     textDecoration: 'none',
