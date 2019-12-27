@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import clsx from 'clsx';
@@ -94,12 +94,14 @@ const ItemDrawer = ({ type }) => {
   const isMovie = type === 'movie';
 
   const getLocalStorage = localStorage.getItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen');
-  const finalDrawerState = (getLocalStorage === null ? true : getLocalStorage === 'true') || !isDesktop;
+  const finalDrawerState = isDesktop ? (getLocalStorage === null ? true : getLocalStorage === 'true') : true;
   const [itemDrawerOpen, setItemDrawerOpen] = useState(finalDrawerState);
 
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
+
+  useEffect(() => setItemDrawerOpen(finalDrawerState), [finalDrawerState]);
 
   const handleDrawerToggle = () => {
     localStorage.setItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen', !itemDrawerOpen);

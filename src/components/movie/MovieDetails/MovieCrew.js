@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
@@ -8,6 +8,8 @@ import { Grid, Button, useMediaQuery } from '@material-ui/core';
 import CrewAvatarList from './CrewAvatarList';
 import Statistic from './Statistic';
 import ComponentLoader from '../../common/ComponentLoader';
+
+import { moviesActions } from '../../../reducers/ducks';
 
 import { getCrewMembers, getCrewCol } from '../../../utils/functions';
 
@@ -21,12 +23,13 @@ const MovieCrew = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
   const movie = useSelector(state => state.movies.movie);
+  const crewShowMore = useSelector(state => state.movies.crewShowMore);
+  const dispatch = useDispatch();
 
   const { crew } = movie;
 
   const [crewMembers, setCrewMembers] = useState({});
   const [masonryConfig, setMasonryConfig] = useState([]);
-  const [showMore, setShowMore] = useState(false);
   const [crewCol, setCrewCol] = useState(getCrewCol());
 
   const {lighting, visualEffects} = crewMembers;
@@ -61,7 +64,7 @@ const MovieCrew = () => {
     for (let i = 0; i < crewCol; ++i) {
       const colItem = [];
       for (let a = i; a < masonryConfig.length; a += crewCol) {
-        if (!showMore) {
+        if (!crewShowMore) {
           if (masonryConfig[a] === 'production'
           || masonryConfig[a] === 'composer'
           || masonryConfig[a] === 'cinematography'
@@ -98,13 +101,13 @@ const MovieCrew = () => {
     <>
       <Grid container spacing={2}>
         { constructMasonryGrid() }
-        { showMore
+        { crewShowMore
           ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
           : <Statistic count={crew.length} label="Total Crew" isTotal />
         }
         <Grid item xs={12} container justify="flex-end">
-          <Button onClick={() => setShowMore(!showMore)}>
-            {showMore ? 'Show less' : 'Show all'}
+          <Button onClick={() => dispatch(moviesActions.setCrewShowMore(!crewShowMore))}>
+            {crewShowMore ? 'Show less' : 'Show all'}
           </Button>
         </Grid>
       </Grid>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -30,6 +30,7 @@ import SidebarTitlebar from './SidebarTitlebar';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import GradientBackground from '../../common/GradientBackground';
 import ItemDrawer from '../../common/item/ItemDrawer';
+import ReadingProgress from '../../common/ReadingProgress';
 
 import { moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -98,7 +99,7 @@ const useStyles = makeStyles(theme => ({
     width: '1.6em',
   },
   itemContainer: {
-    overflowY: 'auto',
+    overflowY: 'scroll',
     width: '100%',
     height: theme.browserSize.height,
   },
@@ -122,12 +123,13 @@ const Sidebar = ({ children }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
+  const target = useRef(null);
+
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const darkMode = useSelector(state => state.sidebar.darkMode);
   const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const movie = useSelector(state => state.movies.movie);
-
   const dispatch = useDispatch();
 
   const isMovieSelected = 'id' in movie;
@@ -228,7 +230,8 @@ const Sidebar = ({ children }) => {
 
       {evaluateDrawerVisibility()}
 
-      <div className={classes.itemContainer}>
+      <div className={classes.itemContainer} ref={target}>
+        {isMovieSelected && <ReadingProgress target={target} />}
         <GradientBackground isVisible={isMovieSelected && !isMovieLoading} image="backdrop_path" isMovieSelected={isMovieSelected} />
         <main
           className={clsx(

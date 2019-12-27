@@ -4,6 +4,8 @@ const moviesActionType = {
   SET_CATEGORY: '@movies/SET_CATEGORY',
   SET_MOVIE_LIST: '@movies/SET_MOVIE_LIST',
   SET_DETAILS_LOADING: '@movies/SET_DETAILS_LOADING',
+  SET_CAST_SHOW_MORE: '@movies/SET_CAST_SHOW_MORE',
+  SET_CREW_SHOW_MORE: '@movies/SET_CREW_SHOW_MORE',
 };
 
 // ACTIONS
@@ -24,6 +26,14 @@ export const moviesActions = {
     type: moviesActionType.SET_DETAILS_LOADING,
     payload: { isMovieLoading },
   }),
+  setCastShowMore: castShowMore => ({
+    type: moviesActionType.SET_CAST_SHOW_MORE,
+    payload: { castShowMore },
+  }),
+  setCrewShowMore: crewShowMore => ({
+    type: moviesActionType.SET_CREW_SHOW_MORE,
+    payload: { crewShowMore },
+  }),
 };
 
 // REDUCER
@@ -39,6 +49,8 @@ const initialState = {
   movie: {},
   loadedContent: 0,
   isMovieLoading: false,
+  castShowMore: false,
+  crewShowMore: false,
 };
 
 const setCategory = (state, action) => ({
@@ -58,11 +70,23 @@ const setMovieList = (state, action) => ({
 const setActiveMovie = (state, action) => ({
   ...state,
   movie: action.payload.movie,
+  castShowMore: false,
+  crewShowMore: false,
 });
 
 const setDetailsLoading = (state, action) => ({
   ...state,
   isMovieLoading: action.payload.isMovieLoading,
+});
+
+const setCastShowMore = (state, action) => ({
+  ...state,
+  castShowMore: action.payload.castShowMore,
+});
+
+const setCrewShowMore = (state, action) => ({
+  ...state,
+  crewShowMore: action.payload.crewShowMore,
 });
 
 export const moviesReducer = (state = initialState, action) => {
@@ -71,6 +95,8 @@ export const moviesReducer = (state = initialState, action) => {
     case moviesActionType.SET_MOVIE_LIST: return setMovieList(state, action);
     case moviesActionType.SET_ACTIVE_MOVIE: return setActiveMovie(state, action);
     case moviesActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
+    case moviesActionType.SET_CAST_SHOW_MORE: return setCastShowMore(state, action);
+    case moviesActionType.SET_CREW_SHOW_MORE: return setCrewShowMore(state, action);
     default: return state;
   }
 };
