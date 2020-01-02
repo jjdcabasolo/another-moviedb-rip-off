@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
     - name: Checking out master
-    - uses: actions/checkout@master
+      uses: actions/checkout@master
       
     - name: Setup Python  
       uses: actions/setup-python@master
