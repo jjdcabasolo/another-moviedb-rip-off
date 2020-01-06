@@ -231,7 +231,7 @@ const Sidebar = ({ children }) => {
       {evaluateDrawerVisibility()}
 
       <div className={classes.itemContainer} ref={target}>
-        {isMovieSelected && <ReadingProgress target={target} />}
+        <ReadingProgress target={target} isVisible={isMovieSelected && !isMovieLoading} />
         <GradientBackground isVisible={isMovieSelected && !isMovieLoading} image="backdrop_path" isMovieSelected={isMovieSelected} />
         <main
           className={clsx(

@@ -5,11 +5,21 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { LinearProgress } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   progressBar: {
     position: 'sticky',
     zIndex: 1,
-    top: 0,
+    [theme.breakpoints.down('sm')]: {
+      top: theme.spacing(6),
+      position: 'fixed',
+      width: '100%',
+    },
+    [theme.breakpoints.between('sm', 'lg')]: {
+      top: theme.spacing(6),
+    },
+    [theme.breakpoints.up('lg')]: {
+      top: 0,
+    },
   },
 }));
 
@@ -18,11 +28,12 @@ const useStyles = makeStyles(() => ({
   https://nehalist.io/creating-a-reading-progress-bar-in-react/
 */
 
-const ReadingProgress = ({ target }) => {
+const ReadingProgress = ({ target, isVisible }) => {
   const classes = useStyles();
 
   const crewShowMore = useSelector(state => state.movies.crewShowMore);
   const castShowMore = useSelector(state => state.movies.castShowMore);
+  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
 
   const [readingProgress, setReadingProgress] = useState(0);
 
@@ -49,7 +60,9 @@ const ReadingProgress = ({ target }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  useEffect(() => handleScroll(), [target, crewShowMore, castShowMore]);
+  useEffect(() => handleScroll(), [target, crewShowMore, castShowMore, isMovieLoading]);
+
+  if (!isVisible) return null;
 
   return (
     <div className={classes.progressBar}>

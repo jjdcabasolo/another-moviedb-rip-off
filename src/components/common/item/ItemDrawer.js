@@ -24,6 +24,7 @@ import {
   SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
   NOTE_OFFLINE,
+  ITEM_DRAWER_WIDTH,
 } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
@@ -34,10 +35,10 @@ const useStyles = makeStyles(theme => ({
     width: theme.browserSize.width - theme.spacing(7),
   },
   drawerCloseWidthOpenSidebar: {
-    width: (theme.browserSize.width - SIDEBAR_WIDTH) / 4,
+    width: ITEM_DRAWER_WIDTH,
   },
   drawerCloseWidthClosedSidebar: {
-    width: (theme.browserSize.width - theme.spacing(7)) / 4,
+    width: ITEM_DRAWER_WIDTH,
   },
   drawer: {
     flexShrink: 0,
