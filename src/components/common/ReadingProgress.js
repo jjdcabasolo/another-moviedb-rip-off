@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -37,7 +37,7 @@ const ReadingProgress = ({ target, isVisible }) => {
 
   const [readingProgress, setReadingProgress] = useState(0);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     if (!target.current) return;
 
     const element = target.current;
@@ -53,7 +53,7 @@ const ReadingProgress = ({ target, isVisible }) => {
     if (elementTopPos + elementBottomPos === elementHeight) return setReadingProgress(100);
 
     setReadingProgress(totalProgress);
-  };
+  }, [target]);
   
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);

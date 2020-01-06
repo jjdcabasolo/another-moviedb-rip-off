@@ -84,7 +84,7 @@ const Appbar = ({ children }) => {
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const goBack = useCallback(() => {
-  dispatch(moviesActions.setActiveMovie({}));
+    dispatch(moviesActions.setActiveMovie({}));
     setTimeout(() => window.scrollTo(0, scrollY), 100);
     history.goBack();
   }, [dispatch, scrollY, history]);

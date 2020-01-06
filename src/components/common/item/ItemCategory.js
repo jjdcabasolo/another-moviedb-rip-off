@@ -55,7 +55,6 @@ const ItemCategory = ({ isList, isDrawer, replacement, type }) => {
 
   const movieCategory = useSelector(state => state.movies.category);
   const tvShowCategory = useSelector(state => state.tvShows.category);
-  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);

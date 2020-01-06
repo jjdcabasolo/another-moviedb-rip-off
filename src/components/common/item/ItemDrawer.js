@@ -21,25 +21,12 @@ import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
-  SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
   NOTE_OFFLINE,
   ITEM_DRAWER_WIDTH,
 } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
-  drawerOpenWidthOpenSidebar: {
-    width: theme.browserSize.width - theme.spacing(7),
-  },
-  drawerOpenWidthClosedSidebar: {
-    width: theme.browserSize.width - theme.spacing(7),
-  },
-  drawerCloseWidthOpenSidebar: {
-    width: ITEM_DRAWER_WIDTH,
-  },
-  drawerCloseWidthClosedSidebar: {
-    width: ITEM_DRAWER_WIDTH,
-  },
   drawer: {
     flexShrink: 0,
   },
@@ -51,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   drawerClose: {
+    width: ITEM_DRAWER_WIDTH,
     overflow: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -58,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   drawerOpen: {
+    width: theme.browserSize.width - theme.spacing(7),
     overflow: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -89,8 +78,7 @@ const ItemDrawer = ({ type }) => {
   const movieLoadedContent = useSelector(state => state.movies.loadedContent);
   const tvShowCategory = useSelector(state => state.tvShows.category);
   const tvShowList = useSelector(state => state.tvShows.list);
-  const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);  
-  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
+  const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);
 
   const isMovie = type === 'movie';
 
@@ -193,12 +181,7 @@ const ItemDrawer = ({ type }) => {
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: itemDrawerOpen },
-        { [classes.drawerOpenWidthOpenSidebar]: itemDrawerOpen && drawerOpen },
-        { [classes.drawerOpenWidthClosedSidebar]: itemDrawerOpen && !drawerOpen },
-
         { [classes.drawerClose]: !itemDrawerOpen },
-        { [classes.drawerCloseWidthOpenSidebar]: !itemDrawerOpen && drawerOpen },
-        { [classes.drawerCloseWidthClosedSidebar]: !itemDrawerOpen && !drawerOpen },
       )}
       variant="permanent"
       open={itemDrawerOpen}
@@ -206,12 +189,7 @@ const ItemDrawer = ({ type }) => {
         paper: clsx(
           classes.drawerPaper,
           { [classes.drawerOpen]: itemDrawerOpen },
-          { [classes.drawerOpenWidthOpenSidebar]: itemDrawerOpen && drawerOpen },
-          { [classes.drawerOpenWidthClosedSidebar]: itemDrawerOpen && !drawerOpen },
-
           { [classes.drawerClose]: !itemDrawerOpen },
-          { [classes.drawerCloseWidthOpenSidebar]: !itemDrawerOpen && drawerOpen },
-          { [classes.drawerCloseWidthClosedSidebar]: !itemDrawerOpen && !drawerOpen },
         ),
       }}
     >
