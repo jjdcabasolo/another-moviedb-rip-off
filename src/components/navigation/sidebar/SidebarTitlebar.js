@@ -53,7 +53,7 @@ const SidebarTitlebar = () => {
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
     history.goBack();
-  }, [dispatch]);
+  }, [dispatch, history]);
 
   return (
     <HideOnScroll>

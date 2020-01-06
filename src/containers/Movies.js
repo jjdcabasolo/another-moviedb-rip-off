@@ -48,7 +48,6 @@ const useStyles = makeStyles(theme => ({
 
 const Movies = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
   const classes = useStyles();
 
@@ -76,24 +75,20 @@ const Movies = () => {
     // setTimeout(() => window.scrollTo(0, 0), 100);    
   }, [movieId, dispatch]);
 
-  const WithNoteContainer = ({ children }) => isMobile
-    ? <div className={classes.note}>{children}</div>
-    : children;
-
   const renderDivider = () => <Section><Divider/></Section>;
 
   if (movieId === undefined) return (
-    <WithNoteContainer>
+    <div className={classes.note}>
       <Note details={NOTE_NO_SELECTED_MOVIE} />
-    </WithNoteContainer>
+    </div>
   );
 
   if (isMovieLoading) return <ComponentLoader />;
 
   if (isLoaded === 34) return (
-    <WithNoteContainer>
+    <div className={classes.note}>
       <Note details={NOTE_MOVIE_NOT_FOUND} />
-    </WithNoteContainer>
+    </div>
   );
 
   if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;

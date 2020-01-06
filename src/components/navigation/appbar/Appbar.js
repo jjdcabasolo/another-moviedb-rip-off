@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useCallback } from 'react';
+import React, { useState, useLayoutEffect, useCallback, useRef } from 'react';
 
 import clsx from 'clsx';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -23,13 +23,12 @@ import {
 
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
 import GradientBackground from '../../common/GradientBackground';
+import ReadingProgress from '../../common/ReadingProgress';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
-import HideOnScroll from '../../../utils/components/HideOnScroll';
 import { evaluateLocation } from '../../../utils/functions';
 
 import { routes } from '../../../routes/config';
@@ -53,10 +52,17 @@ const useStyles = makeStyles(theme => ({
   category: {
     padding: theme.spacing(0, 1),
   },
+  detailContainer: {
+    overflowY: 'auto',
+    width: '100%',
+    height: theme.browserSize.height,
+  },
 }));
 
 const Appbar = ({ children }) => {
   const classes = useStyles();
+
+  const target = useRef(null);
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const darkMode = useSelector(state => state.sidebar.darkMode);
@@ -78,7 +84,7 @@ const Appbar = ({ children }) => {
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const goBack = useCallback(() => {
-  dispatch(moviesActions.setActiveMovie({}));
+    dispatch(moviesActions.setActiveMovie({}));
     setTimeout(() => window.scrollTo(0, scrollY), 100);
     history.goBack();
   }, [dispatch, scrollY, history]);
@@ -153,32 +159,24 @@ const Appbar = ({ children }) => {
       <Helmet />
       <CssBaseline />
 
-      <HideOnScroll
-        replacement={
-          <AppBar color="default">
-            <Toolbar variant="dense" className={classes.category}>
-              <ItemCategory isList replacement type={isMovieTabActive ? 'movie' : 'tvshow'} />
-            </Toolbar>
-          </AppBar>
-        }
-        willReplace={!isMovieSelected}
-      >
-        <AppBar color="default">
-          <Toolbar variant="dense">
-            {renderToolbar()}
-          </Toolbar>
-        </AppBar>
-      </HideOnScroll>
+      <AppBar color="default">
+        <Toolbar variant="dense">
+          {renderToolbar()}
+        </Toolbar>
+      </AppBar>
 
-      <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" isMovieSelected={isMovieSelected} />
+      <div className={classes.detailContainer} ref={target}>
+        <ReadingProgress target={target} isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} />
+        <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" isMovieSelected={isMovieSelected} />
 
-      <div
-        className={clsx(
-          classes.container,
-          { [classes.containerMovieSelected]: isMovieSelected && 'id' in movie }
-        )}
-      >
-        {renderList()}
+        <div
+          className={clsx(
+            classes.container,
+            { [classes.containerMovieSelected]: isMovieSelected && 'id' in movie }
+          )}
+        >
+          {renderList()}
+        </div>
       </div>
 
       { !isMovieSelected && (

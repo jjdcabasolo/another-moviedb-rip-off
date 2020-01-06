@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CastAvatar from './CastAvatar';
+
+import { moviesActions } from '../../../reducers/ducks';
 
 import { getCastCol } from '../../../utils/functions';
 
@@ -17,10 +19,11 @@ const MovieCast = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
   const movie = useSelector(state => state.movies.movie);
+  const castShowMore = useSelector(state => state.movies.castShowMore);
+  const dispatch = useDispatch();
 
   const { cast } = movie;
 
-  const [showMore, setShowMore] = useState(false);
   const [cardCol, setCardCol] = useState(0);
 
   const maxVisibleCards = cardCol * 2;
@@ -35,14 +38,14 @@ const MovieCast = () => {
         {cast.slice(0, maxVisibleCards).map(cast => (
           <CastAvatar content={cast} col={12 / cardCol} />
         ))}
-        { showMore && (
+        { castShowMore && (
           cast.slice(maxVisibleCards, cast.length).map(cast => (
             <CastAvatar content={cast} col={12 / cardCol} />
           ))
         )}
         <Grid item xs={12} container justify="flex-end">
-          <Button onClick={() => setShowMore(!showMore)}>
-            {showMore ? 'Show less' : 'Show all'}
+          <Button onClick={() => dispatch(moviesActions.setCastShowMore(!castShowMore))}>
+            {castShowMore ? 'Show less' : 'Show all'}
           </Button>
         </Grid>
       </Grid>

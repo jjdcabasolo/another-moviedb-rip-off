@@ -1,6 +1,7 @@
 export {
   SIDEBAR_WIDTH,
-} from './sidebar';
+  ITEM_DRAWER_WIDTH,
+} from './drawers';
 
 export {
   API_KEY_DIALOG_TITLE,

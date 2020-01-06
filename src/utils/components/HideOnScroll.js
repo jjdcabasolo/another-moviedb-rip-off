@@ -1,12 +1,9 @@
 import React from 'react';
 
-import {
-  Slide,
-  useScrollTrigger,
-} from '@material-ui/core';
+import { Slide, useScrollTrigger } from '@material-ui/core';
 
-const HideOnScroll = ({ children, window, replacement, willReplace }) => {
-  const trigger = useScrollTrigger({ target: window ? window() : undefined });
+const HideOnScroll = ({ children, replacement, willReplace }) => {
+  const trigger = useScrollTrigger();
 
   return (
     <>

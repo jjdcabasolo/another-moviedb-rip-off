@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import clsx from 'clsx';
@@ -21,24 +21,12 @@ import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
-  SIDEBAR_WIDTH,
   NOTE_NO_API_KEY,
   NOTE_OFFLINE,
+  ITEM_DRAWER_WIDTH,
 } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
-  drawerOpenWidthOpenSidebar: {
-    width: theme.browserSize.width - SIDEBAR_WIDTH,
-  },
-  drawerOpenWidthClosedSidebar: {
-    width: theme.browserSize.width - theme.spacing(7),
-  },
-  drawerCloseWidthOpenSidebar: {
-    width: (theme.browserSize.width - SIDEBAR_WIDTH) / 4,
-  },
-  drawerCloseWidthClosedSidebar: {
-    width: (theme.browserSize.width - theme.spacing(7)) / 4,
-  },
   drawer: {
     flexShrink: 0,
   },
@@ -50,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   drawerClose: {
+    width: ITEM_DRAWER_WIDTH,
     overflow: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -57,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     }),
   },
   drawerOpen: {
+    width: theme.browserSize.width - theme.spacing(7),
     overflow: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -88,18 +78,19 @@ const ItemDrawer = ({ type }) => {
   const movieLoadedContent = useSelector(state => state.movies.loadedContent);
   const tvShowCategory = useSelector(state => state.tvShows.category);
   const tvShowList = useSelector(state => state.tvShows.list);
-  const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);  
-  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
+  const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);
 
   const isMovie = type === 'movie';
 
   const getLocalStorage = localStorage.getItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen');
-  const finalDrawerState = (getLocalStorage === null ? true : getLocalStorage === 'true') || !isDesktop;
+  const finalDrawerState = isDesktop ? (getLocalStorage === null ? true : getLocalStorage === 'true') : true;
   const [itemDrawerOpen, setItemDrawerOpen] = useState(finalDrawerState);
 
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
+
+  useEffect(() => setItemDrawerOpen(finalDrawerState), [finalDrawerState]);
 
   const handleDrawerToggle = () => {
     localStorage.setItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen', !itemDrawerOpen);
@@ -190,12 +181,7 @@ const ItemDrawer = ({ type }) => {
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: itemDrawerOpen },
-        { [classes.drawerOpenWidthOpenSidebar]: itemDrawerOpen && drawerOpen },
-        { [classes.drawerOpenWidthClosedSidebar]: itemDrawerOpen && !drawerOpen },
-
         { [classes.drawerClose]: !itemDrawerOpen },
-        { [classes.drawerCloseWidthOpenSidebar]: !itemDrawerOpen && drawerOpen },
-        { [classes.drawerCloseWidthClosedSidebar]: !itemDrawerOpen && !drawerOpen },
       )}
       variant="permanent"
       open={itemDrawerOpen}
@@ -203,12 +189,7 @@ const ItemDrawer = ({ type }) => {
         paper: clsx(
           classes.drawerPaper,
           { [classes.drawerOpen]: itemDrawerOpen },
-          { [classes.drawerOpenWidthOpenSidebar]: itemDrawerOpen && drawerOpen },
-          { [classes.drawerOpenWidthClosedSidebar]: itemDrawerOpen && !drawerOpen },
-
           { [classes.drawerClose]: !itemDrawerOpen },
-          { [classes.drawerCloseWidthOpenSidebar]: !itemDrawerOpen && drawerOpen },
-          { [classes.drawerCloseWidthClosedSidebar]: !itemDrawerOpen && !drawerOpen },
         ),
       }}
     >

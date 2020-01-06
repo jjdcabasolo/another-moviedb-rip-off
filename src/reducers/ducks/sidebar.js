@@ -5,6 +5,7 @@ const sidebarActionType = {
   CLEAR_API_KEY: '@sidebar/CLEAR_API_KEY',
   SET_ACTIVE_TAB: '@sidebar/SET_ACTIVE_TAB',
   SET_API_KEY: '@sidebar/SET_API_KEY',
+  SET_DRAWER: '@sidebar/SET_DRAWER',
   TOGGLE_DRAWER: '@sidebar/TOGGLE_DRAWER',
   TOGGLE_LIGHTS: '@sidebar/TOGGLE_LIGHTS',
 };
@@ -31,7 +32,12 @@ export const sidebarActions = {
   setAPIKey: (apiKey, username) => ({
     type: sidebarActionType.SET_API_KEY,
     payload: { apiKey, username },
-  })
+  }),
+
+  setDrawer: drawerOpen => ({
+    type: sidebarActionType.SET_DRAWER,
+    payload: { drawerOpen },
+  }),
 };
 
 // REDUCER
@@ -102,13 +108,19 @@ const clearAPIKey = state => {
     apiKey: '',
     username: '',
   });
-}
+};
+
+const setDrawer = (state, action) => ({
+  ...state,
+  drawerOpen: action.payload.drawerOpen,
+});
 
 export const sidebarReducer = (state = initialState, action) => {
   switch (action.type) {
     case sidebarActionType.CLEAR_API_KEY: return clearAPIKey(state, action);
     case sidebarActionType.SET_ACTIVE_TAB: return setActiveTab(state, action);
     case sidebarActionType.SET_API_KEY: return setAPIKey(state, action);
+    case sidebarActionType.SET_DRAWER: return setDrawer(state, action);
     case sidebarActionType.TOGGLE_DRAWER: return toggleDrawer(state);
     case sidebarActionType.TOGGLE_LIGHTS: return toggleLights(state);
     default: return state;
