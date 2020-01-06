@@ -122,7 +122,7 @@ const ItemCategory = ({ isList, isDrawer, replacement, type }) => {
     </div>
   );
 
-  if (isTabletBelow && drawerOpen) return collapsedCategoryChips();
+  if (isTabletBelow && !isDrawer) return collapsedCategoryChips();
 
   if (isDrawer) return (
     <ResponsiveComponent

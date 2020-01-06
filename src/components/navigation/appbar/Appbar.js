@@ -23,14 +23,12 @@ import {
 
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
 import GradientBackground from '../../common/GradientBackground';
 import ReadingProgress from '../../common/ReadingProgress';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
-import HideOnScroll from '../../../utils/components/HideOnScroll';
 import { evaluateLocation } from '../../../utils/functions';
 
 import { routes } from '../../../routes/config';

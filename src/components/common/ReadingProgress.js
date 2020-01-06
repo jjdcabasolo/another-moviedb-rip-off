@@ -60,7 +60,7 @@ const ReadingProgress = ({ target, isVisible }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  useEffect(() => handleScroll(), [target, crewShowMore, castShowMore, isMovieLoading]);
+  useEffect(() => handleScroll(), [target, crewShowMore, castShowMore, isMovieLoading, handleScroll]);
 
   if (!isVisible) return null;
 

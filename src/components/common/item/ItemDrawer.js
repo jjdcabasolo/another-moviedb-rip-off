@@ -29,7 +29,7 @@ import {
 
 const useStyles = makeStyles(theme => ({
   drawerOpenWidthOpenSidebar: {
-    width: theme.browserSize.width - SIDEBAR_WIDTH,
+    width: theme.browserSize.width - theme.spacing(7),
   },
   drawerOpenWidthClosedSidebar: {
     width: theme.browserSize.width - theme.spacing(7),
