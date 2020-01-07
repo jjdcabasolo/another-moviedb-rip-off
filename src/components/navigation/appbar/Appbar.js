@@ -54,6 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   detailContainer: {
     overflowY: 'auto',
+    overflowX: 'hidden',
     width: '100%',
     height: theme.browserSize.height,
   },
