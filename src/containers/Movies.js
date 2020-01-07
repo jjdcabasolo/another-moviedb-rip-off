@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Divider, Grid, useMediaQuery } from '@material-ui/core';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
@@ -72,10 +72,8 @@ const Movies = () => {
         setIsLoaded(error.response.data.status_code);
       }
     });
-    // setTimeout(() => window.scrollTo(0, 0), 100);    
+    // setTimeout(() => window.scrollTo(0, 0), 100);
   }, [movieId, dispatch]);
-
-  const renderDivider = () => <Section><Divider/></Section>;
 
   if (movieId === undefined) return (
     <div className={classes.note}>
@@ -95,13 +93,13 @@ const Movies = () => {
     
   return (
     <Grid container spacing={8} className={classes.root}>
-      <MovieHeader />
+      <Section divider={!(budget && revenue)}>
+        <MovieHeader />
+      </Section>
 
       <Section visible={budget && revenue}>
         <MovieBudget />
       </Section>
-
-      {renderDivider()}
 
       <Section title="Trailer" visible={youtube}>
         <ReactPlayer
@@ -114,29 +112,23 @@ const Movies = () => {
         />
       </Section>
 
-      {renderDivider()}
-
       <Section title="Cast">
         <MovieCast />
       </Section>
-
-      {renderDivider()}
 
       <Section title="Crew">
         <MovieCrew />
       </Section>
 
-      {renderDivider()}
-
-      <Section visible={belongs_to_collection} title="Collection" col={isTabletAbove ? 6 : 12}>
+      <Section divider={false} visible={belongs_to_collection} title="Collection" col={isTabletAbove ? 6 : 12}>
         <MovieCollection />
       </Section>
 
-      <Section visible={production_companies} title="Production" col={isTabletAbove && belongs_to_collection ? 6 : 12}>
+      <Section divider={false} visible={production_companies} title="Production" col={isTabletAbove && belongs_to_collection ? 6 : 12}>
         <MovieProduction />
       </Section>
 
-      <Section>
+      <Section divider={false}>
         <MovieLinks />
       </Section>
     </Grid>
