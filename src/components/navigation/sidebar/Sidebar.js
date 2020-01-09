@@ -17,7 +17,6 @@ import Helmet from '../Helmet';
 import SidebarTitlebar from './SidebarTitlebar';
 import GradientBackground from '../../common/GradientBackground';
 import ItemDrawer from '../../common/item/ItemDrawer';
-// import TemporaryDrawer from './TemporaryDrawer';
 import SidebarContent from './SidebarContent';
 import ReadingProgress from '../../common/ReadingProgress';
 
@@ -98,8 +97,6 @@ const Sidebar = ({ children }) => {
       <Helmet />
 
       <CssBaseline />
-
-      {/* <TemporaryDrawer drawerOpen={drawerOpen} /> */}
 
       <ClickAwayListener onClickAway={handleDrawerState}>
         <Drawer
