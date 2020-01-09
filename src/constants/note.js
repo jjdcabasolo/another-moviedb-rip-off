@@ -86,4 +86,13 @@ export const NOTE_MOVIE_NOT_FOUND = {
     'The movie you are trying to access is not found on the TMDb Database.',
     'Try searching for it on the search tab.',
   ],
-}
+};
+
+export const NOTE_TV_SHOW_NOT_FOUND = {
+  icon: className => <ErrorTwoTone className={className} />,
+  header: 'TV Show does not exist.',
+  content: [
+    'The TV show you are trying to access is not found on the TMDb Database.',
+    'Try searching for it on the search tab.',
+  ],
+};

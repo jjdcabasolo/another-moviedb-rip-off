@@ -62,16 +62,18 @@ const Movies = () => {
   const { budget, revenue, youtube, production_companies, belongs_to_collection } = movie;
 
   useEffect(() => {
-    getMovieDetails(decryptKey(), movieId, response => {
-      dispatch(moviesActions.setActiveMovie(response));
-      dispatch(moviesActions.setDetailsLoading(false));
-      setIsLoaded(true);
-    }, error => {
-      if (error.response) {
-        dispatch(moviesActions.setActiveMovie({}));
-        setIsLoaded(error.response.data.status_code);
-      }
-    });
+    if (movieId) {
+      getMovieDetails(decryptKey(), movieId, response => {
+        dispatch(moviesActions.setActiveMovie(response));
+        dispatch(moviesActions.setDetailsLoading(false));
+        setIsLoaded(true);
+      }, error => {
+        if (error.response) {
+          dispatch(moviesActions.setActiveMovie({}));
+          setIsLoaded(error.response.data.status_code);
+        }
+      });
+    }
     // setTimeout(() => window.scrollTo(0, 0), 100);
   }, [movieId, dispatch]);
 
