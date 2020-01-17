@@ -61,6 +61,17 @@ const useStyles = makeStyles(theme => ({
   marginDrawerOpen: {
     marginLeft: theme.spacing(7),
   },
+  backdrop: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 2,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    transition: theme.transitions.create('backgroundColor', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
 }));
 
 const Sidebar = ({ children }) => {
@@ -119,7 +130,12 @@ const Sidebar = ({ children }) => {
         </Drawer>
       </ClickAwayListener>
       
-      { drawerOpen && <div className={classes.marginDrawerOpen} /> }
+      { drawerOpen && (
+        <>
+          <div className={classes.marginDrawerOpen} />
+          <div className={classes.backdrop} />
+        </>
+      )}
 
       {evaluateDrawerVisibility()}
 
