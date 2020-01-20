@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Chip, Grid, Typography, useMediaQuery } from '@material-ui/core';
 
+import { getTVShowStatus } from '../../../utils/functions';
+
 const useStyles = makeStyles(theme => ({
   note: {
     padding: theme.spacing(8, 2),
@@ -31,7 +33,15 @@ const TVShowHeader = () => {
 
   const tvShow = useSelector(state => state.tvShows.tvShow);
 
-  const { episode_run_time, name, first_air_date, genres, overview, original_name } = tvShow;
+  const {
+    episode_run_time,
+    name,
+    first_air_date,
+    genres,
+    overview,
+    original_name,
+    status,
+  } = tvShow;
 
   const runtimeHours = ~~(episode_run_time[0] / 60);
   const runtimeMinutes = episode_run_time[0] % 60;
@@ -42,6 +52,10 @@ const TVShowHeader = () => {
         <Typography variant={isMobile ? "h4" : "h2"} className={classes.title}>{name || original_name}</Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
+        <Grid item>
+          <Chip label={getTVShowStatus(status)} variant="outlined" size={isMobile ? "small" : "medium"} />
+          &nbsp;&middot;&nbsp;
+        </Grid>
         <Grid item>
           <Typography variant={isMobile ? "body1" : "h5"}>
             {moment(first_air_date).format('MMM D, YYYY')}&nbsp;
