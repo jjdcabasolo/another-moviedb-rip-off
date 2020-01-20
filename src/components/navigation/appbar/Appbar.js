@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(9),
   },
-  containerMovieSelected: {
+  containerItemSelected: {
     marginTop: -theme.spacing(12),
   },
   category: {
@@ -67,12 +67,15 @@ const Appbar = ({ children }) => {
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const darkMode = useSelector(state => state.sidebar.darkMode);
+  const tvShow = useSelector(state => state.tvShows.tvShow);
   const movie = useSelector(state => state.movies.movie);
   const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
+  const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
   const scrollY = useSelector(state => state.browser.scrollY);
   const dispatch = useDispatch();
 
   const { title, original_title } = movie;
+  const { name, original_name } = tvShow;
 
   const location = useLocation();
   const history = useHistory();
@@ -80,7 +83,8 @@ const Appbar = ({ children }) => {
   const currentLocation = evaluateLocation(location);
   const isMovieSelected = 'movieId' in currentLocation;
   const isMovieTabActive = 'movie' in currentLocation;
-  const isTVShowsTabActive = 'tvShow' in currentLocation;
+  const isTVShowSelected = 'tvShowId' in currentLocation;
+  const isTVShowTabActive = 'tvShow' in currentLocation;
 
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
@@ -107,7 +111,10 @@ const Appbar = ({ children }) => {
   };
 
   const renderToolbar = () => {
-    if (isMovieSelected) {
+    const isLoading = isMovieSelected ? isMovieLoading : isTVShowLoading;
+    const displayTitle = isMovieSelected ? (title || original_title) : (name || original_name);
+
+    if (isMovieSelected || isTVShowSelected) {
       return (
         <>
           <IconButton
@@ -117,11 +124,11 @@ const Appbar = ({ children }) => {
           >
             <ArrowBackTwoTone />
           </IconButton>
-          { isMovieLoading
+          { isLoading
             ? <Skeleton width="60%" />
             : (
               <Typography component="h1" variant="h6" noWrap>
-                {title || original_title}
+                {displayTitle}
               </Typography>
             )
           }
@@ -149,10 +156,39 @@ const Appbar = ({ children }) => {
   const renderList = () => {
     if (isMovieTabActive) {
       if (isMovieSelected) return children;
-      return <ItemList type="movie"/>;
+      return <ItemList />;
     }
-    else if (isTVShowsTabActive) return <ItemList type="tvshow"/>;
+    else if (isTVShowTabActive) {
+      if (isTVShowSelected) return children;
+      return <ItemList />;
+    }
     else return children;
+  };
+
+  const renderTopContents = () => {
+    if (isMovieTabActive) {
+      return (
+        <>
+          <ReadingProgress target={target} isVisible={isMovieSelected && !isMovieLoading} />
+          <GradientBackground
+            isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
+            image={movie.poster_path}
+            isItemSelected={isMovieSelected}
+          />
+        </>
+      );
+    } else if (isTVShowTabActive) {
+      return (
+        <>
+          <ReadingProgress target={target} isVisible={isTVShowSelected && !isTVShowLoading} />
+          <GradientBackground
+            isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
+            image={tvShow.poster_path}
+            isItemSelected={isTVShowSelected}
+          />
+        </>
+      );
+    }
   };
 
   return (
@@ -167,20 +203,18 @@ const Appbar = ({ children }) => {
       </AppBar>
 
       <div className={classes.detailContainer} ref={target}>
-        <ReadingProgress target={target} isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} />
-        <GradientBackground isVisible={isMovieSelected && !isMovieLoading && 'id' in movie} image="poster_path" isMovieSelected={isMovieSelected} />
-
+        {renderTopContents()}
         <div
           className={clsx(
             classes.container,
-            { [classes.containerMovieSelected]: isMovieSelected && 'id' in movie }
+            { [classes.containerItemSelected]: isMovieSelected || isTVShowSelected }
           )}
         >
           {renderList()}
         </div>
       </div>
 
-      { !isMovieSelected && (
+      { (!isMovieSelected && !isTVShowSelected) && (
         <BottomNavigation
           className={classes.bottomNavigation}
           onChange={(_, index) => handleBottomNavigationClick(index)}

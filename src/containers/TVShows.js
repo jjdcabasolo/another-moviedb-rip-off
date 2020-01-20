@@ -6,8 +6,10 @@ import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
+import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
+import Section from '../components/common/item/detail/Section';
 
 import { getTVShowDetails } from '../api';
 
@@ -71,7 +73,9 @@ const TVShows = () => {
 
   return (
     <Grid container spacing={8} className={classes.root}>
-      asdf
+      <Section>
+        <TVShowHeader />
+      </Section>
     </Grid>
   );
 };

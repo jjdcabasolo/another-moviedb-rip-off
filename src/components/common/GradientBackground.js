@@ -35,17 +35,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const GradientBackground = ({ isVisible, image, isMovieSelected }) => {
+const GradientBackground = ({ isVisible, image, isItemSelected }) => {
   const classes = useStyles();
 
-  const activeTab = useSelector(state => state.sidebar.activeTab);
-  const movie = useSelector(state => state.movies.movie);
+  const src =  `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${image}`;
 
-  const src = activeTab === 'movies'
-    ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${movie[image]}`
-    : '';
-
-  if (!movie[image] && isMovieSelected) return <div className={classes.noImgPadding} />;
+  if (!image && isItemSelected) return <div className={classes.noImgPadding} />;
   if (isVisible) return <img src={src} alt={src} className={classes.img} />;
   return null;
 };

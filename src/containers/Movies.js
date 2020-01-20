@@ -16,7 +16,7 @@ import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
 import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
-import Section from '../components/movie/MovieDetails/Section';
+import Section from '../components/common/item/detail/Section';
 
 import { getMovieDetails } from '../api';
 
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
       height: `${theme.spacing(40)}px !important`,
     },
     [theme.breakpoints.up('md')]: {
-      height: `${theme.spacing(50)}px !important`,
+      height: `${theme.spacing(60)}px !important`,
     },
   },
   note: {

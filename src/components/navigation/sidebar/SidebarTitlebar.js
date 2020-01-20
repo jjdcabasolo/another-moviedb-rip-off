@@ -14,21 +14,14 @@ import {
 } from '@material-ui/core';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
-import { moviesActions } from '../../../reducers/ducks';
+import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
 import { SIDEBAR_WIDTH } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
-  toolbarDrawerOpen: {
-    marginLeft: SIDEBAR_WIDTH - theme.spacing(1),
-    transition: theme.transitions.create('margin-left', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  toolbarDrawerClosed: {
+  toolbarDrawer: {
     marginLeft: theme.spacing(7) - theme.spacing(1),
     transition: theme.transitions.create('margin-left', {
       easing: theme.transitions.easing.sharp,
@@ -37,33 +30,37 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SidebarTitlebar = () => {
+const SidebarTitlebar = props => {
   const classes = useStyles();
 
+  const { item } = props;
+
+  const activeTab = useSelector(state => state.sidebar.activeTab);
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
-  const movie = useSelector(state => state.movies.movie);
   const dispatch = useDispatch();
 
   const history = useHistory();
+  const { title, original_title, date, name, original_name } = item;
 
-  const { title, original_title, date } = movie;
-
-  const isMovieSelected = 'id' in movie;
+  const isItemSelected = 'id' in item;
 
   const goBack = useCallback(() => {
-    dispatch(moviesActions.setActiveMovie({}));
+    if (activeTab === 'movies') dispatch(moviesActions.setActiveMovie({}));
+    else dispatch(tvShowsActions.setActiveTVShow({}));
     history.goBack();
   }, [dispatch, history]);
+
+  const evaluateTitle = () => {
+    if (activeTab === 'movies') return title || original_title;
+    return name || original_name;
+  };
 
   return (
     <HideOnScroll>
       <AppBar color="default" className={classes.appbar}>
         <Toolbar
           variant="dense"
-          className={clsx(
-            { [classes.toolbarDrawerOpen]: drawerOpen },
-            { [classes.toolbarDrawerClosed]: !drawerOpen },
-          )}
+          className={classes.toolbarDrawer}
         >
           <IconButton
             aria-label="back"
@@ -73,7 +70,7 @@ const SidebarTitlebar = () => {
             <ArrowBackTwoTone />
           </IconButton>
           <Typography component="h1" variant="h6">
-            {isMovieSelected && `${title || original_title} (${moment(date).format('YYYY')})`}
+            {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
           </Typography>
         </Toolbar>
       </AppBar>
