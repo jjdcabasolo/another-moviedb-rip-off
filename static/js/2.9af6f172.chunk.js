@@ -1,2 +1,0 @@
-(window["webpackJsonpanother-moviedb-rip-off"]=window["webpackJsonpanother-moviedb-rip-off"]||[]).push([[2],{342:function(e,n,a){"use strict";a.r(n);var t=a(0),r=a.n(t),o=a(83),i=a(101),c=a(49),s=a(14),f=Object(o.a)((function(e){return{}}));n.default=function(){var e=f();return r.a.createElement(i.a,{container:!0,spacing:8,className:e.root},r.a.createElement(c.a,{details:s.r}))}}}]);
-//# sourceMappingURL=2.9af6f172.chunk.js.map
