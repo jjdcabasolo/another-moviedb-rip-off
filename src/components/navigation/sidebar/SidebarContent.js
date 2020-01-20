@@ -21,7 +21,7 @@ import {
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 
-import { moviesActions, sidebarActions } from '../../../reducers/ducks';
+import { moviesActions, sidebarActions, tvShowsActions } from '../../../reducers/ducks';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,
@@ -65,7 +65,8 @@ const SidebarContent = () => {
   const dispatch = useDispatch();
 
   const handleListItemClick = tab => {
-    dispatch(moviesActions.setActiveMovie({}));  
+    if (activeTab === 'movies') dispatch(moviesActions.setActiveMovie({}));
+    else dispatch(tvShowsActions.setActiveTVShow({}));
     dispatch(sidebarActions.setActiveTab(tab.toLowerCase()))
   };
 

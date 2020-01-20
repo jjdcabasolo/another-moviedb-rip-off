@@ -12,4 +12,6 @@ export {
   getOnTheAirShows,
   getPopularShows,
   getTopRatedShows,
+  getTVShowDetails,
+  getTVShowSeasonDetails,
 } from './tvShows';

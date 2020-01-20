@@ -83,7 +83,7 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
 
   const dispatch = useDispatch();
 
-  const isMovie = type === 'movie';
+  const isMovie = type === 'movies';
 
   if (!content) return null;
 
@@ -116,7 +116,7 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
         { [classes.mobile]: mobile },
       )}
     >
-      <Link to={`/${type}s/${content.id}`}>
+      <Link to={`/${type}/${content.id}`}>
         <Card onClick={handleCardClick}>
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }
@@ -129,7 +129,10 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
             />
             <div gutterBottom variant="button" className={classes.typoOverlay}>
               <Typography variant="h5" className={classes.cardTitle} noWrap>
-                {truncateText(isMovie ? content.title : content.name, drawerOpen ? 25 : 100)}
+                {truncateText(
+                  isMovie ? (content.title || content.original_title) : (content.name || content.original_name),
+                  drawerOpen ? 25 : 100
+                )}
               </Typography>
               <Typography className={classes.rank}>
                 {`${rank} • ${moment(isMovie ? content.release_date : content.first_air_date).format('MMM D, YYYY')}`}

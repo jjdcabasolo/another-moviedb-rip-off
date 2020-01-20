@@ -33,9 +33,13 @@ const ReadingProgress = ({ target, isVisible }) => {
 
   const crewShowMore = useSelector(state => state.movies.crewShowMore);
   const castShowMore = useSelector(state => state.movies.castShowMore);
+  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
+  const movie = useSelector(state => state.movies.movie);
   const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
 
   const [readingProgress, setReadingProgress] = useState(0);
+
+  const isMovieSelected = 'id' in movie;
 
   const handleScroll = useCallback(() => {
     if (!target.current) return;
@@ -60,7 +64,15 @@ const ReadingProgress = ({ target, isVisible }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  useEffect(() => handleScroll(), [target, crewShowMore, castShowMore, isMovieLoading, handleScroll]);
+  useEffect(() => handleScroll(), [
+    target,
+    crewShowMore,
+    castShowMore,
+    isMovieLoading,
+    handleScroll,
+    isMovieSelected,
+    drawerOpen,
+  ]);
 
   if (!isVisible) return null;
 

@@ -39,9 +39,12 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
   ])
   .then(axios.spread((details, videos, credits, external_ids) => {
     const externalLinks = external_ids.data;
+    let hasVideo = videos.data.results.length > 0;
+    const trailerIndex = hasVideo ? videos.data.results.map(e => e.type).indexOf('Trailer') : -1;
+    if (trailerIndex === -1) hasVideo = false;
     const movieDetails = {
       ...details.data,
-      youtube: videos.data.results[0] ? `https://www.youtube.com/watch?v=${videos.data.results[0].key}` : null,
+      youtube: hasVideo ? `https://www.youtube.com/watch?v=${videos.data.results[trailerIndex].key}` : null,
       cast: credits.data.cast,
       crew: credits.data.crew,
       facebook: external_ids.data.facebook_id !== null ? `https://www.facebook.com/${externalLinks.facebook_id}` : null,

@@ -45,6 +45,14 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
+  drawerPermanentClose: {
+    width: 0,
+    overflow: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
   drawerOpen: {
     width: theme.browserSize.width - theme.spacing(7),
     overflow: 'hidden',
@@ -68,11 +76,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ItemDrawer = ({ type }) => {
+const ItemDrawer = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const classes = useStyles();
 
+  const activeTab = useSelector(state => state.sidebar.activeTab);
   const movieCategory = useSelector(state => state.movies.category);
   const movieList = useSelector(state => state.movies.list);
   const movieLoadedContent = useSelector(state => state.movies.loadedContent);
@@ -80,7 +89,7 @@ const ItemDrawer = ({ type }) => {
   const tvShowList = useSelector(state => state.tvShows.list);
   const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);
 
-  const isMovie = type === 'movie';
+  const isMovie = activeTab === 'movies';
 
   const getLocalStorage = localStorage.getItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen');
   const finalDrawerState = isDesktop ? (getLocalStorage === null ? true : getLocalStorage === 'true') : true;
@@ -131,7 +140,7 @@ const ItemDrawer = ({ type }) => {
                       handleDrawerToggle={handleDrawerToggle}
                       col={6}
                       rank={(2 * index) + rank + 1}
-                      type={type}
+                      type={activeTab}
                     />
                   ))}
                 </Grid>
@@ -149,7 +158,7 @@ const ItemDrawer = ({ type }) => {
                       handleDrawerToggle={handleDrawerToggle}
                       col={2}
                       rank={(5 * index) + rank + 1}
-                      type={type}
+                      type={activeTab}
                     />
                   ))}
                 </Grid>
@@ -168,7 +177,7 @@ const ItemDrawer = ({ type }) => {
               handleDrawerToggle={handleDrawerToggle}
               col={12}
               rank={rank + 1}
-              type={type}
+              type={activeTab}
             />
           ))}
         </Grid>
@@ -181,7 +190,8 @@ const ItemDrawer = ({ type }) => {
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: itemDrawerOpen },
-        { [classes.drawerClose]: !itemDrawerOpen },
+        { [classes.drawerClose]: !itemDrawerOpen && isDesktop },
+        { [classes.drawerPermanentClose]: !itemDrawerOpen && !isDesktop },
       )}
       variant="permanent"
       open={itemDrawerOpen}
@@ -189,7 +199,8 @@ const ItemDrawer = ({ type }) => {
         paper: clsx(
           classes.drawerPaper,
           { [classes.drawerOpen]: itemDrawerOpen },
-          { [classes.drawerClose]: !itemDrawerOpen },
+          { [classes.drawerClose]: !itemDrawerOpen && isDesktop },
+          { [classes.drawerPermanentClose]: !itemDrawerOpen && !isDesktop },
         ),
       }}
     >
@@ -198,7 +209,7 @@ const ItemDrawer = ({ type }) => {
           <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
         </Grid>
         <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
-          {contentToDisplay.length > 0 && <ItemCategory isDrawer={itemDrawerOpen} type={type} />}
+          {contentToDisplay.length > 0 && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
           {isDesktop && renderToggleItemDrawer()}
         </Grid>
       </Grid>

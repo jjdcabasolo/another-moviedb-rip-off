@@ -43,7 +43,7 @@ const Routes = () => {
       <Route exact path="/tvshows">
         {renderComponent('tvshows')}
       </Route>
-      <Route exact path="/tvshows/:movieId">
+      <Route exact path="/tvshows/:tvShowId">
         {renderComponent('tvshows')}
       </Route>
       <Route>

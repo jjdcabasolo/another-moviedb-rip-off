@@ -6,7 +6,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import CrewAvatarList from './CrewAvatarList';
-import Statistic from './Statistic';
+import Statistic from '../../common/item/detail/Statistic';
 import ComponentLoader from '../../common/ComponentLoader';
 
 import { moviesActions } from '../../../reducers/ducks';

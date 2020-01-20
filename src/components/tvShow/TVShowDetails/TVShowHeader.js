@@ -24,36 +24,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieHeader = () => {
+const TVShowHeader = () => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
 
-  const movie = useSelector(state => state.movies.movie);
+  const tvShow = useSelector(state => state.tvShows.tvShow);
 
-  const { runtime, title, status, release_date, genres, overview, original_title } = movie;
+  const { episode_run_time, name, first_air_date, genres, overview, original_name } = tvShow;
 
-  const runtimeHours = ~~(runtime / 60);
-  const runtimeMinutes = runtime % 60;
+  const runtimeHours = ~~(episode_run_time[0] / 60);
+  const runtimeMinutes = episode_run_time[0] % 60;
 
   return (
     <Grid item xs={12} container spacing={1}>
       <Grid item xs={12}>
-        <Typography variant={isMobile ? "h4" : "h2"} className={classes.title}>{title || original_title}</Typography>
+        <Typography variant={isMobile ? "h4" : "h2"} className={classes.title}>{name || original_name}</Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
-        { status === 'Released' && (
-          <Grid item>
-            <Chip label="Released" variant="outlined" size={isMobile ? "small" : "medium"} />
-            &nbsp;
-          </Grid>
-        )}
         <Grid item>
           <Typography variant={isMobile ? "body1" : "h5"}>
-            &middot;&nbsp;
-            {moment(release_date).format('MMM D, YYYY')}&nbsp;
-            &middot;&nbsp;
-            {runtime ? `${runtimeHours}hr ${runtimeMinutes}min` : 'No runtime yet.'}
+            {moment(first_air_date).format('MMM D, YYYY')}&nbsp;
+            {episode_run_time.length > 0
+              && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes}min`
+            }
           </Typography>
         </Grid>
       </Grid>
@@ -71,4 +65,4 @@ const MovieHeader = () => {
   );
 };
 
-export default MovieHeader;
+export default TVShowHeader;

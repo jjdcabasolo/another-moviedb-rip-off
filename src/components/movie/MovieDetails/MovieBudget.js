@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { Grid } from '@material-ui/core';
 
-import Statistic from './Statistic';
+import Statistic from '../../common/item/detail/Statistic';
 
 import { toMillionsOrBillions } from '../../../utils/functions';
 

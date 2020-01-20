@@ -48,11 +48,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ItemCategory = ({ isList, isDrawer, replacement, type }) => {
+const ItemCategory = ({ isList, isDrawer, replacement }) => {
   const theme = useTheme();
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
+  const activeTab = useSelector(state => state.sidebar.activeTab);
   const movieCategory = useSelector(state => state.movies.category);
   const tvShowCategory = useSelector(state => state.tvShows.category);
   const dispatch = useDispatch();
@@ -61,8 +62,8 @@ const ItemCategory = ({ isList, isDrawer, replacement, type }) => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-  const isMovie = type === 'movie';
-  const isTVShow = type === 'tvshow';
+  const isMovie = activeTab === 'movies';
+  const isTVShow = activeTab === 'tvshows';
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const category = isMovie ? movieCategory : tvShowCategory;
 
@@ -100,8 +101,8 @@ const ItemCategory = ({ isList, isDrawer, replacement, type }) => {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left', }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         classes={{ paper: classes.popover }}
       >
         <Typography variant="body1" className={classes.category} gutterBottom>Set category:</Typography>

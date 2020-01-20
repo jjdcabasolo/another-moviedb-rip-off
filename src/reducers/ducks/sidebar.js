@@ -56,7 +56,7 @@ const initialState = {
   activeTab: evaluateInitialTab(),
   apiKey: initialApiKey,
   darkMode: localStorage.getItem('darkMode') === 'true',
-  drawerOpen: localStorage.getItem('drawerOpen') === 'true',
+  drawerOpen: false,
   username: decrypt(initialUsername, initialApiKey),
 };
 
@@ -79,15 +79,10 @@ const setAPIKey = (state, action) => {
   });
 };
 
-const toggleDrawer = state => {
-  if (state.drawerOpen) localStorage.setItem('drawerOpen', 'false');
-  else localStorage.setItem('drawerOpen', 'true');
-
-  return ({
-    ...state,
-    drawerOpen: !state.drawerOpen,
-  });
-};
+const toggleDrawer = state => ({
+  ...state,
+  drawerOpen: !state.drawerOpen,
+});
 
 const toggleLights = state => {
   if (state.darkMode) localStorage.setItem('darkMode', 'false');

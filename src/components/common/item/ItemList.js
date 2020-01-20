@@ -33,13 +33,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const getIndexCategoryMapping = (type, movieCategory, tvShowCategory) => {
-  if (type === 'movie') {
+  if (type === 'movies') {
     if (movieCategory === 'nowPlaying') return 0;
     if (movieCategory === 'upcoming') return 1;
     if (movieCategory === 'popular') return 2;
     if (movieCategory === 'topRated') return 3;
     if (movieCategory === 'highestGrossing') return 4;
-  } else if (type === 'tvshow') {
+  } else if (type === 'tvshows') {
     if (tvShowCategory === 'airingToday') return 0;
     if (tvShowCategory === 'onTheAir') return 1;
     if (tvShowCategory === 'popular') return 2;
@@ -47,9 +47,10 @@ const getIndexCategoryMapping = (type, movieCategory, tvShowCategory) => {
   }
 };
 
-const ItemList = ({ type }) => {
+const ItemList = () => {
   const classes = useStyles();
 
+  const activeTab = useSelector(state => state.sidebar.activeTab);
   const movieCategory = useSelector(state => state.movies.category);
   const movieList = useSelector(state => state.movies.list);
   const movieLoadedContent = useSelector(state => state.movies.loadedContent);
@@ -60,15 +61,15 @@ const ItemList = ({ type }) => {
 
   const [categoryIndex, setCategoryIndex] = useState(0);
 
-  const isMovie = type === 'movie';
-  const isTVShow = type === 'tvshow';
+  const isMovie = activeTab === 'movies';
+  const isTVShow = activeTab === 'tvshows';
   const contentList = isMovie ? movieList : tvShowList;
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
 
   useEffect(() => {
-    setCategoryIndex(getIndexCategoryMapping(type, movieCategory, tvShowCategory));
-  }, [type, movieCategory, tvShowCategory])
+    setCategoryIndex(getIndexCategoryMapping(activeTab, movieCategory, tvShowCategory));
+  }, [activeTab, movieCategory, tvShowCategory])
 
   const handleSwipe = index => {
     setCategoryIndex(index);
@@ -94,7 +95,7 @@ const ItemList = ({ type }) => {
 
   return (
     <>
-      <ItemCategory isList type={type} />
+      <ItemCategory isList />
       <SwipeableViews enableMouseEvents index={categoryIndex} onChangeIndex={handleSwipe}>
         {Object.keys(contentList).map(cat => (
           <div>
@@ -106,7 +107,7 @@ const ItemList = ({ type }) => {
                   drawerOpen
                   mobile
                   rank={rank + 1}
-                  type={type}
+                  type={activeTab}
                 />
               ))}
             </Grid>
