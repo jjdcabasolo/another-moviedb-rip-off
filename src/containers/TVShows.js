@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
+import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
 import Section from '../components/common/item/detail/Section';
@@ -73,8 +74,12 @@ const TVShows = () => {
 
   return (
     <Grid container spacing={8} className={classes.root}>
-      <Section>
+      <Section divider={false} >
         <TVShowHeader />
+      </Section>
+      
+      <Section>
+        <TVShowStatistics />
       </Section>
     </Grid>
   );

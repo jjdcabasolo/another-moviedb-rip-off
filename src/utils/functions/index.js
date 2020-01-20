@@ -21,3 +21,7 @@ export {
   getCastCol,
   getCrewCol,
 } from './movies';
+
+export {
+  getTVShowStatus,
+} from './tvShows';

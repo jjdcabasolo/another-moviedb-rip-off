@@ -45,12 +45,11 @@ const MovieHeader = () => {
         { status === 'Released' && (
           <Grid item>
             <Chip label="Released" variant="outlined" size={isMobile ? "small" : "medium"} />
-            &nbsp;
+            &nbsp;&middot;&nbsp;
           </Grid>
         )}
         <Grid item>
           <Typography variant={isMobile ? "body1" : "h5"}>
-            &middot;&nbsp;
             {moment(release_date).format('MMM D, YYYY')}&nbsp;
             &middot;&nbsp;
             {runtime ? `${runtimeHours}hr ${runtimeMinutes}min` : 'No runtime yet.'}
