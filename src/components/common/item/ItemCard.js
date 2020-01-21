@@ -17,7 +17,7 @@ import {
 
 import { truncateText } from '../../../utils/functions';
 
-import { moviesActions } from '../../../reducers/ducks';
+import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
@@ -89,7 +89,8 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
 
   const handleCardClick = () => {
     if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
-    dispatch(moviesActions.setDetailsLoading(true));
+    if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
+    else dispatch(tvShowsActions.setDetailsLoading(true));
   };
 
   const renderBrokenImage = () => (

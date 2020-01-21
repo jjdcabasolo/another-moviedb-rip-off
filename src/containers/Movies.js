@@ -12,11 +12,11 @@ import Note from '../components/common/Note';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
-import MovieLinks from '../components/movie/MovieDetails/MovieLinks';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
-import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
+import ImageCard from '../components/common/item/detail/ImageCard';
 import Section from '../components/common/item/detail/Section';
+import ItemLinks from '../components/common/item/detail/ItemLinks';
 
 import { getMovieDetails } from '../api';
 
@@ -59,7 +59,18 @@ const Movies = () => {
 
   const { movieId } = useParams();
 
-  const { budget, revenue, youtube, production_companies, belongs_to_collection } = movie;
+  const {
+    budget,
+    revenue,
+    production_companies,
+    belongs_to_collection,
+    facebook,
+    instagram,
+    twitter,
+    youtube,
+    imdb,
+    tmdb,
+  } = movie;
 
   useEffect(() => {
     if (movieId) {
@@ -122,16 +133,33 @@ const Movies = () => {
         <MovieCrew />
       </Section>
 
-      <Section divider={false} visible={belongs_to_collection} title="Collection" col={isTabletAbove ? 6 : 12}>
-        <MovieCollection />
+      <Section
+        divider={false}
+        visible={belongs_to_collection}
+        title="Collection"
+        col={isTabletAbove ? 6 : 12}
+      >
+        <ImageCard content={belongs_to_collection} />
       </Section>
 
-      <Section divider={false} visible={production_companies} title="Production" col={isTabletAbove && belongs_to_collection ? 6 : 12}>
+      <Section
+        divider={false}
+        visible={production_companies}
+        title="Production"
+        col={isTabletAbove && belongs_to_collection ? 6 : 12}
+      >
         <MovieProduction />
       </Section>
 
       <Section divider={false}>
-        <MovieLinks />
+        <ItemLinks
+          facebook={facebook}
+          instagram={instagram}
+          twitter={twitter}
+          youtube={youtube}
+          imdb={imdb}
+          tmdb={tmdb}
+        />
       </Section>
     </Grid>
   );

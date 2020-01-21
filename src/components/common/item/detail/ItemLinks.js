@@ -5,17 +5,17 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, IconButton, Typography, Link, SvgIcon } from '@material-ui/core';
 
-import Facebook from '../../../assets/images/013-facebook';
-import Instagram from '../../../assets/images/014-instagram';
-import Twitter from '../../../assets/images/004-twitter';
-import YouTube from '../../../assets/images/018-youtube';
+import Facebook from '../../../../assets/images/013-facebook';
+import Instagram from '../../../../assets/images/014-instagram';
+import Twitter from '../../../../assets/images/004-twitter';
+import YouTube from '../../../../assets/images/018-youtube';
 
 import { 
   IMDB_LOGO_DARK,
   IMDB_LOGO,
   TMDB_LOGO_DARK,
   TMDB_LOGO,
-} from '../../../constants';
+} from '../../../../constants';
 
 const useStyles = makeStyles(() => ({
   logo: {
@@ -23,18 +23,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const MovieLinks = () => {
+const ItemLinks = ({ facebook, instagram, twitter, youtube, imdb, tmdb }) => {
   const classes = useStyles();
 
   const darkMode = useSelector(state => state.sidebar.darkMode);
-  const movie = useSelector(state => state.movies.movie);
-
-  const { facebook, instagram, twitter, youtube, imdb, tmdb } = movie;
 
   const renderSocialNetworkLinks = (src, link, isImg) => (
-    <IconButton onClick={() => window.open(link, '_blank')}>
-      { isImg ? src : <SvgIcon>{src}</SvgIcon> }
-    </IconButton>
+    <Grid item>
+      <IconButton onClick={() => window.open(link, '_blank')}>
+        { isImg ? src : <SvgIcon>{src}</SvgIcon> }
+      </IconButton>
+    </Grid>
   );
 
   const renderImgLogo = (alt, logoDark, logo) => (
@@ -48,7 +47,7 @@ const MovieLinks = () => {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid container xs={12} item>
+        <Grid container xs={12} item spacing={1}>
           { facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook) }
           { instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram) }
           { twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter) }
@@ -69,4 +68,4 @@ const MovieLinks = () => {
   );
 };
 
-export default MovieLinks;
+export default ItemLinks;

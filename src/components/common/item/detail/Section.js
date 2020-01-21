@@ -1,6 +1,13 @@
 import React from 'react';
 
+import { makeStyles } from '@material-ui/core/styles';
 import { Divider, Grid, Typography } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  title: {
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 const Section = ({
   title,
@@ -8,27 +15,31 @@ const Section = ({
   visible = true,
   col = 12,
   divider = true,
-}) => (
-  visible 
-    ? (
-      <>
-        <Grid item xs={col}>
-          {title && (
-            <Typography variant="h5" gutterBottom>{title}</Typography>
-          )}
-          {children}
-        </Grid>
-        {divider
-          ? (
-            <Grid item xs={col}>
-              <Divider/>
-            </Grid>
-          )
-          : null
-        }      
-      </>
-    )
-    : null
-);
+}) => {
+  const classes = useStyles();
+
+  return (
+    visible 
+      ? (
+        <>
+          <Grid item xs={col}>
+            {title && (
+              <Typography variant="h5" className={classes.title}>{title}</Typography>
+            )}
+            {children}
+          </Grid>
+          {divider
+            ? (
+              <Grid item xs={12}>
+                <Divider/>
+              </Grid>
+            )
+            : null
+          }      
+        </>
+      )
+      : null
+  );
+};
 
 export default Section;

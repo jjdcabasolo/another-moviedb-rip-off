@@ -1,16 +1,14 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
-
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Card, CardActionArea, CardMedia, Typography } from '@material-ui/core';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
 const useStyles = makeStyles(theme => ({
-  collectionImg: {
+  cardImg: {
     height: 0,
-    paddingTop: theme.spacing(20),
+    paddingTop: theme.spacing(22),
     width: '100%',
   },
   typoOverlay: {
@@ -25,12 +23,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MovieCollection = () => {
+const ImageCard = ({ content }) => {
   const classes = useStyles();
-
-  const movie = useSelector(state => state.movies.movie);
-
-  const { belongs_to_collection } = movie;
 
   const renderBrokenImage = () => (
     <div className={classes.brokenImgContainer}>
@@ -39,8 +33,8 @@ const MovieCollection = () => {
   );
 
   let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
-  if (belongs_to_collection.backdrop_path) imagePath += `/w780${belongs_to_collection.backdrop_path}`;
-  else if (belongs_to_collection.poster_path) imagePath += `/w780${belongs_to_collection.poster_path}`;
+  if (content.backdrop_path) imagePath += `/w780${content.backdrop_path}`;
+  else if (content.poster_path) imagePath += `/w780${content.poster_path}`;
   else imagePath = renderBrokenImage();
 
   return (
@@ -50,12 +44,12 @@ const MovieCollection = () => {
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }
             <CardMedia
-              className={classes.collectionImg}
+              className={classes.cardImg}
               image={imagePath}
             />
             <div gutterBottom variant="button" className={classes.typoOverlay}>
               <Typography variant="h6" className={classes.cardTitle} noWrap>
-                {belongs_to_collection.name}
+                {content.name}
               </Typography>
             </div>
           </CardActionArea>
@@ -65,4 +59,4 @@ const MovieCollection = () => {
   );
 };
 
-export default MovieCollection;
+export default ImageCard;

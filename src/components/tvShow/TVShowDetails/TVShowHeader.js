@@ -54,10 +54,10 @@ const TVShowHeader = () => {
       <Grid item xs={12} container alignItems="center">
         <Grid item>
           <Chip label={getTVShowStatus(status)} variant="outlined" size={isMobile ? "small" : "medium"} />
-          &nbsp;&middot;&nbsp;
         </Grid>
         <Grid item>
           <Typography variant={isMobile ? "body1" : "h5"}>
+            &nbsp;&nbsp;&middot;&nbsp;&nbsp;
             {moment(first_air_date).format('MMM D, YYYY')}&nbsp;
             {episode_run_time.length > 0
               && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes}min`

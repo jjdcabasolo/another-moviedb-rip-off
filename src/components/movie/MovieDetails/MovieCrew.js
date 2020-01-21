@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
-import CrewAvatarList from './CrewAvatarList';
+import PersonAvatarList from '../../common/item/detail/PersonAvatarList';
 import Statistic from '../../common/item/detail/Statistic';
 import ComponentLoader from '../../common/ComponentLoader';
 
@@ -74,7 +74,7 @@ const MovieCrew = () => {
         }
         const members = crewMembers[masonryConfig[a]];
         const title = CREW_TO_DISPLAY.filter(c => c.identifier === masonryConfig[a])[0];
-        colItem.push(<CrewAvatarList title={title.label(members.length)} content={members} />);
+        colItem.push(<PersonAvatarList title={title.label(members.length)} content={members} location="crew" />);
       }
       col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
     }

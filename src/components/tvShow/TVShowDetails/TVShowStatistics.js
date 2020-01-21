@@ -14,7 +14,7 @@ const TVShowStatistics = () => {
   return (
     <Grid item container justify="center" alignItems="center">
       <Statistic col={6} count={number_of_seasons} label="Seasons" divider />
-      <Statistic col={6} count={number_of_episodes} label="Episodes"  />
+      <Statistic col={6} count={number_of_episodes} label="Episodes" />
     </Grid>
   );
 };
