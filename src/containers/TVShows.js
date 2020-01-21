@@ -14,6 +14,7 @@ import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
 import Section from '../components/common/item/detail/Section';
 import ImageCard from '../components/common/item/detail/ImageCard';
+import ItemLinks from '../components/common/item/detail/ItemLinks';
 
 import { getTVShowDetails } from '../api';
 
@@ -46,7 +47,17 @@ const TVShows = () => {
 
   const { tvShowId } = useParams();
 
-  const { backdrop_path, name, original_name } = tvShow;
+  const {
+    backdrop_path,
+    name,
+    original_name,
+    facebook,
+    instagram,
+    twitter,
+    youtube,
+    imdb,
+    tmdb,
+  } = tvShow;
 
   useEffect(() => {
     if (tvShowId) {
@@ -107,6 +118,17 @@ const TVShows = () => {
 
       <Section title="Main cast">
         <TVShowCast />
+      </Section>
+
+      <Section divider={false}>
+        <ItemLinks
+          facebook={facebook}
+          instagram={instagram}
+          twitter={twitter}
+          youtube={youtube}
+          imdb={imdb}
+          tmdb={tmdb}
+        />
       </Section>
     </Grid>
   );
