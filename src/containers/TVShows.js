@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
+import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
 import Section from '../components/common/item/detail/Section';
+import ImageCard from '../components/common/item/detail/ImageCard';
 
 import { getTVShowDetails } from '../api';
 
@@ -31,6 +33,8 @@ const useStyles = makeStyles(theme => ({
 
 const TVShows = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
 
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
@@ -39,6 +43,8 @@ const TVShows = () => {
   const [isLoaded, setIsLoaded] = useState(true);
 
   const { tvShowId } = useParams();
+
+  const { backdrop_path, name, original_name } = tvShow;
 
   useEffect(() => {
     if (tvShowId) {
@@ -80,6 +86,17 @@ const TVShows = () => {
       
       <Section>
         <TVShowStatistics />
+      </Section>
+
+      <Section title="Production" col={isTabletAbove ? 6 : 12} divider={false}>
+        <TVShowProduction />
+      </Section>
+      
+      <Section title="Season list" col={isTabletAbove ? 6 : 12}>
+        <ImageCard content={{
+          backdrop_path,
+          name: `${name || original_name} season list`,
+        }} />
       </Section>
     </Grid>
   );

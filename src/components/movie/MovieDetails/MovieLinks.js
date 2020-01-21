@@ -32,9 +32,11 @@ const MovieLinks = () => {
   const { facebook, instagram, twitter, youtube, imdb, tmdb } = movie;
 
   const renderSocialNetworkLinks = (src, link, isImg) => (
-    <IconButton onClick={() => window.open(link, '_blank')}>
-      { isImg ? src : <SvgIcon>{src}</SvgIcon> }
-    </IconButton>
+    <Grid item>
+      <IconButton onClick={() => window.open(link, '_blank')}>
+        { isImg ? src : <SvgIcon>{src}</SvgIcon> }
+      </IconButton>
+    </Grid>
   );
 
   const renderImgLogo = (alt, logoDark, logo) => (
@@ -48,7 +50,7 @@ const MovieLinks = () => {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid container xs={12} item>
+        <Grid container xs={12} item spacing={1}>
           { facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook) }
           { instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram) }
           { twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter) }

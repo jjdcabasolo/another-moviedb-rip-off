@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { BrokenImage } from '@material-ui/icons';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
 const useStyles = makeStyles(theme => ({
   demo: {
@@ -23,28 +23,33 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CrewAvatarList = ({ title, content }) => {
+const PersonAvatarList = ({ title, content, location }) => {
   const classes = useStyles();
 
   return (
     <Grid item xs={12}>
-      <Typography variant="body1" className={classes.title}>
-        {title}
-      </Typography>
+      {title && (
+        <Typography variant="body1" className={classes.title}>
+          {title}
+        </Typography>
+      )}
       <List disablePadding>
-        { content.map(crew => {
-          const doesPathExist = crew.profile_path !== null;
+        { content.map(person => {
+          const { profile_path, name, job, logo_path } = person;
+          const doesPathExist = profile_path !== null;
+          const image = location === 'network' ? logo_path : profile_path;
+
           return (
             <ListItem>
               <ListItemAvatar>
                 <Avatar
-                  alt={doesPathExist ? `Image not loading? Visit ${crew.profile_path} to view.` : `${crew.name}'s avatar.`}
-                  src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${crew.profile_path}` : ''}
+                  alt={doesPathExist ? `Image not loading? Visit ${image} to view.` : `${name}'s avatar.`}
+                  src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}` : ''}
                 >
                   {!doesPathExist && <BrokenImage />}
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={crew.name} secondary={crew.job} />
+              <ListItemText primary={name} secondary={job} />
             </ListItem>
           );
         })}
@@ -53,4 +58,4 @@ const CrewAvatarList = ({ title, content }) => {
   );
 };
 
-export default CrewAvatarList;
+export default PersonAvatarList;

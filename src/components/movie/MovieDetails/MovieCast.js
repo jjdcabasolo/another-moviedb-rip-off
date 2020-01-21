@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
-import CastAvatar from './CastAvatar';
+import PersonAvatar from '../../common/item/detail/PersonAvatar';
 
 import { moviesActions } from '../../../reducers/ducks';
 
@@ -36,11 +36,21 @@ const MovieCast = () => {
     <>
       <Grid container spacing={2}>
         {cast.slice(0, maxVisibleCards).map(cast => (
-          <CastAvatar content={cast} col={12 / cardCol} />
+          <PersonAvatar
+            image={cast.profile_path}
+            character={cast.character}
+            col={12 / cardCol}
+            name={cast.name}
+          />
         ))}
         { castShowMore && (
           cast.slice(maxVisibleCards, cast.length).map(cast => (
-            <CastAvatar content={cast} col={12 / cardCol} />
+            <PersonAvatar
+              image={cast.profile_path}
+              character={cast.character}
+              col={12 / cardCol}
+              name={cast.name}
+            />
           ))
         )}
         <Grid item xs={12} container justify="flex-end">
