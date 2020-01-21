@@ -9,6 +9,7 @@ import { Grid, useMediaQuery } from '@material-ui/core';
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
+import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
 import Section from '../components/common/item/detail/Section';
@@ -35,6 +36,7 @@ const TVShows = () => {
   const classes = useStyles();
   const theme = useTheme();
   const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
@@ -88,7 +90,11 @@ const TVShows = () => {
         <TVShowStatistics />
       </Section>
 
-      <Section title="Production" col={isTabletAbove ? 6 : 12} divider={false}>
+      <Section
+        title="Production"
+        col={isTabletAbove ? 6 : 12}
+        divider={isMobile}
+      >
         <TVShowProduction />
       </Section>
       
@@ -97,6 +103,10 @@ const TVShows = () => {
           backdrop_path,
           name: `${name || original_name} season list`,
         }} />
+      </Section>
+
+      <Section title="Main cast">
+        <TVShowCast />
       </Section>
     </Grid>
   );
