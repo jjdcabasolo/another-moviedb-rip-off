@@ -20,6 +20,7 @@ import GradientBackground from '../../common/GradientBackground';
 import ItemDrawer from '../../common/item/ItemDrawer';
 import SidebarContent from './SidebarContent';
 import ReadingProgress from '../../common/ReadingProgress';
+import SeasonDrawer from '../../tvShow/SeasonDrawer';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -99,7 +100,9 @@ const Sidebar = ({ children }) => {
   const isTVShowSelected = 'tvShowId' in currentLocation;
   const isTVShowTabActive = 'tvShow' in currentLocation;
 
-  const handleDrawerState = () => dispatch(sidebarActions.setDrawer(false));
+  const handleDrawerState = () => {
+    if (drawerOpen) dispatch(sidebarActions.setDrawer(false));
+  };
 
   const evaluateDrawerVisibility = () => {
     if (isMovieTabActive) {
@@ -186,6 +189,8 @@ const Sidebar = ({ children }) => {
           </Container>
         </main>
       </div>
+
+      {isTVShowSelected && <SeasonDrawer />}
     </div>
   );
 };

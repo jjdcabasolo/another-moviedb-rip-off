@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ImageCard = ({ content }) => {
+const ImageCard = ({ content, onClick }) => {
   const classes = useStyles();
 
   const renderBrokenImage = () => (
@@ -40,7 +40,7 @@ const ImageCard = ({ content }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Card>
+        <Card onClick={onClick}>
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }
             <CardMedia

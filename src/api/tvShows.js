@@ -55,7 +55,7 @@ export const getTVShowDetails = (api_key, tv_id, success, fail, after = () => {}
 
 export const getTVShowSeasonDetails = (api_key, tv_id, season_number, success, fail, after = () => {}) => axios
   .get(`/tv/${tv_id}/season/${season_number}`, { params: { api_key } })
-  .then(response => success(response))
+  .then(response => success(response.data.episodes))
   .catch(error => fail(error))
   .finally(() => after());
   

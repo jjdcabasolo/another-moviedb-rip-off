@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 
-import clsx from 'clsx';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -18,8 +17,6 @@ import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
-import { SIDEBAR_WIDTH } from '../../../constants';
-
 const useStyles = makeStyles(theme => ({
   toolbarDrawer: {
     marginLeft: theme.spacing(7) - theme.spacing(1),
@@ -36,7 +33,6 @@ const SidebarTitlebar = props => {
   const { item } = props;
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
-  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -48,7 +44,7 @@ const SidebarTitlebar = props => {
     if (activeTab === 'movies') dispatch(moviesActions.setActiveMovie({}));
     else dispatch(tvShowsActions.setActiveTVShow({}));
     history.goBack();
-  }, [dispatch, history]);
+  }, [dispatch, history, activeTab]);
 
   const evaluateTitle = () => {
     if (activeTab === 'movies') return title || original_title;

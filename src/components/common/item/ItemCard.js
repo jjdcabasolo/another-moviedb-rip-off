@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
   mediaDrawerClosed: {
     height: 0,
-    paddingTop: theme.spacing(20),
+    paddingTop: theme.spacing(21),
     width: '100%',
   },
   typoOverlay: {

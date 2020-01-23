@@ -10,18 +10,17 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
-import {
-  BrightnessLowTwoTone,
-  Brightness2TwoTone,
-  MenuTwoTone
-} from '@material-ui/icons';
+import { MenuTwoTone } from '@material-ui/icons';
+
+import DarkModeToggle from '../../common/DarkModeToggle';
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 
 import { moviesActions, sidebarActions, tvShowsActions } from '../../../reducers/ducks';
+
+import Tooltip from '../../../utils/components/Tooltip';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,
@@ -62,6 +61,7 @@ const SidebarContent = () => {
   
   const activeTab = useSelector(state => state.sidebar.activeTab);
   const darkMode = useSelector(state => state.sidebar.darkMode);
+  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const dispatch = useDispatch();
 
   const handleListItemClick = tab => {
@@ -91,7 +91,7 @@ const SidebarContent = () => {
               onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase())}
               selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
             >
-              <Tooltip title={element.title} placement="right">
+              <Tooltip title={element.title} placement="right" visible={drawerOpen}>
                 <ListItemIcon>{element.icon}</ListItemIcon>
               </Tooltip>
               <ListItemText primary={element.title} />
@@ -101,19 +101,12 @@ const SidebarContent = () => {
       </List>
 
       <List className={classes.bottomTabs}>
-        <ListItem button onClick={() => dispatch(sidebarActions.toggleLights())}>
-          <Tooltip title="Toggle lights" placement="right">
-            <ListItemIcon>
-              {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
-            </ListItemIcon>
-          </Tooltip>
-          <ListItemText primary="Toggle lights"/>
-        </ListItem>
+        <DarkModeToggle type="listItem" tooltipVisible={drawerOpen} />
 
         <APIKeyDialog />
 
         <ListItem button onClick={() => window.open(API_KEY_DIALOG_TMDB_LINK, '_blank')}>
-          <Tooltip title="Le TMDb" placement="right">
+          <Tooltip title="Le TMDb" placement="right" visible={drawerOpen}>
             <ListItemIcon>
               <img
                 alt="TMDb Logo"

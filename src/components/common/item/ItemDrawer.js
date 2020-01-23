@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
+  AppBar,
+  Toolbar,
   Drawer,
   Grid,
   IconButton,
@@ -17,6 +19,8 @@ import ItemCategory from './ItemCategory';
 import ItemCard from './ItemCard';
 import Note from '../Note';
 import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
+
+import { tvShowsActions } from '../../../reducers/ducks';
 
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
@@ -32,10 +36,12 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaper: {
     position: 'inherit',
-    padding: theme.spacing(5),
     [theme.breakpoints.up('lg')]: {
       height: theme.browserSize.height,
     },
+  },
+  drawerOpenPaperPadding: {
+    padding: theme.spacing(5),
   },
   drawerClose: {
     width: ITEM_DRAWER_WIDTH,
@@ -71,8 +77,18 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   desktopDrawerClosedContainer: {
-    maxHeight: '85vh',
+    maxHeight: '92vh',
     overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      width: 0,
+      height: 0,
+    }
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  itemCardContainer: {
+    padding: theme.spacing(1, 2),
   },
 }));
 
@@ -88,6 +104,7 @@ const ItemDrawer = () => {
   const tvShowCategory = useSelector(state => state.tvShows.category);
   const tvShowList = useSelector(state => state.tvShows.list);
   const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);
+  const dispatch = useDispatch();
 
   const isMovie = activeTab === 'movies';
 
@@ -104,10 +121,11 @@ const ItemDrawer = () => {
   const handleDrawerToggle = () => {
     localStorage.setItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen', !itemDrawerOpen);
     setItemDrawerOpen(!itemDrawerOpen);
+    if (!itemDrawerOpen) dispatch(tvShowsActions.setSeasonDrawer(false));
   };
 
   const renderToggleItemDrawer = () => (
-    <IconButton onClick={handleDrawerToggle}>
+    <IconButton onClick={handleDrawerToggle} edge="end">
       {itemDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
     </IconButton>
   );
@@ -198,23 +216,40 @@ const ItemDrawer = () => {
       classes={{
         paper: clsx(
           classes.drawerPaper,
+          { [classes.drawerOpenPaperPadding]: itemDrawerOpen },
           { [classes.drawerOpen]: itemDrawerOpen },
           { [classes.drawerClose]: !itemDrawerOpen && isDesktop },
           { [classes.drawerPermanentClose]: !itemDrawerOpen && !isDesktop },
         ),
       }}
     >
-      <Grid container direction="row" alignItems="center" spacing={2} className={classes.toolbar}>
-        <Grid item>
-          <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
-        </Grid>
-        <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
-          {contentToDisplay.length > 0 && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
-          {isDesktop && renderToggleItemDrawer()}
-        </Grid>
-      </Grid>
+      {itemDrawerOpen
+        ? (
+          <Grid container direction="row" alignItems="center" spacing={2} className={classes.toolbar}>
+            <Grid item>
+              <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
+            </Grid>
+            <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
+              {contentToDisplay.length > 0 && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
+              {isDesktop && renderToggleItemDrawer()}
+            </Grid>
+          </Grid>
+        )
+        : (
+          <AppBar position="static" color="inherit">
+            <Toolbar>
+              <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
+              <div className={classes.grow} />
+              {contentToDisplay.length > 0 && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
+              {isDesktop && renderToggleItemDrawer()}
+            </Toolbar>
+          </AppBar>
+        )
+      }
 
-      {renderItemCards()}
+      <div className={classes.itemCardContainer}>
+        {renderItemCards()}
+      </div>
     </Drawer>
   );
 };

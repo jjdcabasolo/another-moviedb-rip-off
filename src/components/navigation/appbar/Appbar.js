@@ -15,21 +15,20 @@ import {
   IconButton,
 } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-import {
-  ArrowBackTwoTone,
-  Brightness2TwoTone,
-  BrightnessLowTwoTone,
-} from '@material-ui/icons';
+import { ArrowBackTwoTone } from '@material-ui/icons';
 
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import ItemList from '../../common/item/ItemList';
+import ItemCategory from '../../common/item/ItemCategory';
 import GradientBackground from '../../common/GradientBackground';
 import ReadingProgress from '../../common/ReadingProgress';
+import DarkModeToggle from '../../common/DarkModeToggle';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
 import { evaluateLocation } from '../../../utils/functions';
+import HideOnScroll from '../../../utils/components/HideOnScroll';
 
 import { routes } from '../../../routes/config';
 
@@ -66,13 +65,14 @@ const Appbar = ({ children }) => {
   const target = useRef(null);
 
   const activeTab = useSelector(state => state.sidebar.activeTab);
-  const darkMode = useSelector(state => state.sidebar.darkMode);
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const movie = useSelector(state => state.movies.movie);
   const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
   const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
   const scrollY = useSelector(state => state.browser.scrollY);
   const dispatch = useDispatch();
+  
+  const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const { title, original_title } = movie;
   const { name, original_name } = tvShow;
@@ -85,8 +85,6 @@ const Appbar = ({ children }) => {
   const isMovieTabActive = 'movie' in currentLocation;
   const isTVShowSelected = 'tvShowId' in currentLocation;
   const isTVShowTabActive = 'tvShow' in currentLocation;
-
-  const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
@@ -110,8 +108,11 @@ const Appbar = ({ children }) => {
     history.push(tab);
   };
 
-  const renderToolbar = () => {
+  const renderToolbarContents = () => {
     const isLoading = isMovieSelected ? isMovieLoading : isTVShowLoading;
+    const hasItemContent = isMovieSelected
+      ? (Object.keys(movie).length === 0 && movie.constructor === Object)
+      : (Object.keys(tvShow).length === 0 && tvShow.constructor === Object);
     const displayTitle = isMovieSelected ? (title || original_title) : (name || original_name);
 
     if (isMovieSelected || isTVShowSelected) {
@@ -124,12 +125,15 @@ const Appbar = ({ children }) => {
           >
             <ArrowBackTwoTone />
           </IconButton>
-          { isLoading
-            ? <Skeleton width="60%" />
+          { isLoading || hasItemContent
+            ? <Skeleton variant="rect" height={24} width="75%" />
             : (
-              <Typography component="h1" variant="h6" noWrap>
-                {displayTitle}
-              </Typography>
+              <>
+                <Typography component="h1" variant="h6" noWrap className={classes.title}>
+                  {displayTitle}
+                </Typography>
+                <DarkModeToggle type="iconButton" edge="end" />
+              </>
             )
           }
         </>
@@ -138,17 +142,11 @@ const Appbar = ({ children }) => {
 
     return (
       <>
-        <Typography component="h1" variant="h6" className={classes.title}> ATMDbRo </Typography>
-        <div>
-          <IconButton
-            className={classes.menuButton}
-            aria-label="menu"
-            onClick={() => dispatch(sidebarActions.toggleLights())}
-          >
-            {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
-          </IconButton>
-          <APIKeyDialog />
-        </div>
+        <Typography component="h1" variant="h6" className={classes.title}>
+          ATMDbRo
+        </Typography>
+        <DarkModeToggle type="iconButton" />
+        <APIKeyDialog />
       </>
     );
   };
@@ -196,13 +194,29 @@ const Appbar = ({ children }) => {
       <Helmet />
       <CssBaseline />
 
-      <AppBar color="default">
-        <Toolbar variant="dense">
-          {renderToolbar()}
-        </Toolbar>
-      </AppBar>
+      <HideOnScroll
+        replacement={
+          <AppBar color="default">
+            <Toolbar variant="dense" className={classes.category}>
+              <ItemCategory isList replacement />
+            </Toolbar>
+          </AppBar>
+        }
+        willReplace={!isMovieSelected}
+      >
+        <AppBar color="default">
+          <Toolbar variant="dense">
+            {renderToolbarContents()}
+          </Toolbar>
+        </AppBar>
+      </HideOnScroll>
 
-      <div className={classes.detailContainer} ref={target}>
+      <div
+        className={clsx(
+          { [classes.detailContainer]: (isMovieSelected && isMovieTabActive) || (isTVShowSelected && isTVShowTabActive) }
+        )}
+        ref={target}
+      >
         {renderTopContents()}
         <div
           className={clsx(
