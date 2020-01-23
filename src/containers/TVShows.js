@@ -40,6 +40,7 @@ const TVShows = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const tvShow = useSelector(state => state.tvShows.tvShow);
+  const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
   const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
   const dispatch = useDispatch();
 
@@ -74,6 +75,10 @@ const TVShows = () => {
     }
     // setTimeout(() => window.scrollTo(0, 0), 100);
   }, [tvShowId, dispatch]);
+
+  const handleSeasonListClick = () => {
+    dispatch(tvShowsActions.setSeasonDrawer(!seasonDrawerOpen));
+  };
 
   if (tvShowId === undefined) return (
     <div className={classes.note}>
@@ -110,10 +115,13 @@ const TVShows = () => {
       </Section>
       
       <Section title="Season list" col={isTabletAbove ? 6 : 12}>
-        <ImageCard content={{
-          backdrop_path,
-          name: `${name || original_name} season list`,
-        }} />
+        <ImageCard
+          content={{
+            backdrop_path,
+            name: `${name || original_name} season list`,
+          }}
+          onClick={handleSeasonListClick}
+        />
       </Section>
 
       <Section title="Main cast">
