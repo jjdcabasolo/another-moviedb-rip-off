@@ -105,14 +105,6 @@ const TVShows = () => {
       <Section>
         <TVShowStatistics />
       </Section>
-
-      <Section
-        title="Production"
-        col={isTabletAbove ? 6 : 12}
-        divider={isMobile}
-      >
-        <TVShowProduction />
-      </Section>
       
       <Section title="Season list" col={isTabletAbove ? 6 : 12}>
         <ImageCard
@@ -120,8 +112,13 @@ const TVShows = () => {
             backdrop_path,
             name: `${name || original_name} season list`,
           }}
+          divider={isMobile}
           onClick={handleSeasonListClick}
         />
+      </Section>
+
+      <Section title="Production" col={isTabletAbove ? 6 : 12}>
+        <TVShowProduction />
       </Section>
 
       <Section title="Main cast">

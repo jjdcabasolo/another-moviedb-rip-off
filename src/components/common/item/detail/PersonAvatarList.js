@@ -36,7 +36,7 @@ const PersonAvatarList = ({ title, content, location }) => {
       <List disablePadding>
         { content.map(person => {
           const { profile_path, name, job, logo_path } = person;
-          const doesPathExist = profile_path !== null;
+          const doesPathExist = location === 'network' ? logo_path !== null : profile_path !== null;
           const image = location === 'network' ? logo_path : profile_path;
 
           return (

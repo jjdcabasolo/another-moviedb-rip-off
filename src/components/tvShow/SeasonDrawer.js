@@ -33,6 +33,9 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
     width: SEASON_DRAWER_WIDTH,
+    [theme.breakpoints.down('sm')]: {
+      width: theme.browserSize.width,
+    },
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -46,6 +49,9 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    [theme.breakpoints.down('sm')]: {
+      width: theme.browserSize.width,
+    },
     width: SEASON_DRAWER_WIDTH,
   },
   drawerPaper: {
@@ -66,6 +72,9 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(1),
     },
     maxHeight: '90vh',
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: '94vh',
+    },
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
       width: 0,
@@ -78,12 +87,17 @@ const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
   },
+  count: {
+    fontWeight: theme.typography.body1.fontWeight,
+    fontSize: theme.typography.body1.fontSize,
+  },
 }));
 
 const SeasonDrawer = () => {
   const theme = useTheme();
   const isHigherResDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
@@ -142,7 +156,7 @@ const SeasonDrawer = () => {
       open={seasonDrawerOpen}
       anchor="right"
     >
-      <AppBar position="static" color="inherit">
+      <AppBar position="static" color={isMobile ? 'default' : 'inherit'}>
         <Toolbar variant={isDesktop ? 'regular' : 'dense'}>
           {isSeasonSelected && (
             <IconButton onClick={handleBack} edge="start" color="inherit">
@@ -151,7 +165,13 @@ const SeasonDrawer = () => {
           )}
           <Typography variant="h6">
             {isSeasonSelected
-              ? `Season ${selectedSeason} (${episodes.length} episodes)`
+              ? (
+                <>
+                  {`Season ${selectedSeason} `}
+                  <span className={classes.count}>{`(${episodes.length} episodes)`}</span>
+                </>
+              )
+              
               : 'Seasons'}
           </Typography>
           <div className={classes.grow} />
@@ -191,8 +211,8 @@ const SeasonDrawer = () => {
               //onClick={event => handleListItemClick(event, episode.episode_number)}
             >
               <ListItemText
-                primary={truncateText(`${episode.episode_number}: ${episode.name}`, 40)}
-                secondary={`S${selectedSeason}E${episode.episode_number} • ${moment(episode.air_date).format('MMM D, YYYY')}`}
+                primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40)}
+                secondary={`${moment(episode.air_date).format('MMM D, YYYY')}`}
               />
             </ListItem>
           ))}
