@@ -15,11 +15,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-import {
-  ArrowBackTwoTone,
-  Brightness2TwoTone,
-  BrightnessLowTwoTone,
-} from '@material-ui/icons';
+import { ArrowBackTwoTone } from '@material-ui/icons';
 
 import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
