@@ -2,7 +2,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -81,6 +81,7 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const classes = useStyles();
 
+  const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
   const dispatch = useDispatch();
 
   const isMovie = type === 'movies';
@@ -90,7 +91,12 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
   const handleCardClick = () => {
     if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
     if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
-    else dispatch(tvShowsActions.setDetailsLoading(true));
+    else {
+      if (seasonDrawerOpen) {
+        dispatch(tvShowsActions.setSeasonDrawer(false));
+      }
+      dispatch(tvShowsActions.setDetailsLoading(true));
+    }
   };
 
   const renderBrokenImage = () => (

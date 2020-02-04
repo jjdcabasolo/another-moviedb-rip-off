@@ -18,6 +18,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { Close, ArrowBack } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 
 import { getTVShowSeasonDetails } from '../../api';
 
@@ -101,30 +102,32 @@ const SeasonDrawer = () => {
   const classes = useStyles();
 
   const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
+  const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const episodes = useSelector(state => state.tvShows.episodes);
   const dispatch = useDispatch();
 
-  const [selectedSeason, setSelectedSeason] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { seasons } = tvShow;
 
   const isSeasonSelected = selectedSeason > 0;
 
   const handleListItemClick = (_, index) => {
+    setIsLoading(true);
     if (selectedSeason !== index) {
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, response => {
         dispatch(tvShowsActions.setEpisode(response));
         // dispatch(tvShowsActions.setDetailsLoading(false));
-        // setIsLoaded(true);
+        setIsLoading(false);
       }, error => {
         if (error.response) {
           // dispatch(tvShowsActions.setActiveTVShow({}));
-          // setIsLoaded(error.response.data.status_code);
+          setIsLoading(false);
         }
       });
     }
-    setSelectedSeason(e => e === index ? 0 : index);
+    dispatch(tvShowsActions.setSelectedSeason(selectedSeason === index ? 0 : index));
   };
 
   const handleClose = () => {
@@ -132,7 +135,19 @@ const SeasonDrawer = () => {
   };
 
   const handleBack = () => {
-    setSelectedSeason(0);
+    dispatch(tvShowsActions.setSelectedSeason(0));
+  };
+
+  const renderAppbarTitle = () => {
+    if (isSeasonSelected) {
+      return (
+        <>
+          {`Season ${selectedSeason} `}
+          <span className={classes.count}>{`(${episodes.length} episodes)`}</span>
+        </>
+      );
+    }
+    return 'Seasons';
   };
 
   if (!seasons) return null;
@@ -163,17 +178,14 @@ const SeasonDrawer = () => {
               <ArrowBack />
             </IconButton>
           )}
-          <Typography variant="h6">
-            {isSeasonSelected
-              ? (
-                <>
-                  {`Season ${selectedSeason} `}
-                  <span className={classes.count}>{`(${episodes.length} episodes)`}</span>
-                </>
-              )
-              
-              : 'Seasons'}
-          </Typography>
+          { isLoading
+            ? <Skeleton variant="rect" height={24} width="75%" />
+            : (
+              <Typography variant="h6">
+                {renderAppbarTitle()}
+              </Typography>
+            )
+          }
           <div className={classes.grow} />
           <IconButton onClick={handleClose} edge="end" color="inherit">
             <Close />
