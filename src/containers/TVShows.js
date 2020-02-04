@@ -38,6 +38,7 @@ const TVShows = () => {
   const theme = useTheme();
   const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  console.log(isTabletAbove);
 
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
@@ -106,13 +107,12 @@ const TVShows = () => {
         <TVShowStatistics />
       </Section>
       
-      <Section title="Season list" col={isTabletAbove ? 6 : 12}>
+      <Section title="Season list" col={isTabletAbove ? 6 : 12} divider={isMobile}>
         <ImageCard
           content={{
             backdrop_path,
             name: `${name || original_name} season list`,
           }}
-          divider={isMobile}
           onClick={handleSeasonListClick}
         />
       </Section>
