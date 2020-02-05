@@ -6,6 +6,7 @@ const tvShowsActionType = {
   SET_TV_SHOWS_LIST: '@tvShows/SET_TV_SHOWS_LIST',
   SET_SEASON_DRAWER: '@tvShows/SET_SEASON_DRAWER',
   SET_EPISODE: '@tvShows/SET_EPISODE',
+  SET_SELECTED_SEASON: '@tvShows/SET_SELECTED_SEASON',
 };
 
 // ACTIONS
@@ -34,6 +35,10 @@ export const tvShowsActions = {
     type: tvShowsActionType.SET_EPISODE,
     payload: { episodes },
   }),
+  setSelectedSeason: selectedSeason => ({
+    type: tvShowsActionType.SET_SELECTED_SEASON,
+    payload: { selectedSeason },
+  }),
 };
 
 // REDUCER
@@ -50,6 +55,7 @@ const initialState = {
   loadedContent: 0,
   isTVShowLoading: false,
   seasonDrawerOpen: false,
+  selectedSeason: 0,
 };
 
 const setCategory = (state, action) => ({
@@ -69,6 +75,7 @@ const setTVShowsList = (state, action) => ({
 const setActiveTVShow = (state, action) => ({
   ...state,
   tvShow: action.payload.tvShow,
+  selectedSeason: 0,
 });
 
 const setDetailsLoading = (state, action) => ({
@@ -86,6 +93,11 @@ const setEpisode = (state, action) => ({
   episodes: action.payload.episodes,
 });
 
+const setSelectedSeason = (state, action) => ({
+  ...state,
+  selectedSeason: action.payload.selectedSeason,
+});
+
 export const tvShowsReducer = (state = initialState, action) => {
   switch (action.type) {
     case tvShowsActionType.SET_ACTIVE_TV_SHOW: return setActiveTVShow(state, action);
@@ -94,6 +106,7 @@ export const tvShowsReducer = (state = initialState, action) => {
     case tvShowsActionType.SET_TV_SHOWS_LIST: return setTVShowsList(state, action);
     case tvShowsActionType.SET_SEASON_DRAWER: return setSeasonDrawer(state, action);
     case tvShowsActionType.SET_EPISODE: return setEpisode(state, action);
+    case tvShowsActionType.SET_SELECTED_SEASON: return setSelectedSeason(state, action);
     default: return state;
   }
 };

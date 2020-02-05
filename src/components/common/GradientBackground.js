@@ -8,6 +8,7 @@ const useStyles = makeStyles(theme => ({
   img: {
     maskImage: 'linear-gradient(to top, #0000 0%, #000 30%)',
     objectFit: 'cover',
+    objectPosition: '50% 0%',
     [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(6),
       height: '70vh',

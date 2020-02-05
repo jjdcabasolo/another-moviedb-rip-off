@@ -90,6 +90,10 @@ const useStyles = makeStyles(theme => ({
   itemCardContainer: {
     padding: theme.spacing(1, 2),
   },
+  itemDrawerAppbar: {
+    marginTop: theme.spacing(1),
+    boxShadow: theme.shadows[0],
+  },
 }));
 
 const ItemDrawer = () => {
@@ -236,7 +240,7 @@ const ItemDrawer = () => {
           </Grid>
         )
         : (
-          <AppBar position="static" color="inherit">
+          <AppBar position="static" color="inherit" className={classes.itemDrawerAppbar}>
             <Toolbar>
               <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
               <div className={classes.grow} />

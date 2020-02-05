@@ -18,12 +18,14 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { Close, ArrowBack } from '@material-ui/icons';
+import { Skeleton } from '@material-ui/lab';
 
 import { getTVShowSeasonDetails } from '../../api';
 
 import { tvShowsActions } from '../../reducers/ducks';
 
 import { decryptKey, truncateText } from '../../utils/functions';
+import HashLink from '../../utils/components/HashLink';
 
 import { SEASON_DRAWER_WIDTH } from '../../constants';
 
@@ -33,6 +35,9 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
     width: SEASON_DRAWER_WIDTH,
+    [theme.breakpoints.down('sm')]: {
+      width: theme.browserSize.width,
+    },
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -46,6 +51,9 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    [theme.breakpoints.down('sm')]: {
+      width: theme.browserSize.width,
+    },
     width: SEASON_DRAWER_WIDTH,
   },
   drawerPaper: {
@@ -66,6 +74,9 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(1),
     },
     maxHeight: '90vh',
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: '94vh',
+    },
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
       width: 0,
@@ -78,39 +89,51 @@ const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
   },
+  count: {
+    fontWeight: theme.typography.body1.fontWeight,
+    fontSize: theme.typography.body1.fontSize,
+  },
+  hashLink: {
+    color: 'unset',
+    cursor: 'unset',
+    textDecoration: 'unset',
+  },
 }));
 
 const SeasonDrawer = () => {
   const theme = useTheme();
   const isHigherResDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
+  const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const episodes = useSelector(state => state.tvShows.episodes);
   const dispatch = useDispatch();
 
-  const [selectedSeason, setSelectedSeason] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { seasons } = tvShow;
 
   const isSeasonSelected = selectedSeason > 0;
 
   const handleListItemClick = (_, index) => {
+    setIsLoading(true);
     if (selectedSeason !== index) {
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, response => {
         dispatch(tvShowsActions.setEpisode(response));
         // dispatch(tvShowsActions.setDetailsLoading(false));
-        // setIsLoaded(true);
+        setIsLoading(false);
       }, error => {
         if (error.response) {
           // dispatch(tvShowsActions.setActiveTVShow({}));
-          // setIsLoaded(error.response.data.status_code);
+          setIsLoading(false);
         }
       });
     }
-    setSelectedSeason(e => e === index ? 0 : index);
+    dispatch(tvShowsActions.setSelectedSeason(selectedSeason === index ? 0 : index));
   };
 
   const handleClose = () => {
@@ -118,7 +141,19 @@ const SeasonDrawer = () => {
   };
 
   const handleBack = () => {
-    setSelectedSeason(0);
+    dispatch(tvShowsActions.setSelectedSeason(0));
+  };
+
+  const renderAppbarTitle = () => {
+    if (isSeasonSelected) {
+      return (
+        <>
+          {`Season ${selectedSeason} `}
+          <span className={classes.count}>{`(${episodes.length} episodes)`}</span>
+        </>
+      );
+    }
+    return 'Seasons';
   };
 
   if (!seasons) return null;
@@ -142,18 +177,23 @@ const SeasonDrawer = () => {
       open={seasonDrawerOpen}
       anchor="right"
     >
-      <AppBar position="static" color="inherit">
+      <AppBar position="static" color={isMobile ? 'default' : 'inherit'}>
         <Toolbar variant={isDesktop ? 'regular' : 'dense'}>
           {isSeasonSelected && (
-            <IconButton onClick={handleBack} edge="start" color="inherit">
-              <ArrowBack />
-            </IconButton>
+            <HashLink to="#">
+              <IconButton onClick={handleBack} edge="start" color="inherit">
+                <ArrowBack />
+              </IconButton>
+            </HashLink>
           )}
-          <Typography variant="h6">
-            {isSeasonSelected
-              ? `Season ${selectedSeason} (${episodes.length} episodes)`
-              : 'Seasons'}
-          </Typography>
+          { isLoading
+            ? <Skeleton variant="rect" height={24} width="75%" />
+            : (
+              <Typography variant="h6">
+                {renderAppbarTitle()}
+              </Typography>
+            )
+          }
           <div className={classes.grow} />
           <IconButton onClick={handleClose} edge="end" color="inherit">
             <Close />
@@ -169,10 +209,12 @@ const SeasonDrawer = () => {
                 selected={selectedSeason === season.season_number}
                 onClick={event => handleListItemClick(event, season.season_number)}
               >
-                <ListItemText
-                  primary={`Season ${season.season_number}`}
-                  secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
-                />
+                <HashLink to="#tvshow-season-details">
+                  <ListItemText
+                    primary={`Season ${season.season_number}`}
+                    secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
+                  />
+                </HashLink>
               </ListItem>
             ))}
           </List>
@@ -191,8 +233,8 @@ const SeasonDrawer = () => {
               //onClick={event => handleListItemClick(event, episode.episode_number)}
             >
               <ListItemText
-                primary={truncateText(`${episode.episode_number}: ${episode.name}`, 40)}
-                secondary={`S${selectedSeason}E${episode.episode_number} • ${moment(episode.air_date).format('MMM D, YYYY')}`}
+                primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40)}
+                secondary={`${moment(episode.air_date).format('MMM D, YYYY')}`}
               />
             </ListItem>
           ))}

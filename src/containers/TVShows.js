@@ -10,6 +10,7 @@ import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
 import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
+import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import ComponentLoader from '../components/common/ComponentLoader';
 import Note from '../components/common/Note';
 import Section from '../components/common/item/detail/Section';
@@ -39,6 +40,7 @@ const TVShows = () => {
   const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
   const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
@@ -58,6 +60,7 @@ const TVShows = () => {
     youtube,
     imdb,
     tmdb,
+    number_of_seasons,
   } = tvShow;
 
   useEffect(() => {
@@ -98,23 +101,20 @@ const TVShows = () => {
 
   return (
     <Grid container spacing={8} className={classes.root}>
-      <Section divider={false} >
+      <Section divider={false} anchorId="tvshow-budget">
         <TVShowHeader />
       </Section>
       
-      <Section>
+      <Section anchorId="tvshow-statistics">
         <TVShowStatistics />
       </Section>
-
+      
       <Section
-        title="Production"
+        title="Season list"
         col={isTabletAbove ? 6 : 12}
         divider={isMobile}
+        anchorId="tvshow-season-list"
       >
-        <TVShowProduction />
-      </Section>
-      
-      <Section title="Season list" col={isTabletAbove ? 6 : 12}>
         <ImageCard
           content={{
             backdrop_path,
@@ -124,11 +124,28 @@ const TVShows = () => {
         />
       </Section>
 
-      <Section title="Main cast">
+      <Section
+        title="Production"
+        col={isTabletAbove ? 6 : 12}
+        anchorId="tvshow-production"
+      >
+        <TVShowProduction />
+      </Section>
+
+      <Section
+        title={`Season ${selectedSeason}`}
+        anchorId="tvshow-season-details"
+        visible={selectedSeason !== 0}
+        chipContent={number_of_seasons === selectedSeason ? "Latest" : "Finished"}
+      >
+        <TVShowSeasonDetails />
+      </Section>
+
+      <Section title="Main cast" anchorId="tvshow-cast">
         <TVShowCast />
       </Section>
 
-      <Section divider={false}>
+      <Section divider={false} anchorId="tvshow-links">
         <ItemLinks
           facebook={facebook}
           instagram={instagram}

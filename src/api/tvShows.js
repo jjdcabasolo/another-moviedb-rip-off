@@ -46,7 +46,7 @@ export const getTVShowDetails = (api_key, tv_id, success, fail, after = () => {}
       instagram: external_ids.data.instagram_id !== null ? `https://www.instagram.com/${externalLinks.instagram_id}` : null,
       twitter: external_ids.data.twitter_id !== null ? `https://www.twitter.com/${externalLinks.twitter_id}` : null,
       imdb: external_ids.data.imdb_id !== null ? `https://www.imdb.com/title/${externalLinks.imdb_id}` : null,
-      tmdb: external_ids.data.id !== null ? `https://www.themoviedb.org/movie/${externalLinks.id}` : null,
+      tmdb: external_ids.data.id !== null ? `https://www.themoviedb.org/tv/${externalLinks.id}` : null,
     };
     success(tvShowDetails);
   }))

@@ -24,6 +24,7 @@ import ItemCategory from '../../common/item/ItemCategory';
 import GradientBackground from '../../common/GradientBackground';
 import ReadingProgress from '../../common/ReadingProgress';
 import DarkModeToggle from '../../common/DarkModeToggle';
+import SeasonDrawer from '../../tvShow/SeasonDrawer';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -227,6 +228,8 @@ const Appbar = ({ children }) => {
           {renderList()}
         </div>
       </div>
+
+      {isTVShowSelected && <SeasonDrawer />}
 
       { (!isMovieSelected && !isTVShowSelected) && (
         <BottomNavigation
