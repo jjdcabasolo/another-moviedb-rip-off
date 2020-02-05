@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
@@ -106,15 +107,17 @@ const Movies = () => {
     
   return (
     <Grid container spacing={8} className={classes.root}>
-      <Section divider={!(budget && revenue)}>
+      <Section divider={!(budget && revenue)} anchorId="movie-header">
         <MovieHeader />
       </Section>
 
-      <Section visible={budget && revenue}>
+      <HashLink smooth to="#movie-cast">Test</HashLink>
+
+      <Section visible={budget && revenue} anchorId="movie-budget">
         <MovieBudget />
       </Section>
 
-      <Section title="Trailer" visible={youtube}>
+      <Section title="Trailer" visible={youtube} anchorId="movie-trailer">
         <ReactPlayer
           className={classes.trailer}
           controls
@@ -125,11 +128,11 @@ const Movies = () => {
         />
       </Section>
 
-      <Section title="Cast">
+      <Section title="Cast" anchorId="movie-cast">
         <MovieCast />
       </Section>
 
-      <Section title="Crew">
+      <Section title="Crew" anchorId="movie-crew">
         <MovieCrew />
       </Section>
 
@@ -138,6 +141,7 @@ const Movies = () => {
         visible={belongs_to_collection}
         title="Collection"
         col={isTabletAbove ? 6 : 12}
+        anchorId="movie-collection"
       >
         <ImageCard content={belongs_to_collection} />
       </Section>
@@ -147,11 +151,12 @@ const Movies = () => {
         visible={production_companies}
         title="Production"
         col={isTabletAbove && belongs_to_collection ? 6 : 12}
+        anchorId="movie-production"
       >
         <MovieProduction />
       </Section>
 
-      <Section divider={false}>
+      <Section divider={false} anchorId="movie-links">
         <ItemLinks
           facebook={facebook}
           instagram={instagram}

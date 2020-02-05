@@ -25,6 +25,7 @@ import { getTVShowSeasonDetails } from '../../api';
 import { tvShowsActions } from '../../reducers/ducks';
 
 import { decryptKey, truncateText } from '../../utils/functions';
+import HashLink from '../../utils/components/HashLink';
 
 import { SEASON_DRAWER_WIDTH } from '../../constants';
 
@@ -91,6 +92,11 @@ const useStyles = makeStyles(theme => ({
   count: {
     fontWeight: theme.typography.body1.fontWeight,
     fontSize: theme.typography.body1.fontSize,
+  },
+  hashLink: {
+    color: 'unset',
+    cursor: 'unset',
+    textDecoration: 'unset',
   },
 }));
 
@@ -174,9 +180,11 @@ const SeasonDrawer = () => {
       <AppBar position="static" color={isMobile ? 'default' : 'inherit'}>
         <Toolbar variant={isDesktop ? 'regular' : 'dense'}>
           {isSeasonSelected && (
-            <IconButton onClick={handleBack} edge="start" color="inherit">
-              <ArrowBack />
-            </IconButton>
+            <HashLink to="#">
+              <IconButton onClick={handleBack} edge="start" color="inherit">
+                <ArrowBack />
+              </IconButton>
+            </HashLink>
           )}
           { isLoading
             ? <Skeleton variant="rect" height={24} width="75%" />
@@ -201,10 +209,12 @@ const SeasonDrawer = () => {
                 selected={selectedSeason === season.season_number}
                 onClick={event => handleListItemClick(event, season.season_number)}
               >
-                <ListItemText
-                  primary={`Season ${season.season_number}`}
-                  secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
-                />
+                <HashLink to="#tvshow-season-details">
+                  <ListItemText
+                    primary={`Season ${season.season_number}`}
+                    secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
+                  />
+                </HashLink>
               </ListItem>
             ))}
           </List>

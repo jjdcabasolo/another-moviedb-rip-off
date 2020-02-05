@@ -75,6 +75,7 @@ const setTVShowsList = (state, action) => ({
 const setActiveTVShow = (state, action) => ({
   ...state,
   tvShow: action.payload.tvShow,
+  selectedSeason: 0,
 });
 
 const setDetailsLoading = (state, action) => ({

@@ -27,7 +27,7 @@ const ImageCard = ({ content, onClick }) => {
   const classes = useStyles();
 
   const renderBrokenImage = () => (
-    <div className={classes.brokenImgContainer}>
+    <div>
       <Typography variant="body1">No image available.</Typography>
     </div>
   );
