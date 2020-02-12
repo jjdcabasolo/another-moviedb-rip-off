@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1157cc69d29bcae0627851e94f5e2220",
+    "revision": "a1407c910051030936fc4e25640d8012",
     "url": "/another-moviedb-rip-off/index.html"
   },
   {
-    "revision": "e41620ca6ba71f7b0758",
+    "revision": "5f7447b0e09a275003d4",
     "url": "/another-moviedb-rip-off/static/css/main.8ffea05d.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/another-moviedb-rip-off/static/js/0.7cdd5152.chunk.js"
   },
   {
-    "revision": "335a7ec364de33611cb3",
-    "url": "/another-moviedb-rip-off/static/js/1.e5f82f5e.chunk.js"
+    "revision": "9139dca8151541cba0d7",
+    "url": "/another-moviedb-rip-off/static/js/1.5ea83435.chunk.js"
   },
   {
     "revision": "9e13f28ac44c289af2cd",
@@ -24,11 +24,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/another-moviedb-rip-off/static/js/5.2f26f900.chunk.js"
   },
   {
-    "revision": "e41620ca6ba71f7b0758",
-    "url": "/another-moviedb-rip-off/static/js/main.10cafff5.chunk.js"
+    "revision": "5f7447b0e09a275003d4",
+    "url": "/another-moviedb-rip-off/static/js/main.e9d8a59c.chunk.js"
   },
   {
-    "revision": "c7a42beba7369d5135a4",
-    "url": "/another-moviedb-rip-off/static/js/runtime-main.5323f407.js"
+    "revision": "35c1ceb542de5d0422c9",
+    "url": "/another-moviedb-rip-off/static/js/runtime-main.da4618e4.js"
   }
 ]);
