@@ -111,8 +111,6 @@ const Movies = () => {
         <MovieHeader />
       </Section>
 
-      <HashLink smooth to="#movie-cast">Test</HashLink>
-
       <Section visible={budget && revenue} anchorId="movie-budget">
         <MovieBudget />
       </Section>

@@ -20,3 +20,5 @@ export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
     isActive: e => e === 'topRated',
   },
 ];
+
+export const NO_SEASON_OVERVIEW = '';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -11,7 +11,10 @@ import {
   Grid,
   Typography,
   Link,
+  Button,
 } from '@material-ui/core';
+
+import { tvShowsActions } from '../../../reducers/ducks';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
@@ -19,6 +22,9 @@ const useStyles = makeStyles(theme => ({
   cardImg: {
     height: 0,
     paddingTop: theme.spacing(50),
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(60),
+    },
     width: '100%',
   },
   noWeight: {
@@ -31,6 +37,7 @@ const TVShowSeasonDetails = () => {
 
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
+  const dispatch = useDispatch();
 
   const { seasons, name, tmdb } = tvShow;
 
@@ -40,6 +47,11 @@ const TVShowSeasonDetails = () => {
     air_date,
     episode_count,
   } = seasons.filter(e => e.season_number === selectedSeason)[0];
+
+  const handleSeasonChange = () => {
+    dispatch(tvShowsActions.setSeasonDrawer(true));
+    dispatch(tvShowsActions.setSelectedSeason(0));
+  };
 
   const renderBrokenImage = () => (
     <div className={classes.brokenImgContainer}>
@@ -53,7 +65,7 @@ const TVShowSeasonDetails = () => {
 
   return (
     <Grid item container spacing={2}>
-      <Grid item xs={4}>
+      <Grid item lg={4} md={4} sm={12} xs={12}>
         <Card>
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }
@@ -64,7 +76,7 @@ const TVShowSeasonDetails = () => {
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid item xs={8}>
+      <Grid item lg={8} md={8} sm={12} xs={12}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h6">
@@ -94,6 +106,11 @@ const TVShowSeasonDetails = () => {
             }
           </Grid>
         </Grid>
+      </Grid>
+      <Grid item xs={12} container justify="flex-end">
+        <Button onClick={handleSeasonChange}>
+          Change season
+        </Button>
       </Grid>
     </Grid>
   );

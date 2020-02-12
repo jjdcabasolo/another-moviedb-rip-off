@@ -109,6 +109,7 @@ const SeasonDrawer = () => {
 
   const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
   const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
+  const selectedEpisode = useSelector(state => state.tvShows.selectedEpisode);
   const tvShow = useSelector(state => state.tvShows.tvShow);
   const episodes = useSelector(state => state.tvShows.episodes);
   const dispatch = useDispatch();
@@ -119,7 +120,7 @@ const SeasonDrawer = () => {
 
   const isSeasonSelected = selectedSeason > 0;
 
-  const handleListItemClick = (_, index) => {
+  const handleSeasonClick = index => {
     setIsLoading(true);
     if (selectedSeason !== index) {
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, response => {
@@ -134,6 +135,11 @@ const SeasonDrawer = () => {
       });
     }
     dispatch(tvShowsActions.setSelectedSeason(selectedSeason === index ? 0 : index));
+  };
+
+  const handleEpisodeClick = index => {
+    dispatch(tvShowsActions.setSelectedEpisode(index));
+    dispatch(tvShowsActions.setSeasonDrawer(false));
   };
 
   const handleClose = () => {
@@ -207,7 +213,7 @@ const SeasonDrawer = () => {
               <ListItem
                 button
                 selected={selectedSeason === season.season_number}
-                onClick={event => handleListItemClick(event, season.season_number)}
+                onClick={() => handleSeasonClick(season.season_number)}
               >
                 <HashLink to="#tvshow-season-details">
                   <ListItemText
@@ -229,8 +235,8 @@ const SeasonDrawer = () => {
           {episodes.map(episode => (
             <ListItem
               button
-              //selected={selectedSeason === episode.episode_number}
-              //onClick={event => handleListItemClick(event, episode.episode_number)}
+              selected={selectedEpisode === episode.episode_number}
+              onClick={() => handleEpisodeClick(episode.episode_number)}
             >
               <ListItemText
                 primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40)}
