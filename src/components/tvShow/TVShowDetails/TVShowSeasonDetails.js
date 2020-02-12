@@ -16,13 +16,15 @@ import {
 
 import { tvShowsActions } from '../../../reducers/ducks';
 
+import { truncateText } from '../../../utils/functions';
+
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   cardImg: {
     height: 0,
     paddingTop: theme.spacing(50),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('lg')]: {
       paddingTop: theme.spacing(60),
     },
     width: '100%',
@@ -65,7 +67,7 @@ const TVShowSeasonDetails = () => {
 
   return (
     <Grid item container spacing={2}>
-      <Grid item lg={4} md={4} sm={12} xs={12}>
+      <Grid item lg={4} md={6} sm={6} xs={12}>
         <Card>
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }
@@ -76,7 +78,7 @@ const TVShowSeasonDetails = () => {
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid item lg={8} md={8} sm={12} xs={12}>
+      <Grid item lg={8} md={6} sm={6} xs={12}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h6">
@@ -96,7 +98,11 @@ const TVShowSeasonDetails = () => {
           </Grid>
           <Grid item xs={12}>
             {overview
-              ? <Typography variant="body1">{overview}</Typography>
+              ? (
+                <Typography variant="body1">
+                  {truncateText(overview, 600)}
+                </Typography>
+              )
               : (
                 <Typography variant="body1">
                   {`There is no description yet. Contribute now on TMDb's ${name} `}

@@ -37,8 +37,8 @@ const useStyles = makeStyles(theme => ({
 const TVShows = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
   const tvShow = useSelector(state => state.tvShows.tvShow);
@@ -111,7 +111,7 @@ const TVShows = () => {
       
       <Section
         title="Season list"
-        col={isTabletAbove ? 6 : 12}
+        col={!isMobile ? 6 : 12}
         divider={isMobile}
         anchorId="tvshow-season-list"
       >
@@ -126,7 +126,7 @@ const TVShows = () => {
 
       <Section
         title="Production"
-        col={isTabletAbove ? 6 : 12}
+        col={!isMobile ? 6 : 12}
         anchorId="tvshow-production"
       >
         <TVShowProduction />
