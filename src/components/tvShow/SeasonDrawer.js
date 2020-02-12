@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0,
     whiteSpace: 'nowrap',
     width: SEASON_DRAWER_WIDTH,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       width: theme.browserSize.width,
     },
   },
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       width: theme.browserSize.width,
     },
     width: SEASON_DRAWER_WIDTH,
@@ -102,9 +102,8 @@ const useStyles = makeStyles(theme => ({
 
 const SeasonDrawer = () => {
   const theme = useTheme();
-  const isHigherResDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
   const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
@@ -166,7 +165,7 @@ const SeasonDrawer = () => {
 
   return (
     <Drawer
-      variant={isHigherResDesktop ? 'permanent' : 'temporary'}
+      variant={isMobile ? 'permanent' : 'temporary'}
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: seasonDrawerOpen },
