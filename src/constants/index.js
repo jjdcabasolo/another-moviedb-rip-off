@@ -38,3 +38,8 @@ export {
   IMDB_LOGO_DARK,
   IMDB_LOGO,
 } from './logo';
+
+export {
+  GITHUB_REPO_LINK,
+  FIGMA_LINK,
+} from './links';
