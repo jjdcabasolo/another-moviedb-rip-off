@@ -88,7 +88,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   itemCardContainer: {
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(1, 3),
   },
   itemDrawerAppbar: {
     marginTop: theme.spacing(1),
