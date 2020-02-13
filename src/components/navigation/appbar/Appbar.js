@@ -86,6 +86,8 @@ const Appbar = ({ children }) => {
   const isMovieTabActive = 'movie' in currentLocation;
   const isTVShowSelected = 'tvShowId' in currentLocation;
   const isTVShowTabActive = 'tvShow' in currentLocation;
+  const isMovieEmpty = Object.keys(movie).length === 0 && movie.constructor === Object;
+  const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
 
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
@@ -168,22 +170,32 @@ const Appbar = ({ children }) => {
     if (isMovieTabActive) {
       return (
         <>
-          <ReadingProgress target={target} isVisible={isMovieSelected && !isMovieLoading} />
+          <ReadingProgress
+            target={target}
+            isVisible={isMovieSelected && !isMovieLoading}
+            isLoading={isMovieEmpty}
+          />
           <GradientBackground
             isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
             image={movie.poster_path}
             isItemSelected={isMovieSelected}
+            isLoading={isMovieEmpty}
           />
         </>
       );
     } else if (isTVShowTabActive) {
       return (
         <>
-          <ReadingProgress target={target} isVisible={isTVShowSelected && !isTVShowLoading} />
+          <ReadingProgress
+            target={target}
+            isVisible={isTVShowSelected && !isTVShowLoading}
+            isLoading={isTVShowEmpty}
+          />
           <GradientBackground
             isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
             image={tvShow.poster_path}
             isItemSelected={isTVShowSelected}
+            isLoading={isTVShowEmpty}
           />
         </>
       );

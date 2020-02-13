@@ -34,13 +34,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const GradientBackground = ({ isVisible, image, isItemSelected }) => {
+const GradientBackground = ({ isVisible, image, isItemSelected, isLoading }) => {
   const classes = useStyles();
 
   const src =  `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${image}`;
 
-  if (!image && isItemSelected) return <div className={classes.noImgPadding} />;
-  if (isVisible) return <img src={src} alt={src} className={classes.img} />;
+  if (isLoading) return null;
+  else if (!image && isItemSelected) return <div className={classes.noImgPadding} />;
+  else if (isVisible) return <img src={src} alt={src} className={classes.img} />;
   return null;
 };
 

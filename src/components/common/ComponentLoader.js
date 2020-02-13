@@ -6,13 +6,13 @@ import { CircularProgress, Grid, Typography } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
   loaderContainer: {
     [theme.breakpoints.down('sm')]: {
-      height: theme.browserSize.height - theme.spacing(17),
+      marginTop: (theme.browserSize.height - theme.spacing(17)) / 2.25,
     },
     [theme.breakpoints.between('sm', 'lg')]: {
-      height: theme.browserSize.height - theme.spacing(6),
+      marginTop: (theme.browserSize.height - theme.spacing(6)) / 2.25,
     },
     [theme.breakpoints.up('lg')]: {
-      height: theme.browserSize.height,
+      marginTop: (theme.browserSize.height) / 2.25,
     },
   },
   loaderText: {

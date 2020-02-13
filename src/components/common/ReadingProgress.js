@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   https://nehalist.io/creating-a-reading-progress-bar-in-react/
 */
 
-const ReadingProgress = ({ target, isVisible }) => {
+const ReadingProgress = ({ target, isVisible, isLoading }) => {
   const classes = useStyles();
 
   const crewShowMore = useSelector(state => state.movies.crewShowMore);
@@ -36,6 +36,7 @@ const ReadingProgress = ({ target, isVisible }) => {
   const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
   const movie = useSelector(state => state.movies.movie);
   const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
+  const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
 
   const [readingProgress, setReadingProgress] = useState(0);
 
@@ -69,12 +70,13 @@ const ReadingProgress = ({ target, isVisible }) => {
     crewShowMore,
     castShowMore,
     isMovieLoading,
+    isTVShowLoading,
     handleScroll,
     isMovieSelected,
     drawerOpen,
   ]);
 
-  if (!isVisible) return null;
+  if (!isVisible || isLoading) return null;
 
   return (
     <div className={classes.progressBar}>
