@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, IconButton, Typography, Link, SvgIcon } from '@material-ui/core';
+import { Grid, IconButton, Typography, Link, SvgIcon, Tooltip } from '@material-ui/core';
 
 import Facebook from '../../../../assets/images/013-facebook';
 import Instagram from '../../../../assets/images/014-instagram';
@@ -28,11 +28,13 @@ const ItemLinks = ({ facebook, instagram, twitter, youtube, imdb, tmdb }) => {
 
   const darkMode = useSelector(state => state.sidebar.darkMode);
 
-  const renderSocialNetworkLinks = (src, link, isImg) => (
+  const renderSocialNetworkLinks = (src, link,  title, isImg) => (
     <Grid item>
-      <IconButton onClick={() => window.open(link, '_blank')}>
-        { isImg ? src : <SvgIcon>{src}</SvgIcon> }
-      </IconButton>
+      <Tooltip title={title}>
+        <IconButton onClick={() => window.open(link, '_blank')}>
+          { isImg ? src : <SvgIcon>{src}</SvgIcon> }
+        </IconButton>
+      </Tooltip>
     </Grid>
   );
 
@@ -48,12 +50,12 @@ const ItemLinks = ({ facebook, instagram, twitter, youtube, imdb, tmdb }) => {
     <>
       <Grid container spacing={2}>
         <Grid container xs={12} item spacing={1}>
-          { facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook) }
-          { instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram) }
-          { twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter) }
-          { youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube) }
-          { imdb !== null && renderSocialNetworkLinks(renderImgLogo("IMDb Logo", IMDB_LOGO_DARK, IMDB_LOGO), imdb, true) }
-          { tmdb !== null && renderSocialNetworkLinks(renderImgLogo("TMDb Logo", TMDB_LOGO_DARK, TMDB_LOGO), tmdb, true) }
+          { facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook, 'Facebook') }
+          { instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram, 'Instagram') }
+          { twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter, 'Twitter') }
+          { youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube, 'YouTube') }
+          { imdb !== null && renderSocialNetworkLinks(renderImgLogo("IMDb Logo", IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true) }
+          { tmdb !== null && renderSocialNetworkLinks(renderImgLogo("TMDb Logo", TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true) }
         </Grid>
         <Grid item>
           <Typography variant="caption">

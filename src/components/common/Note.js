@@ -16,7 +16,7 @@ const Note = ({details}) => {
   return (
     <>
       {details.icon(classes.icon)}
-      <Typography variant="h5" gutterBottom>{details.header}</Typography>
+      <Typography variant="h6" gutterBottom>{details.header}</Typography>
       {details.content.map(e => <Typography variant="body2">{e}</Typography>)}
     </>
   );
