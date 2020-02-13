@@ -13,8 +13,20 @@ const TVShowProduction = () => {
 
   return (
     <Grid item container spacing={2}>
-      <PersonAvatarList title="Created by" content={created_by} location="creator" />
-      <PersonAvatarList title="Network" content={production_companies} location="network" />
+      {created_by.length > 0 && (
+        <PersonAvatarList
+          title="Created by"
+          content={created_by}
+          location="creator"
+        />
+      )}
+      {production_companies.length > 0 && (
+        <PersonAvatarList
+          title="Network"
+          content={production_companies}
+          location="network"
+        />
+      )}
     </Grid>
   );
 };
