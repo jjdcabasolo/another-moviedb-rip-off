@@ -11,8 +11,10 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  Divider,
+  ListSubheader,
 } from '@material-ui/core';
-import { MenuTwoTone } from '@material-ui/icons';
+import { CodeTwoTone, MenuTwoTone, WebTwoTone } from '@material-ui/icons';
 
 import DarkModeToggle from '../../common/DarkModeToggle';
 
@@ -24,8 +26,10 @@ import Tooltip from '../../../utils/components/Tooltip';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,
+  GITHUB_REPO_LINK,
   TMDB_LOGO_DARK,
   TMDB_LOGO,
+  FIGMA_LINK,
 } from '../../../constants';
 
 import { routes } from '../../../routes/config';
@@ -54,6 +58,10 @@ const useStyles = makeStyles(theme => ({
     textDecoration: 'none',
     color: 'unset',
   },
+  divider: {
+    margin: theme.spacing(2, 0),
+    width: '100%',
+  },
 }));
 
 const SidebarContent = () => {
@@ -71,6 +79,17 @@ const SidebarContent = () => {
   };
 
   const handleDrawerState = () => dispatch(sidebarActions.toggleDrawer());
+
+  const renderListItemLink = (link, tooltipTitle, icon, primary, secondary) => (
+    <ListItem button onClick={() => window.open(link, '_blank')}>
+      <Tooltip title={tooltipTitle} placement="right" visible={drawerOpen}>
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+      </Tooltip>
+      <ListItemText primary={primary} secondary={secondary} />
+    </ListItem>
+  );
 
   return (
     <>
@@ -101,22 +120,23 @@ const SidebarContent = () => {
       </List>
 
       <List className={classes.bottomTabs}>
+        {drawerOpen && (
+          <ListSubheader component="div" id="nested-list-subheader">
+            External Links
+          </ListSubheader>
+        )}
+        {renderListItemLink(GITHUB_REPO_LINK, "GitHub", <CodeTwoTone />, "GitHub repo", undefined)}
+        {renderListItemLink(FIGMA_LINK, "Figma", <WebTwoTone />, "Figma (UI/UX)", undefined)}
+        <Divider className={classes.divider} />
         <DarkModeToggle type="listItem" tooltipVisible={drawerOpen} />
-
         <APIKeyDialog />
-
-        <ListItem button onClick={() => window.open(API_KEY_DIALOG_TMDB_LINK, '_blank')}>
-          <Tooltip title="Le TMDb" placement="right" visible={drawerOpen}>
-            <ListItemIcon>
-              <img
-                alt="TMDb Logo"
-                className={classes.tmdbLogo}
-                src={darkMode ? TMDB_LOGO_DARK : TMDB_LOGO}
-              />
-            </ListItemIcon>
-          </Tooltip>
-          <ListItemText secondary="Made with ❤ and TMDb"/>
-        </ListItem>
+        {renderListItemLink(API_KEY_DIALOG_TMDB_LINK, "Le TMDb", (
+          <img
+            alt="TMDb Logo"
+            className={classes.tmdbLogo}
+            src={darkMode ? TMDB_LOGO_DARK : TMDB_LOGO}
+          />
+        ), undefined, "Made with ❤ and TMDb")}
       </List>
     </>
   );
