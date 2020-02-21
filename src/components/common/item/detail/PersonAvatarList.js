@@ -23,11 +23,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PersonAvatarList = ({ title, content, location }) => {
+const PersonAvatarList = ({ title, content, location, col = 12 }) => {
   const classes = useStyles();
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={col}>
       {title && (
         <Typography variant="body1" className={classes.title}>
           {title}

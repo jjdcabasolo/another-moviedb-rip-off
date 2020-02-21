@@ -6,10 +6,12 @@ import {
   ListItemText,
   ListItem,
   ListItemIcon,
+  MenuItem,
 } from '@material-ui/core';
 import {
   Brightness2TwoTone,
   BrightnessLowTwoTone,
+  VpnKeyTwoTone,
 } from '@material-ui/icons';
 
 import Tooltip from '../../utils/components/Tooltip';
@@ -41,6 +43,12 @@ const DarkModeToggle = ({ type, tooltipVisible, edge }) => {
           </Tooltip>
           <ListItemText primary="Toggle lights"/>
         </ListItem>
+      );
+    case 'menuItem':
+      return (
+        <MenuItem onClick={handleToggleLights}>
+          Toggle lights
+        </MenuItem>
       );
     default:
       return <div>Type not supported.</div>

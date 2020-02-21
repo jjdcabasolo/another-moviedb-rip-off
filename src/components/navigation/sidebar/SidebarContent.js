@@ -125,8 +125,8 @@ const SidebarContent = () => {
             External Links
           </ListSubheader>
         )}
-        {renderListItemLink(GITHUB_REPO_LINK, "GitHub", <CodeTwoTone />, "GitHub repo", undefined)}
-        {renderListItemLink(FIGMA_LINK, "Figma", <WebTwoTone />, "Figma (UI/UX)", undefined)}
+        {renderListItemLink(GITHUB_REPO_LINK, "GitHub", <CodeTwoTone />, "GitHub Repository", undefined)}
+        {renderListItemLink(FIGMA_LINK, "Figma", <WebTwoTone />, "Figma (Wireframes)", undefined)}
         <Divider className={classes.divider} />
         <DarkModeToggle type="listItem" tooltipVisible={drawerOpen} />
         <APIKeyDialog />

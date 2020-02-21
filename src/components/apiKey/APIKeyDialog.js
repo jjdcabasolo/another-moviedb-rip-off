@@ -171,7 +171,7 @@ export default function APIKeyDialog() {
   );
 
   const renderIconButton = () => (
-    <IconButton edge="end" onClick={handleClickOpen}>
+    <IconButton onClick={handleClickOpen}>
       { apiKey === '' ? (<ErrorOutlineTwoTone />) : (<AccountCircleTwoTone />) }
     </IconButton>
   );

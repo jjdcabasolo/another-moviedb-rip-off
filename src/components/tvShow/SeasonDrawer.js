@@ -25,7 +25,7 @@ import { getTVShowSeasonDetails } from '../../api';
 import { tvShowsActions } from '../../reducers/ducks';
 
 import { decryptKey, truncateText } from '../../utils/functions';
-import HashLink from '../../utils/components/HashLink';
+// import HashLink from '../../utils/components/HashLink';
 
 import { SEASON_DRAWER_WIDTH } from '../../constants';
 
@@ -100,7 +100,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SeasonDrawer = () => {
+const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
@@ -139,6 +139,8 @@ const SeasonDrawer = () => {
   const handleEpisodeClick = index => {
     dispatch(tvShowsActions.setSelectedEpisode(index));
     dispatch(tvShowsActions.setSeasonDrawer(false));
+    // console.log(seasonDetailRef)
+    // setTimeout(() => scrollToComponent(seasonDetailRef.current), 1000);
   };
 
   const handleClose = () => {
@@ -165,7 +167,6 @@ const SeasonDrawer = () => {
 
   return (
     <Drawer
-      variant={isMobile ? 'permanent' : 'temporary'}
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: seasonDrawerOpen },
@@ -185,11 +186,11 @@ const SeasonDrawer = () => {
       <AppBar position="static" color={isMobile ? 'default' : 'inherit'}>
         <Toolbar variant={isDesktop ? 'regular' : 'dense'}>
           {isSeasonSelected && (
-            <HashLink to="#">
+            // <HashLink to="#">
               <IconButton onClick={handleBack} edge="start" color="inherit">
                 <ArrowBack />
               </IconButton>
-            </HashLink>
+            // </HashLink>
           )}
           { isLoading
             ? <Skeleton variant="rect" height={24} width="75%" />
@@ -214,12 +215,12 @@ const SeasonDrawer = () => {
                 selected={selectedSeason === season.season_number}
                 onClick={() => handleSeasonClick(season.season_number)}
               >
-                <HashLink to="#tvshow-season-details">
+                {/* <HashLink to="#tvshow-season-details"> */}
                   <ListItemText
                     primary={`Season ${season.season_number}`}
                     secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
                   />
-                </HashLink>
+                {/* </HashLink> */}
               </ListItem>
             ))}
           </List>

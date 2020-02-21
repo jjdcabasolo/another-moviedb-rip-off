@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -16,6 +16,7 @@ import Note from '../components/common/Note';
 import Section from '../components/common/item/detail/Section';
 import ImageCard from '../components/common/item/detail/ImageCard';
 import ItemLinks from '../components/common/item/detail/ItemLinks';
+import SeasonDrawer from '../components/tvShow/SeasonDrawer';
 
 import { getTVShowDetails } from '../api';
 
@@ -36,9 +37,6 @@ const useStyles = makeStyles(theme => ({
 
 const TVShows = () => {
   const classes = useStyles();
-  const theme = useTheme();
-  // const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
-  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
   const tvShow = useSelector(state => state.tvShows.tvShow);
@@ -47,6 +45,8 @@ const TVShows = () => {
   const dispatch = useDispatch();
 
   const [isLoaded, setIsLoaded] = useState(true);
+
+  const seasonDetailRef = useRef(null);
 
   const { tvShowId } = useParams();
 
@@ -61,7 +61,15 @@ const TVShows = () => {
     imdb,
     tmdb,
     number_of_seasons,
+    created_by,
+    production_companies,
+    cast,
   } = tvShow;
+
+  const hasProduction = created_by
+    && created_by.length > 0
+    && production_companies
+    && production_companies.length > 0;
 
   useEffect(() => {
     if (tvShowId) {
@@ -108,12 +116,19 @@ const TVShows = () => {
       <Section anchorId="tvshow-statistics">
         <TVShowStatistics />
       </Section>
+
+      <Section
+        title="Production"
+        anchorId="tvshow-production"
+        visible={hasProduction}
+      >
+        <TVShowProduction />
+      </Section>
       
       <Section
         title="Season list"
-        col={!isMobile ? 6 : 12}
-        divider={isMobile}
         anchorId="tvshow-season-list"
+        visible={selectedSeason === 0}
       >
         <ImageCard
           content={{
@@ -125,23 +140,21 @@ const TVShows = () => {
       </Section>
 
       <Section
-        title="Production"
-        col={!isMobile ? 6 : 12}
-        anchorId="tvshow-production"
-      >
-        <TVShowProduction />
-      </Section>
-
-      <Section
         title={`Season ${selectedSeason}`}
         anchorId="tvshow-season-details"
         visible={selectedSeason !== 0}
         chipContent={number_of_seasons === selectedSeason ? "Latest" : "Finished"}
       >
-        <TVShowSeasonDetails />
+        <div ref={seasonDetailRef}>
+          <TVShowSeasonDetails />
+        </div>
       </Section>
 
-      <Section title="Main cast" anchorId="tvshow-cast">
+      <Section
+        anchorId="tvshow-cast"
+        title="Main cast"
+        visible={cast.length > 0}
+      >
         <TVShowCast />
       </Section>
 
@@ -155,6 +168,10 @@ const TVShows = () => {
           tmdb={tmdb}
         />
       </Section>
+
+      <SeasonDrawer
+        seasonDetailRef={seasonDetailRef}
+      />
     </Grid>
   );
 };

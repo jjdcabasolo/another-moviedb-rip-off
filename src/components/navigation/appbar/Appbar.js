@@ -24,7 +24,7 @@ import ItemCategory from '../../common/item/ItemCategory';
 import GradientBackground from '../../common/GradientBackground';
 import ReadingProgress from '../../common/ReadingProgress';
 import DarkModeToggle from '../../common/DarkModeToggle';
-import SeasonDrawer from '../../tvShow/SeasonDrawer';
+import AppbarMenu from './AppbarMenu';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -148,8 +148,8 @@ const Appbar = ({ children }) => {
         <Typography component="h1" variant="h6" className={classes.title}>
           ATMDbRo
         </Typography>
-        <DarkModeToggle type="iconButton" />
         <APIKeyDialog />
+        <AppbarMenu />
       </>
     );
   };
@@ -240,8 +240,6 @@ const Appbar = ({ children }) => {
           {renderList()}
         </div>
       </div>
-
-      {isTVShowSelected && <SeasonDrawer />}
 
       { (!isMovieSelected && !isTVShowSelected) && (
         <BottomNavigation
