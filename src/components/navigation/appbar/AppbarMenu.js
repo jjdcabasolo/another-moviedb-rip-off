@@ -14,14 +14,20 @@ import {
 } from '@material-ui/icons';
 
 import DarkModeToggle from '../../common/DarkModeToggle';
+
+const useStyles = makeStyles({
+  listItemIcon: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+});
+
 const AppbarMenu = () => {
-  // listItemIcon/
-// display: flex;
-//     justify-content: flex-end;
+  const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 

@@ -4,7 +4,7 @@ import { useMediaQuery } from '@material-ui/core';
 const ResponsiveComponent = ({
   mobileComponent,
   tabletComponent,
-  desktopComponent
+  desktopComponent,
 }) => {
   const theme = useTheme();
 
@@ -21,7 +21,7 @@ const ResponsiveComponent = ({
 
   // if all components are declared/specified
   if (desktop) return desktopComponent;
-  else if (tablet) return tabletComponent;
+  if (tablet) return tabletComponent;
   return mobileComponent;
 };
 

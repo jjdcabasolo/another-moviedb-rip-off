@@ -11,7 +11,6 @@ import {
 import {
   Brightness2TwoTone,
   BrightnessLowTwoTone,
-  VpnKeyTwoTone,
 } from '@material-ui/icons';
 
 import Tooltip from '../../utils/components/Tooltip';
@@ -19,7 +18,7 @@ import Tooltip from '../../utils/components/Tooltip';
 import { sidebarActions } from '../../reducers/ducks';
 
 const DarkModeToggle = ({ type, tooltipVisible, edge }) => {
-  const darkMode = useSelector(state => state.sidebar.darkMode);
+  const darkMode = useSelector((state) => state.sidebar.darkMode);
   const dispatch = useDispatch();
 
   const handleToggleLights = () => {
@@ -41,7 +40,7 @@ const DarkModeToggle = ({ type, tooltipVisible, edge }) => {
               {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
             </ListItemIcon>
           </Tooltip>
-          <ListItemText primary="Toggle lights"/>
+          <ListItemText primary="Toggle lights" />
         </ListItem>
       );
     case 'menuItem':
@@ -51,8 +50,8 @@ const DarkModeToggle = ({ type, tooltipVisible, edge }) => {
         </MenuItem>
       );
     default:
-      return <div>Type not supported.</div>
-  };
+      return <div>Type not supported.</div>;
+  }
 };
 
 export default DarkModeToggle;

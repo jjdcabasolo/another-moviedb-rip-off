@@ -1,4 +1,9 @@
-import React, { useState, useLayoutEffect, useCallback, useRef } from 'react';
+import React, {
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useRef,
+} from 'react';
 
 import clsx from 'clsx';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -33,7 +38,7 @@ import HideOnScroll from '../../../utils/components/HideOnScroll';
 
 import { routes } from '../../../routes/config';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   bottomNavigation: {
     width: theme.browserSize.width,
     position: 'fixed',
@@ -65,18 +70,18 @@ const Appbar = ({ children }) => {
 
   const target = useRef(null);
 
-  const activeTab = useSelector(state => state.sidebar.activeTab);
-  const tvShow = useSelector(state => state.tvShows.tvShow);
-  const movie = useSelector(state => state.movies.movie);
-  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
-  const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
-  const scrollY = useSelector(state => state.browser.scrollY);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
+  const movie = useSelector((state) => state.movies.movie);
+  const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
+  const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
+  const scrollY = useSelector((state) => state.browser.scrollY);
   const dispatch = useDispatch();
-  
+
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
 
-  const { title, original_title } = movie;
-  const { name, original_name } = tvShow;
+  const { title, original_title: originalTitle } = movie;
+  const { name, original_name: originalName } = tvShow;
 
   const location = useLocation();
   const history = useHistory();
@@ -104,7 +109,7 @@ const Appbar = ({ children }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [dispatch, movie]);
 
-  const handleBottomNavigationClick = index => {
+  const handleBottomNavigationClick = (index) => {
     setActiveBottomTab(index);
     const tab = index === 1 ? 'movies' : 'tvshows';
     dispatch(sidebarActions.setActiveTab(tab));
@@ -116,7 +121,7 @@ const Appbar = ({ children }) => {
     const hasItemContent = isMovieSelected
       ? (Object.keys(movie).length === 0 && movie.constructor === Object)
       : (Object.keys(tvShow).length === 0 && tvShow.constructor === Object);
-    const displayTitle = isMovieSelected ? (title || original_title) : (name || original_name);
+    const displayTitle = isMovieSelected ? (title || originalTitle) : (name || originalName);
 
     if (isMovieSelected || isTVShowSelected) {
       return (
@@ -124,11 +129,12 @@ const Appbar = ({ children }) => {
           <IconButton
             aria-label="back"
             edge="start"
-            onClick = {goBack}
+            onClick={goBack}
           >
             <ArrowBackTwoTone />
           </IconButton>
-          { isLoading || hasItemContent
+
+          {isLoading || hasItemContent
             ? <Skeleton variant="rect" height={24} width="75%" />
             : (
               <>
@@ -137,8 +143,7 @@ const Appbar = ({ children }) => {
                 </Typography>
                 <DarkModeToggle type="iconButton" edge="end" />
               </>
-            )
-          }
+            )}
         </>
       );
     }
@@ -159,11 +164,13 @@ const Appbar = ({ children }) => {
       if (isMovieSelected) return children;
       return <ItemList />;
     }
-    else if (isTVShowTabActive) {
+
+    if (isTVShowTabActive) {
       if (isTVShowSelected) return children;
       return <ItemList />;
     }
-    else return children;
+
+    return children;
   };
 
   const renderTopContents = () => {
@@ -183,7 +190,9 @@ const Appbar = ({ children }) => {
           />
         </>
       );
-    } else if (isTVShowTabActive) {
+    }
+
+    if (isTVShowTabActive) {
       return (
         <>
           <ReadingProgress
@@ -200,6 +209,8 @@ const Appbar = ({ children }) => {
         </>
       );
     }
+
+    return null;
   };
 
   return (
@@ -208,13 +219,13 @@ const Appbar = ({ children }) => {
       <CssBaseline />
 
       <HideOnScroll
-        replacement={
+        replacement={(
           <AppBar color="default">
             <Toolbar variant="dense" className={classes.category}>
               <ItemCategory isList replacement />
             </Toolbar>
           </AppBar>
-        }
+        )}
         willReplace={!isMovieSelected}
       >
         <AppBar color="default">
@@ -225,23 +236,24 @@ const Appbar = ({ children }) => {
       </HideOnScroll>
 
       <div
-        className={clsx(
-          { [classes.detailContainer]: (isMovieSelected && isMovieTabActive) || (isTVShowSelected && isTVShowTabActive) }
-        )}
+        className={clsx({
+          [classes.detailContainer]: (isMovieSelected && isMovieTabActive)
+            || (isTVShowSelected && isTVShowTabActive),
+        })}
         ref={target}
       >
         {renderTopContents()}
         <div
           className={clsx(
             classes.container,
-            { [classes.containerItemSelected]: isMovieSelected || isTVShowSelected }
+            { [classes.containerItemSelected]: isMovieSelected || isTVShowSelected },
           )}
         >
           {renderList()}
         </div>
       </div>
 
-      { (!isMovieSelected && !isTVShowSelected) && (
+      {(!isMovieSelected && !isTVShowSelected) && (
         <BottomNavigation
           className={classes.bottomNavigation}
           onChange={(_, index) => handleBottomNavigationClick(index)}
