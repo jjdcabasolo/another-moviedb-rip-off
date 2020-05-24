@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
+import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -12,12 +13,13 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
+import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import ComponentLoader from '../ComponentLoader';
 import ItemCategory from './ItemCategory';
 import ItemCard from './ItemCard';
 import Note from '../Note';
+
 import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
 
 import { tvShowsActions } from '../../../reducers/ducks';
@@ -30,7 +32,7 @@ import {
   ITEM_DRAWER_WIDTH,
 } from '../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drawer: {
     flexShrink: 0,
   },
@@ -76,19 +78,19 @@ const useStyles = makeStyles(theme => ({
   extendItem: {
     flex: 1,
   },
+  grow: {
+    flexGrow: 1,
+  },
   desktopDrawerClosedContainer: {
-    maxHeight: '92vh',
+    paddingBottom: theme.spacing(2),
+  },
+  itemCardContainer: {
+    padding: theme.spacing(1, 3),
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
       width: 0,
       height: 0,
-    }
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  itemCardContainer: {
-    padding: theme.spacing(1, 3),
+    },
   },
   itemDrawerAppbar: {
     marginTop: theme.spacing(1),
@@ -101,21 +103,20 @@ const ItemDrawer = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const classes = useStyles();
 
-  const activeTab = useSelector(state => state.sidebar.activeTab);
-  const movieCategory = useSelector(state => state.movies.category);
-  const movieList = useSelector(state => state.movies.list);
-  const movieLoadedContent = useSelector(state => state.movies.loadedContent);
-  const tvShowCategory = useSelector(state => state.tvShows.category);
-  const tvShowList = useSelector(state => state.tvShows.list);
-  const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const movieCategory = useSelector((state) => state.movies.category);
+  const movieList = useSelector((state) => state.movies.list);
+  const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
+  const tvShowCategory = useSelector((state) => state.tvShows.category);
+  const tvShowList = useSelector((state) => state.tvShows.list);
+  const tvShowLoadedContent = useSelector((state) => state.tvShows.loadedContent);
   const dispatch = useDispatch();
 
   const isMovie = activeTab === 'movies';
-
   const getLocalStorage = localStorage.getItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen');
-  const finalDrawerState = isDesktop ? (getLocalStorage === null ? true : getLocalStorage === 'true') : true;
+  const localStorageEval = getLocalStorage === null ? true : getLocalStorage === 'true';
+  const finalDrawerState = isDesktop ? localStorageEval : true;
   const [itemDrawerOpen, setItemDrawerOpen] = useState(finalDrawerState);
-
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
@@ -189,22 +190,21 @@ const ItemDrawer = () => {
           )}
         />
       );
-    } else {
-      return (
-        <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
-          {contentToDisplay.slice(0, 10).map((item, rank) => (
-            <ItemCard
-              content={item}
-              drawerOpen={itemDrawerOpen}
-              handleDrawerToggle={handleDrawerToggle}
-              col={12}
-              rank={rank + 1}
-              type={activeTab}
-            />
-          ))}
-        </Grid>
-      );
     }
+    return (
+      <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
+        {contentToDisplay.slice(0, 10).map((item, rank) => (
+          <ItemCard
+            content={item}
+            drawerOpen={itemDrawerOpen}
+            handleDrawerToggle={handleDrawerToggle}
+            col={12}
+            rank={rank + 1}
+            type={activeTab}
+          />
+        ))}
+      </Grid>
+    );
   };
 
   return (
@@ -234,7 +234,8 @@ const ItemDrawer = () => {
               <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
             </Grid>
             <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
-              {contentToDisplay.length > 0 && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
+              {contentToDisplay.length > 0
+                && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
               {isDesktop && renderToggleItemDrawer()}
             </Grid>
           </Grid>
@@ -244,13 +245,12 @@ const ItemDrawer = () => {
             <Toolbar>
               <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
               <div className={classes.grow} />
-              {contentToDisplay.length > 0 && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
+              {contentToDisplay.length > 0
+                && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
               {isDesktop && renderToggleItemDrawer()}
             </Toolbar>
           </AppBar>
-        )
-      }
-
+        )}
       <div className={classes.itemCardContainer}>
         {renderItemCards()}
       </div>

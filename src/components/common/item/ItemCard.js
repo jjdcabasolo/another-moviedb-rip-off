@@ -21,7 +21,7 @@ import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   mediaDrawerOpen: {
     height: 0,
     [theme.breakpoints.down('sm')]: {
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     pointerEvents: 'none',
     overflow: 'hidden',
     width: '100%',
-    backgroundImage: `linear-gradient(to top, rgba(33, 33, 33, 0.6), #0000)`,
+    backgroundImage: 'linear-gradient(to top, rgba(33, 33, 33, 0.6), #0000)',
   },
   itemExtension: {
     maxWidth: '20%',
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
   rank: {
     fontWeight: '400',
-    fontSize: theme.typography.body1.fontSize,
+    fontSize: theme.typography.body2.fontSize,
     marginRight: theme.spacing(1),
   },
   mobile: {
@@ -74,14 +74,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerToggle }) => {
+const ItemCard = ({
+  col,
+  content,
+  drawerOpen,
+  handleDrawerToggle,
+  mobile,
+  rank,
+  type,
+}) => {
   const theme = useTheme();
   const higherResolutionDesktop = useMediaQuery(theme.breakpoints.up('xl'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const landscapeTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
   const classes = useStyles();
 
-  const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
+  const seasonDrawerOpen = useSelector((state) => state.tvShows.seasonDrawerOpen);
   const dispatch = useDispatch();
 
   const isMovie = type === 'movies';
@@ -109,10 +117,8 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
   if (col === 2 || (col === 6 && !landscapeTablet) || isDesktop) {
     if (content && content.poster_path) imagePath += `/w780${content.poster_path}`;
     else imagePath = renderBrokenImage();
-  } else {
-    if (content && content.backdrop_path) imagePath += `/w780${content.backdrop_path}`;
-    else imagePath = renderBrokenImage();
-  }
+  } else if (content && content.backdrop_path) imagePath += `/w780${content.backdrop_path}`;
+  else imagePath = renderBrokenImage();
 
   return (
     <Grid
@@ -135,10 +141,10 @@ const ItemCard = ({ content, drawerOpen, col, rank, mobile, type, handleDrawerTo
               image={imagePath}
             />
             <div gutterBottom variant="button" className={classes.typoOverlay}>
-              <Typography variant="h5" className={classes.cardTitle} noWrap>
+              <Typography variant="h6" className={classes.cardTitle} noWrap>
                 {truncateText(
                   isMovie ? (content.title || content.original_title) : (content.name || content.original_name),
-                  drawerOpen ? 25 : 100
+                  drawerOpen ? 25 : 100,
                 )}
               </Typography>
               <Typography className={classes.rank}>

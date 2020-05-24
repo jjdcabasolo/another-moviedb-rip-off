@@ -22,8 +22,8 @@ const MovieCrew = () => {
   const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const movie = useSelector(state => state.movies.movie);
-  const crewShowMore = useSelector(state => state.movies.crewShowMore);
+  const movie = useSelector((state) => state.movies.movie);
+  const crewShowMore = useSelector((state) => state.movies.crewShowMore);
   const dispatch = useDispatch();
 
   const { crew } = movie;
@@ -32,14 +32,11 @@ const MovieCrew = () => {
   const [masonryConfig, setMasonryConfig] = useState([]);
   const [crewCol, setCrewCol] = useState(getCrewCol());
 
-  const {lighting, visualEffects} = crewMembers;
-
   useEffect(() => {
     setCrewCol(getCrewCol(isMobile, isLowerTablet));
   }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
 
   useEffect(() => {
-    const { crew } = movie;
     const [director] = getCrewMembers(crew, 'directing', ['director']);
     const [writer] = getCrewMembers(crew, 'writing');
     const [producer, executiveProducer] = getCrewMembers(crew, 'production', ['producer', 'executive producer']);
@@ -50,18 +47,29 @@ const MovieCrew = () => {
     const [lighting] = getCrewMembers(crew, 'lighting');
     const [visualEffects] = getCrewMembers(crew, 'visual effects');
     const production = [...producer, ...executiveProducer];
-    const finalCrew = {director, writer, production: production, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
+    const finalCrew = {
+      director,
+      writer,
+      production,
+      composer,
+      cinematography,
+      editor,
+      costume,
+      makeup,
+      lighting,
+      visualEffects,
+    };
     setCrewMembers(finalCrew);
 
     setMasonryConfig([]);
-    CREW_TO_DISPLAY.forEach(e => {
-      if (finalCrew[e.identifier].length > 0) setMasonryConfig(a => [...a, e.identifier]);
+    CREW_TO_DISPLAY.forEach((e) => {
+      if (finalCrew[e.identifier].length > 0) setMasonryConfig((a) => [...a, e.identifier]);
     });
-  }, [movie]);
+  }, [movie, crew]);
 
   const constructMasonryGrid = () => {
     const col = [];
-    for (let i = 0; i < crewCol; ++i) {
+    for (let i = 0; i < crewCol; i += 1) {
       const colItem = [];
       for (let a = i; a < masonryConfig.length; a += crewCol) {
         if (!crewShowMore) {
@@ -73,7 +81,7 @@ const MovieCrew = () => {
           || masonryConfig[a] === 'makeup') break;
         }
         const members = crewMembers[masonryConfig[a]];
-        const title = CREW_TO_DISPLAY.filter(c => c.identifier === masonryConfig[a])[0];
+        const title = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
         colItem.push(<PersonAvatarList title={title.label(members.length)} content={members} location="crew" />);
       }
       col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
@@ -82,16 +90,17 @@ const MovieCrew = () => {
   };
 
   const renderStatistic = () => {
+    const { lighting, visualEffects } = crewMembers;
     const hasLighting = lighting.length > 0;
     const hasVE = visualEffects.length > 0;
     let count = 1;
-    if (hasLighting) count++;
-    if (hasVE) count++;
+    if (hasLighting) count += 1;
+    if (hasVE) count += 1;
     const col = 12 / count;
     return [
       (hasLighting && <Statistic col={col} count={lighting.length} label="Lighting" divider />),
-      (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider /> ),
-      <Statistic col={col} count={crew.length} label="Total" isTotal />,
+      (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider />),
+      <Statistic col={col} count={crew.length} label="Total Crew" isTotal />,
     ];
   };
 
@@ -103,8 +112,7 @@ const MovieCrew = () => {
         { constructMasonryGrid() }
         { crewShowMore
           ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
-          : <Statistic count={crew.length} label="Total Crew" isTotal />
-        }
+          : <Statistic count={crew.length} label="Total Crew" isTotal />}
         <Grid item xs={12} container justify="flex-end">
           <Button onClick={() => dispatch(moviesActions.setCrewShowMore(!crewShowMore))}>
             {crewShowMore ? 'Show less' : 'Show all'}
