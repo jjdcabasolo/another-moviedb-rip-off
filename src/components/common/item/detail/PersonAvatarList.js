@@ -14,7 +14,7 @@ import { BrokenImage } from '@material-ui/icons';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   demo: {
     backgroundColor: theme.palette.background.paper,
   },
@@ -23,7 +23,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PersonAvatarList = ({ title, content, location, col = 12 }) => {
+const PersonAvatarList = ({
+  col = 12,
+  content,
+  location,
+  title,
+}) => {
   const classes = useStyles();
 
   return (
@@ -34,8 +39,10 @@ const PersonAvatarList = ({ title, content, location, col = 12 }) => {
         </Typography>
       )}
       <List disablePadding>
-        { content.map(person => {
-          const { profile_path, name, job, logo_path } = person;
+        { content.map((person) => {
+          const {
+            profile_path, name, job, logo_path,
+          } = person;
           const doesPathExist = location === 'network' ? logo_path !== null : profile_path !== null;
           const image = location === 'network' ? logo_path : profile_path;
 

@@ -6,7 +6,7 @@ import { BrokenImage } from '@material-ui/icons';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   subtitle: {
     fontWeight: '400',
   },
@@ -22,7 +22,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const PersonAvatar = ({ image, character, name, col }) => {
+const PersonAvatar = ({
+  character,
+  col,
+  image,
+  name,
+}) => {
   const classes = useStyles();
 
   if (!image) return null;
@@ -37,12 +42,12 @@ const PersonAvatar = ({ image, character, name, col }) => {
           {image === null && <BrokenImage fontSize="large" />}
         </Avatar>
       </Grid>
-      <Grid item className={classes.text}>      
+      <Grid item className={classes.text}>
         <Typography variant="body1" className={classes.title} align="center">
           {character}
         </Typography>
       </Grid>
-      <Grid item>      
+      <Grid item>
         <Typography vairant="body2" className={classes.subtitle} align="center" color="textSecondary">
           {name}
         </Typography>
