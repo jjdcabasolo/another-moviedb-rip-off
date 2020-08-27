@@ -10,12 +10,9 @@ export {
 
 export {
   evaluateLocation,
+  toMillionsOrBillions,
   truncateText,
 } from './text';
-
-export {
-  toMillionsOrBillions,
-} from './monetary';
 
 export {
   getCastCol,

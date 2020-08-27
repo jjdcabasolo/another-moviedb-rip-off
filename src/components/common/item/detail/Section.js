@@ -1,9 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Divider, Grid, Typography, Chip } from '@material-ui/core';
+import {
+  Chip,
+  Divider,
+  Grid,
+  Typography,
+} from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: theme.spacing(2),
   },
@@ -14,18 +20,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Section = ({
-  title,
+  anchorId,
   children,
-  visible = true,
+  chipContent,
   col = 12,
   divider = true,
-  anchorId,
-  chipContent,
+  title,
+  visible = true,
 }) => {
   const classes = useStyles();
 
   return (
-    visible 
+    visible
       ? (
         <>
           <Grid item xs={col} id={anchorId}>
@@ -34,11 +40,11 @@ const Section = ({
                 {title}
                 {chipContent && (
                   <Chip
-                    variant="outlined"
-                    label={chipContent}
-                    color="default"
-                    size="small"
                     className={classes.chip}
+                    color="default"
+                    label={chipContent}
+                    size="small"
+                    variant="outlined"
                   />
                 )}
               </Typography>
@@ -48,15 +54,24 @@ const Section = ({
           {divider
             ? (
               <Grid item xs={12}>
-                <Divider/>
+                <Divider />
               </Grid>
             )
-            : null
-          }      
+            : null}
         </>
       )
       : null
   );
+};
+
+Section.propTypes = {
+  anchorId: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  chipContent: PropTypes.string.isRequired,
+  col: PropTypes.number.isRequired,
+  divider: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  visible: PropTypes.bool.isRequired,
 };
 
 export default Section;

@@ -35,7 +35,7 @@ const TVShowCast = () => {
   let guests = [];
   let hasGuestStars = false;
   if (hasEpisode) {
-    const { guest_stars: guestStars } = episodes[selectedEpisode];
+    const { guest_stars: guestStars } = episodes[selectedEpisode - 1];
     guests = [...guestStars];
     hasGuestStars = hasEpisode && (guestStars.length > 0);
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Slide, useScrollTrigger } from '@material-ui/core';
 
@@ -17,6 +18,12 @@ const HideOnScroll = ({ children, replacement, willReplace }) => {
       )}
     </>
   );
+};
+
+HideOnScroll.propTypes = {
+  children: PropTypes.node.isRequired,
+  replacement: PropTypes.node.isRequired,
+  willReplace: PropTypes.bool.isRequired,
 };
 
 export default HideOnScroll;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Grid, Typography } from '@material-ui/core';
@@ -54,6 +55,13 @@ const PersonAvatar = ({
       </Grid>
     </Grid>
   );
+};
+
+PersonAvatar.propTypes = {
+  character: PropTypes.string.isRequired,
+  col: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default PersonAvatar;

@@ -1,26 +1,26 @@
 import React, { useRef } from 'react';
-
 import PropTypes from 'prop-types';
+
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  Container,
   ClickAwayListener,
+  Container,
   CssBaseline,
   Drawer,
   useMediaQuery,
 } from '@material-ui/core';
 
-import Helmet from '../Helmet';
-import SidebarTitlebar from './SidebarTitlebar';
 import GradientBackground from '../../common/GradientBackground';
+import Helmet from '../Helmet';
 import ItemDrawer from '../../common/item/ItemDrawer';
-import SidebarContent from './SidebarContent';
 import ReadingProgress from '../../common/ReadingProgress';
 import SeasonDrawer from '../../tvShow/SeasonDrawer';
+import SidebarContent from './SidebarContent';
+import SidebarTitlebar from './SidebarTitlebar';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -28,7 +28,7 @@ import { evaluateLocation } from '../../../utils/functions';
 
 import { SIDEBAR_WIDTH } from '../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
@@ -85,11 +85,11 @@ const Sidebar = ({ children }) => {
 
   const target = useRef(null);
 
-  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
-  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
-  const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
-  const tvShow = useSelector(state => state.tvShows.tvShow);
-  const movie = useSelector(state => state.movies.movie);
+  const drawerOpen = useSelector((state) => state.sidebar.drawerOpen);
+  const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
+  const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
+  const movie = useSelector((state) => state.movies.movie);
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -101,55 +101,57 @@ const Sidebar = ({ children }) => {
   const isTVShowTabActive = 'tvShow' in currentLocation;
   const isMovieEmpty = Object.keys(movie).length === 0 && movie.constructor === Object;
   const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
-  
+
   const handleDrawerState = () => {
     if (drawerOpen) dispatch(sidebarActions.setDrawer(false));
   };
 
   const evaluateDrawerVisibility = () => {
     if (isMovieTabActive) {
-      if (!isDesktop && isMovieSelected) return <SidebarTitlebar item={movie}/>;
+      if (!isDesktop && isMovieSelected) return <SidebarTitlebar item={movie} />;
       return <ItemDrawer />;
-    } else if (isTVShowTabActive) {
-      if (!isDesktop && isTVShowSelected) return <SidebarTitlebar item={tvShow}/>;
+    } if (isTVShowTabActive) {
+      if (!isDesktop && isTVShowSelected) return <SidebarTitlebar item={tvShow} />;
       return <ItemDrawer />;
     }
+    return null;
   };
-  
+
   const renderTopContents = () => {
     if (isMovieTabActive) {
       return (
         <>
           <ReadingProgress
-            target={target}
-            isVisible={isMovieSelected && !isMovieLoading}
             isLoading={isMovieEmpty}
+            isVisible={isMovieSelected && !isMovieLoading}
+            target={target}
           />
           <GradientBackground
-            isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
             image={movie.backdrop_path}
             isItemSelected={isMovieSelected}
             isLoading={isMovieEmpty}
+            isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
           />
         </>
       );
-    } else if (isTVShowTabActive) {
+    } if (isTVShowTabActive) {
       return (
         <>
           <ReadingProgress
-            target={target}
-            isVisible={isTVShowSelected && !isTVShowLoading}
             isLoading={isTVShowEmpty}
+            isVisible={isTVShowSelected && !isTVShowLoading}
+            target={target}
           />
           <GradientBackground
-            isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
             image={tvShow.backdrop_path}
             isItemSelected={isTVShowSelected}
             isLoading={isTVShowEmpty}
+            isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
           />
         </>
       );
     }
+    return null;
   };
 
   return (
@@ -160,7 +162,6 @@ const Sidebar = ({ children }) => {
 
       <ClickAwayListener onClickAway={handleDrawerState}>
         <Drawer
-          variant="permanent"
           className={clsx(
             classes.drawer,
             { [classes.drawerOpen]: drawerOpen },
@@ -173,12 +174,13 @@ const Sidebar = ({ children }) => {
             ),
           }}
           open={drawerOpen}
-          style={drawerOpen ? { 'position': 'absolute' } : {}}
+          style={drawerOpen ? { position: 'absolute' } : {}}
+          variant="permanent"
         >
           <SidebarContent />
         </Drawer>
       </ClickAwayListener>
-      
+
       { drawerOpen && (
         <>
           <div className={classes.marginDrawerOpen} />
@@ -193,7 +195,7 @@ const Sidebar = ({ children }) => {
         <main
           className={clsx(
             classes.content,
-            { [classes.contentItemSelected]: isMovieSelected ||  isTVShowSelected}
+            { [classes.contentItemSelected]: isMovieSelected || isTVShowSelected },
           )}
         >
           <Container maxWidth="md">
@@ -209,8 +211,6 @@ const Sidebar = ({ children }) => {
 
 Sidebar.propTypes = {
   children: PropTypes.element.isRequired,
-  classes: PropTypes.shape({}).isRequired,
-  user: PropTypes.shape({}).isRequired,
 };
 
 export default Sidebar;

@@ -9,10 +9,10 @@ import Statistic from '../../common/item/detail/Statistic';
 import { toMillionsOrBillions } from '../../../utils/functions';
 
 const MovieBudget = () => {
-  const movie = useSelector(state => state.movies.movie);
+  const movie = useSelector((state) => state.movies.movie);
 
   const { budget, revenue } = movie;
-  
+
   const renderStatistics = () => {
     const income = revenue - budget;
     const hasIncome = income > 0;

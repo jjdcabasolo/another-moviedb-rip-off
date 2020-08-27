@@ -8,15 +8,15 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
-import Note from '../components/common/Note';
-import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
+import ImageCard from '../components/common/item/detail/ImageCard';
+import ItemLinks from '../components/common/item/detail/ItemLinks';
+import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
-import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
+import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
-import ImageCard from '../components/common/item/detail/ImageCard';
+import Note from '../components/common/Note';
 import Section from '../components/common/item/detail/Section';
-import ItemLinks from '../components/common/item/detail/ItemLinks';
 
 import { getMovieDetails } from '../api';
 
@@ -26,7 +26,7 @@ import { decryptKey } from '../utils/functions';
 
 import { NOTE_NO_SELECTED_MOVIE, NOTE_MOVIE_NOT_FOUND } from '../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(0, 2),
   },
@@ -51,8 +51,8 @@ const Movies = () => {
   const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
   const classes = useStyles();
 
-  const movie = useSelector(state => state.movies.movie);
-  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
+  const movie = useSelector((state) => state.movies.movie);
+  const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const dispatch = useDispatch();
 
   const [isLoaded, setIsLoaded] = useState(true);
@@ -62,8 +62,8 @@ const Movies = () => {
   const {
     budget,
     revenue,
-    production_companies,
-    belongs_to_collection,
+    production_companies: productionCompanies,
+    belongs_to_collection: belongsToCollection,
     facebook,
     instagram,
     twitter,
@@ -74,11 +74,11 @@ const Movies = () => {
 
   useEffect(() => {
     if (movieId) {
-      getMovieDetails(decryptKey(), movieId, response => {
+      getMovieDetails(decryptKey(), movieId, (response) => {
         dispatch(moviesActions.setActiveMovie(response));
         dispatch(moviesActions.setDetailsLoading(false));
         setIsLoaded(true);
-      }, error => {
+      }, (error) => {
         if (error.response) {
           dispatch(moviesActions.setActiveMovie({}));
           setIsLoaded(error.response.data.status_code);
@@ -88,22 +88,26 @@ const Movies = () => {
     // setTimeout(() => window.scrollTo(0, 0), 100);
   }, [movieId, dispatch]);
 
-  if (movieId === undefined) return (
-    <div className={classes.note}>
-      <Note details={NOTE_NO_SELECTED_MOVIE} />
-    </div>
-  );
+  if (movieId === undefined) {
+    return (
+      <div className={classes.note}>
+        <Note details={NOTE_NO_SELECTED_MOVIE} />
+      </div>
+    );
+  }
 
   if (isMovieLoading) return <ComponentLoader />;
 
-  if (isLoaded === 34) return (
-    <div className={classes.note}>
-      <Note details={NOTE_MOVIE_NOT_FOUND} />
-    </div>
-  );
+  if (isLoaded === 34) {
+    return (
+      <div className={classes.note}>
+        <Note details={NOTE_MOVIE_NOT_FOUND} />
+      </div>
+    );
+  }
 
   if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;
-    
+
   return (
     <Grid container spacing={8} className={classes.root}>
       <Section divider={!(budget && revenue)} anchorId="movie-header">
@@ -134,21 +138,21 @@ const Movies = () => {
       </Section>
 
       <Section
-        divider={false}
-        visible={belongs_to_collection}
-        title="Collection"
-        col={isTabletAbove ? 6 : 12}
         anchorId="movie-collection"
+        col={isTabletAbove ? 6 : 12}
+        divider={false}
+        title="Collection"
+        visible={belongsToCollection}
       >
-        <ImageCard content={belongs_to_collection} />
+        <ImageCard content={belongsToCollection} />
       </Section>
 
       <Section
-        divider={false}
-        visible={production_companies}
-        title="Production"
-        col={isTabletAbove && belongs_to_collection ? 6 : 12}
         anchorId="movie-production"
+        col={isTabletAbove && belongsToCollection ? 6 : 12}
+        divider={false}
+        title="Production"
+        visible={productionCompanies}
       >
         <MovieProduction />
       </Section>
@@ -156,11 +160,11 @@ const Movies = () => {
       <Section divider={false} anchorId="movie-links">
         <ItemLinks
           facebook={facebook}
+          imdb={imdb}
           instagram={instagram}
+          tmdb={tmdb}
           twitter={twitter}
           youtube={youtube}
-          imdb={imdb}
-          tmdb={tmdb}
         />
       </Section>
     </Grid>

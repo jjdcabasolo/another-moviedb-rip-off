@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { LinearProgress } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   progressBar: {
     position: 'sticky',
     zIndex: 1,
@@ -24,19 +25,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /*
-  reading progress bar taken from: 
+  reading progress bar taken from:
   https://nehalist.io/creating-a-reading-progress-bar-in-react/
 */
-
 const ReadingProgress = ({ target, isVisible, isLoading }) => {
   const classes = useStyles();
 
-  const crewShowMore = useSelector(state => state.movies.crewShowMore);
-  const castShowMore = useSelector(state => state.movies.castShowMore);
-  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
-  const movie = useSelector(state => state.movies.movie);
-  const isMovieLoading = useSelector(state => state.movies.isMovieLoading);
-  const isTVShowLoading = useSelector(state => state.tvShows.isTVShowLoading);
+  const crewShowMore = useSelector((state) => state.movies.crewShowMore);
+  const castShowMore = useSelector((state) => state.movies.castShowMore);
+  const drawerOpen = useSelector((state) => state.sidebar.drawerOpen);
+  const movie = useSelector((state) => state.movies.movie);
+  const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
+  const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
 
   const [readingProgress, setReadingProgress] = useState(0);
 
@@ -50,19 +50,26 @@ const ReadingProgress = ({ target, isVisible, isLoading }) => {
     const elementHeight = element.scrollHeight;
     const elementTopPos = element.scrollTop;
     const elementBottomPos = element.offsetHeight;
-    
+
     const maxProgress = elementHeight - elementBottomPos;
     const totalProgress = Math.floor((elementTopPos / maxProgress) * 100);
 
-    if (elementBottomPos - elementTopPos === 0) return setReadingProgress(0);    
-    if (elementTopPos + elementBottomPos === elementHeight) return setReadingProgress(100);
+    if (elementBottomPos - elementTopPos === 0) {
+      setReadingProgress(0);
+      return;
+    }
+
+    if (elementTopPos + elementBottomPos === elementHeight) {
+      setReadingProgress(100);
+      return;
+    }
 
     setReadingProgress(totalProgress);
   }, [target]);
-  
+
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, true);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, true);
+    return () => window.removeEventListener('scroll', handleScroll);
   });
 
   useEffect(() => handleScroll(), [
@@ -80,9 +87,15 @@ const ReadingProgress = ({ target, isVisible, isLoading }) => {
 
   return (
     <div className={classes.progressBar}>
-      <LinearProgress variant="determinate" value={readingProgress}/>
+      <LinearProgress variant="determinate" value={readingProgress} />
     </div>
   );
+};
+
+ReadingProgress.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  isVisible: PropTypes.bool.isRequired,
+  target: PropTypes.node.isRequired,
 };
 
 export default ReadingProgress;

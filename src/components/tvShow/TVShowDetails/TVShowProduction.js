@@ -11,29 +11,32 @@ const TVShowProduction = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const tvShow = useSelector(state => state.tvShows.tvShow);
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
 
-  const { created_by, production_companies } = tvShow;
+  const {
+    created_by: createdBy,
+    production_companies: productionCompanies,
+  } = tvShow;
 
-  const hasCreatedBy = created_by.length > 0;
-  const hasProductionCompany = production_companies.length > 0;
+  const hasCreatedBy = createdBy.length > 0;
+  const hasProductionCompany = productionCompanies.length > 0;
 
   return (
     <Grid item container spacing={2}>
       {hasCreatedBy > 0 && (
         <PersonAvatarList
-          title="Created by"
-          content={created_by}
-          location="creator"
           col={isMobile ? 12 : 6}
+          content={createdBy}
+          location="creator"
+          title="Created by"
         />
       )}
-      {hasProductionCompany && (
+      {hasProductionCompany > 0 && (
         <PersonAvatarList
-          title="Network"
-          content={production_companies}
-          location="network"
           col={isMobile ? 12 : 6}
+          content={productionCompanies}
+          location="network"
+          title="Network"
         />
       )}
     </Grid>

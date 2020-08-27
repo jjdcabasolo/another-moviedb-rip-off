@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -52,6 +54,12 @@ const DarkModeToggle = ({ type, tooltipVisible, edge }) => {
     default:
       return <div>Type not supported.</div>;
   }
+};
+
+DarkModeToggle.propTypes = {
+  edge: PropTypes.bool.isRequired,
+  tooltipVisible: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default DarkModeToggle;

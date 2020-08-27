@@ -1,12 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Divider, Grid, Tooltip, Typography, useMediaQuery } from '@material-ui/core';
+import {
+  Divider,
+  Grid,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
 import { HelpTwoTone } from '@material-ui/icons';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
     marginLeft: theme.spacing(1),
     fontSize: theme.typography.overline.fontSize,
@@ -20,7 +27,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Statistic = ({ count, col, label, isTotal, divider }) => {
+const Statistic = ({
+  col,
+  count,
+  divider,
+  isTotal,
+  label,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -29,18 +42,18 @@ const Statistic = ({ count, col, label, isTotal, divider }) => {
   return (
     <>
       <Grid
-        item
-        xs={xs}
-        container
-        justify="center"
         alignItems="center"
-        direction="column"
         className={clsx(
           { [classes.cols3Adjustment]: xs === 3 },
         )}
+        container
+        direction="column"
+        item
+        justify="center"
+        xs={xs}
       >
         <Grid item>
-          <Typography variant={isMobile ? "h5" : "h4"}>{count}</Typography>
+          <Typography variant={isMobile ? 'h5' : 'h4'}>{count}</Typography>
         </Grid>
         <Grid item>
           <Typography variant="overline" color="textSecondary">
@@ -64,6 +77,14 @@ const Statistic = ({ count, col, label, isTotal, divider }) => {
       )}
     </>
   );
+};
+
+Statistic.propTypes = {
+  col: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  divider: PropTypes.bool.isRequired,
+  isTotal: PropTypes.bool.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default Statistic;

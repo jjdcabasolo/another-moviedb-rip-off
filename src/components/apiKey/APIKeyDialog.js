@@ -4,29 +4,29 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
-  TextField,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FilledInput,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Link,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Link,
-  InputLabel,
-  FilledInput,
-  InputAdornment,
-  IconButton,
-  FormHelperText,
-  CircularProgress,
-  FormControl,
+  TextField,
 } from '@material-ui/core';
 import {
-  ErrorOutlineTwoTone,
   AccountCircleTwoTone,
-  VisibilityTwoTone,
+  ErrorOutlineTwoTone,
   VisibilityOffTwoTone,
+  VisibilityTwoTone,
 } from '@material-ui/icons';
 
 import { getPopularMovies } from '../../api';
@@ -36,17 +36,17 @@ import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
 import { sidebarActions, snackbarActions } from '../../reducers/ducks';
 
 import {
-  API_KEY_DIALOG_TITLE,
-  API_KEY_DIALOG_SUBTITLE,
-  API_KEY_DIALOG_TMDB_API_LINK,
-  API_KEY_DIALOG_NOTE,
-  API_KEY_DIALOG_MISSING_USERNAME,
-  API_KEY_DIALOG_MISSING_API_KEY,
   API_KEY_DIALOG_HAS_KEY,
+  API_KEY_DIALOG_MISSING_API_KEY,
+  API_KEY_DIALOG_MISSING_USERNAME,
+  API_KEY_DIALOG_NOTE,
+  API_KEY_DIALOG_SUBTITLE,
+  API_KEY_DIALOG_TITLE,
+  API_KEY_DIALOG_TMDB_API_LINK,
   API_KEY_DIALOG_TMDB_LINK,
 } from '../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   note: {
     marginTop: theme.spacing(2),
     fontSize: theme.typography.subtitle2.fontSize,
@@ -90,8 +90,8 @@ const initState = {
 export default function APIKeyDialog() {
   const classes = useStyles();
 
-  const apiKey = useSelector(state => state.sidebar.apiKey);
-  const username = useSelector(state => state.sidebar.username);
+  const apiKey = useSelector((state) => state.sidebar.apiKey);
+  const username = useSelector((state) => state.sidebar.username);
   const hasApiKey = apiKey.length > 0 && username.length > 0;
 
   const dispatch = useDispatch();
@@ -115,13 +115,22 @@ export default function APIKeyDialog() {
     setApiKeyState({ ...apiKeyState, error: false });
   };
 
-  const handleAPIKeyChange = e => setApiKeyState({ ...apiKeyState, value: e.target.value });
+  const handleAPIKeyChange = (e) => setApiKeyState({
+    ...apiKeyState,
+    value: e.target.value,
+  });
 
-  const handleUsernameChange = e => setUsernameState({ ...usernameState, value: e.target.value });
+  const handleUsernameChange = (e) => setUsernameState({
+    ...usernameState,
+    value: e.target.value,
+  });
 
-  const handleClickShowAPIKey = () => setApiKeyState({ ...apiKeyState, showAPIKey: !apiKeyState.showAPIKey });
+  const handleClickShowAPIKey = () => setApiKeyState({
+    ...apiKeyState,
+    showAPIKey: !apiKeyState.showAPIKey,
+  });
 
-  const handleMouseDownAPIKey = e => e.preventDefault();
+  const handleMouseDownAPIKey = (e) => e.preventDefault();
 
   const handleSubmit = () => {
     const hasUsernameValue = usernameState.value !== '';
@@ -202,7 +211,8 @@ export default function APIKeyDialog() {
             {API_KEY_DIALOG_SUBTITLE}
             <Link href={API_KEY_DIALOG_TMDB_API_LINK}>
               Learn more
-            </Link>{'.'}
+            </Link>
+            {'.'}
           </DialogContentText>
           <TextField
             autoFocus
@@ -217,7 +227,7 @@ export default function APIKeyDialog() {
             variant="filled"
             helperText={usernameState.error ? API_KEY_DIALOG_MISSING_USERNAME : null}
             FormHelperTextProps={{
-              error: usernameState.error
+              error: usernameState.error,
             }}
           />
 
@@ -231,7 +241,7 @@ export default function APIKeyDialog() {
               margin="dense"
               disabled={isApplyingKey || hasApiKey}
               onChange={handleAPIKeyChange}
-              endAdornment={
+              endAdornment={(
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
@@ -243,7 +253,7 @@ export default function APIKeyDialog() {
                     {apiKeyState.showAPIKey ? <VisibilityTwoTone /> : <VisibilityOffTwoTone />}
                   </IconButton>
                 </InputAdornment>
-              }
+              )}
             />
             {apiKeyState.error && <FormHelperText error={apiKeyState.error} variant="filled" margin="dense">{API_KEY_DIALOG_MISSING_API_KEY}</FormHelperText>}
           </FormControl>
@@ -255,11 +265,11 @@ export default function APIKeyDialog() {
                   {API_KEY_DIALOG_HAS_KEY}
                   <Link href={API_KEY_DIALOG_TMDB_LINK}>
                     The Movie Database
-                  </Link>{'.'}
+                  </Link>
+                  {'.'}
                 </>
               )
-              : API_KEY_DIALOG_NOTE
-            }
+              : API_KEY_DIALOG_NOTE}
           </DialogContentText>
         </DialogContent>
 
@@ -279,7 +289,8 @@ export default function APIKeyDialog() {
               >
                 Submit
               </Button>
-              { (isApplyingKey) && <CircularProgress size={24} thickness={7} className={classes.buttonProgress} /> }
+              { (isApplyingKey)
+                && <CircularProgress size={24} thickness={7} className={classes.buttonProgress} /> }
             </div>
           )}
         </DialogActions>

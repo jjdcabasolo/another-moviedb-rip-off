@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   IconButton,
-  Menu,
-  MenuItem,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import {
   MoreVertTwoTone,
@@ -40,17 +40,17 @@ const AppbarMenu = () => {
       <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
-        onClick={handleClick}
         edge="end"
+        onClick={handleClick}
       >
         <MoreVertTwoTone />
       </IconButton>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
+        id="simple-menu"
         keepMounted
-        open={Boolean(anchorEl)}
         onClose={handleClose}
+        open={Boolean(anchorEl)}
       >
         <DarkModeToggle type="menuItem" />
         <MenuItem onClick={handleClose}>

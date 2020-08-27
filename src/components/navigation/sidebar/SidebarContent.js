@@ -5,14 +5,14 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Divider,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
-  Divider,
   ListSubheader,
+  Typography,
 } from '@material-ui/core';
 import { CodeTwoTone, MenuTwoTone, WebTwoTone } from '@material-ui/icons';
 
@@ -26,15 +26,15 @@ import Tooltip from '../../../utils/components/Tooltip';
 
 import {
   API_KEY_DIALOG_TMDB_LINK,
-  GITHUB_REPO_LINK,
-  TMDB_LOGO_DARK,
-  TMDB_LOGO,
   FIGMA_LINK,
+  GITHUB_REPO_LINK,
+  TMDB_LOGO,
+  TMDB_LOGO_DARK,
 } from '../../../constants';
 
 import { routes } from '../../../routes/config';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   appTitle: {
     marginRight: '20px',
   },
@@ -66,16 +66,16 @@ const useStyles = makeStyles(theme => ({
 
 const SidebarContent = () => {
   const classes = useStyles();
-  
-  const activeTab = useSelector(state => state.sidebar.activeTab);
-  const darkMode = useSelector(state => state.sidebar.darkMode);
-  const drawerOpen = useSelector(state => state.sidebar.drawerOpen);
+
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const darkMode = useSelector((state) => state.sidebar.darkMode);
+  const drawerOpen = useSelector((state) => state.sidebar.drawerOpen);
   const dispatch = useDispatch();
 
-  const handleListItemClick = tab => {
+  const handleListItemClick = (tab) => {
     if (activeTab === 'movies') dispatch(moviesActions.setActiveMovie({}));
     else dispatch(tvShowsActions.setActiveTVShow({}));
-    dispatch(sidebarActions.setActiveTab(tab.toLowerCase()))
+    dispatch(sidebarActions.setActiveTab(tab.toLowerCase()));
   };
 
   const handleDrawerState = () => dispatch(sidebarActions.toggleDrawer());
@@ -125,18 +125,18 @@ const SidebarContent = () => {
             External Links
           </ListSubheader>
         )}
-        {renderListItemLink(GITHUB_REPO_LINK, "GitHub", <CodeTwoTone />, "GitHub Repository", undefined)}
-        {renderListItemLink(FIGMA_LINK, "Figma", <WebTwoTone />, "Figma (Wireframes)", undefined)}
+        {renderListItemLink(GITHUB_REPO_LINK, 'GitHub', <CodeTwoTone />, 'GitHub Repository', undefined)}
+        {renderListItemLink(FIGMA_LINK, 'Figma', <WebTwoTone />, 'Figma (Wireframes)', undefined)}
         <Divider className={classes.divider} />
         <DarkModeToggle type="listItem" tooltipVisible={drawerOpen} />
         <APIKeyDialog />
-        {renderListItemLink(API_KEY_DIALOG_TMDB_LINK, "Le TMDb", (
+        {renderListItemLink(API_KEY_DIALOG_TMDB_LINK, 'Le TMDb', (
           <img
             alt="TMDb Logo"
             className={classes.tmdbLogo}
             src={darkMode ? TMDB_LOGO_DARK : TMDB_LOGO}
           />
-        ), undefined, "Made with ❤ and TMDb")}
+        ), undefined, 'Made with ❤ and TMDb')}
       </List>
     </>
   );

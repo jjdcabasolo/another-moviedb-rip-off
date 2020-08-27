@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import moment from 'moment';
@@ -8,9 +9,9 @@ import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Card,
-  Grid,
   CardActionArea,
   CardMedia,
+  Grid,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
@@ -122,12 +123,12 @@ const ItemCard = ({
 
   return (
     <Grid
-      item
-      xs={col}
       className={clsx(
         { [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) },
         { [classes.mobile]: mobile },
       )}
+      item
+      xs={col}
     >
       <Link to={`/${type}/${content.id}`}>
         <Card onClick={handleCardClick}>
@@ -143,7 +144,9 @@ const ItemCard = ({
             <div gutterBottom variant="button" className={classes.typoOverlay}>
               <Typography variant="h6" className={classes.cardTitle} noWrap>
                 {truncateText(
-                  isMovie ? (content.title || content.original_title) : (content.name || content.original_name),
+                  isMovie
+                    ? (content.title || content.original_title)
+                    : (content.name || content.original_name),
                   drawerOpen ? 25 : 100,
                 )}
               </Typography>
@@ -156,6 +159,16 @@ const ItemCard = ({
       </Link>
     </Grid>
   );
+};
+
+ItemCard.propTypes = {
+  col: PropTypes.number.isRequired,
+  content: PropTypes.string.isRequired,
+  drawerOpen: PropTypes.bool.isRequired,
+  handleDrawerToggle: PropTypes.func.isRequired,
+  mobile: PropTypes.bool.isRequired,
+  rank: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default ItemCard;

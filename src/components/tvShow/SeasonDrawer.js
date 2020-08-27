@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import moment from 'moment';
@@ -7,14 +8,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   AppBar,
-  Toolbar,
   Drawer,
   IconButton,
-  Typography,
   List,
   ListItem,
-  Slide,
   ListItemText,
+  Slide,
+  Toolbar,
+  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import { Close, ArrowBack } from '@material-ui/icons';
@@ -25,11 +26,10 @@ import { getTVShowSeasonDetails } from '../../api';
 import { tvShowsActions } from '../../reducers/ducks';
 
 import { decryptKey, truncateText } from '../../utils/functions';
-// import HashLink from '../../utils/components/HashLink';
 
 import { SEASON_DRAWER_WIDTH } from '../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   drawer: {
     display: 'flex',
     flexShrink: 0,
@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     '&::-webkit-scrollbar': {
       width: 0,
       height: 0,
-    }
+    },
   },
   toolbarHeader: {
     width: 'unset',
@@ -106,11 +106,11 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
   const classes = useStyles();
 
-  const seasonDrawerOpen = useSelector(state => state.tvShows.seasonDrawerOpen);
-  const selectedSeason = useSelector(state => state.tvShows.selectedSeason);
-  const selectedEpisode = useSelector(state => state.tvShows.selectedEpisode);
-  const tvShow = useSelector(state => state.tvShows.tvShow);
-  const episodes = useSelector(state => state.tvShows.episodes);
+  const seasonDrawerOpen = useSelector((state) => state.tvShows.seasonDrawerOpen);
+  const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
+  const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
+  const episodes = useSelector((state) => state.tvShows.episodes);
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -119,14 +119,14 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
 
   const isSeasonSelected = selectedSeason > 0;
 
-  const handleSeasonClick = index => {
+  const handleSeasonClick = (index) => {
     setIsLoading(true);
     if (selectedSeason !== index) {
-      getTVShowSeasonDetails(decryptKey(), tvShow.id, index, response => {
+      getTVShowSeasonDetails(decryptKey(), tvShow.id, index, (response) => {
         dispatch(tvShowsActions.setEpisode(response));
         // dispatch(tvShowsActions.setDetailsLoading(false));
         setIsLoading(false);
-      }, error => {
+      }, (error) => {
         if (error.response) {
           // dispatch(tvShowsActions.setActiveTVShow({}));
           setIsLoading(false);
@@ -136,7 +136,7 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
     dispatch(tvShowsActions.setSelectedSeason(selectedSeason === index ? 0 : index));
   };
 
-  const handleEpisodeClick = index => {
+  const handleEpisodeClick = (index) => {
     dispatch(tvShowsActions.setSelectedEpisode(index));
     dispatch(tvShowsActions.setSeasonDrawer(false));
     // console.log(seasonDetailRef)
@@ -167,11 +167,7 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
 
   return (
     <Drawer
-      className={clsx(
-        classes.drawer,
-        { [classes.drawerOpen]: seasonDrawerOpen },
-        { [classes.drawerClose]: !seasonDrawerOpen },
-      )}
+      anchor="right"
       classes={{
         paper: clsx(
           classes.drawerPaper,
@@ -179,18 +175,20 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
           { [classes.drawerClose]: !seasonDrawerOpen },
         ),
       }}
+      className={clsx(
+        classes.drawer,
+        { [classes.drawerOpen]: seasonDrawerOpen },
+        { [classes.drawerClose]: !seasonDrawerOpen },
+      )}
       onClose={handleClose}
       open={seasonDrawerOpen}
-      anchor="right"
     >
       <AppBar position="static" color={isMobile ? 'default' : 'inherit'}>
         <Toolbar variant={isDesktop ? 'regular' : 'dense'}>
           {isSeasonSelected && (
-            // <HashLink to="#">
-              <IconButton onClick={handleBack} edge="start" color="inherit">
-                <ArrowBack />
-              </IconButton>
-            // </HashLink>
+            <IconButton onClick={handleBack} edge="start" color="inherit">
+              <ArrowBack />
+            </IconButton>
           )}
           { isLoading
             ? <Skeleton variant="rect" height={24} width="75%" />
@@ -198,8 +196,7 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
               <Typography variant="h6">
                 {renderAppbarTitle()}
               </Typography>
-            )
-          }
+            )}
           <div className={classes.grow} />
           <IconButton onClick={handleClose} edge="end" color="inherit">
             <Close />
@@ -209,18 +206,16 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
       <Slide direction="right" in={!isSeasonSelected} unmountOnExit>
         <div className={classes.listContainer}>
           <List>
-            {seasons.map(season => season.season_number !== 0 && (
+            {seasons.map((season) => season.season_number !== 0 && (
               <ListItem
                 button
-                selected={selectedSeason === season.season_number}
                 onClick={() => handleSeasonClick(season.season_number)}
+                selected={selectedSeason === season.season_number}
               >
-                {/* <HashLink to="#tvshow-season-details"> */}
-                  <ListItemText
-                    primary={`Season ${season.season_number}`}
-                    secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
-                  />
-                {/* </HashLink> */}
+                <ListItemText
+                  primary={`Season ${season.season_number}`}
+                  secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
+                />
               </ListItem>
             ))}
           </List>
@@ -232,11 +227,11 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
         unmountOnExit
       >
         <div className={classes.listContainer}>
-          {episodes.map(episode => (
+          {episodes.map((episode) => (
             <ListItem
               button
-              selected={selectedEpisode === episode.episode_number}
               onClick={() => handleEpisodeClick(episode.episode_number)}
+              selected={selectedEpisode === episode.episode_number}
             >
               <ListItemText
                 primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40)}
@@ -248,6 +243,11 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
       </Slide>
     </Drawer>
   );
+};
+
+SeasonDrawer.propTypes = {
+  scrollToRef: PropTypes.node.isRequired,
+  seasonDetailRef: PropTypes.node.isRequired,
 };
 
 export default SeasonDrawer;

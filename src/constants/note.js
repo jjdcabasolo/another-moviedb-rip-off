@@ -2,17 +2,17 @@ import React from 'react';
 
 import { IconButton } from '@material-ui/core';
 import {
-  ErrorTwoTone,
-  MovieTwoTone,
-  LiveTvTwoTone,
-  VpnKeyTwoTone,
   CloudOffTwoTone,
+  ErrorTwoTone,
+  LiveTvTwoTone,
+  MovieTwoTone,
   NaturePeopleTwoTone,
-  PlayCircleFilledTwoTone
+  PlayCircleFilledTwoTone,
+  VpnKeyTwoTone,
 } from '@material-ui/icons';
 
 export const NOTE_NO_API_KEY = {
-  icon: className => <VpnKeyTwoTone className={className} />,
+  icon: (className) => <VpnKeyTwoTone className={className} />,
   header: 'Set your TMDb API key.',
   content: [
     'It seems you have not yet set a TMDb API key.',
@@ -21,7 +21,7 @@ export const NOTE_NO_API_KEY = {
 };
 
 export const NOTE_NO_SELECTED_MOVIE = {
-  icon: className => <MovieTwoTone className={className} />,
+  icon: (className) => <MovieTwoTone className={className} />,
   header: 'No movie selected yet.',
   content: [
     'To view a movie detail, select one from the left panel.',
@@ -29,7 +29,7 @@ export const NOTE_NO_SELECTED_MOVIE = {
 };
 
 export const NOTE_NO_SELECTED_TV_SHOW = {
-  icon: className => <LiveTvTwoTone className={className} />,
+  icon: (className) => <LiveTvTwoTone className={className} />,
   header: 'No TV Show selected yet.',
   content: [
     'To view a TV Show detail, select one from the left panel.',
@@ -37,7 +37,7 @@ export const NOTE_NO_SELECTED_TV_SHOW = {
 };
 
 export const NOTE_OFFLINE = {
-  icon: className => <CloudOffTwoTone className={className} />,
+  icon: (className) => <CloudOffTwoTone className={className} />,
   header: 'You are offline.',
   content: [
     'Check your device\'s internet connection.',
@@ -50,7 +50,7 @@ const areYouLost = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/1/1
 const beCareful = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/2/20/Treant_attack_06.mp3');
 
 export const NOTE_PAGE_NOT_FOUND = {
-  icon: className => <NaturePeopleTwoTone className={className} />,
+  icon: (className) => <NaturePeopleTwoTone className={className} />,
   header: (
     <span>
       Rooftrellen awakens.
@@ -80,7 +80,7 @@ export const NOTE_PAGE_NOT_FOUND = {
 };
 
 export const NOTE_MOVIE_NOT_FOUND = {
-  icon: className => <ErrorTwoTone className={className} />,
+  icon: (className) => <ErrorTwoTone className={className} />,
   header: 'Movie does not exist.',
   content: [
     'The movie you are trying to access is not found on the TMDb Database.',
@@ -89,7 +89,7 @@ export const NOTE_MOVIE_NOT_FOUND = {
 };
 
 export const NOTE_TV_SHOW_NOT_FOUND = {
-  icon: className => <ErrorTwoTone className={className} />,
+  icon: (className) => <ErrorTwoTone className={className} />,
   header: 'TV Show does not exist.',
   content: [
     'The TV show you are trying to access is not found on the TMDb Database.',

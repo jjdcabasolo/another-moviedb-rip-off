@@ -158,10 +158,10 @@ const ItemDrawer = () => {
                 <Grid item container spacing={2}>
                   {contentToDisplay.slice((2 * index), (2 * index) + 2).map((item, rank) => (
                     <ItemCard
+                      col={6}
                       content={item}
                       drawerOpen={itemDrawerOpen}
                       handleDrawerToggle={handleDrawerToggle}
-                      col={6}
                       rank={(2 * index) + rank + 1}
                       type={activeTab}
                     />
@@ -176,10 +176,10 @@ const ItemDrawer = () => {
                 <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
                   {contentToDisplay.slice((5 * index), (5 * index) + 5).map((item, rank) => (
                     <ItemCard
+                      col={2}
                       content={item}
                       drawerOpen={itemDrawerOpen}
                       handleDrawerToggle={handleDrawerToggle}
-                      col={2}
                       rank={(5 * index) + rank + 1}
                       type={activeTab}
                     />
@@ -195,10 +195,10 @@ const ItemDrawer = () => {
       <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
         {contentToDisplay.slice(0, 10).map((item, rank) => (
           <ItemCard
+            col={12}
             content={item}
             drawerOpen={itemDrawerOpen}
             handleDrawerToggle={handleDrawerToggle}
-            col={12}
             rank={rank + 1}
             type={activeTab}
           />

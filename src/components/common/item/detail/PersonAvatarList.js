@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Avatar,
   Grid,
   List,
   ListItem,
   ListItemAvatar,
-  Avatar,
   ListItemText,
   Typography,
 } from '@material-ui/core';
@@ -41,10 +42,13 @@ const PersonAvatarList = ({
       <List disablePadding>
         { content.map((person) => {
           const {
-            profile_path, name, job, logo_path,
+            job,
+            logo_path: logoPath,
+            name,
+            profile_path: profilePath,
           } = person;
-          const doesPathExist = location === 'network' ? logo_path !== null : profile_path !== null;
-          const image = location === 'network' ? logo_path : profile_path;
+          const doesPathExist = location === 'network' ? logoPath !== null : profilePath !== null;
+          const image = location === 'network' ? logoPath : profilePath;
 
           return (
             <ListItem>
@@ -63,6 +67,13 @@ const PersonAvatarList = ({
       </List>
     </Grid>
   );
+};
+
+PersonAvatarList.propTypes = {
+  col: PropTypes.number.isRequired,
+  content: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default PersonAvatarList;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -27,9 +28,12 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     width: '100%',
   },
+  brokenImgContainer: {
+
+  },
 }));
 
-const ImageCard = ({ content, onClick, col = 12 }) => {
+const ImageCard = ({ content, onClick }) => {
   const classes = useStyles();
 
   const {
@@ -39,7 +43,7 @@ const ImageCard = ({ content, onClick, col = 12 }) => {
   } = content;
 
   const renderBrokenImage = () => (
-    <div>
+    <div className={classes.brokenImgContainer}>
       <Typography variant="body1">No image available.</Typography>
     </div>
   );
@@ -69,6 +73,15 @@ const ImageCard = ({ content, onClick, col = 12 }) => {
       </Grid>
     </Grid>
   );
+};
+
+ImageCard.propTypes = {
+  content: PropTypes.shape({
+    backdrop_path: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    poster_path: PropTypes.string.isRequired,
+  }).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ImageCard;

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Chip } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5, 1, 0.5, 0),
   },
@@ -17,17 +17,17 @@ const useStyles = makeStyles(theme => ({
 const MovieProduction = () => {
   const classes = useStyles();
 
-  const movie = useSelector(state => state.movies.movie);
+  const movie = useSelector((state) => state.movies.movie);
 
-  const { production_companies } = movie;
+  const { production_companies: productionCompanies } = movie;
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        {production_companies.map(company => {
+        {productionCompanies.map((company) => {
           let label = company.name;
           if (company.origin_country) label += ` (${company.origin_country})`;
-          
+
           return (
             <Chip
               variant="outlined"

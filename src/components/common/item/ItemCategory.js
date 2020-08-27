@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,9 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Chip,
-  Tooltip,
   IconButton,
   Popover,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
@@ -23,7 +24,7 @@ import {
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
 } from '../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
   },
@@ -53,9 +54,9 @@ const ItemCategory = ({ isList, isDrawer, replacement }) => {
   const isTabletBelow = useMediaQuery(theme.breakpoints.down('lg'));
   const classes = useStyles();
 
-  const activeTab = useSelector(state => state.sidebar.activeTab);
-  const movieCategory = useSelector(state => state.movies.category);
-  const tvShowCategory = useSelector(state => state.tvShows.category);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const movieCategory = useSelector((state) => state.movies.category);
+  const tvShowCategory = useSelector((state) => state.tvShows.category);
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -67,24 +68,24 @@ const ItemCategory = ({ isList, isDrawer, replacement }) => {
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const category = isMovie ? movieCategory : tvShowCategory;
 
-  const handleClick = event => setAnchorEl(event.currentTarget);
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
 
   const handleClose = () => setAnchorEl(null);
 
-  const handleChipClick = category => {
-    if (isMovie) dispatch(moviesActions.setCategory(category));
-    if (isTVShow) dispatch(tvShowsActions.setCategory(category));
+  const handleChipClick = (itemCategory) => {
+    if (isMovie) dispatch(moviesActions.setCategory(itemCategory));
+    if (isTVShow) dispatch(tvShowsActions.setCategory(itemCategory));
   };
 
   const renderCategoryChips = () => (
-    categoryChips.map(e => (
+    categoryChips.map((e) => (
       <Chip
-        variant={e.isActive(category) ? 'default' : 'outlined'}
-        label={e.label}
-        key={e.label}
-        color={e.isActive(category) ? 'primary' : 'default'}
         className={classes.chip}
+        color={e.isActive(category) ? 'primary' : 'default'}
+        key={e.label}
+        label={e.label}
         onClick={() => handleChipClick(e.identifier)}
+        variant={e.isActive(category) ? 'default' : 'outlined'}
       />
     ))
   );
@@ -97,13 +98,13 @@ const ItemCategory = ({ isList, isDrawer, replacement }) => {
         </IconButton>
       </Tooltip>
       <Popover
-        id={id}
-        open={open}
         anchorEl={anchorEl}
-        onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         classes={{ paper: classes.popover }}
+        id={id}
+        onClose={handleClose}
+        open={open}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       >
         <Typography variant="body1" className={classes.category} gutterBottom>Set category:</Typography>
         {renderCategoryChips()}
@@ -111,28 +112,38 @@ const ItemCategory = ({ isList, isDrawer, replacement }) => {
     </>
   );
 
-  if (isList) return (
-    <div
-      className={clsx(
-        classes.topCategories,
-        { [classes.topCategoriesReplacement]: replacement },
-      )}
-    >
-      {renderCategoryChips()}
-    </div>
-  );
+  if (isList) {
+    return (
+      <div
+        className={clsx(
+          classes.topCategories,
+          { [classes.topCategoriesReplacement]: replacement },
+        )}
+      >
+        {renderCategoryChips()}
+      </div>
+    );
+  }
 
   if (isTabletBelow && !isDrawer) return collapsedCategoryChips();
 
-  if (isDrawer) return (
-    <ResponsiveComponent
-      mobileComponent={collapsedCategoryChips()}
-      tabletComponent={renderCategoryChips()}
-      desktopComponent={renderCategoryChips()}
-    />
-  );
+  if (isDrawer) {
+    return (
+      <ResponsiveComponent
+        desktopComponent={renderCategoryChips()}
+        mobileComponent={collapsedCategoryChips()}
+        tabletComponent={renderCategoryChips()}
+      />
+    );
+  }
 
   return collapsedCategoryChips();
+};
+
+ItemCategory.propTypes = {
+  isList: PropTypes.bool.isRequired,
+  isDrawer: PropTypes.bool.isRequired,
+  replacement: PropTypes.bool.isRequired,
 };
 
 export default ItemCategory;

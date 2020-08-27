@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,9 +8,9 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
+  IconButton,
   Toolbar,
   Typography,
-  IconButton,
 } from '@material-ui/core';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
@@ -17,7 +18,7 @@ import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
 import HideOnScroll from '../../../utils/components/HideOnScroll';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   toolbarDrawer: {
     marginLeft: theme.spacing(7) - theme.spacing(1),
     transition: theme.transitions.create('margin-left', {
@@ -27,16 +28,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SidebarTitlebar = props => {
+const SidebarTitlebar = ({ item }) => {
   const classes = useStyles();
 
-  const { item } = props;
-
-  const activeTab = useSelector(state => state.sidebar.activeTab);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const { title, original_title, date, name, original_name } = item;
+  const {
+    date,
+    name,
+    original_name: originalName,
+    original_title: originalTitle,
+    title,
+  } = item;
 
   const isItemSelected = 'id' in item;
 
@@ -47,16 +52,16 @@ const SidebarTitlebar = props => {
   }, [dispatch, history, activeTab]);
 
   const evaluateTitle = () => {
-    if (activeTab === 'movies') return title || original_title;
-    return name || original_name;
+    if (activeTab === 'movies') return title || originalTitle;
+    return name || originalName;
   };
 
   return (
     <HideOnScroll>
       <AppBar color="default" className={classes.appbar}>
         <Toolbar
-          variant="dense"
           className={classes.toolbarDrawer}
+          variant="dense"
         >
           <IconButton
             aria-label="back"
@@ -72,6 +77,16 @@ const SidebarTitlebar = props => {
       </AppBar>
     </HideOnScroll>
   );
+};
+
+SidebarTitlebar.propTypes = {
+  item: PropTypes.shape({
+    date: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    original_name: PropTypes.string.isRequired,
+    original_title: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default SidebarTitlebar;

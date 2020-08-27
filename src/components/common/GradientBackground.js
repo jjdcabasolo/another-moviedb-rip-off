@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   img: {
     maskImage: 'linear-gradient(to top, #0000 0%, #000 30%)',
     objectFit: 'cover',
@@ -34,15 +35,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const GradientBackground = ({ isVisible, image, isItemSelected, isLoading }) => {
+const GradientBackground = ({
+  image,
+  isItemSelected,
+  isLoading,
+  isVisible,
+}) => {
   const classes = useStyles();
 
-  const src =  `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${image}`;
+  const src = `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${image}`;
 
   if (isLoading) return null;
-  else if (!image && isItemSelected) return <div className={classes.noImgPadding} />;
-  else if (isVisible) return <img src={src} alt={src} className={classes.img} />;
+  if (!image && isItemSelected) return <div className={classes.noImgPadding} />;
+  if (isVisible) return <img src={src} alt={src} className={classes.img} />;
   return null;
+};
+
+GradientBackground.propTypes = {
+  image: PropTypes.string.isRequired,
+  isItemSelected: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isVisible: PropTypes.bool.isRequired,
 };
 
 export default GradientBackground;

@@ -8,21 +8,21 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
 
-import Snackbars from './Snackbars';
-import InitAPICalls from './InitAPICalls';
-import Sidebar from '../components/navigation/sidebar/Sidebar';
 import Appbar from '../components/navigation/appbar/Appbar';
 import Helmet from '../components/navigation/Helmet';
+import InitAPICalls from './InitAPICalls';
 import ResponsiveComponent from '../utils/components/ResponsiveComponent';
+import Sidebar from '../components/navigation/sidebar/Sidebar';
+import Snackbars from './Snackbars';
 
 import { browserActions } from '../reducers/ducks';
 
 import Routes from '../routes';
 
 const App = () => {
-  const darkMode = useSelector(state => state.sidebar.darkMode);
-  const height = useSelector(state => state.browser.height);
-  const width = useSelector(state => state.browser.width);
+  const darkMode = useSelector((state) => state.sidebar.darkMode);
+  const height = useSelector((state) => state.browser.height);
+  const width = useSelector((state) => state.browser.width);
 
   const dispatch = useDispatch();
 
@@ -46,14 +46,13 @@ const App = () => {
   return (
     <>
       <Helmet isDefault />
-
       <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Router basename="/">
             <ResponsiveComponent
-              mobileComponent={<Appbar><Routes/></Appbar>}
-              tabletComponent={<Sidebar><Routes/></Sidebar>}
-              desktopComponent={<Sidebar><Routes/></Sidebar>}
+              mobileComponent={<Appbar><Routes /></Appbar>}
+              tabletComponent={<Sidebar><Routes /></Sidebar>}
+              desktopComponent={<Sidebar><Routes /></Sidebar>}
             />
           </Router>
           <Snackbars />

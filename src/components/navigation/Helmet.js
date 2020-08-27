@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { useSelector } from 'react-redux';
 import { Helmet as ReactHelmet } from 'react-helmet';
 
 const Helmet = ({ isDefault }) => {
-  const activeTab = useSelector(state => state.sidebar.activeTab);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
 
   if (activeTab === 'movies' && !isDefault) {
     return (
@@ -14,7 +16,7 @@ const Helmet = ({ isDefault }) => {
         <link rel="canonical" href="https://jjdcabasolo.github.io/another-moviedb-rip-off/#/movies" />
       </ReactHelmet>
     );
-  } else if (activeTab === 'tvshows' && !isDefault) {
+  } if (activeTab === 'tvshows' && !isDefault) {
     return (
       <ReactHelmet>
         <title>TV Shows</title>
@@ -31,6 +33,10 @@ const Helmet = ({ isDefault }) => {
       <link rel="canonical" href="https://jjdcabasolo.github.io/another-moviedb-rip-off/" />
     </ReactHelmet>
   );
+};
+
+Helmet.propTypes = {
+  isDefault: PropTypes.bool.isRequired,
 };
 
 export default Helmet;

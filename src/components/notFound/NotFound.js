@@ -12,7 +12,7 @@ import { sidebarActions } from '../../reducers/ducks';
 
 import { NOTE_PAGE_NOT_FOUND } from '../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   note: {
     padding: theme.spacing(8, 2),
   },
@@ -30,7 +30,7 @@ const NotFound = () => {
 
   const useTP = () => {
     dispatch(sidebarActions.setActiveTab('movies'));
-    history.push('/'); 
+    history.push('/');
   };
 
   const renderNote = () => (
@@ -42,11 +42,11 @@ const NotFound = () => {
 
   return (
     <ResponsiveComponent
-      mobileComponent={
+      mobileComponent={(
         <div className={classes.note}>
           {renderNote()}
         </div>
-      }
+      )}
       tabletComponent={renderNote()}
       desktopComponent={renderNote()}
     />

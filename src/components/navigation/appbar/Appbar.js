@@ -1,9 +1,10 @@
 import React, {
-  useState,
-  useLayoutEffect,
   useCallback,
+  useLayoutEffect,
   useRef,
+  useState,
 } from 'react';
+import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import { Link, useHistory, useLocation } from 'react-router-dom';
@@ -12,24 +13,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
-  Toolbar,
-  CssBaseline,
   BottomNavigation,
   BottomNavigationAction,
-  Typography,
+  CssBaseline,
   IconButton,
+  Toolbar,
+  Typography,
 } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
-import Helmet from '../Helmet';
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
-import ItemList from '../../common/item/ItemList';
-import ItemCategory from '../../common/item/ItemCategory';
-import GradientBackground from '../../common/GradientBackground';
-import ReadingProgress from '../../common/ReadingProgress';
-import DarkModeToggle from '../../common/DarkModeToggle';
 import AppbarMenu from './AppbarMenu';
+import DarkModeToggle from '../../common/DarkModeToggle';
+import GradientBackground from '../../common/GradientBackground';
+import Helmet from '../Helmet';
+import ItemCategory from '../../common/item/ItemCategory';
+import ItemList from '../../common/item/ItemList';
+import ReadingProgress from '../../common/ReadingProgress';
 
 import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -178,15 +179,15 @@ const Appbar = ({ children }) => {
       return (
         <>
           <ReadingProgress
-            target={target}
-            isVisible={isMovieSelected && !isMovieLoading}
             isLoading={isMovieEmpty}
+            isVisible={isMovieSelected && !isMovieLoading}
+            target={target}
           />
           <GradientBackground
-            isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
             image={movie.poster_path}
             isItemSelected={isMovieSelected}
             isLoading={isMovieEmpty}
+            isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
           />
         </>
       );
@@ -196,15 +197,15 @@ const Appbar = ({ children }) => {
       return (
         <>
           <ReadingProgress
-            target={target}
-            isVisible={isTVShowSelected && !isTVShowLoading}
             isLoading={isTVShowEmpty}
+            isVisible={isTVShowSelected && !isTVShowLoading}
+            target={target}
           />
           <GradientBackground
-            isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
             image={tvShow.poster_path}
             isItemSelected={isTVShowSelected}
             isLoading={isTVShowEmpty}
+            isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
           />
         </>
       );
@@ -262,9 +263,9 @@ const Appbar = ({ children }) => {
         >
           {routes.map((element, index) => (index !== 0) && (
             <BottomNavigationAction
+              component={Link}
               icon={element.icon}
               label={element.title}
-              component={Link}
               to={element.path}
             />
           ))}
@@ -272,6 +273,10 @@ const Appbar = ({ children }) => {
       )}
     </>
   );
+};
+
+Appbar.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default Appbar;

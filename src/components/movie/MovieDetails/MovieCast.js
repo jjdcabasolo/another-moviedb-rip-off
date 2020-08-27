@@ -18,8 +18,8 @@ const MovieCast = () => {
   const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const movie = useSelector(state => state.movies.movie);
-  const castShowMore = useSelector(state => state.movies.castShowMore);
+  const movie = useSelector((state) => state.movies.movie);
+  const castShowMore = useSelector((state) => state.movies.castShowMore);
   const dispatch = useDispatch();
 
   const { cast } = movie;
@@ -35,21 +35,21 @@ const MovieCast = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {cast.slice(0, maxVisibleCards).map(cast => (
+        {cast.slice(0, maxVisibleCards).map((castBasic) => (
           <PersonAvatar
-            image={cast.profile_path}
-            character={cast.character}
+            character={castBasic.character}
             col={12 / cardCol}
-            name={cast.name}
+            image={castBasic.profile_path}
+            name={castBasic.name}
           />
         ))}
         { castShowMore && (
-          cast.slice(maxVisibleCards, cast.length).map(cast => (
+          cast.slice(maxVisibleCards, cast.length).map((castMore) => (
             <PersonAvatar
-              image={cast.profile_path}
-              character={cast.character}
+              character={castMore.character}
               col={12 / cardCol}
-              name={cast.name}
+              image={castMore.profile_path}
+              name={castMore.name}
             />
           ))
         )}
