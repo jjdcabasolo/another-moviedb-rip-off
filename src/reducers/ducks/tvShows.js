@@ -12,7 +12,7 @@ const tvShowsActionType = {
 
 // ACTIONS
 export const tvShowsActions = {
-  setCategory: category => ({
+  setCategory: (category) => ({
     type: tvShowsActionType.SET_CATEGORY,
     payload: { category },
   }),
@@ -20,27 +20,27 @@ export const tvShowsActions = {
     type: tvShowsActionType.SET_TV_SHOWS_LIST,
     payload: { category, list },
   }),
-  setActiveTVShow: tvShow => ({
+  setActiveTVShow: (tvShow) => ({
     type: tvShowsActionType.SET_ACTIVE_TV_SHOW,
     payload: { tvShow },
   }),
-  setDetailsLoading: isTVShowLoading => ({
+  setDetailsLoading: (isTVShowLoading) => ({
     type: tvShowsActionType.SET_DETAILS_LOADING,
     payload: { isTVShowLoading },
   }),
-  setSeasonDrawer: seasonDrawerOpen => ({
+  setSeasonDrawer: (seasonDrawerOpen) => ({
     type: tvShowsActionType.SET_SEASON_DRAWER,
     payload: { seasonDrawerOpen },
   }),
-  setEpisode: episodes => ({
+  setEpisode: (episodes) => ({
     type: tvShowsActionType.SET_EPISODE,
     payload: { episodes },
   }),
-  setSelectedSeason: selectedSeason => ({
+  setSelectedSeason: (selectedSeason) => ({
     type: tvShowsActionType.SET_SELECTED_SEASON,
     payload: { selectedSeason },
   }),
-  setSelectedEpisode: selectedEpisode => ({
+  setSelectedEpisode: (selectedEpisode) => ({
     type: tvShowsActionType.SET_SELECTED_EPISODE,
     payload: { selectedEpisode },
   }),
@@ -78,11 +78,25 @@ const setTVShowsList = (state, action) => ({
   loadedContent: state.loadedContent + 1,
 });
 
-const setActiveTVShow = (state, action) => ({
-  ...state,
-  tvShow: action.payload.tvShow,
-  selectedSeason: 0,
-});
+const setActiveTVShow = (state, action) => {
+  const { payload } = action;
+  const { tvShow } = payload;
+  const { number_of_seasons: seasonCount, seasons } = tvShow;
+  let selectedSeason = seasonCount;
+
+  // season not yet released, use the previous season
+  if (!seasons[selectedSeason - 1].air_date) {
+    selectedSeason -= 1;
+
+    if (selectedSeason >= 0) selectedSeason = 1;
+  }
+
+  return {
+    ...state,
+    tvShow: action.payload.tvShow,
+    selectedSeason,
+  };
+};
 
 const setDetailsLoading = (state, action) => ({
   ...state,

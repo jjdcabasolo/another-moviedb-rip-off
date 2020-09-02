@@ -36,8 +36,10 @@ const TVShowCast = () => {
   let hasGuestStars = false;
   if (hasEpisode) {
     const { guest_stars: guestStars } = episodes[selectedEpisode - 1];
-    guests = [...guestStars];
-    hasGuestStars = hasEpisode && (guestStars.length > 0);
+    if (guestStars) {
+      guests = [...guestStars];
+      hasGuestStars = hasEpisode && (guestStars.length > 0);
+    }
   }
 
   useEffect(() => {

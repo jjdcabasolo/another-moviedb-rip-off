@@ -58,7 +58,6 @@ const TVShowSeasonDetails = () => {
 
   const handleSeasonChange = () => {
     dispatch(tvShowsActions.setSeasonDrawer(true));
-    dispatch(tvShowsActions.setSelectedSeason(0));
   };
 
   const renderBrokenImage = () => (
@@ -106,15 +105,21 @@ const TVShowSeasonDetails = () => {
             {overview
               ? (
                 <Typography variant="body1">
-                  {truncateText(overview, 600)}
+                  {overview}
                 </Typography>
               )
               : (
-                <Typography variant="body1">
-                  {`There is no description yet. Contribute now on TMDb's ${name} `}
-                  <Link href={`${tmdb}`}>page</Link>
-                  {'.'}
-                </Typography>
+                <>
+                  <Typography variant="body1">
+                    There is no description yet.
+                  </Typography>
+                  <br />
+                  <Typography variant="body1">
+                    {`Contribute now on TMDb's ${name} `}
+                    <Link href={`${tmdb}`}>page</Link>
+                    {'.'}
+                  </Typography>
+                </>
               )}
           </Grid>
         </Grid>

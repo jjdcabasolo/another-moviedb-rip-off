@@ -55,11 +55,20 @@ const TVShowHeader = () => {
   return (
     <Grid item xs={12} container spacing={1}>
       <Grid item xs={12}>
-        <Typography variant={isMobile ? 'h4' : 'h2'} className={classes.title}>{name || originalName}</Typography>
+        <Typography
+          className={classes.title}
+          variant={isMobile ? 'h4' : 'h2'}
+        >
+          {name || originalName}
+        </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
         <Grid item>
-          <Chip label={getTVShowStatus(status)} variant="outlined" size={isMobile ? 'small' : 'medium'} />
+          <Chip
+            label={getTVShowStatus(status)}
+            size={isMobile ? 'small' : 'medium'}
+            variant="outlined"
+          />
         </Grid>
         <Grid item>
           <Typography variant={isMobile ? 'body1' : 'h5'}>
@@ -73,7 +82,11 @@ const TVShowHeader = () => {
       { genres.length > 0 && (
         <Grid item xs={12}>
           { genres.map((i) => (
-            <Chip label={i.name} className={classes.chip} size={isMobile ? 'small' : 'medium'} />
+            <Chip
+              className={classes.chip}
+              label={i.name}
+              size={isMobile ? 'small' : 'medium'}
+            />
           )) }
         </Grid>
       )}

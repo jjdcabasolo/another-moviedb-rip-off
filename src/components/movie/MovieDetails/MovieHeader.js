@@ -53,12 +53,21 @@ const MovieHeader = () => {
   return (
     <Grid item xs={12} container spacing={1}>
       <Grid item xs={12}>
-        <Typography variant={isMobile ? 'h4' : 'h2'} className={classes.title}>{title || originalTitle}</Typography>
+        <Typography
+          variant={isMobile ? 'h4' : 'h2'}
+          className={classes.title}
+        >
+          {title || originalTitle}
+        </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
         { status === 'Released' && (
           <Grid item>
-            <Chip label="Released" variant="outlined" size={isMobile ? 'small' : 'medium'} />
+            <Chip
+              label="Released"
+              size={isMobile ? 'small' : 'medium'}
+              variant="outlined"
+            />
           </Grid>
         )}
         <Grid item>
@@ -73,7 +82,11 @@ const MovieHeader = () => {
       { genres.length > 0 && (
         <Grid item xs={12}>
           { genres.map((i) => (
-            <Chip label={i.name} className={classes.chip} size={isMobile ? 'small' : 'medium'} />
+            <Chip
+              className={classes.chip}
+              label={i.name}
+              size={isMobile ? 'small' : 'medium'}
+            />
           )) }
         </Grid>
       )}

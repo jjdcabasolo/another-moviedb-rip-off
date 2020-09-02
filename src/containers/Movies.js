@@ -118,15 +118,26 @@ const Movies = () => {
 
   return (
     <Grid container spacing={8} className={classes.root}>
-      <Section divider={!(budget && revenue)} anchorId="movie-header">
+      <Section
+        anchorId="movie-header"
+        divider={!(budget && revenue)}
+        visible={movie}
+      >
         <MovieHeader />
       </Section>
 
-      <Section visible={budget && revenue} anchorId="movie-budget">
+      <Section
+        visible={budget && revenue}
+        anchorId="movie-budget"
+      >
         <MovieBudget />
       </Section>
 
-      <Section title="Trailer" visible={youtube} anchorId="movie-trailer">
+      <Section
+        anchorId="movie-trailer"
+        title="Trailer"
+        visible={youtube}
+      >
         <ReactPlayer
           className={classes.trailer}
           controls
@@ -137,11 +148,19 @@ const Movies = () => {
         />
       </Section>
 
-      <Section visible={cast.length > 0} title="Cast" anchorId="movie-cast">
+      <Section
+        anchorId="movie-cast"
+        title="Cast"
+        visible={cast.length > 0}
+      >
         <MovieCast />
       </Section>
 
-      <Section visible={crew.length > 0} title="Crew" anchorId="movie-crew">
+      <Section
+        anchorId="movie-crew"
+        title="Crew"
+        visible={crew.length > 0}
+      >
         <MovieCrew />
       </Section>
 
@@ -165,7 +184,11 @@ const Movies = () => {
         <MovieProduction />
       </Section>
 
-      <Section visible={hasLinks} divider={false} anchorId="movie-links">
+      <Section
+        anchorId="movie-links"
+        divider={false}
+        visible={hasLinks}
+      >
         <ItemLinks
           facebook={facebook}
           imdb={imdb}

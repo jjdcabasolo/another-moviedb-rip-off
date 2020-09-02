@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
 const TVShows = () => {
   const classes = useStyles();
 
+  const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
+  const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
   const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
-  const seasonDrawerOpen = useSelector((state) => state.tvShows.seasonDrawerOpen);
-  const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
   const dispatch = useDispatch();
 
   const [isLoaded, setIsLoaded] = useState(true);
@@ -51,25 +51,27 @@ const TVShows = () => {
   const { tvShowId } = useParams();
 
   const {
-    backdrop_path: backdropPath,
     cast,
     created_by: createdBy,
     facebook,
     imdb,
     instagram,
-    name,
+    number_of_episodes: numberOfEpisodes,
+    number_of_seasons: numberOfSeasons,
     number_of_seasons: seasonNumber,
-    original_name: originalName,
     production_companies: companies,
+    seasons,
     tmdb,
     twitter,
     youtube,
   } = tvShow;
 
-  const hasProduction = createdBy
-    && createdBy.length > 0
-    && companies
-    && companies.length > 0;
+  const hasProduction = (createdBy && createdBy.length > 0)
+    || (companies && companies.length > 0);
+
+  const hasLinks = facebook || imdb || instagram || tmdb || twitter || youtube;
+
+  const hasEpisode = selectedEpisode > 0;
 
   useEffect(() => {
     if (tvShowId) {
@@ -86,10 +88,6 @@ const TVShows = () => {
     }
     // setTimeout(() => window.scrollTo(0, 0), 100);
   }, [tvShowId, dispatch]);
-
-  const handleSeasonListClick = () => {
-    dispatch(tvShowsActions.setSeasonDrawer(!seasonDrawerOpen));
-  };
 
   if (tvShowId === undefined) {
     return (
@@ -113,11 +111,18 @@ const TVShows = () => {
 
   return (
     <Grid container spacing={8} className={classes.root}>
-      <Section divider={false} anchorId="tvshow-budget">
+      <Section
+        anchorId="tvshow-budget"
+        divider={false}
+        visible={tvShow}
+      >
         <TVShowHeader />
       </Section>
 
-      <Section anchorId="tvshow-statistics">
+      <Section
+        anchorId="tvshow-statistics"
+        visible={numberOfEpisodes || numberOfSeasons}
+      >
         <TVShowStatistics />
       </Section>
 
@@ -130,25 +135,10 @@ const TVShows = () => {
       </Section>
 
       <Section
-        anchorId="tvshow-season-list"
-        title="Season list"
-        visible={selectedSeason === 0}
-      >
-        <ImageCard
-          content={{
-            backdropPath,
-            name: `${name || originalName} season list`,
-          }}
-          col={6}
-          onClick={handleSeasonListClick}
-        />
-      </Section>
-
-      <Section
         anchorId="tvshow-season-details"
         chipContent={seasonNumber === selectedSeason ? 'Latest' : 'Finished'}
         title={`Season ${selectedSeason}`}
-        visible={selectedSeason !== 0}
+        visible={seasons[selectedSeason - 1].air_date}
       >
         <div ref={seasonDetailRef}>
           <TVShowSeasonDetails />
@@ -157,13 +147,17 @@ const TVShows = () => {
 
       <Section
         anchorId="tvshow-cast"
-        title="Main cast"
+        title={hasEpisode ? 'Cast' : 'Main cast'}
         visible={cast.length > 0}
       >
         <TVShowCast />
       </Section>
 
-      <Section divider={false} anchorId="tvshow-links">
+      <Section
+        anchorId="tvshow-links"
+        divider={false}
+        visible={hasLinks}
+      >
         <ItemLinks
           facebook={facebook}
           imdb={imdb}

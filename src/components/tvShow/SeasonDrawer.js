@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
+const SeasonDrawer = ({ seasonDetailRef }) => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
@@ -113,27 +113,38 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
   const episodes = useSelector((state) => state.tvShows.episodes);
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSeasonSelected, setIsSeasonSelected] = useState(true);
 
   const { seasons } = tvShow;
 
-  const isSeasonSelected = selectedSeason > 0;
+  useEffect(() => {
+    getTVShowSeasonDetails(decryptKey(), tvShow.id, selectedSeason, (response) => {
+      dispatch(tvShowsActions.setEpisode(response));
+      setIsLoading(false);
+    }, (error) => {
+      if (error.response) {
+        setIsLoading(false);
+      }
+    });
+  }, []);
 
   const handleSeasonClick = (index) => {
-    setIsLoading(true);
+    if (!seasons[index - 1].air_date) return;
+
+    setIsSeasonSelected(true);
     if (selectedSeason !== index) {
+      setIsLoading(true);
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, (response) => {
         dispatch(tvShowsActions.setEpisode(response));
-        // dispatch(tvShowsActions.setDetailsLoading(false));
         setIsLoading(false);
       }, (error) => {
         if (error.response) {
-          // dispatch(tvShowsActions.setActiveTVShow({}));
           setIsLoading(false);
         }
       });
     }
-    dispatch(tvShowsActions.setSelectedSeason(selectedSeason === index ? 0 : index));
+    dispatch(tvShowsActions.setSelectedSeason(index));
   };
 
   const handleEpisodeClick = (index) => {
@@ -148,7 +159,7 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
   };
 
   const handleBack = () => {
-    dispatch(tvShowsActions.setSelectedSeason(0));
+    setIsSeasonSelected(false);
   };
 
   const renderAppbarTitle = () => {
@@ -203,21 +214,46 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Slide direction="right" in={!isSeasonSelected} unmountOnExit>
+      <Slide
+        direction="right"
+        in={!isSeasonSelected}
+        unmountOnExit
+      >
         <div className={classes.listContainer}>
           <List>
-            {seasons.map((season) => season.season_number !== 0 && (
-              <ListItem
-                button
-                onClick={() => handleSeasonClick(season.season_number)}
-                selected={selectedSeason === season.season_number}
-              >
-                <ListItemText
-                  primary={`Season ${season.season_number}`}
-                  secondary={`${season.episode_count} episodes • ${moment(season.air_date).format('MMM D, YYYY')}`}
-                />
-              </ListItem>
-            ))}
+            {seasons.map((season) => {
+              const {
+                air_date: airDate,
+                episode_count: episodeCount,
+                season_number: seasonNumber,
+              } = season;
+
+              if (seasonNumber !== 0) {
+                const airDateText = airDate
+                  ? moment(airDate).format('MMM D, YYYY')
+                  : 'Not yet released';
+
+                let secondaryText = airDateText;
+                if (episodeCount >= 1) {
+                  secondaryText = `${episodeCount} episode${episodeCount > 1 ? 's' : ''} • ${airDateText}`;
+                }
+
+                return (
+                  <ListItem
+                    button
+                    onClick={() => handleSeasonClick(seasonNumber)}
+                    selected={selectedSeason === seasonNumber}
+                  >
+                    <ListItemText
+                      primary={`Season ${seasonNumber}`}
+                      secondary={secondaryText}
+                    />
+                  </ListItem>
+                );
+              }
+
+              return null;
+            })}
           </List>
         </div>
       </Slide>
@@ -246,7 +282,6 @@ const SeasonDrawer = ({ scrollToRef, seasonDetailRef }) => {
 };
 
 SeasonDrawer.propTypes = {
-  scrollToRef: PropTypes.node.isRequired,
   seasonDetailRef: PropTypes.node.isRequired,
 };
 
