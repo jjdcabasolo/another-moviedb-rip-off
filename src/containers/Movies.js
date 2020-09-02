@@ -60,17 +60,21 @@ const Movies = () => {
   const { movieId } = useParams();
 
   const {
-    budget,
-    revenue,
-    production_companies: productionCompanies,
     belongs_to_collection: belongsToCollection,
+    budget,
+    cast,
+    crew,
     facebook,
+    imdb,
     instagram,
+    production_companies: productionCompanies,
+    revenue,
+    tmdb,
     twitter,
     youtube,
-    imdb,
-    tmdb,
   } = movie;
+
+  const hasLinks = facebook || imdb || instagram || tmdb || twitter || youtube;
 
   useEffect(() => {
     if (movieId) {
@@ -96,7 +100,9 @@ const Movies = () => {
     );
   }
 
-  if (isMovieLoading) return <ComponentLoader />;
+  if (isMovieLoading) {
+    return <ComponentLoader />;
+  }
 
   if (isLoaded === 34) {
     return (
@@ -106,7 +112,9 @@ const Movies = () => {
     );
   }
 
-  if (Object.keys(movie).length === 0 && movie.constructor === Object) return <ComponentLoader />;
+  if (Object.keys(movie).length === 0 && movie.constructor === Object) {
+    return <ComponentLoader />;
+  }
 
   return (
     <Grid container spacing={8} className={classes.root}>
@@ -129,11 +137,11 @@ const Movies = () => {
         />
       </Section>
 
-      <Section title="Cast" anchorId="movie-cast">
+      <Section visible={cast.length > 0} title="Cast" anchorId="movie-cast">
         <MovieCast />
       </Section>
 
-      <Section title="Crew" anchorId="movie-crew">
+      <Section visible={crew.length > 0} title="Crew" anchorId="movie-crew">
         <MovieCrew />
       </Section>
 
@@ -157,7 +165,7 @@ const Movies = () => {
         <MovieProduction />
       </Section>
 
-      <Section divider={false} anchorId="movie-links">
+      <Section visible={hasLinks} divider={false} anchorId="movie-links">
         <ItemLinks
           facebook={facebook}
           imdb={imdb}
