@@ -22,7 +22,7 @@ import { getTVShowDetails } from '../api';
 
 import { tvShowsActions } from '../reducers/ducks';
 
-import { decryptKey, selectSeason } from '../utils/functions';
+import { decryptKey, selectEpisode, selectSeason } from '../utils/functions';
 
 import { NOTE_NO_SELECTED_TV_SHOW, NOTE_TV_SHOW_NOT_FOUND } from '../constants';
 
@@ -59,7 +59,7 @@ const TVShows = () => {
     instagram,
     number_of_episodes: numberOfEpisodes,
     number_of_seasons: numberOfSeasons,
-    number_of_seasons: seasonNumber,
+    last_episode_to_air: lastEpisodeToAir,
     production_companies: companies,
     seasons,
     tmdb,
@@ -71,7 +71,7 @@ const TVShows = () => {
     || (companies && companies.length > 0);
   const hasLinks = facebook || imdb || instagram || tmdb || twitter || youtube;
   const hasEpisode = selectedEpisode > 0;
-  const hasEpisodeList = episodes.length > 0 && selectedEpisode !== 0;
+  const hasEpisodeList = episodes.length > 0 && episodes.length >= selectedEpisode && selectedEpisode !== 0;
 
   useEffect(() => {
     if (tvShowId) {
@@ -136,9 +136,10 @@ const TVShows = () => {
 
       <Section
         anchorId="tvshow-season-details"
-        chipContent={seasonNumber === selectedSeason ? 'Latest' : 'Finished'}
+        divider={false}
+        chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
         title={`Season ${selectedSeason}`}
-        visible={selectSeason(seasons, selectedSeason - 1).air_date}
+        visible={selectSeason(seasons, selectedSeason).air_date}
       >
         <div ref={seasonDetailRef}>
           <TVShowSeasonDetails />
@@ -147,7 +148,9 @@ const TVShows = () => {
 
       <Section
         anchorId="tvshow-episode-details"
-        title={hasEpisodeList ? episodes[selectedEpisode - 1].name : ''}
+        chipContent={numberOfSeasons === selectedSeason && lastEpisodeToAir.episode_number === selectedEpisode ? 'Latest' : 'Finished'}
+        divider={false}
+        title={hasEpisodeList ? `Episode ${selectedEpisode}: ${selectEpisode(episodes, selectedEpisode).name}` : ''}
         visible={hasEpisodeList}
       >
         <TVShowEpisodeDetails />

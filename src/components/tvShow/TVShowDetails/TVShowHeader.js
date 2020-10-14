@@ -71,7 +71,7 @@ const TVShowHeader = () => {
           />
         </Grid>
         <Grid item>
-          <Typography variant={isMobile ? 'body1' : 'h5'}>
+          <Typography variant={isMobile ? 'body1' : 'h6'} color="textSecondary">
             &nbsp;&nbsp;&middot;&nbsp;&nbsp;
             {`${moment(firstAirDate).format('MMM D, YYYY')} `}
             {episodeRunTime.length > 0

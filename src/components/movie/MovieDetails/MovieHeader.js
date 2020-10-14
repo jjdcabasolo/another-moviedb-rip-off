@@ -71,7 +71,7 @@ const MovieHeader = () => {
           </Grid>
         )}
         <Grid item>
-          <Typography variant={isMobile ? 'body1' : 'h5'}>
+          <Typography variant={isMobile ? 'body1' : 'h6'} color="textSecondary">
             {status && <span>&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>}
             {moment(releaseDate).format('MMM D, YYYY')}
             &nbsp;&middot;&nbsp;&nbsp;

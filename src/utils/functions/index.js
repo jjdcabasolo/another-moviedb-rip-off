@@ -21,5 +21,6 @@ export {
 
 export {
   getTVShowStatus,
+  selectEpisode,
   selectSeason,
 } from './tvShows';

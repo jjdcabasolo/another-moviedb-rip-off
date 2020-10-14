@@ -1,13 +1,26 @@
 export const getTVShowStatus = (status) => {
-  if (status === 'Ended') return 'Finished';
-  if (status === 'Returning Series') return 'Ongoing';
-  return 'New undefined status!';
+  switch (status) {
+    case 'Ended':
+      return 'Finished';
+    case 'Returning Series':
+      return 'Ongoing';
+    default:
+      return '';
+  }
 };
 
 export const selectSeason = (seasons, seasonNumber) => {
-  const filterSeason = seasons.filter((season) => season.season_number === seasonNumber);
-  console.log('@utils preselection', filterSeason, seasonNumber);
-  if (filterSeason.length > 0) return filterSeason[0];
-  console.log('@utils notfound');
+  const filteredSeason = seasons.filter((season) => season.season_number === seasonNumber);
+
+  if (filteredSeason.length > 0) return filteredSeason[0];
+
+  return {};
+};
+
+export const selectEpisode = (episodes, episodeNumber) => {
+  const filteredEpisode = episodes.filter((episode) => episode.episode_number === episodeNumber);
+
+  if (filteredEpisode.length > 0) return filteredEpisode[0];
+
   return {};
 };

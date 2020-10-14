@@ -49,14 +49,12 @@ const TVShowSeasonDetails = () => {
 
   const { seasons, name, tmdb } = tvShow;
 
-  const season = selectSeason(seasons, selectedSeason);
-
   const {
     air_date: airDate,
     episode_count: episodeCount,
     overview,
     poster_path: posterPath,
-  } = season;
+  } = selectSeason(seasons, selectedSeason);
 
   const handleSeasonChange = () => {
     dispatch(tvShowsActions.setSeasonDrawerSelectedSeason(false));
@@ -75,56 +73,47 @@ const TVShowSeasonDetails = () => {
 
   return (
     <Grid item container spacing={2}>
-      <Grid item lg={4} md={6} sm={6} xs={12}>
-        <Card>
-          <CardActionArea>
-            { !(typeof (imagePath) === 'string') && imagePath }
-            <CardMedia
-              className={classes.cardImg}
-              image={imagePath}
-            />
-          </CardActionArea>
-        </Card>
+      <Grid item xs={12}>
+        <Typography variant="subtitle1" color="textSecondary">
+          {moment(airDate).format('MMM D, YYYY')}
+          &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+          {`${episodeCount} episodes`}
+        </Typography>
       </Grid>
-      <Grid item lg={8} md={6} sm={6} xs={12}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="h6">
-              {moment(airDate).format('MMM D, YYYY')}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Premier date
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h6">
-              {episodeCount}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Episodes
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            {overview
-              ? (
+      {posterPath && (
+        <Grid item lg={4} md={6} sm={6} xs={12}>
+          <Card>
+            <CardActionArea>
+              { !(typeof (imagePath) === 'string') && imagePath }
+              <CardMedia
+                className={classes.cardImg}
+                image={imagePath}
+              />
+            </CardActionArea>
+          </Card>
+        </Grid>
+      )}
+      <Grid item lg={8} md={6} sm={6} xs={12} container>
+        <Grid item xs={12}>
+          {overview
+            ? (
+              <Typography variant="body1">
+                {overview}
+              </Typography>
+            )
+            : (
+              <>
                 <Typography variant="body1">
-                  {overview}
+                  There is no description yet.
                 </Typography>
-              )
-              : (
-                <>
-                  <Typography variant="body1">
-                    There is no description yet.
-                  </Typography>
-                  <br />
-                  <Typography variant="body1">
-                    {`Contribute now on TMDb's ${name} `}
-                    <Link href={`${tmdb}`}>page</Link>
-                    {'.'}
-                  </Typography>
-                </>
-              )}
-          </Grid>
+                <br />
+                <Typography variant="body1">
+                  {`Contribute now on TMDb's ${name} `}
+                  <Link href={`${tmdb}`}>page</Link>
+                  .
+                </Typography>
+              </>
+            )}
         </Grid>
       </Grid>
       <Grid item xs={12} container justify="flex-end">

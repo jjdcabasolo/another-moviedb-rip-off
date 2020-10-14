@@ -10,7 +10,7 @@ const moviesActionType = {
 
 // ACTIONS
 export const moviesActions = {
-  setCategory: category => ({
+  setCategory: (category) => ({
     type: moviesActionType.SET_CATEGORY,
     payload: { category },
   }),
@@ -18,19 +18,19 @@ export const moviesActions = {
     type: moviesActionType.SET_MOVIE_LIST,
     payload: { category, list },
   }),
-  setActiveMovie: movie => ({
+  setActiveMovie: (movie) => ({
     type: moviesActionType.SET_ACTIVE_MOVIE,
     payload: { movie },
   }),
-  setDetailsLoading: isMovieLoading => ({
+  setDetailsLoading: (isMovieLoading) => ({
     type: moviesActionType.SET_DETAILS_LOADING,
     payload: { isMovieLoading },
   }),
-  setCastShowMore: castShowMore => ({
+  setCastShowMore: (castShowMore) => ({
     type: moviesActionType.SET_CAST_SHOW_MORE,
     payload: { castShowMore },
   }),
-  setCrewShowMore: crewShowMore => ({
+  setCrewShowMore: (crewShowMore) => ({
     type: moviesActionType.SET_CREW_SHOW_MORE,
     payload: { crewShowMore },
   }),
