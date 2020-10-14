@@ -7,12 +7,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
-import ImageCard from '../components/common/item/detail/ImageCard';
 import ItemLinks from '../components/common/item/detail/ItemLinks';
 import Note from '../components/common/Note';
 import SeasonDrawer from '../components/tvShow/SeasonDrawer';
 import Section from '../components/common/item/detail/Section';
 import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
+import TVShowEpisodeDetails from '../components/tvShow/TVShowDetails/TVShowEpisodeDetails';
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
@@ -22,7 +22,7 @@ import { getTVShowDetails } from '../api';
 
 import { tvShowsActions } from '../reducers/ducks';
 
-import { decryptKey } from '../utils/functions';
+import { decryptKey, selectSeason } from '../utils/functions';
 
 import { NOTE_NO_SELECTED_TV_SHOW, NOTE_TV_SHOW_NOT_FOUND } from '../constants';
 
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const TVShows = () => {
   const classes = useStyles();
 
+  const episodes = useSelector((state) => state.tvShows.episodes);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
   const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
   const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
@@ -68,10 +69,9 @@ const TVShows = () => {
 
   const hasProduction = (createdBy && createdBy.length > 0)
     || (companies && companies.length > 0);
-
   const hasLinks = facebook || imdb || instagram || tmdb || twitter || youtube;
-
   const hasEpisode = selectedEpisode > 0;
+  const hasEpisodeList = episodes.length > 0 && selectedEpisode !== 0;
 
   useEffect(() => {
     if (tvShowId) {
@@ -138,11 +138,19 @@ const TVShows = () => {
         anchorId="tvshow-season-details"
         chipContent={seasonNumber === selectedSeason ? 'Latest' : 'Finished'}
         title={`Season ${selectedSeason}`}
-        visible={seasons[selectedSeason - 1].air_date}
+        visible={selectSeason(seasons, selectedSeason - 1).air_date}
       >
         <div ref={seasonDetailRef}>
           <TVShowSeasonDetails />
         </div>
+      </Section>
+
+      <Section
+        anchorId="tvshow-episode-details"
+        title={hasEpisodeList ? episodes[selectedEpisode - 1].name : ''}
+        visible={hasEpisodeList}
+      >
+        <TVShowEpisodeDetails />
       </Section>
 
       <Section

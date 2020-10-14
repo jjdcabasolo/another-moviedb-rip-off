@@ -1,13 +1,14 @@
 // ACTION TYPE
 const tvShowsActionType = {
   SET_ACTIVE_TV_SHOW: '@tvShows/SET_ACTIVE_TV_SHOW',
-  SET_DETAILS_LOADING: '@tvShows/SET_DETAILS_LOADING',
   SET_CATEGORY: '@tvShows/SET_CATEGORY',
-  SET_TV_SHOWS_LIST: '@tvShows/SET_TV_SHOWS_LIST',
-  SET_SEASON_DRAWER: '@tvShows/SET_SEASON_DRAWER',
+  SET_DETAILS_LOADING: '@tvShows/SET_DETAILS_LOADING',
   SET_EPISODE: '@tvShows/SET_EPISODE',
-  SET_SELECTED_SEASON: '@tvShows/SET_SELECTED_SEASON',
+  SET_SEASON_DRAWER: '@tvShows/SET_SEASON_DRAWER',
+  SET_SEASON_DRAWER_SELECTED_SEASON: '@tvShows/SET_SEASON_DRAWER_SELECTED_SEASON',
   SET_SELECTED_EPISODE: '@tvShows/SET_SELECTED_EPISODE',
+  SET_SELECTED_SEASON: '@tvShows/SET_SELECTED_SEASON',
+  SET_TV_SHOWS_LIST: '@tvShows/SET_TV_SHOWS_LIST',
 };
 
 // ACTIONS
@@ -44,24 +45,29 @@ export const tvShowsActions = {
     type: tvShowsActionType.SET_SELECTED_EPISODE,
     payload: { selectedEpisode },
   }),
+  setSeasonDrawerSelectedSeason: (seasonDrawerIsSeasonSelected) => ({
+    type: tvShowsActionType.SET_SEASON_DRAWER_SELECTED_SEASON,
+    payload: { seasonDrawerIsSeasonSelected },
+  }),
 };
 
 // REDUCER
 const initialState = {
   category: 'airingToday',
+  episodes: [],
+  isTVShowLoading: false,
   list: {
     airingToday: [],
     onTheAir: [],
     popular: [],
     topRated: [],
   },
-  tvShow: {},
-  episodes: [],
   loadedContent: 0,
-  isTVShowLoading: false,
+  seasonDrawerIsSeasonSelected: true,
   seasonDrawerOpen: false,
-  selectedSeason: 0,
   selectedEpisode: 0,
+  selectedSeason: 0,
+  tvShow: {},
 };
 
 const setCategory = (state, action) => ({
@@ -84,12 +90,25 @@ const setActiveTVShow = (state, action) => {
   const { number_of_seasons: seasonCount, seasons } = tvShow;
   let selectedSeason = seasonCount;
 
-  // season not yet released, use the previous season
-  if (!seasons[selectedSeason - 1].air_date) {
-    selectedSeason -= 1;
+  const fallbackSeason = seasons.filter((e) => e.season_number > 0 && e.air_date);
 
-    if (selectedSeason >= 0) selectedSeason = 1;
+  let latestSeason = seasons.pop();
+  selectedSeason = latestSeason.season_number;
+  while (!latestSeason.air_date && latestSeason.length > 0) {
+    console.log('ur inside while loop');
+    latestSeason = seasons.pop();
+    selectedSeason = latestSeason.season_number;
   }
+  console.log(latestSeason, selectedSeason, seasons);
+  // while (seasons[latestSeason].air_date) {
+  //   console.log(seasons, latestSeason);
+  // }
+
+
+  // // season not yet released, use the previous season with an air date
+  // const season = seasons.filter((e) => e.season_number <= selectedSeason && e.air_date);
+  // selectedSeason = season[season.length - 1].season_number;
+  // if (selectedSeason >= 0) selectedSeason = 1;
 
   return {
     ...state,
@@ -123,16 +142,22 @@ const setSelectedEpisode = (state, action) => ({
   selectedEpisode: action.payload.selectedEpisode,
 });
 
+const setSeasonDrawerSelectedSeason = (state, action) => ({
+  ...state,
+  seasonDrawerIsSeasonSelected: action.payload.seasonDrawerIsSeasonSelected,
+});
+
 export const tvShowsReducer = (state = initialState, action) => {
   switch (action.type) {
     case tvShowsActionType.SET_ACTIVE_TV_SHOW: return setActiveTVShow(state, action);
-    case tvShowsActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
     case tvShowsActionType.SET_CATEGORY: return setCategory(state, action);
-    case tvShowsActionType.SET_TV_SHOWS_LIST: return setTVShowsList(state, action);
-    case tvShowsActionType.SET_SEASON_DRAWER: return setSeasonDrawer(state, action);
+    case tvShowsActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
     case tvShowsActionType.SET_EPISODE: return setEpisode(state, action);
-    case tvShowsActionType.SET_SELECTED_SEASON: return setSelectedSeason(state, action);
+    case tvShowsActionType.SET_SEASON_DRAWER: return setSeasonDrawer(state, action);
+    case tvShowsActionType.SET_SEASON_DRAWER_SELECTED_SEASON: return setSeasonDrawerSelectedSeason(state, action);
     case tvShowsActionType.SET_SELECTED_EPISODE: return setSelectedEpisode(state, action);
+    case tvShowsActionType.SET_SELECTED_SEASON: return setSelectedSeason(state, action);
+    case tvShowsActionType.SET_TV_SHOWS_LIST: return setTVShowsList(state, action);
     default: return state;
   }
 };

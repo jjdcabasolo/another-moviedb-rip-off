@@ -109,12 +109,12 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
   const seasonDrawerOpen = useSelector((state) => state.tvShows.seasonDrawerOpen);
   const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
   const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
+  const seasonDrawerIsSeasonSelected = useSelector((state) => state.tvShows.seasonDrawerIsSeasonSelected);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const episodes = useSelector((state) => state.tvShows.episodes);
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isSeasonSelected, setIsSeasonSelected] = useState(true);
 
   const { seasons } = tvShow;
 
@@ -132,7 +132,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
   const handleSeasonClick = (index) => {
     if (!seasons[index - 1].air_date) return;
 
-    setIsSeasonSelected(true);
+    dispatch(tvShowsActions.setSeasonDrawerSelectedSeason(true));
     if (selectedSeason !== index) {
       setIsLoading(true);
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, (response) => {
@@ -159,11 +159,11 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
   };
 
   const handleBack = () => {
-    setIsSeasonSelected(false);
+    dispatch(tvShowsActions.setSeasonDrawerSelectedSeason(false));
   };
 
   const renderAppbarTitle = () => {
-    if (isSeasonSelected) {
+    if (seasonDrawerIsSeasonSelected) {
       return (
         <>
           {`Season ${selectedSeason} `}
@@ -196,7 +196,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
     >
       <AppBar position="static" color={isMobile ? 'default' : 'inherit'}>
         <Toolbar variant={isDesktop ? 'regular' : 'dense'}>
-          {isSeasonSelected && (
+          {seasonDrawerIsSeasonSelected && (
             <IconButton onClick={handleBack} edge="start" color="inherit">
               <ArrowBack />
             </IconButton>
@@ -216,7 +216,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
       </AppBar>
       <Slide
         direction="right"
-        in={!isSeasonSelected}
+        in={!seasonDrawerIsSeasonSelected}
         unmountOnExit
       >
         <div className={classes.listContainer}>
@@ -231,7 +231,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
               if (seasonNumber !== 0) {
                 const airDateText = airDate
                   ? moment(airDate).format('MMM D, YYYY')
-                  : 'Not yet released';
+                  : 'No premier date';
 
                 let secondaryText = airDateText;
                 if (episodeCount >= 1) {
@@ -241,6 +241,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
                 return (
                   <ListItem
                     button
+                    disabled={!airDate}
                     onClick={() => handleSeasonClick(seasonNumber)}
                     selected={selectedSeason === seasonNumber}
                   >
@@ -259,7 +260,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
       </Slide>
       <Slide
         direction="left"
-        in={isSeasonSelected}
+        in={seasonDrawerIsSeasonSelected}
         unmountOnExit
       >
         <div className={classes.listContainer}>

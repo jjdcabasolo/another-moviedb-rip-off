@@ -16,7 +16,7 @@ import {
 
 import { tvShowsActions } from '../../../reducers/ducks';
 
-import { truncateText } from '../../../utils/functions';
+import { selectSeason } from '../../../utils/functions';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
@@ -49,14 +49,17 @@ const TVShowSeasonDetails = () => {
 
   const { seasons, name, tmdb } = tvShow;
 
+  const season = selectSeason(seasons, selectedSeason);
+
   const {
     air_date: airDate,
     episode_count: episodeCount,
     overview,
     poster_path: posterPath,
-  } = seasons.filter((e) => e.season_number === selectedSeason)[0];
+  } = season;
 
   const handleSeasonChange = () => {
+    dispatch(tvShowsActions.setSeasonDrawerSelectedSeason(false));
     dispatch(tvShowsActions.setSeasonDrawer(true));
   };
 
