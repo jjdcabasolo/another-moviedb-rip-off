@@ -42,4 +42,5 @@ export {
 export {
   FIGMA_LINK,
   GITHUB_REPO_LINK,
+  TMDB_SIGN_UP,
 } from './links';

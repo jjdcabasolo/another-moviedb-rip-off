@@ -11,6 +11,8 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
+import ItemLinks from '../../common/item/detail/ItemLinks';
+
 import { getTVShowStatus } from '../../../utils/functions';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,9 +31,6 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.25, 0.5, 0.25, 0),
   },
-  description: {
-    marginTop: theme.spacing(2),
-  },
 }));
 
 const TVShowHeader = () => {
@@ -49,6 +48,12 @@ const TVShowHeader = () => {
     original_name: originalName,
     overview,
     status,
+    facebook,
+    imdb,
+    instagram,
+    tmdb,
+    twitter,
+    youtube,
   } = tvShow;
 
   // eslint-disable-next-line no-bitwise
@@ -56,7 +61,7 @@ const TVShowHeader = () => {
   const runtimeMinutes = episodeRunTime[0] % 60;
 
   return (
-    <Grid item xs={12} container spacing={1}>
+    <Grid item xs={12} container spacing={2}>
       <Grid item xs={12}>
         <Typography
           className={classes.title}
@@ -86,6 +91,19 @@ const TVShowHeader = () => {
           </Typography>
         </Grid>
       </Grid>
+      <Grid item xs={12}>
+        <ItemLinks
+          facebook={facebook}
+          imdb={imdb}
+          instagram={instagram}
+          tmdb={tmdb}
+          twitter={twitter}
+          youtube={youtube}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body1" gutterBottom>{overview}</Typography>
+      </Grid>
       { genres.length > 0 && (
         <Grid item xs={12}>
           { genres.map((i) => (
@@ -97,9 +115,6 @@ const TVShowHeader = () => {
           )) }
         </Grid>
       )}
-      <Grid item xs={12} className={classes.description}>
-        <Typography variant="body1">{overview}</Typography>
-      </Grid>
     </Grid>
   );
 };

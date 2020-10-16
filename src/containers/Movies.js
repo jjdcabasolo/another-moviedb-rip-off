@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import moment from 'moment';
 import ReactPlayer from 'react-player';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
+import DetailFooter from '../components/common/item/detail/DetailFooter';
 import ImageCard from '../components/common/item/detail/ImageCard';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
@@ -66,6 +68,10 @@ const Movies = () => {
     production_companies: productionCompanies,
     revenue,
     youtube,
+    original_title: originalTitle,
+    release_date: releaseDate,
+    title,
+    tmdb,
   } = movie;
 
   useEffect(() => {
@@ -169,7 +175,7 @@ const Movies = () => {
       <Section
         anchorId="movie-production"
         col={isTabletAbove && belongsToCollection ? 6 : 12}
-        divider={false}
+        divider
         title="Production"
         visible={productionCompanies}
       >
@@ -180,7 +186,12 @@ const Movies = () => {
         anchorId="movie-end-credits"
         divider={false}
       >
-        2020 All rights reserved. Made with y540 by jjdcabasolo.
+        <DetailFooter
+          companies={productionCompanies.map((e) => e.name)}
+          link={tmdb}
+          title={title || originalTitle}
+          year={moment(releaseDate).format('YYYY')}
+        />
       </Section>
     </Grid>
   );

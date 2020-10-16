@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
+import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
+import DetailFooter from '../components/common/item/detail/DetailFooter';
 import ItemLinks from '../components/common/item/detail/ItemLinks';
 import Note from '../components/common/Note';
 import SeasonDrawer from '../components/tvShow/SeasonDrawer';
@@ -55,24 +57,21 @@ const TVShows = () => {
   const {
     cast,
     created_by: createdBy,
-    facebook,
-    imdb,
-    instagram,
     number_of_episodes: numberOfEpisodes,
     number_of_seasons: numberOfSeasons,
     last_episode_to_air: lastEpisodeToAir,
-    production_companies: companies,
+    production_companies: productionCompanies,
     seasons,
     tmdb,
-    twitter,
-    youtube,
+    name,
+    original_name: originalName,
+    first_air_date: firstAirDate,
   } = tvShow;
 
   const currentEpisode = selectEpisode(episodes, selectedEpisode);
   const latestEpisode = lastEpisodeToAir ? lastEpisodeToAir.episode_number : -1;
   const hasProduction = (createdBy && createdBy.length > 0)
-    || (companies && companies.length > 0);
-  const hasLinks = facebook || imdb || instagram || tmdb || twitter || youtube;
+    || (productionCompanies && productionCompanies.length > 0);
   const hasEpisode = selectedEpisode > 0;
   const hasEpisodeList = episodes.length > 0
     && episodes.length >= selectedEpisode
@@ -178,17 +177,14 @@ const TVShows = () => {
       </Section>
 
       <Section
-        anchorId="tvshow-links"
+        anchorId="tvshow-end-credits"
         divider={false}
-        visible={hasLinks}
       >
-        <ItemLinks
-          facebook={facebook}
-          imdb={imdb}
-          instagram={instagram}
-          tmdb={tmdb}
-          twitter={twitter}
-          youtube={youtube}
+        <DetailFooter
+          companies={productionCompanies.map((e) => e.name)}
+          link={tmdb}
+          title={name || originalName}
+          year={moment(firstAirDate).format('YYYY')}
         />
       </Section>
 

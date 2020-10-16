@@ -91,7 +91,7 @@ const MovieHeader = () => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={12} className={classes.description}>
+      <Grid item xs={12}>
         <ItemLinks
           facebook={facebook}
           imdb={imdb}
@@ -101,8 +101,8 @@ const MovieHeader = () => {
           youtube={youtube}
         />
       </Grid>
-      <Grid item xs={12} className={classes.description}>
-        <Typography variant="body1">{overview}</Typography>
+      <Grid item xs={12}>
+        <Typography variant="body1" gutterBottom>{overview}</Typography>
       </Grid>
       { genres.length > 0 && (
         <Grid item xs={12}>
