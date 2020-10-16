@@ -84,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
   desktopDrawerClosedContainer: {
     paddingBottom: theme.spacing(2),
   },
+  desktopDrawerOpenContainer: {
+    overflow: 'hidden',
+  },
   itemCardContainer: {
     padding: theme.spacing(1, 3),
     overflowY: 'auto',
@@ -171,7 +174,7 @@ const ItemDrawer = () => {
             </Grid>
           )}
           desktopComponent={(
-            <Grid container spacing={2}>
+            <Grid container spacing={2} className={classes.desktopDrawerOpenContainer}>
               {new Array(2).fill({}).map((_, index) => (
                 <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
                   {contentToDisplay.slice((5 * index), (5 * index) + 5).map((item, rank) => (
@@ -191,6 +194,7 @@ const ItemDrawer = () => {
         />
       );
     }
+
     return (
       <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
         {contentToDisplay.slice(0, 10).map((item, rank) => (

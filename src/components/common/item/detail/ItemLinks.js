@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
@@ -43,10 +43,20 @@ const ItemLinks = ({
 
   const darkMode = useSelector((state) => state.sidebar.darkMode);
 
+  const [start, setStart] = useState('');
+
+  useEffect(() => {
+    const links = [facebook, instagram, twitter, youtube, imdb, tmdb].filter((e) => e !== null);
+    setStart(links[0] || '');
+  }, []);
+
   const renderSocialNetworkLinks = (src, link, title, isImg) => (
     <Grid item>
       <Tooltip title={title}>
-        <IconButton onClick={() => window.open(link, '_blank')}>
+        <IconButton
+          edge={start === link ? 'start' : false}
+          onClick={() => window.open(link, '_blank')}
+        >
           { isImg ? src : <SvgIcon>{src}</SvgIcon> }
         </IconButton>
       </Tooltip>
@@ -72,14 +82,14 @@ const ItemLinks = ({
           { imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true) }
           { tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true) }
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <Typography variant="caption">
             Icons made by&nbsp;
             <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>
             &nbsp;from&nbsp;
             <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link>
           </Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );

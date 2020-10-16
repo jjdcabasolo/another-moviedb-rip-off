@@ -49,7 +49,7 @@ const TVShowEpisodeDetails = () => {
     <Grid item container spacing={2}>
       <Grid item xs={12}>
         <Typography variant="subtitle1" color="textSecondary">
-          {`${moment(airDate).format('MMM D, YYYY')}`}
+          {`${airDate ? moment(airDate).format('MMM D, YYYY') : 'No release date.'}`}
           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
           {`Episode ${selectedEpisode} of ${episodes.length}`}
         </Typography>
@@ -76,7 +76,11 @@ const TVShowEpisodeDetails = () => {
           )}
       </Grid>
       <Grid item xs={12} container justify="flex-end">
-        <Button onClick={handleEpisodeChange}>
+        <Button
+          onClick={handleEpisodeChange}
+          size={isMobile ? 'small' : 'medium'}
+          variant="outlined"
+        >
           Change episode
         </Button>
       </Grid>

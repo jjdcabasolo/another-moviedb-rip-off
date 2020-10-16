@@ -21,6 +21,8 @@ import {
 import { Close, ArrowBack } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 
+import ComponentLoader from '../common/ComponentLoader';
+
 import { getTVShowSeasonDetails } from '../../api';
 
 import { tvShowsActions } from '../../reducers/ducks';
@@ -214,70 +216,77 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Slide
-        direction="right"
-        in={!seasonDrawerIsSeasonSelected}
-        unmountOnExit
-      >
-        <div className={classes.listContainer}>
-          <List>
-            {seasons.map((season) => {
-              const {
-                air_date: airDate,
-                episode_count: episodeCount,
-                season_number: seasonNumber,
-              } = season;
+      { isLoading
+        ? <ComponentLoader />
+        : (
+          <>
+            <Slide
+              direction="right"
+              in={!seasonDrawerIsSeasonSelected}
+              unmountOnExit
+            >
+              <div className={classes.listContainer}>
+                <List>
+                  {seasons.map((season) => {
+                    const {
+                      air_date: airDate,
+                      episode_count: episodeCount,
+                      season_number: seasonNumber,
+                    } = season;
 
-              if (seasonNumber !== 0) {
-                const airDateText = airDate
-                  ? moment(airDate).format('MMM D, YYYY')
-                  : 'No premier date';
+                    if (seasonNumber !== 0) {
+                      const airDateText = airDate
+                        ? moment(airDate).format('MMM D, YYYY')
+                        : 'No premier date';
 
-                let secondaryText = airDateText;
-                if (episodeCount >= 1) {
-                  secondaryText = `${episodeCount} episode${episodeCount > 1 ? 's' : ''} • ${airDateText}`;
-                }
+                      let secondaryText = airDateText;
+                      if (episodeCount >= 1) {
+                        secondaryText = `${episodeCount} episode${episodeCount > 1 ? 's' : ''} • ${airDateText}`;
+                      }
 
-                return (
+                      return (
+                        <ListItem
+                          button
+                          disabled={!airDate}
+                          onClick={() => handleSeasonClick(seasonNumber)}
+                          selected={selectedSeason === seasonNumber}
+                        >
+                          <ListItemText
+                            primary={`Season ${seasonNumber}`}
+                            secondary={secondaryText}
+                          />
+                        </ListItem>
+                      );
+                    }
+
+                    return null;
+                  })}
+                </List>
+              </div>
+            </Slide>
+            <Slide
+              direction="left"
+              in={seasonDrawerIsSeasonSelected}
+              unmountOnExit
+            >
+              <div className={classes.listContainer}>
+                {episodes.map((episode) => (
                   <ListItem
                     button
-                    disabled={!airDate}
-                    onClick={() => handleSeasonClick(seasonNumber)}
-                    selected={selectedSeason === seasonNumber}
+                    onClick={() => handleEpisodeClick(episode.episode_number)}
+                    selected={selectedEpisode === episode.episode_number}
                   >
                     <ListItemText
-                      primary={`Season ${seasonNumber}`}
-                      secondary={secondaryText}
+                      primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40)}
+                      secondary={`${episode.air_date ? moment(episode.air_date).format('MMM D, YYYY') : ''}`}
                     />
                   </ListItem>
-                );
-              }
-
-              return null;
-            })}
-          </List>
-        </div>
-      </Slide>
-      <Slide
-        direction="left"
-        in={seasonDrawerIsSeasonSelected}
-        unmountOnExit
-      >
-        <div className={classes.listContainer}>
-          {episodes.map((episode) => (
-            <ListItem
-              button
-              onClick={() => handleEpisodeClick(episode.episode_number)}
-              selected={selectedEpisode === episode.episode_number}
-            >
-              <ListItemText
-                primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40)}
-                secondary={`${moment(episode.air_date).format('MMM D, YYYY')}`}
-              />
-            </ListItem>
-          ))}
-        </div>
-      </Slide>
+                ))}
+              </div>
+            </Slide>
+          </>
+        )
+      }
     </Drawer>
   );
 };

@@ -55,7 +55,7 @@ const ImageCard = ({ content, onClick }) => {
 
   return (
     <Grid container spacing={2} justify="center">
-      <Grid item xs={12} sm={8} md={6} lg={6} xl={6}>
+      <Grid item xs={12}>
         <Card onClick={onClick}>
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }

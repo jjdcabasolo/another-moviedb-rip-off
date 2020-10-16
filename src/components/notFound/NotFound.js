@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Button, useMediaQuery } from '@material-ui/core';
 
 import Note from '../common/Note';
 import ResponsiveComponent from '../../utils/components/ResponsiveComponent';
@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NotFound = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -36,7 +38,14 @@ const NotFound = () => {
   const renderNote = () => (
     <>
       <Note details={NOTE_PAGE_NOT_FOUND} />
-      <Button className={classes.button} onClick={useTP}>Use TP</Button>
+      <Button
+        className={classes.button}
+        onClick={useTP}
+        size={isMobile ? 'small' : 'medium'}
+        variant="outlined"
+      >
+        Use TP
+      </Button>
     </>
   );
 

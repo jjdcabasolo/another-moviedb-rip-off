@@ -54,7 +54,11 @@ const MovieCast = () => {
           ))
         )}
         <Grid item xs={12} container justify="flex-end">
-          <Button onClick={() => dispatch(moviesActions.setCastShowMore(!castShowMore))}>
+          <Button
+            onClick={() => dispatch(moviesActions.setCastShowMore(!castShowMore))}
+            variant="outlined"
+            size={isMobile ? 'small' : 'medium'}
+          >
             {castShowMore ? 'Show less' : 'Show all'}
           </Button>
         </Grid>

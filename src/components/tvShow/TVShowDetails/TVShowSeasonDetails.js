@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Button,
   Card,
@@ -12,6 +12,7 @@ import {
   Grid,
   Link,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 
 import { tvShowsActions } from '../../../reducers/ducks';
@@ -41,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TVShowSeasonDetails = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
@@ -75,7 +78,7 @@ const TVShowSeasonDetails = () => {
     <Grid item container spacing={2}>
       <Grid item xs={12}>
         <Typography variant="subtitle1" color="textSecondary">
-          {moment(airDate).format('MMM D, YYYY')}
+          {airDate ? moment(airDate).format('MMM D, YYYY') : 'No release date.'}
           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
           {`${episodeCount} episodes`}
         </Typography>
@@ -117,7 +120,11 @@ const TVShowSeasonDetails = () => {
         </Grid>
       </Grid>
       <Grid item xs={12} container justify="flex-end">
-        <Button onClick={handleSeasonChange}>
+        <Button
+          onClick={handleSeasonChange}
+          size={isMobile ? 'small' : 'medium'}
+          variant="outlined"
+        >
           Change season
         </Button>
       </Grid>

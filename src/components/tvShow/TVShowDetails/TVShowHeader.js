@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: 600,
   },
+  subtitle: {
+    fontWeight: 400,
+  },
   chipContainer: {
     margin: theme.spacing(1, 0),
   },
@@ -71,11 +74,15 @@ const TVShowHeader = () => {
           />
         </Grid>
         <Grid item>
-          <Typography variant={isMobile ? 'body1' : 'h6'} color="textSecondary">
+          <Typography
+            className={classes.subtitle}
+            color="textSecondary"
+            variant={isMobile ? 'body1' : 'h6'}
+          >
             &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-            {`${moment(firstAirDate).format('MMM D, YYYY')} `}
+            {`${firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : 'No release date.'} `}
             {episodeRunTime.length > 0
-              && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes}min`}
+              && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`}
           </Typography>
         </Grid>
       </Grid>

@@ -9,7 +9,6 @@ import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
 import ImageCard from '../components/common/item/detail/ImageCard';
-import ItemLinks from '../components/common/item/detail/ItemLinks';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
@@ -64,17 +63,10 @@ const Movies = () => {
     budget,
     cast,
     crew,
-    facebook,
-    imdb,
-    instagram,
     production_companies: productionCompanies,
     revenue,
-    tmdb,
-    twitter,
     youtube,
   } = movie;
-
-  const hasLinks = facebook || imdb || instagram || tmdb || twitter || youtube;
 
   useEffect(() => {
     if (movieId) {
@@ -185,18 +177,10 @@ const Movies = () => {
       </Section>
 
       <Section
-        anchorId="movie-links"
+        anchorId="movie-end-credits"
         divider={false}
-        visible={hasLinks}
       >
-        <ItemLinks
-          facebook={facebook}
-          imdb={imdb}
-          instagram={instagram}
-          tmdb={tmdb}
-          twitter={twitter}
-          youtube={youtube}
-        />
+        2020 All rights reserved. Made with y540 by jjdcabasolo.
       </Section>
     </Grid>
   );

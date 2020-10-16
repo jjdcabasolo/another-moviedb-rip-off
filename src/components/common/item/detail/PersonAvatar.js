@@ -34,7 +34,7 @@ const PersonAvatar = ({
   if (!image) return null;
 
   return (
-    <Grid item xs={col} container justify="center" alignItems="center" direction="column" wrap="nowrap">
+    <Grid item xs={col} container alignItems="center" direction="column" wrap="nowrap">
       <Grid item>
         <Avatar
           src={image !== null ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w780${image}` : ''}

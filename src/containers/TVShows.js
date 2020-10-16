@@ -17,6 +17,7 @@ import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
+import TVShowCrew from '../components/tvShow/TVShowDetails/TVShowCrew';
 
 import { getTVShowDetails } from '../api';
 
@@ -67,11 +68,15 @@ const TVShows = () => {
     youtube,
   } = tvShow;
 
+  const currentEpisode = selectEpisode(episodes, selectedEpisode);
+  const latestEpisode = lastEpisodeToAir ? lastEpisodeToAir.episode_number : -1;
   const hasProduction = (createdBy && createdBy.length > 0)
     || (companies && companies.length > 0);
   const hasLinks = facebook || imdb || instagram || tmdb || twitter || youtube;
   const hasEpisode = selectedEpisode > 0;
-  const hasEpisodeList = episodes.length > 0 && episodes.length >= selectedEpisode && selectedEpisode !== 0;
+  const hasEpisodeList = episodes.length > 0
+    && episodes.length >= selectedEpisode
+    && selectedEpisode !== 0;
 
   useEffect(() => {
     if (tvShowId) {
@@ -127,14 +132,6 @@ const TVShows = () => {
       </Section>
 
       <Section
-        anchorId="tvshow-production"
-        title="Production"
-        visible={hasProduction}
-      >
-        <TVShowProduction />
-      </Section>
-
-      <Section
         anchorId="tvshow-season-details"
         divider={false}
         chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
@@ -148,9 +145,9 @@ const TVShows = () => {
 
       <Section
         anchorId="tvshow-episode-details"
-        chipContent={numberOfSeasons === selectedSeason && lastEpisodeToAir.episode_number === selectedEpisode ? 'Latest' : 'Finished'}
+        chipContent={numberOfSeasons === selectedSeason && latestEpisode === selectedEpisode ? 'Latest' : 'Finished'}
         divider={false}
-        title={hasEpisodeList ? `Episode ${selectedEpisode}: ${selectEpisode(episodes, selectedEpisode).name}` : ''}
+        title={hasEpisodeList ? `Episode ${selectedEpisode}: ${currentEpisode.name}` : ''}
         visible={hasEpisodeList}
       >
         <TVShowEpisodeDetails />
@@ -162,6 +159,22 @@ const TVShows = () => {
         visible={cast.length > 0}
       >
         <TVShowCast />
+      </Section>
+
+      <Section
+        anchorId="tvshow-crew"
+        title="Crew"
+        visible={currentEpisode.crew && currentEpisode.crew.length > 0}
+      >
+        <TVShowCrew />
+      </Section>
+
+      <Section
+        anchorId="tvshow-production"
+        title="Production"
+        visible={hasProduction}
+      >
+        <TVShowProduction />
       </Section>
 
       <Section

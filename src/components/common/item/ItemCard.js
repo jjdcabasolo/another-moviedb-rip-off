@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: theme.spacing(30),
     },
     [theme.breakpoints.up('lg')]: {
-      paddingTop: (theme.browserSize.height - theme.spacing(20)) / 2,
+      paddingTop: (theme.browserSize.height - theme.spacing(22)) / 2,
     },
     width: '100%',
   },
@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
   rank: {
     fontWeight: '400',
     fontSize: theme.typography.body2.fontSize,
+    color: theme.palette.grey[300],
     marginRight: theme.spacing(1),
   },
   mobile: {
@@ -150,7 +151,7 @@ const ItemCard = ({
                   drawerOpen ? 25 : 100,
                 )}
               </Typography>
-              <Typography className={classes.rank}>
+              <Typography className={classes.rank} color="textSecondary">
                 {`${rank} • ${moment(isMovie ? content.release_date : content.first_air_date).format('MMM D, YYYY')}`}
               </Typography>
             </div>
