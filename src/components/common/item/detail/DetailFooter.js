@@ -19,7 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DetailFooter = ({ title, year, companies, link }) => {
+const DetailFooter = ({
+  companies,
+  link,
+  title,
+  year,
+}) => {
   const classes = useStyles();
 
   return (
@@ -28,15 +33,6 @@ const DetailFooter = ({ title, year, companies, link }) => {
         <Grid item xs="12">
           <Typography variant="body2" gutterBottom color="textSecondary">
             {`${title} (${year})${companies.length > 0 ? ` © ${companies.join(', ')}` : ''}.`}
-          </Typography>
-        </Grid>
-        <Grid item xs="12">
-          <Typography variant="body2" gutterBottom color="textSecondary">
-            {'All contents came from the community-built movie and TV database, '}
-            <Link href={API_KEY_DIALOG_TMDB_LINK}>
-              The Movie Database (TMDb)
-            </Link>
-            .
           </Typography>
         </Grid>
         <Grid item xs="12">
@@ -53,6 +49,23 @@ const DetailFooter = ({ title, year, companies, link }) => {
               here
             </Link>
             .
+          </Typography>
+        </Grid>
+        <Grid item xs="12">
+          <Typography variant="body2" gutterBottom color="textSecondary">
+            {'All contents came from the community-built movie and TV database, '}
+            <Link href={API_KEY_DIALOG_TMDB_LINK}>
+              The Movie Database (TMDb)
+            </Link>
+            .
+          </Typography>
+        </Grid>
+        <Grid item xs="12">
+          <Typography variant="body2" color="textSecondary">
+            Social media icons made by&nbsp;
+            <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>
+            &nbsp;from&nbsp;
+            <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link>
           </Typography>
         </Grid>
         <Grid item xs="12">

@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 const PersonAvatarList = ({
   col = 12,
   content,
-  location,
   title,
 }) => {
   const classes = useStyles();
@@ -43,19 +42,17 @@ const PersonAvatarList = ({
         { content.map((person) => {
           const {
             job,
-            logo_path: logoPath,
             name,
             profile_path: profilePath,
           } = person;
-          const doesPathExist = location === 'network' ? logoPath !== null : profilePath !== null;
-          const image = location === 'network' ? logoPath : profilePath;
+          const doesPathExist = profilePath !== null;
 
           return (
             <ListItem>
               <ListItemAvatar>
                 <Avatar
-                  alt={doesPathExist ? `Image not loading? Visit ${image} to view.` : `${name}'s avatar.`}
-                  src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}` : ''}
+                  alt={doesPathExist ? `Image not loading? Visit ${profilePath} to view.` : `${name}'s avatar.`}
+                  src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${profilePath}` : ''}
                 >
                   {!doesPathExist && <BrokenImage />}
                 </Avatar>
@@ -72,7 +69,6 @@ const PersonAvatarList = ({
 PersonAvatarList.propTypes = {
   col: PropTypes.number.isRequired,
   content: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };
 

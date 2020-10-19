@@ -7,10 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
   IconButton,
-  Link,
   SvgIcon,
   Tooltip,
-  Typography,
 } from '@material-ui/core';
 
 import Facebook from '../../../../assets/images/013-facebook';
@@ -56,6 +54,7 @@ const ItemLinks = ({
         <IconButton
           edge={start === link ? 'start' : false}
           onClick={() => window.open(link, '_blank')}
+          className={classes.iconButton}
         >
           { isImg ? src : <SvgIcon>{src}</SvgIcon> }
         </IconButton>
@@ -75,21 +74,13 @@ const ItemLinks = ({
     <>
       <Grid container spacing={2}>
         <Grid container xs={12} item spacing={1}>
-          { facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook, 'Facebook') }
-          { instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram, 'Instagram') }
-          { twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter, 'Twitter') }
-          { youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube, 'YouTube') }
-          { imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true) }
-          { tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true) }
+          { facebook && facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook, 'Facebook') }
+          { instagram && instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram, 'Instagram') }
+          { twitter && twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter, 'Twitter') }
+          { youtube && youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube, 'YouTube') }
+          { imdb && imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true) }
+          { tmdb && tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true) }
         </Grid>
-        {/* <Grid item>
-          <Typography variant="caption">
-            Icons made by&nbsp;
-            <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>
-            &nbsp;from&nbsp;
-            <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link>
-          </Typography>
-        </Grid> */}
       </Grid>
     </>
   );

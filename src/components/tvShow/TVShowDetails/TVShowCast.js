@@ -7,11 +7,14 @@ import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 
 import PersonAvatar from '../../common/item/detail/PersonAvatar';
 
-import { getCastCol } from '../../../utils/functions';
+import { getCastCol, selectEpisode } from '../../../utils/functions';
 
 const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: theme.typography.h6.fontWeight,
+  },
+  guests: {
+    marginTop: theme.spacing(1),
   },
 }));
 
@@ -31,11 +34,13 @@ const TVShowCast = () => {
 
   const { cast } = tvShow;
 
+  console.log(cast);
+
   const hasEpisode = selectedEpisode > 0;
   let guests = [];
   let hasGuestStars = false;
   if (hasEpisode) {
-    const { guest_stars: guestStars } = episodes[selectedEpisode - 1];
+    const { guest_stars: guestStars } = selectEpisode(episodes, selectedEpisode);
     if (guestStars) {
       guests = [...guestStars];
       hasGuestStars = hasEpisode && (guestStars.length > 0);
@@ -64,21 +69,21 @@ const TVShowCast = () => {
         />
       ))}
       {hasGuestStars && (
-        <Grid item xs={12}>
-          <Typography variant="body1" className={classes.title}>
-            Guest Cast
-          </Typography>
-        </Grid>
-      )}
-      {hasGuestStars && (
-        guests.map((person) => (
-          <PersonAvatar
-            image={person.profile_path}
-            character={person.character}
-            col={12 / cardCol}
-            name={person.name}
-          />
-        ))
+        <>
+          <Grid item xs={12} className={classes.guests}>
+            <Typography variant="body1" className={classes.title}>
+              Guest Cast
+            </Typography>
+          </Grid>
+          {guests.map((person) => (
+            <PersonAvatar
+              image={person.profile_path}
+              character={person.character}
+              col={12 / cardCol}
+              name={person.name}
+            />
+          ))}
+        </>
       )}
     </Grid>
   );

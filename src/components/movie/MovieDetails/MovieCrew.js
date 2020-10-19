@@ -84,7 +84,7 @@ const MovieCrew = () => {
         }
         const members = crewMembers[masonryConfig[a]];
         const title = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
-        colItem.push(<PersonAvatarList title={title.label(members.length)} content={members} location="crew" />);
+        colItem.push(<PersonAvatarList title={title.label(members.length)} content={members} />);
       }
       col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
     }

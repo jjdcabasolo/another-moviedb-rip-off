@@ -2,21 +2,11 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Chip } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  chip: {
-    margin: theme.spacing(0.5, 1, 0.5, 0),
-  },
-  avatar: {
-    width: theme.spacing(10),
-  },
-}));
+import ProductionChip from '../../common/item/detail/ProductionChip';
 
 const MovieProduction = () => {
-  const classes = useStyles();
-
   const movie = useSelector((state) => state.movies.movie);
 
   const { production_companies: productionCompanies } = movie;
@@ -25,14 +15,17 @@ const MovieProduction = () => {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         {productionCompanies.map((company) => {
-          let label = company.name;
-          if (company.origin_country) label += ` (${company.origin_country})`;
+          const {
+            logo_path: logoPath,
+            name,
+            origin_country: originCountry,
+          } = company;
 
           return (
-            <Chip
-              variant="outlined"
-              label={label}
-              className={classes.chip}
+            <ProductionChip
+              country={originCountry}
+              image={logoPath}
+              name={name}
             />
           );
         })}

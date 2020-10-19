@@ -31,8 +31,6 @@ const PersonAvatar = ({
 }) => {
   const classes = useStyles();
 
-  if (!image) return null;
-
   return (
     <Grid item xs={col} container alignItems="center" direction="column" wrap="nowrap">
       <Grid item>
