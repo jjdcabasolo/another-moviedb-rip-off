@@ -34,8 +34,6 @@ const TVShowCast = () => {
 
   const { cast } = tvShow;
 
-  console.log(cast);
-
   const hasEpisode = selectedEpisode > 0;
   let guests = [];
   let hasGuestStars = false;

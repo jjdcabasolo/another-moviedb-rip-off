@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 
 import ProductionChip from '../../common/item/detail/ProductionChip';
 
@@ -17,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TVShowProduction = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
@@ -34,14 +36,14 @@ const TVShowProduction = () => {
     <Grid item container spacing={2}>
       <Grid container spacing={2} item xs={12}>
         {hasCreatedBy && (
-          <Grid item xs={hasProduction ? 6 : 12}>
+          <Grid item xs={hasProduction && !isMobile ? 6 : 12}>
             <Typography variant="body1" className={classes.title}>
               Created by
             </Typography>
           </Grid>
         )}
         {hasProductionCompany && (
-          <Grid item xs={hasProduction ? 6 : 12}>
+          <Grid item xs={hasProduction && !isMobile ? 6 : 12}>
             <Typography variant="body1" className={classes.title}>
               Network
             </Typography>
@@ -50,7 +52,7 @@ const TVShowProduction = () => {
       </Grid>
       <Grid container spacing={2} item xs={12}>
         {hasCreatedBy && (
-          <Grid item xs={hasProduction ? 6 : 12} container>
+          <Grid item xs={hasProduction && !isMobile ? 6 : 12} container>
             {createdBy.map((person) => {
               const {
                 profile_path: profilePath,
@@ -71,7 +73,7 @@ const TVShowProduction = () => {
           </Grid>
         )}
         {hasProductionCompany && (
-          <Grid item xs={hasProduction ? 6 : 12} container>
+          <Grid item xs={hasProduction && !isMobile ? 6 : 12} container>
             {productionCompanies.map((company) => {
               const {
                 logo_path: logoPath,

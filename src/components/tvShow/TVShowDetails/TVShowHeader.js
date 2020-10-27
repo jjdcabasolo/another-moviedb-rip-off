@@ -11,7 +11,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
-import ItemLinks from '../../common/item/detail/ItemLinks';
+import ItemLinks from '../../common/item/ItemLinks';
 
 import { getTVShowStatus } from '../../../utils/functions';
 

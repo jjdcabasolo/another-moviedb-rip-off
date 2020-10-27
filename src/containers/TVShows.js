@@ -9,7 +9,6 @@ import { Grid } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
 import DetailFooter from '../components/common/item/detail/DetailFooter';
-import ItemLinks from '../components/common/item/detail/ItemLinks';
 import Note from '../components/common/Note';
 import SeasonDrawer from '../components/tvShow/SeasonDrawer';
 import Section from '../components/common/item/detail/Section';
@@ -118,6 +117,7 @@ const TVShows = () => {
       <Section
         anchorId="tvshow-budget"
         divider={false}
+        isCollapsible={false}
         visible={tvShow}
       >
         <TVShowHeader />
@@ -125,6 +125,7 @@ const TVShows = () => {
 
       <Section
         anchorId="tvshow-statistics"
+        isCollapsible={false}
         visible={numberOfEpisodes || numberOfSeasons}
       >
         <TVShowStatistics />
@@ -132,7 +133,6 @@ const TVShows = () => {
 
       <Section
         anchorId="tvshow-season-details"
-        divider={false}
         chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
         title={`Season ${selectedSeason}`}
         visible={selectSeason(seasons, selectedSeason).air_date}
@@ -145,7 +145,6 @@ const TVShows = () => {
       <Section
         anchorId="tvshow-episode-details"
         chipContent={numberOfSeasons === selectedSeason && latestEpisode === selectedEpisode ? 'Latest' : 'Finished'}
-        divider={false}
         title={hasEpisodeList ? `Episode ${selectedEpisode}: ${currentEpisode.name}` : ''}
         visible={hasEpisodeList}
       >

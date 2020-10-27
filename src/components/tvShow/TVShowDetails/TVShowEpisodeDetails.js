@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import {
   Button,
   Grid,
@@ -16,15 +16,7 @@ import { tvShowsActions } from '../../../reducers/ducks';
 
 import { selectEpisode } from '../../../utils/functions';
 
-const useStyles = makeStyles((theme) => ({
-  chip: {
-    marginLeft: theme.spacing(1),
-    marginBottom: theme.spacing(0.5),
-  },
-}));
-
 const TVShowEpisodeDetails = () => {
-  const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
 

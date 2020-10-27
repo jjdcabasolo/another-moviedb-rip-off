@@ -4,13 +4,13 @@ import moment from 'moment';
 import ReactPlayer from 'react-player';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
 import DetailFooter from '../components/common/item/detail/DetailFooter';
-import ImageCard from '../components/common/item/detail/ImageCard';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
@@ -48,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Movies = () => {
-  const theme = useTheme();
-  const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
+  // const theme = useTheme();
+  // const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
   const classes = useStyles();
 
   const movie = useSelector((state) => state.movies.movie);
@@ -61,7 +61,6 @@ const Movies = () => {
   const { movieId } = useParams();
 
   const {
-    belongs_to_collection: belongsToCollection,
     budget,
     cast,
     crew,
@@ -119,14 +118,20 @@ const Movies = () => {
       <Section
         anchorId="movie-header"
         divider={!(budget && revenue)}
+        isCollapsible={false}
         visible={movie}
       >
         <MovieHeader />
       </Section>
 
+      <Section>
+        <HashLink smooth to="#movie-production">Link to Hash Fragment</HashLink>
+      </Section>
+
       <Section
-        visible={budget && revenue}
         anchorId="movie-budget"
+        isCollapsible={false}
+        visible={budget && revenue}
       >
         <MovieBudget />
       </Section>
@@ -162,19 +167,21 @@ const Movies = () => {
         <MovieCrew />
       </Section>
 
+      {/*
       <Section
         anchorId="movie-collection"
         col={isTabletAbove ? 6 : 12}
         divider={false}
+        isCollapsible={false}
         title="Collection"
         visible={belongsToCollection}
       >
         <ImageCard content={belongsToCollection} />
       </Section>
+      */}
 
       <Section
         anchorId="movie-production"
-        col={isTabletAbove && belongsToCollection ? 6 : 12}
         divider
         title="Production"
         visible={productionCompanies}
