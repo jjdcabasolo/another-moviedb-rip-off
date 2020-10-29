@@ -5,15 +5,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
+import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
 import PersonAvatar from '../../common/item/detail/PersonAvatar';
 
 import { moviesActions } from '../../../reducers/ducks';
 
 import { getCastCol } from '../../../utils/functions';
 
+import { MOVIE_MAX_CAST_HORIZONTAL_ITEMS } from '../../../constants';
+
 const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(2),
+  },
+  castContainer: {
+    position: 'relative',
   },
 }));
 
@@ -33,8 +39,6 @@ const MovieCast = () => {
 
   const [cardCol, setCardCol] = useState(0);
 
-  const maxVisibleCards = cardCol * 2;
-
   useEffect(() => {
     setCardCol(getCastCol(isMobile, isLowerTablet));
   }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
@@ -50,17 +54,9 @@ const MovieCast = () => {
 
   return (
     <>
-      <Grid container spacing={2}>
-        {cast.slice(0, maxVisibleCards).map((castBasic) => (
-          <PersonAvatar
-            character={castBasic.character}
-            col={12 / cardCol}
-            image={castBasic.profile_path}
-            name={castBasic.name}
-          />
-        ))}
-        { castShowMore && (
-          cast.slice(maxVisibleCards, cast.length).map((castMore) => (
+      <Grid container spacing={2} className={classes.castContainer}>
+        { castShowMore
+          ? cast.slice(0, cast.length).map((castMore) => (
             <PersonAvatar
               character={castMore.character}
               col={12 / cardCol}
@@ -68,7 +64,16 @@ const MovieCast = () => {
               name={castMore.name}
             />
           ))
-        )}
+          : (
+            <ItemHorizontalContainer
+              avatarCharacter="character"
+              avatarImage="profile_path"
+              avatarName="name"
+              id="movie-cast"
+              items={cast}
+              maxCount={MOVIE_MAX_CAST_HORIZONTAL_ITEMS}
+            />
+          )}
         <Grid
           className={classes.button}
           container

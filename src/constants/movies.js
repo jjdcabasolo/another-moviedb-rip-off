@@ -125,3 +125,5 @@ export const MOVIE_BREADCRUMBS_CONFIG = [
     link: '#movie-production',
   },
 ];
+
+export const MOVIE_MAX_CAST_HORIZONTAL_ITEMS = 8;

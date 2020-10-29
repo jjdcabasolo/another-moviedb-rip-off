@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import clsx from 'clsx';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Grid, Typography } from '@material-ui/core';
-import { BrokenImage } from '@material-ui/icons';
+import { BrokenImage, MoreHoriz } from '@material-ui/icons';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
@@ -21,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   text: {
     marginTop: theme.spacing(1),
   },
+  horizontalScrollItem: {
+    width: theme.spacing(16),
+  },
 }));
 
 const PersonAvatar = ({
@@ -28,17 +33,29 @@ const PersonAvatar = ({
   col,
   image,
   name,
+  horizontalScroll = false,
 }) => {
   const classes = useStyles();
 
   return (
-    <Grid item xs={col} container alignItems="center" direction="column" wrap="nowrap">
+    <Grid
+      alignItems="center"
+      className={clsx(
+        { [classes.horizontalScrollItem]: horizontalScroll },
+      )}
+      container
+      direction="column"
+      item
+      wrap="nowrap"
+      xs={col}
+    >
       <Grid item>
         <Avatar
           src={image !== null ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w780${image}` : ''}
           className={classes.avatar}
         >
           {image === null && <BrokenImage fontSize="large" />}
+          {image === 'seemore' && <MoreHoriz fontSize="large" />}
         </Avatar>
       </Grid>
       <Grid item className={classes.text}>
@@ -58,6 +75,7 @@ const PersonAvatar = ({
 PersonAvatar.propTypes = {
   character: PropTypes.string.isRequired,
   col: PropTypes.number.isRequired,
+  horizontalScroll: PropTypes.bool.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
