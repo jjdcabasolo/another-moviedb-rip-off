@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, Button, useMediaQuery } from '@material-ui/core';
 
 import PersonAvatarList from '../../common/item/detail/PersonAvatarList';
@@ -15,12 +15,19 @@ import { getCrewMembers, getCrewCol } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
 const MovieCrew = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
   const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const classes = useStyles();
 
   const movie = useSelector((state) => state.movies.movie);
   const crewShowMore = useSelector((state) => state.movies.crewShowMore);
@@ -69,6 +76,15 @@ const MovieCrew = () => {
     }
   }, [movie, crew]);
 
+  const handleButtonClick = () => {
+    if (!crewShowMore) {
+      const anchor = document.querySelector('#movie-crew');
+      if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    dispatch(moviesActions.setCrewShowMore(!crewShowMore));
+  };
+
   const renderMasonryGrid = () => {
     const col = [];
     for (let i = 0; i < crewCol; i += 1) {
@@ -115,9 +131,15 @@ const MovieCrew = () => {
         { crewShowMore
           ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
           : <Statistic count={crew.length} label="Total Crew" isTotal />}
-        <Grid item xs={12} container justify="flex-end">
+        <Grid
+          className={classes.button}
+          container
+          item
+          justify="flex-end"
+          xs={12}
+        >
           <Button
-            onClick={() => dispatch(moviesActions.setCrewShowMore(!crewShowMore))}
+            onClick={handleButtonClick}
             size={isMobile ? 'small' : 'medium'}
             variant="outlined"
           >

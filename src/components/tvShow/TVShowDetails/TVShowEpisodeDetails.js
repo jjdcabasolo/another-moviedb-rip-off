@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Button,
   Grid,
@@ -16,9 +16,16 @@ import { tvShowsActions } from '../../../reducers/ducks';
 
 import { selectEpisode } from '../../../utils/functions';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
 const TVShowEpisodeDetails = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const classes = useStyles();
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
@@ -67,7 +74,13 @@ const TVShowEpisodeDetails = () => {
             </>
           )}
       </Grid>
-      <Grid item xs={12} container justify="flex-end">
+      <Grid
+        className={classes.button}
+        container
+        item
+        justify="flex-end"
+        xs={12}
+      >
         <Button
           onClick={handleEpisodeChange}
           size={isMobile ? 'small' : 'medium'}

@@ -61,7 +61,7 @@ const Statistic = ({
             {isTotal && (
               <Tooltip
                 enterTouchDelay={0}
-                leaveTouchDelay={2500}
+                leaveTouchDelay={1500}
                 title="Crew count is wholly based on the efforts of the TMDb community. It may or may not reflect the exact head count."
               >
                 <HelpTwoTone className={classes.icon} />

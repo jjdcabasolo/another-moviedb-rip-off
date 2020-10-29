@@ -92,7 +92,7 @@ const TVShowCrew = () => {
     return [
       (hasLighting && <Statistic col={col} count={lighting.length} label="Lighting" divider />),
       (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider />),
-      <Statistic col={col} count={crew.length} label="Total Crew" isTotal />,
+      <Statistic col={col} count={crew ? crew.length : 0} label="Total Crew" isTotal />,
     ];
   };
 

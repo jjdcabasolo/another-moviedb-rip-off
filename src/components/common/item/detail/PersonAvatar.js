@@ -47,7 +47,7 @@ const PersonAvatar = ({
         </Typography>
       </Grid>
       <Grid item>
-        <Typography vairant="body2" className={classes.subtitle} align="center" color="textSecondary">
+        <Typography variant="body2" className={classes.subtitle} align="center" color="textSecondary">
           {name}
         </Typography>
       </Grid>

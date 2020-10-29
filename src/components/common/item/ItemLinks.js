@@ -46,7 +46,7 @@ const ItemLinks = ({
   useEffect(() => {
     const links = [facebook, instagram, twitter, youtube, imdb, tmdb].filter((e) => e !== null);
     setStart(links[0] || '');
-  }, []);
+  }, [facebook, instagram, twitter, youtube, imdb, tmdb]);
 
   const renderSocialNetworkLinks = (src, link, title, isImg) => (
     <Grid item>

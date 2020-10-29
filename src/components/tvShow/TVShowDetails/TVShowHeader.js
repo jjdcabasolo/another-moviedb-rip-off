@@ -11,9 +11,12 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
+import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
 
 import { getTVShowStatus } from '../../../utils/functions';
+
+import { TV_SHOW_BREADCRUMBS_CONFIG } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   note: {
@@ -71,25 +74,30 @@ const TVShowHeader = () => {
         </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
-        <Grid item>
+        <Typography
+          className={classes.subtitle}
+          color="textSecondary"
+          variant={isMobile ? 'body1' : 'h6'}
+        >
+          {`${firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : 'No release date.'} `}
+          {episodeRunTime.length > 0
+            && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`}
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Chip
+          className={classes.chip}
+          label={getTVShowStatus(status)}
+          size="small"
+        />
+        { genres.map((i) => (
           <Chip
-            label={getTVShowStatus(status)}
-            size={isMobile ? 'small' : 'medium'}
+            className={classes.chip}
+            label={i.name}
+            size="small"
             variant="outlined"
           />
-        </Grid>
-        <Grid item>
-          <Typography
-            className={classes.subtitle}
-            color="textSecondary"
-            variant={isMobile ? 'body1' : 'h6'}
-          >
-            &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-            {`${firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : 'No release date.'} `}
-            {episodeRunTime.length > 0
-              && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`}
-          </Typography>
-        </Grid>
+        )) }
       </Grid>
       <Grid item xs={12}>
         <ItemLinks
@@ -104,17 +112,9 @@ const TVShowHeader = () => {
       <Grid item xs={12}>
         <Typography variant="body1" gutterBottom>{overview}</Typography>
       </Grid>
-      { genres.length > 0 && (
-        <Grid item xs={12}>
-          { genres.map((i) => (
-            <Chip
-              className={classes.chip}
-              label={i.name}
-              size={isMobile ? 'small' : 'medium'}
-            />
-          )) }
-        </Grid>
-      )}
+      <Grid item xs={12}>
+        <ItemBreadcrumbs content={TV_SHOW_BREADCRUMBS_CONFIG} />
+      </Grid>
     </Grid>
   );
 };

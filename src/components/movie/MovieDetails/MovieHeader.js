@@ -11,7 +11,10 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
+import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
+
+import { MOVIE_BREADCRUMBS_CONFIG } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   note: {
@@ -44,7 +47,6 @@ const MovieHeader = () => {
     overview,
     release_date: releaseDate,
     runtime,
-    status,
     title,
     facebook,
     imdb,
@@ -69,27 +71,27 @@ const MovieHeader = () => {
         </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
-        { status === 'Released' && (
-          <Grid item>
-            <Chip
-              label="Released"
-              size={isMobile ? 'small' : 'medium'}
-              variant="outlined"
-            />
-          </Grid>
-        )}
         <Grid item>
           <Typography
             className={classes.subtitle}
             color="textSecondary"
             variant={isMobile ? 'body1' : 'h6'}
           >
-            {status && <span>&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>}
             {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : 'No release date.'}
             &nbsp;&middot;&nbsp;&nbsp;
             {runtime ? `${runtimeHours}hr ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}` : 'No runtime yet.'}
           </Typography>
         </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        { genres.map((i) => (
+          <Chip
+            className={classes.chip}
+            label={i.name}
+            size="small"
+            variant="outlined"
+          />
+        ))}
       </Grid>
       <Grid item xs={12}>
         <ItemLinks
@@ -104,17 +106,9 @@ const MovieHeader = () => {
       <Grid item xs={12}>
         <Typography variant="body1" gutterBottom>{overview}</Typography>
       </Grid>
-      { genres.length > 0 && (
-        <Grid item xs={12}>
-          { genres.map((i) => (
-            <Chip
-              className={classes.chip}
-              label={i.name}
-              size={isMobile ? 'small' : 'medium'}
-            />
-          )) }
-        </Grid>
-      )}
+      <Grid item xs={12}>
+        <ItemBreadcrumbs content={MOVIE_BREADCRUMBS_CONFIG} />
+      </Grid>
     </Grid>
   );
 };

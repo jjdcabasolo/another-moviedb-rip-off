@@ -22,3 +22,26 @@ export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
     isActive: (e) => e === 'topRated',
   },
 ];
+
+export const TV_SHOW_BREADCRUMBS_CONFIG = [
+  {
+    label: 'Seasons',
+    link: '#tvshow-season-details',
+  },
+  {
+    label: 'Episodes',
+    link: '#tvshow-episode-details',
+  },
+  {
+    label: 'Cast',
+    link: '#tvshow-cast',
+  },
+  {
+    label: 'Crew',
+    link: '#tvshow-crew',
+  },
+  {
+    label: 'Production',
+    link: '#tvshow-production',
+  },
+];

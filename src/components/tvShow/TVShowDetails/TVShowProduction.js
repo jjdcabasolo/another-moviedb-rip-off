@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: theme.typography.h6.fontWeight,
+    width: '100%',
   },
 }));
 
@@ -33,26 +34,13 @@ const TVShowProduction = () => {
   const hasProduction = hasCreatedBy && hasProductionCompany;
 
   return (
-    <Grid item container spacing={2}>
-      <Grid container spacing={2} item xs={12}>
-        {hasCreatedBy && (
-          <Grid item xs={hasProduction && !isMobile ? 6 : 12}>
-            <Typography variant="body1" className={classes.title}>
-              Created by
-            </Typography>
-          </Grid>
-        )}
-        {hasProductionCompany && (
-          <Grid item xs={hasProduction && !isMobile ? 6 : 12}>
-            <Typography variant="body1" className={classes.title}>
-              Network
-            </Typography>
-          </Grid>
-        )}
-      </Grid>
-      <Grid container spacing={2} item xs={12}>
+    <Grid item container>
+      <Grid item xs={12} container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
         {hasCreatedBy && (
           <Grid item xs={hasProduction && !isMobile ? 6 : 12} container>
+            <Typography variant="body1" gutterBottom className={classes.title}>
+              Created by
+            </Typography>
             {createdBy.map((person) => {
               const {
                 profile_path: profilePath,
@@ -74,6 +62,9 @@ const TVShowProduction = () => {
         )}
         {hasProductionCompany && (
           <Grid item xs={hasProduction && !isMobile ? 6 : 12} container>
+            <Typography variant="body1" gutterBottom className={classes.title}>
+              Network
+            </Typography>
             {productionCompanies.map((company) => {
               const {
                 logo_path: logoPath,

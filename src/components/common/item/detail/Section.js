@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import clsx from 'clsx';
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Chip,
@@ -8,6 +10,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
@@ -26,6 +29,15 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionHeader: {
     cursor: 'pointer',
+  },
+  sectionContainer: {
+    transition: theme.transitions.create('margin-top', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  sectionContainerSpacing: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -53,7 +65,12 @@ const Section = ({
     visible
       ? (
         <>
-          <Grid item xs={col} id={anchorId} container spacing={2}>
+          <div id={anchorId} />
+          <Grid
+            container
+            item
+            xs={col}
+          >
             {title && (
               <Grid
                 className={classes.sectionHeader}
@@ -83,14 +100,24 @@ const Section = ({
                 </Grid>
                 {isCollapsible && (
                   <Grid item xs={1} container justify="flex-end">
-                    <IconButton onClick={handleSectionToggle} className={classes.margin}>
-                      {expanded ? <ExpandLess /> : <ExpandMore />}
-                    </IconButton>
+                    <Tooltip title={expanded ? 'Hide content' : 'Show content'}>
+                      <IconButton onClick={handleSectionToggle} className={classes.margin}>
+                        {expanded ? <ExpandLess /> : <ExpandMore />}
+                      </IconButton>
+                    </Tooltip>
                   </Grid>
                 )}
               </Grid>
             )}
-            <Grid item xs={12} container>
+            <Grid
+              item
+              xs={12}
+              className={clsx(
+                classes.sectionContainer,
+                { [classes.sectionContainerSpacing]: expanded },
+              )}
+              container
+            >
               {isCollapsible
                 ? (
                   <Collapse

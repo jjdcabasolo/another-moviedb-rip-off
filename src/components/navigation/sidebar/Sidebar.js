@@ -191,6 +191,7 @@ const Sidebar = ({ children }) => {
       {evaluateDrawerVisibility()}
 
       <div className={classes.itemContainer} ref={target}>
+        <div id="scroll-to-top-anchor" />
         {renderTopContents()}
         <main
           className={clsx(

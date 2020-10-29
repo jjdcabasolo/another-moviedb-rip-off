@@ -4,13 +4,12 @@ import moment from 'moment';
 import ReactPlayer from 'react-player';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
-import DetailFooter from '../components/common/item/detail/DetailFooter';
+import ItemFooter from '../components/common/item/ItemFooter';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
@@ -25,7 +24,11 @@ import { moviesActions } from '../reducers/ducks';
 
 import { decryptKey } from '../utils/functions';
 
-import { NOTE_NO_SELECTED_MOVIE, NOTE_MOVIE_NOT_FOUND } from '../constants';
+import {
+  NOTE_NO_SELECTED_MOVIE,
+  NOTE_MOVIE_NOT_FOUND,
+} from '../constants';
+import ScrollToTop from '../components/common/ScrollToTop';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,8 +51,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Movies = () => {
-  // const theme = useTheme();
-  // const isTabletAbove = useMediaQuery(theme.breakpoints.up('md'));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const movie = useSelector((state) => state.movies.movie);
@@ -114,93 +117,92 @@ const Movies = () => {
   }
 
   return (
-    <Grid container spacing={8} className={classes.root}>
-      <Section
-        anchorId="movie-header"
-        divider={!(budget && revenue)}
-        isCollapsible={false}
-        visible={movie}
-      >
-        <MovieHeader />
-      </Section>
+    <>
+      <Grid container spacing={isMobile ? 4 : 8} className={classes.root}>
+        <Section
+          anchorId="movie-header"
+          divider={!(budget && revenue)}
+          isCollapsible={false}
+          visible={movie}
+        >
+          <MovieHeader />
+        </Section>
 
-      <Section>
-        <HashLink smooth to="#movie-production">Link to Hash Fragment</HashLink>
-      </Section>
+        <Section
+          anchorId="movie-budget"
+          isCollapsible={false}
+          visible={budget && revenue}
+        >
+          <MovieBudget />
+        </Section>
 
-      <Section
-        anchorId="movie-budget"
-        isCollapsible={false}
-        visible={budget && revenue}
-      >
-        <MovieBudget />
-      </Section>
+        <Section
+          anchorId="movie-trailer"
+          title="Trailer"
+          visible={youtube}
+        >
+          <ReactPlayer
+            className={classes.trailer}
+            controls
+            light
+            pip
+            url={youtube}
+            width="100%"
+          />
+        </Section>
 
-      <Section
-        anchorId="movie-trailer"
-        title="Trailer"
-        visible={youtube}
-      >
-        <ReactPlayer
-          className={classes.trailer}
-          controls
-          light
-          pip
-          url={youtube}
-          width="100%"
-        />
-      </Section>
+        <Section
+          anchorId="movie-cast"
+          title="Cast"
+          visible={cast.length > 0}
+        >
+          <MovieCast />
+        </Section>
 
-      <Section
-        anchorId="movie-cast"
-        title="Cast"
-        visible={cast.length > 0}
-      >
-        <MovieCast />
-      </Section>
+        <Section
+          anchorId="movie-crew"
+          title="Crew"
+          visible={crew.length > 0}
+        >
+          <MovieCrew />
+        </Section>
 
-      <Section
-        anchorId="movie-crew"
-        title="Crew"
-        visible={crew.length > 0}
-      >
-        <MovieCrew />
-      </Section>
+        {/*
+        <Section
+          anchorId="movie-collection"
+          col={isTabletAbove ? 6 : 12}
+          divider={false}
+          isCollapsible={false}
+          title="Collection"
+          visible={belongsToCollection}
+        >
+          <ImageCard content={belongsToCollection} />
+        </Section>
+        */}
 
-      {/*
-      <Section
-        anchorId="movie-collection"
-        col={isTabletAbove ? 6 : 12}
-        divider={false}
-        isCollapsible={false}
-        title="Collection"
-        visible={belongsToCollection}
-      >
-        <ImageCard content={belongsToCollection} />
-      </Section>
-      */}
+        <Section
+          anchorId="movie-production"
+          divider
+          title="Production"
+          visible={productionCompanies}
+        >
+          <MovieProduction />
+        </Section>
 
-      <Section
-        anchorId="movie-production"
-        divider
-        title="Production"
-        visible={productionCompanies}
-      >
-        <MovieProduction />
-      </Section>
-
-      <Section
-        anchorId="movie-end-credits"
-        divider={false}
-      >
-        <DetailFooter
-          companies={productionCompanies.map((e) => e.name)}
-          link={tmdb}
-          title={title || originalTitle}
-          year={moment(releaseDate).format('YYYY')}
-        />
-      </Section>
-    </Grid>
+        <Section
+          anchorId="movie-end-credits"
+          divider={false}
+        >
+          <ItemFooter
+            companies={productionCompanies.map((e) => e.name)}
+            link={tmdb}
+            title={title || originalTitle}
+            year={moment(releaseDate).format('YYYY')}
+          />
+        </Section>
+      </Grid>
+      <ScrollToTop />
+    </>
   );
 };
 

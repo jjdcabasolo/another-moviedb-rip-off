@@ -11,7 +11,7 @@ import {
 import {
   API_KEY_DIALOG_TMDB_LINK,
   TMDB_SIGN_UP,
-} from '../../../../constants';
+} from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DetailFooter = ({
+const ItemFooter = ({
   companies,
   link,
   title,
@@ -27,12 +27,16 @@ const DetailFooter = ({
 }) => {
   const classes = useStyles();
 
+  const formattedCompanies = companies.length === 2
+    ? companies.join(' and ')
+    : companies.join(', ').replace(/, ([^,]*)$/, ', and $1');
+
   return (
     <>
       <Grid container spacing="3" className={classes.footer}>
         <Grid item xs="12">
           <Typography variant="body2" gutterBottom color="textSecondary">
-            {`${title} (${year})${companies.length > 0 ? ` © ${companies.join(', ')}` : ''}.`}
+            {`${title} (${year})${companies.length > 0 ? ` © ${formattedCompanies}` : ''}.`}
           </Typography>
         </Grid>
         <Grid item xs="12">
@@ -44,16 +48,16 @@ const DetailFooter = ({
             .
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            {'To contribute, you must create a TMDb account '}
+            To contribute, you must&nbsp;
             <Link href={TMDB_SIGN_UP}>
-              here
+              create a TMDb account
             </Link>
             .
           </Typography>
         </Grid>
         <Grid item xs="12">
           <Typography variant="body2" gutterBottom color="textSecondary">
-            {'All contents came from the community-built movie and TV database, '}
+            All contents came from the community-built movie and TV database,&nbsp;
             <Link href={API_KEY_DIALOG_TMDB_LINK}>
               The Movie Database (TMDb)
             </Link>
@@ -70,12 +74,12 @@ const DetailFooter = ({
         </Grid>
         <Grid item xs="12">
           <Typography variant="body2" color="textSecondary">
-            2020 All rights reserved.
+            © 2020 All Rights Reserved.
           </Typography>
         </Grid>
         <Grid item xs="12">
           <Typography variant="body2" color="textSecondary">
-            Made with ❤ and TMDb by jjdcabasolo.
+            Made with ❤ and TMDb by jjdcabasolo
           </Typography>
         </Grid>
       </Grid>
@@ -83,7 +87,7 @@ const DetailFooter = ({
   );
 };
 
-DetailFooter.propTypes = {
+ItemFooter.propTypes = {
   companies: PropTypes.arrayOf(
     PropTypes.string.isRequired,
   ).isRequired,
@@ -92,4 +96,4 @@ DetailFooter.propTypes = {
   year: PropTypes.number.isRequired,
 };
 
-export default DetailFooter;
+export default ItemFooter;

@@ -243,6 +243,7 @@ const Appbar = ({ children }) => {
         })}
         ref={target}
       >
+        <div id="scroll-to-top-anchor" />
         {renderTopContents()}
         <div
           className={clsx(

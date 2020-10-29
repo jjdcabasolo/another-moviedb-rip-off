@@ -6,9 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Button,
-  Card,
-  CardActionArea,
-  CardMedia,
   Grid,
   Link,
   Typography,
@@ -19,25 +16,9 @@ import { tvShowsActions } from '../../../reducers/ducks';
 
 import { selectSeason } from '../../../utils/functions';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
-
 const useStyles = makeStyles((theme) => ({
-  cardImg: {
-    height: 0,
-    paddingTop: theme.spacing(50),
-    [theme.breakpoints.down('lg')]: {
-      paddingTop: theme.spacing(55),
-    },
-    [theme.breakpoints.only('md')]: {
-      paddingTop: theme.spacing(70),
-    },
-    [theme.breakpoints.only('xs')]: {
-      paddingTop: theme.spacing(60),
-    },
-    width: '100%',
-  },
-  noWeight: {
-    fontWeight: theme.typography.fontWeightRegular,
+  button: {
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -56,23 +37,12 @@ const TVShowSeasonDetails = () => {
     air_date: airDate,
     episode_count: episodeCount,
     overview,
-    poster_path: posterPath,
   } = selectSeason(seasons, selectedSeason);
 
   const handleSeasonChange = () => {
     dispatch(tvShowsActions.setSeasonDrawerSelectedSeason(false));
     dispatch(tvShowsActions.setSeasonDrawer(true));
   };
-
-  const renderBrokenImage = () => (
-    <div className={classes.brokenImgContainer}>
-      <Typography variant="body1">No image available.</Typography>
-    </div>
-  );
-
-  let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
-  if (posterPath) imagePath += `/w780${posterPath}`;
-  else imagePath = renderBrokenImage();
 
   return (
     <Grid item container spacing={2}>
@@ -83,20 +53,7 @@ const TVShowSeasonDetails = () => {
           {`${episodeCount} episodes`}
         </Typography>
       </Grid>
-      {posterPath && (
-        <Grid item lg={4} md={6} sm={6} xs={12}>
-          <Card>
-            <CardActionArea>
-              { !(typeof (imagePath) === 'string') && imagePath }
-              <CardMedia
-                className={classes.cardImg}
-                image={imagePath}
-              />
-            </CardActionArea>
-          </Card>
-        </Grid>
-      )}
-      <Grid item lg={8} md={6} sm={6} xs={12} container>
+      <Grid item xs={12} container>
         <Grid item xs={12}>
           {overview
             ? (
@@ -119,7 +76,13 @@ const TVShowSeasonDetails = () => {
             )}
         </Grid>
       </Grid>
-      <Grid item xs={12} container justify="flex-end">
+      <Grid
+        className={classes.button}
+        container
+        item
+        justify="flex-end"
+        xs={12}
+      >
         <Button
           onClick={handleSeasonChange}
           size={isMobile ? 'small' : 'medium'}

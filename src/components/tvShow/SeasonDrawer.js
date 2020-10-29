@@ -285,8 +285,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
               </div>
             </Slide>
           </>
-        )
-      }
+        )}
     </Drawer>
   );
 };

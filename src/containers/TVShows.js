@@ -4,12 +4,13 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ComponentLoader from '../components/common/ComponentLoader';
-import DetailFooter from '../components/common/item/detail/DetailFooter';
+import ItemFooter from '../components/common/item/ItemFooter';
 import Note from '../components/common/Note';
+import ScrollToTop from '../components/common/ScrollToTop';
 import SeasonDrawer from '../components/tvShow/SeasonDrawer';
 import Section from '../components/common/item/detail/Section';
 import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
@@ -38,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TVShows = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const episodes = useSelector((state) => state.tvShows.episodes);
@@ -113,84 +116,86 @@ const TVShows = () => {
   if (Object.keys(tvShow).length === 0 && tvShow.constructor === Object) return <ComponentLoader />;
 
   return (
-    <Grid container spacing={8} className={classes.root}>
-      <Section
-        anchorId="tvshow-budget"
-        divider={false}
-        isCollapsible={false}
-        visible={tvShow}
-      >
-        <TVShowHeader />
-      </Section>
+    <>
+      <Grid container spacing={isMobile ? 4 : 8} className={classes.root}>
+        <Section
+          anchorId="tvshow-budget"
+          divider={false}
+          isCollapsible={false}
+          visible={tvShow}
+        >
+          <TVShowHeader />
+        </Section>
 
-      <Section
-        anchorId="tvshow-statistics"
-        isCollapsible={false}
-        visible={numberOfEpisodes || numberOfSeasons}
-      >
-        <TVShowStatistics />
-      </Section>
+        <Section
+          anchorId="tvshow-statistics"
+          isCollapsible={false}
+          visible={numberOfEpisodes || numberOfSeasons}
+        >
+          <TVShowStatistics />
+        </Section>
 
-      <Section
-        anchorId="tvshow-season-details"
-        chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
-        title={`Season ${selectedSeason}`}
-        visible={selectSeason(seasons, selectedSeason).air_date}
-      >
-        <div ref={seasonDetailRef}>
-          <TVShowSeasonDetails />
-        </div>
-      </Section>
+        <Section
+          anchorId="tvshow-season-details"
+          chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
+          title={`Season ${selectedSeason}`}
+          visible={selectSeason(seasons, selectedSeason).air_date}
+        >
+          <div ref={seasonDetailRef}>
+            <TVShowSeasonDetails />
+          </div>
+        </Section>
 
-      <Section
-        anchorId="tvshow-episode-details"
-        chipContent={numberOfSeasons === selectedSeason && latestEpisode === selectedEpisode ? 'Latest' : 'Finished'}
-        title={hasEpisodeList ? `Episode ${selectedEpisode}: ${currentEpisode.name}` : ''}
-        visible={hasEpisodeList}
-      >
-        <TVShowEpisodeDetails />
-      </Section>
+        <Section
+          anchorId="tvshow-episode-details"
+          chipContent={numberOfSeasons === selectedSeason && latestEpisode === selectedEpisode ? 'Latest' : 'Finished'}
+          title={hasEpisodeList ? `Episode ${selectedEpisode}: ${currentEpisode.name}` : ''}
+          visible={hasEpisodeList}
+        >
+          <TVShowEpisodeDetails />
+        </Section>
 
-      <Section
-        anchorId="tvshow-cast"
-        title={hasEpisode ? 'Cast' : 'Main cast'}
-        visible={cast.length > 0}
-      >
-        <TVShowCast />
-      </Section>
+        <Section
+          anchorId="tvshow-cast"
+          title={hasEpisode ? 'Cast' : 'Main cast'}
+          visible={cast.length > 0}
+        >
+          <TVShowCast />
+        </Section>
 
-      <Section
-        anchorId="tvshow-crew"
-        title="Crew"
-        visible={currentEpisode.crew && currentEpisode.crew.length > 0}
-      >
-        <TVShowCrew />
-      </Section>
+        <Section
+          anchorId="tvshow-crew"
+          title="Crew"
+          visible={currentEpisode.crew && currentEpisode.crew.length > 0}
+        >
+          <TVShowCrew />
+        </Section>
 
-      <Section
-        anchorId="tvshow-production"
-        title="Production"
-        visible={hasProduction}
-      >
-        <TVShowProduction />
-      </Section>
+        <Section
+          anchorId="tvshow-production"
+          title="Production"
+          visible={hasProduction}
+        >
+          <TVShowProduction />
+        </Section>
 
-      <Section
-        anchorId="tvshow-end-credits"
-        divider={false}
-      >
-        <DetailFooter
-          companies={productionCompanies.map((e) => e.name)}
-          link={tmdb}
-          title={name || originalName}
-          year={moment(firstAirDate).format('YYYY')}
-        />
-      </Section>
-
+        <Section
+          anchorId="tvshow-end-credits"
+          divider={false}
+        >
+          <ItemFooter
+            companies={productionCompanies.map((e) => e.name)}
+            link={tmdb}
+            title={name || originalName}
+            year={moment(firstAirDate).format('YYYY')}
+          />
+        </Section>
+      </Grid>
       <SeasonDrawer
         seasonDetailRef={seasonDetailRef}
       />
-    </Grid>
+      <ScrollToTop />
+    </>
   );
 };
 
