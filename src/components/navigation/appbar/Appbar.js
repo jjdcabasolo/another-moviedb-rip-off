@@ -1,6 +1,6 @@
 import React, {
   useCallback,
-  useLayoutEffect,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -101,7 +101,7 @@ const Appbar = ({ children }) => {
     history.goBack();
   }, [dispatch, scrollY, history]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       if (!('id' in movie)) dispatch(browserActions.changeBrowserScrollY(window.pageYOffset));
     };

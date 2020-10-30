@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Fab } from '@material-ui/core';
-import { KeyboardArrowRight } from '@material-ui/icons';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Fab, Zoom, useMediaQuery } from '@material-ui/core';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 
 import PersonAvatar from './detail/PersonAvatar';
 
@@ -27,12 +27,18 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0, 0.125),
     },
   },
+  seeMoreItem: {
+    cursor: 'pointer',
+  },
   scroller: {
     position: 'absolute',
-    top: theme.spacing(5),
+    top: theme.spacing(7),
   },
   rightScroller: {
-    right: 0,
+    right: theme.spacing(2),
+  },
+  leftScroller: {
+    left: theme.spacing(2),
   },
 }));
 
@@ -42,22 +48,42 @@ const ItemHorizontalContainer = ({
   avatarName,
   id,
   items,
+  handleSeeMore,
   maxCount,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const handleScroll = (offset) => {
-    const container = document.querySelector(`#${id}-scroller`);
+  const [hideScrollLeft, setHideScrollLeft] = useState(true);
+  const [hideScrollRight, setHideScrollRight] = useState(true);
 
-    container.scrollTo({
-      left: container.scrollLeft + offset,
-      behavior: 'smooth',
-    });
+  const updateScrollers = () => {
+    const {
+      clientWidth,
+      scrollLeft,
+      scrollWidth,
+    } = document.getElementById(`${id}-scroller`);
+
+    setHideScrollLeft(scrollLeft !== 0);
+    setHideScrollRight(scrollLeft !== (scrollWidth - clientWidth));
+  };
+
+  useEffect(() => {
+    updateScrollers();
+  }, []);
+
+  const handleScroll = (offset) => {
+    const container = document.getElementById(`${id}-scroller`);
+    const left = container.scrollLeft + offset;
+
+    container.scrollTo({ left, behavior: 'smooth' });
+    updateScrollers();
   };
 
   return (
     <>
-      <div className={classes.horizontalScroll} id={`${id}-scroller`}>
+      <div className={classes.horizontalScroll} id={`${id}-scroller`} onScroll={updateScrollers}>
         {items.slice(0, maxCount).map((item) => (
           <div className={classes.horizontalScrollItem}>
             <PersonAvatar
@@ -69,23 +95,46 @@ const ItemHorizontalContainer = ({
             />
           </div>
         ))}
-        <div className={classes.horizontalScrollItem}>
+        <div
+          className={clsx(
+            classes.horizontalScrollItem,
+            classes.seeMoreItem,
+          )}
+          onClick={handleSeeMore}
+        >
           <PersonAvatar
             character={`...and ${items.length - maxCount} more`}
             col={12}
             image="seemore"
-            name="Click see all to view"
+            name="Click to view"
             horizontalScroll
           />
         </div>
       </div>
-      <Fab
-        aria-label="scroll to right"
-        className={clsx(classes.scroller, classes.rightScroller)}
-        onClick={() => handleScroll(144)}
-      >
-        <KeyboardArrowRight />
-      </Fab>
+      {!isMobile && (
+        <>
+          <Zoom in={hideScrollLeft}>
+            <Fab
+              aria-label="scroll to left"
+              className={clsx(classes.scroller, classes.leftScroller)}
+              onClick={() => handleScroll(-144)}
+              size="small"
+            >
+              <KeyboardArrowLeft />
+            </Fab>
+          </Zoom>
+          <Zoom in={hideScrollRight}>
+            <Fab
+              aria-label="scroll to right"
+              className={clsx(classes.scroller, classes.rightScroller)}
+              onClick={() => handleScroll(144)}
+              size="small"
+            >
+              <KeyboardArrowRight />
+            </Fab>
+          </Zoom>
+        </>
+      )}
     </>
   );
 };

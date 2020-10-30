@@ -72,6 +72,7 @@ const MovieCast = () => {
               id="movie-cast"
               items={cast}
               maxCount={MOVIE_MAX_CAST_HORIZONTAL_ITEMS}
+              handleSeeMore={handleButtonClick}
             />
           )}
         <Grid

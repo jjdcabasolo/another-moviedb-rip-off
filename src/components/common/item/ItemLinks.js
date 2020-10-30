@@ -77,7 +77,7 @@ const ItemLinks = ({
           { facebook && facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook, 'Facebook') }
           { instagram && instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram, 'Instagram') }
           { twitter && twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter, 'Twitter') }
-          { youtube && youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube, 'YouTube') }
+          { youtube && youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube, 'Trailer at YouTube') }
           { imdb && imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true) }
           { tmdb && tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true) }
         </Grid>
