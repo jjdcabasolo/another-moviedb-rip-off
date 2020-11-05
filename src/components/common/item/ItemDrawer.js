@@ -22,7 +22,7 @@ import Note from '../Note';
 
 import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
 
-import { tvShowsActions } from '../../../reducers/ducks';
+import { sidebarActions, tvShowsActions } from '../../../reducers/ducks';
 
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
@@ -124,11 +124,15 @@ const ItemDrawer = () => {
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
 
-  useEffect(() => setItemDrawerOpen(finalDrawerState), [finalDrawerState]);
+  useEffect(() => {
+    setItemDrawerOpen(finalDrawerState);
+    dispatch(sidebarActions.setItemDrawer(finalDrawerState));
+  }, [finalDrawerState]);
 
   const handleDrawerToggle = () => {
-    localStorage.setItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen', !itemDrawerOpen);
-    setItemDrawerOpen(!itemDrawerOpen);
+    const isDrawerOpen = !itemDrawerOpen;
+    localStorage.setItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen', isDrawerOpen);
+    setItemDrawerOpen(isDrawerOpen);
     if (!itemDrawerOpen) dispatch(tvShowsActions.setSeasonDrawer(false));
   };
 

@@ -44,6 +44,7 @@ const TVShows = () => {
   const classes = useStyles();
 
   const episodes = useSelector((state) => state.tvShows.episodes);
+  const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
   const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
   const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
@@ -194,7 +195,7 @@ const TVShows = () => {
       <SeasonDrawer
         seasonDetailRef={seasonDetailRef}
       />
-      <ScrollToTop />
+      {!itemDrawerOpen && <ScrollToTop />}
     </>
   );
 };

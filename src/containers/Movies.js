@@ -29,6 +29,7 @@ import {
   NOTE_MOVIE_NOT_FOUND,
 } from '../constants';
 import ScrollToTop from '../components/common/ScrollToTop';
+import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +56,7 @@ const Movies = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
+  const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const movie = useSelector((state) => state.movies.movie);
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const dispatch = useDispatch();
@@ -64,6 +66,7 @@ const Movies = () => {
   const { movieId } = useParams();
 
   const {
+    belongs_to_collection: belongsToCollection,
     budget,
     cast,
     crew,
@@ -167,18 +170,13 @@ const Movies = () => {
           <MovieCrew />
         </Section>
 
-        {/*
         <Section
           anchorId="movie-collection"
-          col={isTabletAbove ? 6 : 12}
-          divider={false}
-          isCollapsible={false}
           title="Collection"
           visible={belongsToCollection}
         >
-          <ImageCard content={belongsToCollection} />
+          <MovieCollection />
         </Section>
-        */}
 
         <Section
           anchorId="movie-production"
@@ -201,7 +199,7 @@ const Movies = () => {
           />
         </Section>
       </Grid>
-      <ScrollToTop />
+      {!itemDrawerOpen && <ScrollToTop />}
     </>
   );
 };
