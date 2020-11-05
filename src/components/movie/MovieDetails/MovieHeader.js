@@ -47,6 +47,7 @@ const MovieHeader = () => {
     overview,
     release_date: releaseDate,
     runtime,
+    tagline,
     title,
     facebook,
     imdb,
@@ -106,6 +107,13 @@ const MovieHeader = () => {
       <Grid item xs={12}>
         <Typography variant="body1" gutterBottom>{overview}</Typography>
       </Grid>
+      {tagline && (
+        <Grid item xs={12}>
+          <Typography variant="body1" color="textSecondary" gutterBottom>
+            {`"${tagline}"`}
+          </Typography>
+        </Grid>
+      )}
       <Grid item xs={12}>
         <ItemBreadcrumbs content={MOVIE_BREADCRUMBS_CONFIG} />
       </Grid>
