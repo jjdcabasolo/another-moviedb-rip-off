@@ -121,6 +121,10 @@ export const MOVIE_BREADCRUMBS_CONFIG = [
     link: '#movie-crew',
   },
   {
+    label: 'Collection',
+    link: '#movie-collection',
+  },
+  {
     label: 'Production',
     link: '#movie-production',
   },

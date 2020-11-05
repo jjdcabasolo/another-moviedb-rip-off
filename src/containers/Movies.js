@@ -69,6 +69,7 @@ const Movies = () => {
     belongs_to_collection: belongsToCollection,
     budget,
     cast,
+    collection_content: collectionContent,
     crew,
     production_companies: productionCompanies,
     revenue,
@@ -172,7 +173,7 @@ const Movies = () => {
 
         <Section
           anchorId="movie-collection"
-          title="Collection"
+          title={collectionContent ? collectionContent.name : ''}
           visible={belongsToCollection}
         >
           <MovieCollection />

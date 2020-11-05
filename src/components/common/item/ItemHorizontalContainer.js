@@ -148,6 +148,7 @@ ItemHorizontalContainer.propTypes = {
     PropTypes.number.isRequired,
   ).isRequired,
   maxCount: PropTypes.number.isRequired,
+  handleSeeMore: PropTypes.func.isRequired,
 };
 
 export default ItemHorizontalContainer;

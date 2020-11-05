@@ -75,11 +75,12 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
     const { belongs_to_collection: collection } = movieDetails;
     if (collection) {
       getMovieCollection(api_key, collection.id, (response) => {
-        movieDetails.collectionContent = response.data;
+        movieDetails.collection_content = response.data;
+        success(movieDetails);
       }, () => {}, () => {});
+    } else {
+      success(movieDetails);
     }
-
-    success(movieDetails);
   }))
   .catch((error) => fail(error))
   .finally(() => after());
