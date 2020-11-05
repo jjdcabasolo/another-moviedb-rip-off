@@ -95,21 +95,23 @@ const ItemHorizontalContainer = ({
             />
           </div>
         ))}
-        <div
-          className={clsx(
-            classes.horizontalScrollItem,
-            classes.seeMoreItem,
-          )}
-          onClick={handleSeeMore}
-        >
-          <PersonAvatar
-            character={`...and ${items.length - maxCount} more`}
-            col={12}
-            image="seemore"
-            name="Click to view"
-            horizontalScroll
-          />
-        </div>
+        {items.length > maxCount && (
+          <div
+            className={clsx(
+              classes.horizontalScrollItem,
+              classes.seeMoreItem,
+            )}
+            onClick={handleSeeMore}
+          >
+            <PersonAvatar
+              character={`...and ${items.length - maxCount} more`}
+              col={12}
+              image="seemore"
+              name="Click to view"
+              horizontalScroll
+            />
+          </div>
+        )}
       </div>
       {!isMobile && (
         <>
