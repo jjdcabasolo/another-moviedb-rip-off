@@ -42,6 +42,7 @@ const MovieHeader = () => {
   const movie = useSelector((state) => state.movies.movie);
 
   const {
+    belongs_to_collection: belongsToCollection,
     genres,
     original_title: originalTitle,
     overview,
@@ -57,6 +58,9 @@ const MovieHeader = () => {
     youtube,
   } = movie;
 
+  const breadcrumbs = belongsToCollection
+    ? MOVIE_BREADCRUMBS_CONFIG
+    : MOVIE_BREADCRUMBS_CONFIG.filter((e) => e.link !== '#movie-collection');
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(runtime / 60);
   const runtimeMinutes = runtime % 60;
@@ -115,7 +119,7 @@ const MovieHeader = () => {
         </Grid>
       )}
       <Grid item xs={12}>
-        <ItemBreadcrumbs content={MOVIE_BREADCRUMBS_CONFIG} />
+        <ItemBreadcrumbs content={breadcrumbs} />
       </Grid>
     </Grid>
   );

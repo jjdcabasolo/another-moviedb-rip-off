@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(5),
   },
   contentItemSelected: {
-    marginTop: theme.spacing(-8),
+    marginTop: theme.spacing(-12),
   },
   drawer: {
     display: 'flex',

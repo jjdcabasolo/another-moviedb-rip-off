@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import axios from './config';
+import moment from 'moment';
 
 export const getPopularMovies = (api_key, success, fail, after = () => {}) => axios
   .get('/movie/popular', { params: { api_key } })
@@ -75,7 +76,13 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
     const { belongs_to_collection: collection } = movieDetails;
     if (collection) {
       getMovieCollection(api_key, collection.id, (response) => {
-        movieDetails.collection_content = response.data;
+        const { data } = response;
+        const { parts } = data;
+
+        // arrange movies in collection by date
+        data.parts = parts.sort((a, b) => moment.utc(a.release_date).diff(moment.utc(b.release_date)));
+        movieDetails.collection_content = data;
+
         success(movieDetails);
       }, () => {}, () => {});
     } else {
