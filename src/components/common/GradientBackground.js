@@ -7,7 +7,8 @@ import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   img: {
-    maskImage: 'linear-gradient(to top, #0000 0%, #000 30%)',
+    maskImage: 'linear-gradient(rgba(0,0,0,1) 0%, rgba(255,255,255,0.5) 70%, rgba(255,255,255,0.4) 80%, rgba(255,255,255,0.3) 85%, rgba(255,255,255,0.2) 90%, rgba(255,255,255,0.1) 95%, rgba(255,255,255,0) 100%)',
+    // maskImage: 'linear-gradient(rgba(0,0,0,1) 0%, rgba(255,255,255,0.48783263305322133) 74%, rgba(255,255,255,0.34217436974789917) 84%, rgba(255,255,255,0.2805497198879552) 88%, rgba(255,255,255,0.165703781512605) 92%, rgba(255,255,255,0.05926120448179273) 96%, rgba(255,255,255,0) 100%)',
     objectFit: 'cover',
     objectPosition: '50% 0%',
     [theme.breakpoints.down('sm')]: {

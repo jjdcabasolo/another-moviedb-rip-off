@@ -36,16 +36,18 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 2),
   },
   trailer: {
+    '& div': {
+      borderRadius: theme.shape.borderRadius,
+    },
     [theme.breakpoints.down('sm')]: {
-      height: `${theme.spacing(30)}px !important`,
+      height: `${theme.spacing(35)}px !important`,
     },
     [theme.breakpoints.between('sm', 'md')]: {
-      height: `${theme.spacing(40)}px !important`,
+      height: `${theme.spacing(45)}px !important`,
     },
     [theme.breakpoints.up('md')]: {
       height: `${theme.spacing(60)}px !important`,
     },
-    borderRadius: theme.shape.borderRadius,
   },
   note: {
     padding: theme.spacing(8, 2),
