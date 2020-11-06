@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       height: `${theme.spacing(60)}px !important`,
     },
+    borderRadius: theme.shape.borderRadius,
   },
   note: {
     padding: theme.spacing(8, 2),

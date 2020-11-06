@@ -27,9 +27,9 @@ const TVShowEpisodeDetails = () => {
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const tvShow = useSelector((state) => state.tvShows.tvShow);
-  const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
   const episodes = useSelector((state) => state.tvShows.episodes);
+  const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
   const dispatch = useDispatch();
 
   const { name, tmdb } = tvShow;

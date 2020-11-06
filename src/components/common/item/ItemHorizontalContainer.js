@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
@@ -6,8 +6,6 @@ import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Fab, Zoom, useMediaQuery } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
-
-import PersonAvatar from './detail/PersonAvatar';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -43,13 +41,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ItemHorizontalContainer = ({
-  avatarCharacter,
-  avatarImage,
-  avatarName,
+  children,
   id,
-  items,
+  isWithSeeMore = false,
   handleSeeMore,
-  maxCount,
+  scrollAmount,
+  seeMoreComponent,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
@@ -58,7 +55,7 @@ const ItemHorizontalContainer = ({
   const [hideScrollLeft, setHideScrollLeft] = useState(true);
   const [hideScrollRight, setHideScrollRight] = useState(true);
 
-  const updateScrollers = () => {
+  const updateScrollers = useCallback(() => {
     const {
       clientWidth,
       scrollLeft,
@@ -67,11 +64,9 @@ const ItemHorizontalContainer = ({
 
     setHideScrollLeft(scrollLeft !== 0);
     setHideScrollRight(scrollLeft !== (scrollWidth - clientWidth));
-  };
+  }, [id]);
 
-  useEffect(() => {
-    updateScrollers();
-  }, []);
+  useEffect(() => updateScrollers(), [updateScrollers]);
 
   const handleScroll = (offset) => {
     const container = document.getElementById(`${id}-scroller`);
@@ -84,32 +79,19 @@ const ItemHorizontalContainer = ({
   return (
     <>
       <div className={classes.horizontalScroll} id={`${id}-scroller`} onScroll={updateScrollers}>
-        {items.slice(0, maxCount).map((item) => (
-          <div className={classes.horizontalScrollItem}>
-            <PersonAvatar
-              character={item[avatarCharacter]}
-              col={12}
-              image={item[avatarImage]}
-              name={item[avatarName]}
-              horizontalScroll
-            />
-          </div>
-        ))}
-        {items.length > maxCount && (
+        {children}
+        {isWithSeeMore && (
           <div
             className={clsx(
               classes.horizontalScrollItem,
               classes.seeMoreItem,
             )}
             onClick={handleSeeMore}
+            onKeyDown={handleSeeMore}
+            role="button"
+            tabIndex={0}
           >
-            <PersonAvatar
-              character={`...and ${items.length - maxCount} more`}
-              col={12}
-              image="seemore"
-              name="Click to view"
-              horizontalScroll
-            />
+            {seeMoreComponent}
           </div>
         )}
       </div>
@@ -119,7 +101,7 @@ const ItemHorizontalContainer = ({
             <Fab
               aria-label="scroll to left"
               className={clsx(classes.scroller, classes.leftScroller)}
-              onClick={() => handleScroll(-144)}
+              onClick={() => handleScroll(-scrollAmount)}
               size="small"
             >
               <KeyboardArrowLeft />
@@ -129,7 +111,7 @@ const ItemHorizontalContainer = ({
             <Fab
               aria-label="scroll to right"
               className={clsx(classes.scroller, classes.rightScroller)}
-              onClick={() => handleScroll(144)}
+              onClick={() => handleScroll(scrollAmount)}
               size="small"
             >
               <KeyboardArrowRight />
@@ -142,15 +124,12 @@ const ItemHorizontalContainer = ({
 };
 
 ItemHorizontalContainer.propTypes = {
-  avatarCharacter: PropTypes.string.isRequired,
-  avatarImage: PropTypes.string.isRequired,
-  avatarName: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
   id: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(
-    PropTypes.number.isRequired,
-  ).isRequired,
-  maxCount: PropTypes.number.isRequired,
+  isWithSeeMore: PropTypes.bool.isRequired,
   handleSeeMore: PropTypes.func.isRequired,
+  scrollAmount: PropTypes.number.isRequired,
+  seeMoreComponent: PropTypes.node.isRequired,
 };
 
 export default ItemHorizontalContainer;

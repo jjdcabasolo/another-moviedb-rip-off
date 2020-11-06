@@ -21,11 +21,13 @@ const MovieCollection = () => {
 
   return (
     <Grid item container spacing={4}>
-      <Grid item xs={12}>
-        <Typography variant="body1">
-          {overview}
-        </Typography>
-      </Grid>
+      {overview.length > 0 && (
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            {overview}
+          </Typography>
+        </Grid>
+      )}
       <Grid container item xs={12} spacing={2}>
         {parts.map((item, index) => (
           <ItemCard

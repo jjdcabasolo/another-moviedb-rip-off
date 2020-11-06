@@ -113,8 +113,10 @@ const MovieHeader = () => {
       </Grid>
       {tagline && (
         <Grid item xs={12}>
-          <Typography variant="body1" color="textSecondary" gutterBottom>
-            {`"${tagline}"`}
+          <Typography variant="body1" color="textSecondary" gutterBottom className={classes.tagline}>
+            <em>
+              {tagline}
+            </em>
           </Typography>
         </Grid>
       )}

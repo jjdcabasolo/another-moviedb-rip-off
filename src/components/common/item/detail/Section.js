@@ -114,7 +114,7 @@ const Section = ({
               xs={12}
               className={clsx(
                 classes.sectionContainer,
-                { [classes.sectionContainerSpacing]: expanded },
+                { [classes.sectionContainerSpacing]: expanded && title },
               )}
               container
             >

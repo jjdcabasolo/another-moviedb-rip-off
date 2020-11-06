@@ -14,7 +14,7 @@ import {
 import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
 
-import { getTVShowStatus } from '../../../utils/functions';
+import { getTVShowStatus, selectEpisode } from '../../../utils/functions';
 
 import { TV_SHOW_BREADCRUMBS_CONFIG } from '../../../constants';
 
@@ -41,6 +41,8 @@ const TVShowHeader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
 
+  const episodes = useSelector((state) => state.tvShows.episodes);
+  const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
 
   const {
@@ -59,6 +61,11 @@ const TVShowHeader = () => {
     youtube,
   } = tvShow;
 
+  const { crew } = selectEpisode(episodes, selectedEpisode);
+
+  const breadcrumbs = (crew && crew.length > 0)
+    ? TV_SHOW_BREADCRUMBS_CONFIG
+    : TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => e.link !== '#tvshow-crew');
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(episodeRunTime[0] / 60);
   const runtimeMinutes = episodeRunTime[0] % 60;
@@ -113,7 +120,7 @@ const TVShowHeader = () => {
         <Typography variant="body1" gutterBottom>{overview}</Typography>
       </Grid>
       <Grid item xs={12}>
-        <ItemBreadcrumbs content={TV_SHOW_BREADCRUMBS_CONFIG} />
+        <ItemBreadcrumbs content={breadcrumbs} />
       </Grid>
     </Grid>
   );

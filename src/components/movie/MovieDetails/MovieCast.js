@@ -12,7 +12,7 @@ import { moviesActions } from '../../../reducers/ducks';
 
 import { getCastCol } from '../../../utils/functions';
 
-import { MOVIE_MAX_CAST_HORIZONTAL_ITEMS } from '../../../constants';
+import { MOVIE_MAX_CAST_HORIZONTAL_ITEMS as maxCount } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -20,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
   },
   castContainer: {
     position: 'relative',
+  },
+  horizontalScrollItem: {
+    margin: theme.spacing(0, 1),
+    [theme.breakpoints.only('xs')]: {
+      margin: theme.spacing(0, 0.125),
+    },
   },
 }));
 
@@ -66,14 +72,32 @@ const MovieCast = () => {
           ))
           : (
             <ItemHorizontalContainer
-              avatarCharacter="character"
-              avatarImage="profile_path"
-              avatarName="name"
               id="movie-cast"
-              items={cast}
-              maxCount={MOVIE_MAX_CAST_HORIZONTAL_ITEMS}
+              isWithSeeMore={cast.length > maxCount}
               handleSeeMore={handleButtonClick}
-            />
+              scrollAmount={144}
+              seeMoreComponent={(
+                <PersonAvatar
+                  character={`...and ${cast.length - maxCount} more`}
+                  col={12}
+                  image="seemore"
+                  name="Click to view"
+                  horizontalScroll
+                />
+              )}
+            >
+              {cast.slice(0, maxCount).map((item) => (
+                <div className={classes.horizontalScrollItem}>
+                  <PersonAvatar
+                    character={item.character}
+                    col={12}
+                    image={item.profile_path}
+                    name={item.name}
+                    horizontalScroll
+                  />
+                </div>
+              ))}
+            </ItemHorizontalContainer>
           )}
         <Grid
           className={classes.button}

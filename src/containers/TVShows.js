@@ -17,6 +17,7 @@ import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
 import TVShowEpisodeDetails from '../components/tvShow/TVShowDetails/TVShowEpisodeDetails';
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
+import TVShowScreenshots from '../components/tvShow/TVShowDetails/TVShowScreenshots';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 import TVShowCrew from '../components/tvShow/TVShowDetails/TVShowCrew';
@@ -71,6 +72,7 @@ const TVShows = () => {
     first_air_date: firstAirDate,
   } = tvShow;
 
+  const currentSeason = seasons && selectSeason(seasons, selectedSeason);
   const currentEpisode = selectEpisode(episodes, selectedEpisode);
   const latestEpisode = lastEpisodeToAir ? lastEpisodeToAir.episode_number : -1;
   const hasProduction = (createdBy && createdBy.length > 0)
@@ -140,11 +142,15 @@ const TVShows = () => {
           anchorId="tvshow-season-details"
           chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
           title={`Season ${selectedSeason}`}
-          visible={selectSeason(seasons, selectedSeason).air_date}
+          visible={currentSeason.air_date}
         >
           <div ref={seasonDetailRef}>
             <TVShowSeasonDetails />
           </div>
+        </Section>
+
+        <Section visible={currentSeason.poster_path}>
+          <TVShowScreenshots />
         </Section>
 
         <Section
