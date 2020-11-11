@@ -2,13 +2,24 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
-import { Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, Typography } from '@material-ui/core';
+
 import ItemCard from '../../common/item/ItemCard';
+import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
+
+const useStyles = makeStyles((theme) => ({
+  collectionContainer: {
+    position: 'relative',
+  },
+  horizontalScrollItemSpacing: {
+    marginRight: theme.spacing(2),
+  },
+}));
 
 const MovieCollection = () => {
   const theme = useTheme();
-  const isSmallTabletDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
   const movie = useSelector((state) => state.movies.movie);
@@ -28,15 +39,25 @@ const MovieCollection = () => {
           </Typography>
         </Grid>
       )}
-      <Grid container item xs={12} spacing={2}>
-        {parts.map((item, index) => (
-          <ItemCard
-            col={isSmallTabletDown ? 12 : 6}
-            content={item}
-            rank={index + 1}
-            type={activeTab}
-          />
-        ))}
+      <Grid item xs={12} container className={classes.collectionContainer}>
+        <ItemHorizontalContainer
+          imageSize={theme.spacing(23)}
+          scrollAmount={theme.spacing(45)}
+        >
+          {parts.map((item, index) => (
+            <div className={classes.horizontalScrollItemSpacing}>
+              <Grid container>
+                <ItemCard
+                  col={12}
+                  content={item}
+                  isHorizontalScroll
+                  rank={index + 1}
+                  type={activeTab}
+                />
+              </Grid>
+            </div>
+          ))}
+        </ItemHorizontalContainer>
       </Grid>
     </Grid>
   );

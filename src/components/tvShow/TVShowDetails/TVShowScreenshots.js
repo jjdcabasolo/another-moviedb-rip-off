@@ -88,23 +88,20 @@ const TVShowScreenshots = () => {
   return (
     <Grid container className={classes.screenshotContainer}>
       <ItemHorizontalContainer
-        id="tvshow-screenshots"
         imageSize={theme.spacing(22)}
         scrollAmount={1000}
       >
         {imageConfig.map((item) => item.isVisible && (
-          <div className={classes.horizontalScrollItem}>
-            <Grid container direction="column">
-              <Grid item>
-                {item.component}
-              </Grid>
-              <Grid item>
-                <Typography variant="caption" noWrap>
-                  {item.label}
-                </Typography>
-              </Grid>
+          <Grid container direction="column">
+            <Grid item>
+              {item.component}
             </Grid>
-          </div>
+            <Grid item>
+              <Typography variant="caption" noWrap>
+                {item.label}
+              </Typography>
+            </Grid>
+          </Grid>
         ))}
       </ItemHorizontalContainer>
     </Grid>

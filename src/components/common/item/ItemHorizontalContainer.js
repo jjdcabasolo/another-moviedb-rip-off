@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(7),
   },
   rightScroller: {
-    right: theme.spacing(2),
+    right: theme.spacing(3),
   },
   leftScroller: {
-    left: theme.spacing(2),
+    left: theme.spacing(3),
   },
 }));
 
@@ -71,10 +71,12 @@ const ItemHorizontalContainer = ({
 
   const updateScrollers = useCallback(() => {
     const { current } = scroller;
-    const { clientWidth, scrollLeft, scrollWidth } = current;
+    if (current) {
+      const { clientWidth, scrollLeft, scrollWidth } = current;
 
-    setHideScrollLeft(scrollLeft !== 0);
-    setHideScrollRight(scrollLeft !== (scrollWidth - clientWidth));
+      setHideScrollLeft(scrollLeft !== 0);
+      setHideScrollRight(scrollLeft !== (scrollWidth - clientWidth));
+    }
   }, [children]);
 
   useEffect(() => {

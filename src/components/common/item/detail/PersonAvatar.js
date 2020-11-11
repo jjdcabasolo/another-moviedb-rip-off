@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   text: {
     marginTop: theme.spacing(1),
   },
-  horizontalScrollItem: {
+  horizontalScrollItemWidth: {
     width: theme.spacing(16),
   },
 }));
@@ -33,7 +33,7 @@ const PersonAvatar = ({
   col,
   image,
   name,
-  horizontalScroll = false,
+  isHorizontalScroll = false,
 }) => {
   const classes = useStyles();
 
@@ -41,7 +41,7 @@ const PersonAvatar = ({
     <Grid
       alignItems="center"
       className={clsx(
-        { [classes.horizontalScrollItem]: horizontalScroll },
+        { [classes.horizontalScrollItemWidth]: isHorizontalScroll },
       )}
       container
       direction="column"
@@ -75,7 +75,7 @@ const PersonAvatar = ({
 PersonAvatar.propTypes = {
   character: PropTypes.string.isRequired,
   col: PropTypes.number.isRequired,
-  horizontalScroll: PropTypes.bool.isRequired,
+  isHorizontalScroll: PropTypes.bool.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };

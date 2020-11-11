@@ -186,7 +186,7 @@ const Movies = () => {
           anchorId="movie-production"
           divider
           title="Production"
-          visible={productionCompanies}
+          visible={productionCompanies && productionCompanies.length > 0}
         >
           <MovieProduction />
         </Section>

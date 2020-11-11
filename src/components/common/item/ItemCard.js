@@ -71,6 +71,9 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: '0.02em',
     fontWeight: theme.typography.fontWeightMedium,
   },
+  horizontalScrollItemWidth: {
+    width: theme.spacing(45),
+  },
 }));
 
 const ItemCard = ({
@@ -78,6 +81,7 @@ const ItemCard = ({
   content,
   drawerOpen,
   handleDrawerToggle,
+  isHorizontalScroll = false,
   mobile,
   rank,
   type,
@@ -122,8 +126,9 @@ const ItemCard = ({
   return (
     <Grid
       className={clsx(
-        { [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) },
+        { [classes.itemExtension]: (col === 2 && !higherResolutionDesktop) && !isHorizontalScroll },
         { [classes.mobile]: mobile },
+        { [classes.horizontalScrollItemWidth]: isHorizontalScroll },
       )}
       item
       xs={col}
@@ -163,6 +168,7 @@ ItemCard.propTypes = {
   col: PropTypes.number.isRequired,
   content: PropTypes.string.isRequired,
   drawerOpen: PropTypes.bool.isRequired,
+  isHorizontalScroll: PropTypes.bool.isRequired,
   handleDrawerToggle: PropTypes.func.isRequired,
   mobile: PropTypes.bool.isRequired,
   rank: PropTypes.number.isRequired,

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   castContainer: {
     position: 'relative',
   },
-  horizontalScrollItem: {
+  horizontalScrollItemSpacing: {
     margin: theme.spacing(0, 1),
     [theme.breakpoints.only('xs')]: {
       margin: theme.spacing(0, 0.125),
@@ -72,7 +72,6 @@ const MovieCast = () => {
           ))
           : (
             <ItemHorizontalContainer
-              id="movie-cast"
               isWithSeeMore={cast.length > maxCount}
               handleSeeMore={handleButtonClick}
               scrollAmount={144}
@@ -82,18 +81,18 @@ const MovieCast = () => {
                   col={12}
                   image="seemore"
                   name="Click to view"
-                  horizontalScroll
+                  isHorizontalScroll
                 />
               )}
             >
               {cast.slice(0, maxCount).map((item) => (
-                <div className={classes.horizontalScrollItem}>
+                <div className={classes.horizontalScrollItemSpacing}>
                   <PersonAvatar
                     character={item.character}
                     col={12}
                     image={item.profile_path}
                     name={item.name}
-                    horizontalScroll
+                    isHorizontalScroll
                   />
                 </div>
               ))}
