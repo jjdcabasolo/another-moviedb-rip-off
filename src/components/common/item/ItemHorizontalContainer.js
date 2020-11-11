@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
@@ -42,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ItemHorizontalContainer = ({
   children,
-  id,
+  imageSize,
   isWithSeeMore = false,
   handleSeeMore,
   scrollAmount,
@@ -52,25 +57,34 @@ const ItemHorizontalContainer = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
+  const scroller = useRef(null);
+
   const [hideScrollLeft, setHideScrollLeft] = useState(true);
   const [hideScrollRight, setHideScrollRight] = useState(true);
 
+  const midScrollerContainerTopHeight = scroller.current
+    ? (scroller.current.clientHeight / 2) - theme.spacing(2.5)
+    : 0;
+  const scrollerTopHeight = imageSize
+    ? (imageSize / 2) - theme.spacing(2.5)
+    : midScrollerContainerTopHeight;
+
   const updateScrollers = useCallback(() => {
-    const {
-      clientWidth,
-      scrollLeft,
-      scrollWidth,
-    } = document.getElementById(`${id}-scroller`);
+    const { current } = scroller;
+    const { clientWidth, scrollLeft, scrollWidth } = current;
 
     setHideScrollLeft(scrollLeft !== 0);
     setHideScrollRight(scrollLeft !== (scrollWidth - clientWidth));
-  }, [id]);
+  }, [children]);
 
-  useEffect(() => updateScrollers(), [updateScrollers]);
+  useEffect(() => {
+    setTimeout(() => updateScrollers(), 100);
+  }, [updateScrollers, children]);
 
   const handleScroll = (offset) => {
-    const container = document.getElementById(`${id}-scroller`);
-    const left = container.scrollLeft + offset;
+    const { current: container } = scroller;
+    const { scrollLeft } = container;
+    const left = scrollLeft + offset;
 
     container.scrollTo({ left, behavior: 'smooth' });
     updateScrollers();
@@ -78,7 +92,7 @@ const ItemHorizontalContainer = ({
 
   return (
     <>
-      <div className={classes.horizontalScroll} id={`${id}-scroller`} onScroll={updateScrollers}>
+      <div className={classes.horizontalScroll} onScroll={updateScrollers} ref={scroller}>
         {children}
         {isWithSeeMore && (
           <div
@@ -101,6 +115,7 @@ const ItemHorizontalContainer = ({
             <Fab
               aria-label="scroll to left"
               className={clsx(classes.scroller, classes.leftScroller)}
+              style={{ top: scrollerTopHeight }}
               onClick={() => handleScroll(-scrollAmount)}
               size="small"
             >
@@ -111,6 +126,7 @@ const ItemHorizontalContainer = ({
             <Fab
               aria-label="scroll to right"
               className={clsx(classes.scroller, classes.rightScroller)}
+              style={{ top: scrollerTopHeight }}
               onClick={() => handleScroll(scrollAmount)}
               size="small"
             >
@@ -125,9 +141,9 @@ const ItemHorizontalContainer = ({
 
 ItemHorizontalContainer.propTypes = {
   children: PropTypes.node.isRequired,
-  id: PropTypes.string.isRequired,
   isWithSeeMore: PropTypes.bool.isRequired,
   handleSeeMore: PropTypes.func.isRequired,
+  imageSize: PropTypes.number.isRequired,
   scrollAmount: PropTypes.number.isRequired,
   seeMoreComponent: PropTypes.node.isRequired,
 };

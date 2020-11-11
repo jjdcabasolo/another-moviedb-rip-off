@@ -3,13 +3,14 @@ import React from 'react';
 import ReactPlayer from 'react-player';
 import { useSelector } from 'react-redux';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
+
+import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
 
 import { selectEpisode, selectSeason } from '../../../utils/functions';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
-import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TVShowScreenshots = () => {
+  const theme = useTheme();
   const classes = useStyles();
 
   const episodes = useSelector((state) => state.tvShows.episodes);
@@ -87,7 +89,8 @@ const TVShowScreenshots = () => {
     <Grid container className={classes.screenshotContainer}>
       <ItemHorizontalContainer
         id="tvshow-screenshots"
-        scrollAmount={200}
+        imageSize={theme.spacing(22)}
+        scrollAmount={1000}
       >
         {imageConfig.map((item) => item.isVisible && (
           <div className={classes.horizontalScrollItem}>
