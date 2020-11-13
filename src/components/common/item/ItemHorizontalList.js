@@ -49,9 +49,10 @@ const ItemHorizontalList = ({
   const [showMoreOverview, setShowMoreOverview] = useState(!isOverviewCollapsed);
   const [showMoreItems, setShowMoreItems] = useState(false);
 
-  const isOverviewLessThanMaxWordCount = overview.split(' ').splice(0, MAX_WORD_COUNT).length < MAX_WORD_COUNT;
+  const [overviewTruncated, isOverviewTruncated] = truncateText(overview, MAX_WORD_COUNT, 'words');
 
   const handleReadMore = () => {
+    if (!isOverviewTruncated) return;
     setShowMoreOverview(!showMoreOverview);
   };
 
@@ -71,35 +72,21 @@ const ItemHorizontalList = ({
       {overview.length > 0 && (
         <Grid item xs={12}>
           <Typography variant="body1">
-            {showMoreOverview && isOverviewLessThanMaxWordCount
+            {isOverviewTruncated
               ? (
                 <>
-                  {overview}
-                  {isOverviewCollapsed && (
-                    <Typography
-                      className={classes.readMore}
-                      color="textSecondary"
-                      onClick={handleReadMore}
-                      display="inline"
-                    >
-                      &nbsp;Read less.
-                    </Typography>
-                  )}
-                </>
-              )
-              : (
-                <>
-                  {truncateText(overview, MAX_WORD_COUNT, 'words')}
+                  {showMoreOverview ? overview : overviewTruncated }
                   <Typography
                     className={classes.readMore}
                     color="textSecondary"
                     onClick={handleReadMore}
                     display="inline"
                   >
-                    ... read more.
+                    {showMoreOverview ? ' Read less.' : '... read more.' }
                   </Typography>
                 </>
-              )}
+              )
+              : overview}
           </Typography>
         </Grid>
       )}

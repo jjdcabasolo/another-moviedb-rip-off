@@ -16,11 +16,16 @@ const useStyles = makeStyles((theme) => ({
   image: {
     height: theme.spacing(22),
     marginRight: theme.spacing(2),
+    border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
   },
   video: {
     '& div': {
+      border: `1px solid ${theme.palette.divider}`,
       borderRadius: theme.shape.borderRadius,
+      '& iframe': {
+        borderRadius: theme.shape.borderRadius,
+      },
     },
     height: `${theme.spacing(22)}px !important`,
     width: `${theme.spacing(40)}px !important`,
