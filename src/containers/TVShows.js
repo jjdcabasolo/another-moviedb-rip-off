@@ -17,7 +17,7 @@ import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
 import TVShowEpisodeDetails from '../components/tvShow/TVShowDetails/TVShowEpisodeDetails';
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
-import TVShowScreenshots from '../components/tvShow/TVShowDetails/TVShowScreenshots';
+import TVShowMedia from '../components/tvShow/TVShowDetails/TVShowMedia';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 import TVShowCrew from '../components/tvShow/TVShowDetails/TVShowCrew';
@@ -139,6 +139,13 @@ const TVShows = () => {
         </Section>
 
         <Section
+          title="Media"
+          visible={currentSeason.poster_path}
+        >
+          <TVShowMedia />
+        </Section>
+
+        <Section
           anchorId="tvshow-season-details"
           chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
           title={`Season ${selectedSeason}`}
@@ -147,10 +154,6 @@ const TVShows = () => {
           <div ref={seasonDetailRef}>
             <TVShowSeasonDetails />
           </div>
-        </Section>
-
-        <Section visible={currentSeason.poster_path}>
-          <TVShowScreenshots />
         </Section>
 
         <Section

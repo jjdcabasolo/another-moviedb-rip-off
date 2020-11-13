@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TVShowScreenshots = () => {
+const TVShowMedia = () => {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -47,6 +47,20 @@ const TVShowScreenshots = () => {
   const { still_path: stillPath } = selectEpisode(episodes, selectedEpisode);
 
   const imageConfig = [
+    {
+      label: video ? video.type : '',
+      isVisible: video || false,
+      component: (
+        <ReactPlayer
+          className={classes.video}
+          controls
+          light
+          pip
+          url={video ? video.link : ''}
+          width="100%"
+        />
+      ),
+    },
     {
       label: 'Season cover',
       isVisible: posterPath || false,
@@ -66,20 +80,6 @@ const TVShowScreenshots = () => {
           className={classes.image}
           alt="Episode still"
           src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}w300${stillPath}`}
-        />
-      ),
-    },
-    {
-      label: video ? video.type : '',
-      isVisible: video || false,
-      component: (
-        <ReactPlayer
-          className={classes.video}
-          controls
-          light
-          pip
-          url={video ? video.link : ''}
-          width="100%"
         />
       ),
     },
@@ -108,4 +108,4 @@ const TVShowScreenshots = () => {
   );
 };
 
-export default TVShowScreenshots;
+export default TVShowMedia;

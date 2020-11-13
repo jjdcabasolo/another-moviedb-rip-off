@@ -134,7 +134,7 @@ const ItemCard = ({
       xs={col}
     >
       <Link to={`/${type}/${content.id}`}>
-        <Card onClick={handleCardClick}>
+        <Card onClick={handleCardClick} variant="outlined">
           <CardActionArea>
             { !(typeof (imagePath) === 'string') && imagePath }
             <CardMedia
