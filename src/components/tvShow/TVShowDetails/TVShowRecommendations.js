@@ -5,13 +5,14 @@ import { useSelector } from 'react-redux';
 
 import ItemHorizontalList from '../../common/item/ItemHorizontalList';
 
-const MovieRecommendations = ({ anchorId }) => {
-  const movie = useSelector((state) => state.movies.movie);
+const TVShowRecommendations = ({ anchorId }) => {
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
 
   const {
-    original_title: originalTitle,
+    name,
+    original_name: originalName,
     recommendations,
-  } = movie;
+  } = tvShow;
 
   if (!recommendations) return null;
 
@@ -19,13 +20,13 @@ const MovieRecommendations = ({ anchorId }) => {
     <ItemHorizontalList
       anchorId={anchorId}
       items={recommendations}
-      overview={`If you liked ${originalTitle}, check out these other movies:`}
+      overview={`If you liked ${name || originalName}, check out these other TV shows:`}
     />
   );
 };
 
-MovieRecommendations.propTypes = {
+TVShowRecommendations.propTypes = {
   anchorId: PropTypes.string.isRequired,
 };
 
-export default MovieRecommendations;
+export default TVShowRecommendations;

@@ -113,7 +113,7 @@ const ItemHorizontalList = ({
           >
             <ItemHorizontalContainer
               imageSize={theme.spacing(23)}
-              scrollAmount={theme.spacing(45)}
+              scrollAmount={theme.spacing(45 + 2)}
             >
               {items.map((item, index) => (
                 <div className={classes.horizontalScrollItemSpacing}>

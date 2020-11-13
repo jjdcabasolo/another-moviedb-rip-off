@@ -21,6 +21,7 @@ import TVShowMedia from '../components/tvShow/TVShowDetails/TVShowMedia';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 import TVShowCrew from '../components/tvShow/TVShowDetails/TVShowCrew';
+import TVShowRecommendations from '../components/tvShow/TVShowDetails/TVShowRecommendations';
 
 import { getTVShowDetails } from '../api';
 
@@ -70,6 +71,7 @@ const TVShows = () => {
     name,
     original_name: originalName,
     first_air_date: firstAirDate,
+    recommendations,
   } = tvShow;
 
   const currentSeason = seasons && selectSeason(seasons, selectedSeason);
@@ -187,6 +189,14 @@ const TVShows = () => {
           visible={hasProduction}
         >
           <TVShowProduction />
+        </Section>
+
+        <Section
+          anchorId="tvshow-recommendations"
+          title="Recommendations"
+          visible={recommendations && recommendations.length > 0}
+        >
+          <TVShowRecommendations anchorId="tvshow-recommendations" />
         </Section>
 
         <Section
