@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Divider,
   Grid,
   Tooltip,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core';
 import { HelpTwoTone } from '@material-ui/icons';
 
@@ -35,8 +34,6 @@ const Statistic = ({
   label,
 }) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const xs = col - 1;
   return (
@@ -53,7 +50,7 @@ const Statistic = ({
         xs={xs}
       >
         <Grid item>
-          <Typography variant={isMobile ? 'h5' : 'h4'}>{count}</Typography>
+          <Typography variant="h5">{count}</Typography>
         </Grid>
         <Grid item>
           <Typography variant="overline" color="textSecondary">

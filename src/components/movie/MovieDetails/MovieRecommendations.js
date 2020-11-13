@@ -5,26 +5,27 @@ import { useSelector } from 'react-redux';
 
 import ItemHorizontalList from '../../common/item/ItemHorizontalList';
 
-const MovieCollection = ({ anchorId }) => {
+const MovieRecommendations = ({ anchorId }) => {
   const movie = useSelector((state) => state.movies.movie);
 
-  const { collection_content: collectionContent } = movie;
+  const {
+    original_title: originalTitle,
+    recommendations,
+  } = movie;
 
-  if (!collectionContent) return null;
-
-  const { overview, parts } = collectionContent;
+  if (!recommendations) return null;
 
   return (
     <ItemHorizontalList
       anchorId={anchorId}
-      items={parts}
-      overview={overview}
+      items={recommendations}
+      overview={`If you liked ${originalTitle}, check out these movies:`}
     />
   );
 };
 
-MovieCollection.propTypes = {
+MovieRecommendations.propTypes = {
   anchorId: PropTypes.string.isRequired,
 };
 
-export default MovieCollection;
+export default MovieRecommendations;

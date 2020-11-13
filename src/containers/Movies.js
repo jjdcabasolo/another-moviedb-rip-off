@@ -12,10 +12,13 @@ import ComponentLoader from '../components/common/ComponentLoader';
 import ItemFooter from '../components/common/item/ItemFooter';
 import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
 import MovieCast from '../components/movie/MovieDetails/MovieCast';
+import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
 import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
+import MovieRecommendations from '../components/movie/MovieDetails/MovieRecommendations';
 import Note from '../components/common/Note';
+import ScrollToTop from '../components/common/ScrollToTop';
 import Section from '../components/common/item/detail/Section';
 
 import { getMovieDetails } from '../api';
@@ -28,8 +31,6 @@ import {
   NOTE_NO_SELECTED_MOVIE,
   NOTE_MOVIE_NOT_FOUND,
 } from '../constants';
-import ScrollToTop from '../components/common/ScrollToTop';
-import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,6 +82,7 @@ const Movies = () => {
     release_date: releaseDate,
     title,
     tmdb,
+    recommendations,
   } = movie;
 
   useEffect(() => {
@@ -175,20 +177,28 @@ const Movies = () => {
         </Section>
 
         <Section
-          anchorId="movie-collection"
-          title={collectionContent ? collectionContent.name : ''}
-          visible={belongsToCollection}
-        >
-          <MovieCollection />
-        </Section>
-
-        <Section
           anchorId="movie-production"
           divider
           title="Production"
           visible={productionCompanies && productionCompanies.length > 0}
         >
           <MovieProduction />
+        </Section>
+
+        <Section
+          anchorId="movie-collection"
+          title={collectionContent ? collectionContent.name : ''}
+          visible={belongsToCollection}
+        >
+          <MovieCollection anchorId="movie-collection" />
+        </Section>
+
+        <Section
+          anchorId="movie-recommendations"
+          title="Recommendations"
+          visible={recommendations && recommendations.length > 0}
+        >
+          <MovieRecommendations anchorId="movie-recommendations" />
         </Section>
 
         <Section

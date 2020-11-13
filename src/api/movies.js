@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
-import axios from './config';
 import moment from 'moment';
+
+import axios from './config';
 
 export const getPopularMovies = (api_key, success, fail, after = () => {}) => axios
   .get('/movie/popular', { params: { api_key } })
@@ -44,8 +45,10 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
     axios.get(`/movie/${movie_id}/videos`, { params: { api_key } }),
     axios.get(`/movie/${movie_id}/credits`, { params: { api_key } }),
     axios.get(`/movie/${movie_id}/external_ids`, { params: { api_key } }),
+    axios.get(`/movie/${movie_id}/recommendations`, { params: { api_key } }),
   ])
-  .then(axios.spread((details, videos, credits, external_ids) => {
+  .then(axios.spread((details, videos, credits, external_ids, recommendations) => {
+    // extracting external links
     const { data: externalIDData } = external_ids;
     const {
       facebook_id,
@@ -54,6 +57,10 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
       imdb_id,
       id: tmdb_id,
     } = externalIDData;
+
+    // extracting recommendations
+    const { data: recommendationsData } = recommendations;
+    const { results: recommendationResults } = recommendationsData;
 
     // check if a video of type trailer exists
     let hasVideo = videos.data.results.length > 0;
@@ -70,6 +77,7 @@ export const getMovieDetails = (api_key, movie_id, success, fail, after = () => 
       twitter: external_ids.data.twitter_id !== null ? `https://www.twitter.com/${twitter_id}` : null,
       imdb: external_ids.data.imdb_id !== null ? `https://www.imdb.com/title/${imdb_id}` : null,
       tmdb: external_ids.data.id !== null ? `https://www.themoviedb.org/movie/${tmdb_id}` : null,
+      recommendations: recommendationResults,
     };
 
     // check for collection, fetch if it exists, append to movieDetails if successful
