@@ -277,7 +277,7 @@ const SeasonDrawer = ({ seasonDetailRef }) => {
                     selected={selectedEpisode === episode.episode_number}
                   >
                     <ListItemText
-                      primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40)}
+                      primary={truncateText(`S${selectedSeason}E${episode.episode_number} - ${episode.name}`, 40, 'characters')}
                       secondary={`${episode.air_date ? moment(episode.air_date).format('MMM D, YYYY') : ''}`}
                     />
                   </ListItem>

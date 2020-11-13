@@ -14,6 +14,10 @@ import {
 import ItemCard from './ItemCard';
 import ItemHorizontalContainer from './ItemHorizontalContainer';
 
+import { truncateText } from '../../../utils/functions';
+
+const MAX_WORD_COUNT = 12;
+
 const useStyles = makeStyles((theme) => ({
   itemHorizontalListContainer: {
     position: 'relative',
@@ -24,9 +28,17 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(2),
   },
+  readMore: {
+    cursor: 'pointer',
+  },
 }));
 
-const ItemHorizontalList = ({ anchorId, overview, items }) => {
+const ItemHorizontalList = ({
+  anchorId,
+  items,
+  isOverviewCollapsed = false,
+  overview,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const isSmallTabletBelow = useMediaQuery(theme.breakpoints.down('sm'));
@@ -34,15 +46,22 @@ const ItemHorizontalList = ({ anchorId, overview, items }) => {
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
 
-  const [showMore, setShowMore] = useState(false);
+  const [showMoreOverview, setShowMoreOverview] = useState(!isOverviewCollapsed);
+  const [showMoreItems, setShowMoreItems] = useState(false);
+
+  const isOverviewLessThanMaxWordCount = overview.split(' ').splice(0, MAX_WORD_COUNT).length < MAX_WORD_COUNT;
+
+  const handleReadMore = () => {
+    setShowMoreOverview(!showMoreOverview);
+  };
 
   const handleButtonClick = () => {
-    if (!showMore) {
+    if (!showMoreItems) {
       const anchor = document.querySelector(`#${anchorId}`);
       if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
     }
 
-    setShowMore(!showMore);
+    setShowMoreItems(!showMoreItems);
   };
 
   if (!items) return null;
@@ -52,11 +71,39 @@ const ItemHorizontalList = ({ anchorId, overview, items }) => {
       {overview.length > 0 && (
         <Grid item xs={12}>
           <Typography variant="body1">
-            {overview}
+            {showMoreOverview && isOverviewLessThanMaxWordCount
+              ? (
+                <>
+                  {overview}
+                  {isOverviewCollapsed && (
+                    <Typography
+                      className={classes.readMore}
+                      color="textSecondary"
+                      onClick={handleReadMore}
+                      display="inline"
+                    >
+                      &nbsp;Read less.
+                    </Typography>
+                  )}
+                </>
+              )
+              : (
+                <>
+                  {truncateText(overview, MAX_WORD_COUNT, 'words')}
+                  <Typography
+                    className={classes.readMore}
+                    color="textSecondary"
+                    onClick={handleReadMore}
+                    display="inline"
+                  >
+                    ... read more.
+                  </Typography>
+                </>
+              )}
           </Typography>
         </Grid>
       )}
-      { showMore
+      { showMoreItems
         ? (
           <Grid item xs={12} container spacing={2}>
             {items.map((item, index) => (
@@ -109,7 +156,7 @@ const ItemHorizontalList = ({ anchorId, overview, items }) => {
           variant="outlined"
           size={isMobile ? 'small' : 'medium'}
         >
-          {showMore ? 'Show less' : 'Show all'}
+          {showMoreItems ? 'Show less' : 'Show all'}
         </Button>
       </Grid>
     </Grid>
@@ -122,6 +169,7 @@ ItemHorizontalList.propTypes = {
     label: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
   }).isRequired,
+  isOverviewCollapsed: PropTypes.bool.isRequired,
   overview: PropTypes.string.isRequired,
 };
 

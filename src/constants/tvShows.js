@@ -1,5 +1,3 @@
-export const NO_SEASON_OVERVIEW = '';
-
 export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
   {
     label: 'Airing Today',
@@ -45,3 +43,5 @@ export const TV_SHOW_BREADCRUMBS_CONFIG = [
     link: '#tvshow-production',
   },
 ];
+
+export const TV_SHOW_OVERVIEW_MAX_WORDS = 30;

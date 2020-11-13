@@ -18,6 +18,7 @@ const MovieCollection = ({ anchorId }) => {
     <ItemHorizontalList
       anchorId={anchorId}
       items={parts}
+      isOverviewCollapsed
       overview={overview}
     />
   );

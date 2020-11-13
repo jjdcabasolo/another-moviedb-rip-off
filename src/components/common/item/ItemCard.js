@@ -151,6 +151,7 @@ const ItemCard = ({
                     ? (content.title || content.original_title)
                     : (content.name || content.original_name),
                   drawerOpen ? 25 : 100,
+                  'characters',
                 )}
               </Typography>
               <Typography className={classes.rank} color="textSecondary">

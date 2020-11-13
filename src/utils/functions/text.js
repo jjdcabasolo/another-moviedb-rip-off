@@ -1,6 +1,18 @@
-export const truncateText = (text, length) => {
-  if (text.length > length) return `${text.substring(0, length)}...`;
-  return text;
+export const truncateText = (text, length, type) => {
+  switch (type) {
+    case 'characters':
+      if (text.length > length) return `${text.substring(0, length)}...`;
+      return text;
+
+    case 'words': {
+      const fragmentedWords = text.split(' ');
+      if (fragmentedWords.length <= length) return [text, false];
+      return [fragmentedWords.splice(0, length).join(' '), true];
+    }
+
+    default:
+      return text;
+  }
 };
 
 export const evaluateLocation = (location) => {

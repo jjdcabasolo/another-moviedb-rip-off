@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import moment from 'moment';
 import { useSelector } from 'react-redux';
@@ -14,9 +14,16 @@ import {
 import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
 
-import { getTVShowStatus, selectEpisode } from '../../../utils/functions';
+import {
+  getTVShowStatus,
+  selectEpisode,
+  truncateText,
+} from '../../../utils/functions';
 
-import { TV_SHOW_BREADCRUMBS_CONFIG } from '../../../constants';
+import {
+  TV_SHOW_BREADCRUMBS_CONFIG,
+  TV_SHOW_OVERVIEW_MAX_WORDS,
+} from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   note: {
@@ -34,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.25, 0.5, 0.25, 0),
   },
+  readMore: {
+    cursor: 'pointer',
+  },
 }));
 
 const TVShowHeader = () => {
@@ -44,6 +54,8 @@ const TVShowHeader = () => {
   const episodes = useSelector((state) => state.tvShows.episodes);
   const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
+
+  const [showMoreOverview, setShowMoreOverview] = useState(false);
 
   const {
     episode_run_time: episodeRunTime,
@@ -66,9 +78,15 @@ const TVShowHeader = () => {
   const breadcrumbs = (crew && crew.length > 0)
     ? TV_SHOW_BREADCRUMBS_CONFIG
     : TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => e.link !== '#tvshow-crew');
+  const [overviewTruncated, isOverviewTruncated] = truncateText(overview, TV_SHOW_OVERVIEW_MAX_WORDS, 'words');
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(episodeRunTime[0] / 60);
   const runtimeMinutes = episodeRunTime[0] % 60;
+
+  const handleReadMore = () => {
+    if (!isOverviewTruncated) return;
+    setShowMoreOverview(!showMoreOverview);
+  };
 
   return (
     <Grid item xs={12} container spacing={2}>
@@ -117,7 +135,23 @@ const TVShowHeader = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body1" gutterBottom>{overview}</Typography>
+        <Typography variant="body1" gutterBottom>
+          {isOverviewTruncated
+            ? (
+              <>
+                {showMoreOverview ? overview : overviewTruncated }
+                <Typography
+                  className={classes.readMore}
+                  color="textSecondary"
+                  onClick={handleReadMore}
+                  display="inline"
+                >
+                  {showMoreOverview ? ' Read less.' : '... read more.' }
+                </Typography>
+              </>
+            )
+            : overview}
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <ItemBreadcrumbs content={breadcrumbs} />
