@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import moment from 'moment';
 import { useSelector } from 'react-redux';
@@ -16,7 +17,6 @@ import ItemLinks from '../../common/item/ItemLinks';
 
 import {
   getTVShowStatus,
-  selectEpisode,
   truncateText,
 } from '../../../utils/functions';
 
@@ -46,13 +46,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TVShowHeader = () => {
+const TVShowHeader = ({ sectionVisibility }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
 
-  const episodes = useSelector((state) => state.tvShows.episodes);
-  const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
 
   const [showMoreOverview, setShowMoreOverview] = useState(false);
@@ -73,11 +71,7 @@ const TVShowHeader = () => {
     youtube,
   } = tvShow;
 
-  const { crew } = selectEpisode(episodes, selectedEpisode);
-
-  const breadcrumbs = (crew && crew.length > 0)
-    ? TV_SHOW_BREADCRUMBS_CONFIG
-    : TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => e.link !== '#tvshow-crew');
+  const breadcrumbs = TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
   const [overviewTruncated, isOverviewTruncated] = truncateText(overview, TV_SHOW_OVERVIEW_MAX_WORDS, 'words');
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(episodeRunTime[0] / 60);
@@ -158,6 +152,17 @@ const TVShowHeader = () => {
       </Grid>
     </Grid>
   );
+};
+
+TVShowHeader.propTypes = {
+  sectionVisibility: PropTypes.shape({
+    seasonDetails: PropTypes.bool.isRequired,
+    episodeDetails: PropTypes.bool.isRequired,
+    cast: PropTypes.bool.isRequired,
+    crew: PropTypes.bool.isRequired,
+    production: PropTypes.bool.isRequired,
+    recommendations: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 export default TVShowHeader;

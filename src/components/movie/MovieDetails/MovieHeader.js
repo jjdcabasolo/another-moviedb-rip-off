@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import moment from 'moment';
 import { useSelector } from 'react-redux';
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MovieHeader = () => {
+const MovieHeader = ({ sectionVisibility }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
@@ -52,7 +53,6 @@ const MovieHeader = () => {
   const [showMoreOverview, setShowMoreOverview] = useState(false);
 
   const {
-    belongs_to_collection: belongsToCollection,
     genres,
     original_title: originalTitle,
     overview,
@@ -68,9 +68,7 @@ const MovieHeader = () => {
     youtube,
   } = movie;
 
-  const breadcrumbs = belongsToCollection
-    ? MOVIE_BREADCRUMBS_CONFIG
-    : MOVIE_BREADCRUMBS_CONFIG.filter((e) => e.link !== '#movie-collection');
+  const breadcrumbs = MOVIE_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
   const [overviewTruncated, isOverviewTruncated] = truncateText(overview, MOVIE_OVERVIEW_MAX_WORDS, 'words');
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(runtime / 60);
@@ -162,6 +160,17 @@ const MovieHeader = () => {
       </Grid>
     </Grid>
   );
+};
+
+MovieHeader.propTypes = {
+  sectionVisibility: PropTypes.shape({
+    trailer: PropTypes.bool.isRequired,
+    cast: PropTypes.bool.isRequired,
+    crew: PropTypes.bool.isRequired,
+    production: PropTypes.bool.isRequired,
+    collection: PropTypes.bool.isRequired,
+    recommendations: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 export default MovieHeader;

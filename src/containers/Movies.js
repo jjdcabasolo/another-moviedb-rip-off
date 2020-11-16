@@ -85,6 +85,15 @@ const Movies = () => {
     recommendations,
   } = movie;
 
+  const sectionVisibility = {
+    trailer: youtube,
+    cast: cast && cast.length > 0,
+    crew: crew && crew.length > 0,
+    production: productionCompanies && productionCompanies.length > 0,
+    collection: belongsToCollection,
+    recommendations: recommendations && recommendations.length > 0,
+  };
+
   useEffect(() => {
     if (movieId) {
       getMovieDetails(decryptKey(), movieId, (response) => {
@@ -134,7 +143,7 @@ const Movies = () => {
           isCollapsible={false}
           visible={movie}
         >
-          <MovieHeader />
+          <MovieHeader sectionVisibility={sectionVisibility} />
         </Section>
 
         <Section
@@ -148,7 +157,7 @@ const Movies = () => {
         <Section
           anchorId="movie-trailer"
           title="Trailer"
-          visible={youtube}
+          visible={sectionVisibility.trailer}
         >
           <ReactPlayer
             className={classes.trailer}
@@ -163,7 +172,7 @@ const Movies = () => {
         <Section
           anchorId="movie-cast"
           title="Cast"
-          visible={cast && cast.length > 0}
+          visible={sectionVisibility.cast}
         >
           <MovieCast />
         </Section>
@@ -171,7 +180,7 @@ const Movies = () => {
         <Section
           anchorId="movie-crew"
           title="Crew"
-          visible={crew && crew.length > 0}
+          visible={sectionVisibility.crew}
         >
           <MovieCrew />
         </Section>
@@ -180,7 +189,7 @@ const Movies = () => {
           anchorId="movie-production"
           divider
           title="Production"
-          visible={productionCompanies && productionCompanies.length > 0}
+          visible={sectionVisibility.production}
         >
           <MovieProduction />
         </Section>
@@ -188,7 +197,7 @@ const Movies = () => {
         <Section
           anchorId="movie-collection"
           title={collectionContent ? collectionContent.name : ''}
-          visible={belongsToCollection}
+          visible={sectionVisibility.collection}
         >
           <MovieCollection anchorId="movie-collection" />
         </Section>
@@ -196,7 +205,7 @@ const Movies = () => {
         <Section
           anchorId="movie-recommendations"
           title="Recommendations"
-          visible={recommendations && recommendations.length > 0}
+          visible={sectionVisibility.recommendations}
         >
           <MovieRecommendations anchorId="movie-recommendations" />
         </Section>

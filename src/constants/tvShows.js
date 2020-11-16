@@ -25,22 +25,32 @@ export const TV_SHOW_BREADCRUMBS_CONFIG = [
   {
     label: 'Seasons',
     link: '#tvshow-season-details',
+    visibilityId: 'seasonDetails',
   },
   {
     label: 'Episodes',
     link: '#tvshow-episode-details',
+    visibilityId: 'episodeDetails',
   },
   {
     label: 'Cast',
     link: '#tvshow-cast',
+    visibilityId: 'cast',
   },
   {
     label: 'Crew',
     link: '#tvshow-crew',
+    visibilityId: 'crew',
   },
   {
     label: 'Production',
     link: '#tvshow-production',
+    visibilityId: 'production',
+  },
+  {
+    label: 'Recommendations',
+    link: '#tvshow-recommendations',
+    visibilityId: 'recommendations',
   },
 ];
 

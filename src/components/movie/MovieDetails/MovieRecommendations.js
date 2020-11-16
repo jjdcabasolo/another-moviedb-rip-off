@@ -10,6 +10,7 @@ const MovieRecommendations = ({ anchorId }) => {
 
   const {
     original_title: originalTitle,
+    title,
     recommendations,
   } = movie;
 
@@ -19,7 +20,7 @@ const MovieRecommendations = ({ anchorId }) => {
     <ItemHorizontalList
       anchorId={anchorId}
       items={recommendations}
-      overview={`If you liked ${originalTitle}, check out these other movies:`}
+      overview={`If you liked ${title || originalTitle}, check out these other movies:`}
     />
   );
 };

@@ -77,12 +77,19 @@ const TVShows = () => {
   const currentSeason = seasons && selectSeason(seasons, selectedSeason);
   const currentEpisode = selectEpisode(episodes, selectedEpisode);
   const latestEpisode = lastEpisodeToAir ? lastEpisodeToAir.episode_number : -1;
-  const hasProduction = (createdBy && createdBy.length > 0)
-    || (productionCompanies && productionCompanies.length > 0);
   const hasEpisode = selectedEpisode > 0;
   const hasEpisodeList = episodes.length > 0
     && episodes.length >= selectedEpisode
     && selectedEpisode !== 0;
+
+  const sectionVisibility = {
+    seasonDetails: currentSeason && currentSeason.air_date,
+    episodeDetails: hasEpisodeList,
+    cast: cast && cast.length > 0,
+    crew: currentEpisode.crew && currentEpisode.crew.length > 0,
+    production: (createdBy && createdBy.length > 0) || (productionCompanies && productionCompanies.length > 0),
+    recommendations: recommendations && recommendations.length > 0,
+  };
 
   useEffect(() => {
     if (tvShowId) {
@@ -129,7 +136,7 @@ const TVShows = () => {
           isCollapsible={false}
           visible={tvShow}
         >
-          <TVShowHeader />
+          <TVShowHeader sectionVisibility={sectionVisibility} />
         </Section>
 
         <Section
@@ -151,7 +158,7 @@ const TVShows = () => {
           anchorId="tvshow-season-details"
           chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
           title={`Season ${selectedSeason}`}
-          visible={currentSeason.air_date}
+          visible={sectionVisibility.seasonDetails}
         >
           <div ref={seasonDetailRef}>
             <TVShowSeasonDetails />
@@ -162,7 +169,7 @@ const TVShows = () => {
           anchorId="tvshow-episode-details"
           chipContent={numberOfSeasons === selectedSeason && latestEpisode === selectedEpisode ? 'Latest' : 'Finished'}
           title={hasEpisodeList ? `Episode ${selectedEpisode}: ${currentEpisode.name}` : ''}
-          visible={hasEpisodeList}
+          visible={sectionVisibility.episodeDetails}
         >
           <TVShowEpisodeDetails />
         </Section>
@@ -170,7 +177,7 @@ const TVShows = () => {
         <Section
           anchorId="tvshow-cast"
           title={hasEpisode ? 'Cast' : 'Main cast'}
-          visible={cast.length > 0}
+          visible={sectionVisibility.cast}
         >
           <TVShowCast />
         </Section>
@@ -178,7 +185,7 @@ const TVShows = () => {
         <Section
           anchorId="tvshow-crew"
           title="Crew"
-          visible={currentEpisode.crew && currentEpisode.crew.length > 0}
+          visible={sectionVisibility.crew}
         >
           <TVShowCrew />
         </Section>
@@ -186,7 +193,7 @@ const TVShows = () => {
         <Section
           anchorId="tvshow-production"
           title="Production"
-          visible={hasProduction}
+          visible={sectionVisibility.production}
         >
           <TVShowProduction />
         </Section>
@@ -194,7 +201,7 @@ const TVShows = () => {
         <Section
           anchorId="tvshow-recommendations"
           title="Recommendations"
-          visible={recommendations && recommendations.length > 0}
+          visible={sectionVisibility.recommendations}
         >
           <TVShowRecommendations anchorId="tvshow-recommendations" />
         </Section>
