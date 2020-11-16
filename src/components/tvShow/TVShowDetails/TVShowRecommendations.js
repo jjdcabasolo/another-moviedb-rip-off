@@ -19,7 +19,7 @@ const TVShowRecommendations = ({ anchorId }) => {
   return (
     <ItemHorizontalList
       anchorId={anchorId}
-      items={recommendations}
+      items={recommendations.slice(0, 10)}
       overview={`If you liked ${name || originalName}, check out these other TV shows:`}
     />
   );
