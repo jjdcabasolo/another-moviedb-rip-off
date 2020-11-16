@@ -11,7 +11,7 @@ import ComponentLoader from '../../common/ComponentLoader';
 
 import { moviesActions } from '../../../reducers/ducks';
 
-import { getCrewMembers, getCrewCol } from '../../../utils/functions';
+import { getCrewMembers, getCrewCol, scrollToID } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
@@ -77,11 +77,7 @@ const MovieCrew = () => {
   }, [movie, crew]);
 
   const handleButtonClick = () => {
-    if (!crewShowMore) {
-      const anchor = document.querySelector('#movie-crew');
-      if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
-    }
-
+    if (!crewShowMore) scrollToID('movie-crew');
     dispatch(moviesActions.setCrewShowMore(!crewShowMore));
   };
 

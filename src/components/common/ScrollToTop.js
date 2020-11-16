@@ -6,6 +6,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Fab, useMediaQuery } from '@material-ui/core';
 import { KeyboardArrowUp } from '@material-ui/icons';
 
+import { scrollToID } from '../../utils/functions';
+
 const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'fixed',
@@ -23,11 +25,7 @@ const ScrollToTop = () => {
   const classes = useStyles();
 
   const handleClick = () => {
-    const anchor = document.querySelector('#scroll-to-top-anchor');
-
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    scrollToID('scroll-to-top-anchor');
   };
 
   return (

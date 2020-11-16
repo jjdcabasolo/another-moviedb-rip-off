@@ -10,7 +10,7 @@ import PersonAvatar from '../../common/item/detail/PersonAvatar';
 
 import { moviesActions } from '../../../reducers/ducks';
 
-import { getCastCol } from '../../../utils/functions';
+import { getCastCol, scrollToID } from '../../../utils/functions';
 
 import { MOVIE_MAX_CAST_HORIZONTAL_ITEMS as maxCount } from '../../../constants';
 
@@ -50,11 +50,7 @@ const MovieCast = () => {
   }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
 
   const handleButtonClick = () => {
-    if (!castShowMore) {
-      const anchor = document.querySelector('#movie-cast');
-      if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
-    }
-
+    if (!castShowMore) scrollToID('movie-cast');
     dispatch(moviesActions.setCastShowMore(!castShowMore));
   };
 

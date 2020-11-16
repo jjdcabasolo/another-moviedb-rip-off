@@ -20,6 +20,10 @@ export {
 } from './movies';
 
 export {
+  scrollToID,
+} from './scroll';
+
+export {
   getTVShowStatus,
   selectEpisode,
   selectSeason,

@@ -14,7 +14,7 @@ import {
 import ItemCard from './ItemCard';
 import ItemHorizontalContainer from './ItemHorizontalContainer';
 
-import { truncateText } from '../../../utils/functions';
+import { scrollToID, truncateText } from '../../../utils/functions';
 
 const MAX_WORD_COUNT = 12;
 
@@ -57,11 +57,7 @@ const ItemHorizontalList = ({
   };
 
   const handleButtonClick = () => {
-    if (!showMoreItems) {
-      const anchor = document.querySelector(`#${anchorId}`);
-      if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
-    }
-
+    if (!showMoreItems) scrollToID(anchorId);
     setShowMoreItems(!showMoreItems);
   };
 
@@ -92,7 +88,7 @@ const ItemHorizontalList = ({
       )}
       { showMoreItems
         ? (
-          <Grid item xs={12} container spacing={2}>
+          <Grid item xs={12} container>
             {items.map((item, index) => (
               <ItemCard
                 col={isSmallTabletBelow ? 12 : 6}
