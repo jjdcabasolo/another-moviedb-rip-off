@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(9),
   },
   containerItemSelected: {
+    [theme.breakpoints.only('xs')]: {
+      marginTop: -theme.spacing(18),
+    },
     marginTop: -theme.spacing(12),
   },
   category: {

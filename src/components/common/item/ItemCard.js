@@ -41,15 +41,41 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(21),
     width: '100%',
   },
+  typoOverlayMediaDrawerOpen: {
+    [theme.breakpoints.down('sm')]: {
+      marginTop: theme.spacing(-25),
+    },
+    [theme.breakpoints.between('sm', 'lg')]: {
+      marginTop: theme.spacing(-25),
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: -((theme.browserSize.height - theme.spacing(22)) / 2),
+    },
+  },
+  typoOverlayMediaDrawerClosed: {
+    marginTop: theme.spacing(-21),
+  },
   typoOverlay: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
     position: 'absolute',
-    marginTop: theme.spacing(-12.5),
-    padding: theme.spacing(4, 2, 2, 2),
-    color: theme.palette.common.white,
+    padding: theme.spacing(2),
+    color: theme.palette.grey[100],
     pointerEvents: 'none',
     overflow: 'hidden',
     width: '100%',
-    backgroundImage: 'linear-gradient(to top, rgba(33, 33, 33, 0.6), #0000)',
+    height: '100%',
+    backgroundImage: `linear-gradient(to top,
+      rgba(0,0,0,0.4) 0%,
+      rgba(0,0,0,0.3) 30%,
+      rgba(0,0,0,0.25) 35%,
+      rgba(0,0,0,0.2) 40%,
+      rgba(0,0,0,0.15) 45%,
+      rgba(0,0,0,0.1) 50%,
+      rgba(0,0,0,0.1) 90%,
+      rgba(0,0,0,0.1) 100%);
+    )`,
   },
   itemExtension: {
     maxWidth: '20%',
@@ -73,6 +99,15 @@ const useStyles = makeStyles((theme) => ({
   },
   horizontalScrollItemWidth: {
     width: theme.spacing(45),
+    paddingBottom: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      '&:nth-child(odd)': {
+        paddingRight: theme.spacing(1),
+      },
+      '&:nth-child(even)': {
+        paddingLeft: theme.spacing(1),
+      },
+    },
   },
 }));
 
@@ -144,7 +179,15 @@ const ItemCard = ({
               )}
               image={imagePath}
             />
-            <div gutterBottom variant="button" className={classes.typoOverlay}>
+            <div
+              className={clsx(
+                classes.typoOverlay,
+                { [classes.typoOverlayMediaDrawerOpen]: drawerOpen },
+                { [classes.typoOverlayMediaDrawerClosed]: !drawerOpen },
+              )}
+              gutterBottom
+              variant="button"
+            >
               <Typography variant="h6" className={classes.cardTitle} noWrap>
                 {truncateText(
                   isMovie

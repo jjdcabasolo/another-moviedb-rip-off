@@ -163,7 +163,7 @@ const Movies = () => {
         <Section
           anchorId="movie-cast"
           title="Cast"
-          visible={cast.length > 0}
+          visible={cast && cast.length > 0}
         >
           <MovieCast />
         </Section>
@@ -171,7 +171,7 @@ const Movies = () => {
         <Section
           anchorId="movie-crew"
           title="Crew"
-          visible={crew.length > 0}
+          visible={crew && crew.length > 0}
         >
           <MovieCrew />
         </Section>
