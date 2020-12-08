@@ -131,6 +131,8 @@ const ItemCard = ({
   const dispatch = useDispatch();
 
   const isMovie = type === 'movies';
+  const date = isMovie ? content.release_date : content.first_air_date;
+  const dateDisplay = date ? ` • ${moment(date).format('MMM D, YYYY')}` : '';
 
   if (!content) return null;
 
@@ -198,7 +200,7 @@ const ItemCard = ({
                 )}
               </Typography>
               <Typography className={classes.rank} color="textSecondary">
-                {`${rank} • ${moment(isMovie ? content.release_date : content.first_air_date).format('MMM D, YYYY')}`}
+                {`${rank}${dateDisplay}`}
               </Typography>
             </div>
           </CardActionArea>

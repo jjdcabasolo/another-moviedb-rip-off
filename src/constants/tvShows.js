@@ -54,4 +54,4 @@ export const TV_SHOW_BREADCRUMBS_CONFIG = [
   },
 ];
 
-export const TV_SHOW_OVERVIEW_MAX_WORDS = 30;
+export const TV_SHOW_OVERVIEW_MAX_WORDS = 40;

@@ -9,6 +9,10 @@ import {
 } from '@material-ui/core';
 
 import {
+  OpenInNew,
+} from '@material-ui/icons';
+
+import {
   API_KEY_DIALOG_TMDB_LINK,
   TMDB_SIGN_UP,
 } from '../../../constants';
@@ -16,6 +20,11 @@ import {
 const useStyles = makeStyles((theme) => ({
   footer: {
     marginTop: theme.spacing(4),
+  },
+  icon: {
+    marginBottom: -theme.spacing(0.25),
+    marginLeft: theme.spacing(0.25),
+    fontSize: '1em',
   },
 }));
 
@@ -31,6 +40,13 @@ const ItemFooter = ({
     ? companies.join(' and ')
     : companies.join(', ').replace(/, ([^,]*)$/, ', and $1');
 
+  const renderLinkOpenNewTab = (content, href) => (
+    <Link href={href} rel="noopener" target="_blank">
+      {content}
+      <OpenInNew className={classes.icon} />
+    </Link>
+  );
+
   return (
     <>
       <Grid container spacing="3" className={classes.footer}>
@@ -41,35 +57,29 @@ const ItemFooter = ({
         </Grid>
         <Grid item xs="12">
           <Typography variant="body2" gutterBottom color="textSecondary">
-            {`If you want to contribute to ${title}'s TMDb page, you can visit to this `}
-            <Link href={link}>
-              link
-            </Link>
-            .
+            Noticed something wrong on the details? Visit&nbsp;
+            {renderLinkOpenNewTab(`${title}'s TMDb page`, link)}
+            &nbsp;to contribute!
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            To contribute, you must&nbsp;
-            <Link href={TMDB_SIGN_UP}>
-              create a TMDb account
-            </Link>
+            But first, you must&nbsp;
+            {renderLinkOpenNewTab('create a TMDb account', TMDB_SIGN_UP)}
             .
           </Typography>
         </Grid>
         <Grid item xs="12">
           <Typography variant="body2" gutterBottom color="textSecondary">
             All contents came from the community-built movie and TV database,&nbsp;
-            <Link href={API_KEY_DIALOG_TMDB_LINK}>
-              The Movie Database (TMDb)
-            </Link>
+            {renderLinkOpenNewTab('The Movie Database (TMDb)', API_KEY_DIALOG_TMDB_LINK)}
             .
           </Typography>
         </Grid>
         <Grid item xs="12">
           <Typography variant="body2" color="textSecondary">
             Social media icons made by&nbsp;
-            <Link href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</Link>
+            {renderLinkOpenNewTab('Freepik', 'https://www.flaticon.com/authors/freepik')}
             &nbsp;from&nbsp;
-            <Link href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link>
+            {renderLinkOpenNewTab('www.flaticon.com', 'https://www.flaticon.com/')}
           </Typography>
         </Grid>
         <Grid item xs="12">
