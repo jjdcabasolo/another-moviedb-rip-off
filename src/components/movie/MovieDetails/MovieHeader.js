@@ -144,7 +144,6 @@ const MovieHeader = ({ sectionVisibility }) => {
       {tagline && (
         <Grid item xs={12}>
           <Typography
-            className={classes.tagline}
             color="textSecondary"
             gutterBottom
             variant="body1"

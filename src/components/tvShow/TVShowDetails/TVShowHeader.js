@@ -69,6 +69,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
     tmdb,
     twitter,
     youtube,
+    tagline,
   } = tvShow;
 
   const breadcrumbs = TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
@@ -147,6 +148,19 @@ const TVShowHeader = ({ sectionVisibility }) => {
             : overview}
         </Typography>
       </Grid>
+      {tagline && (
+        <Grid item xs={12}>
+          <Typography
+            color="textSecondary"
+            gutterBottom
+            variant="body1"
+          >
+            <em>
+              {tagline}
+            </em>
+          </Typography>
+        </Grid>
+      )}
       <Grid item xs={12}>
         <ItemBreadcrumbs content={breadcrumbs} />
       </Grid>
