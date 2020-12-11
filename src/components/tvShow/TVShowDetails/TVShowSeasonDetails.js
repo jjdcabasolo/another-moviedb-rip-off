@@ -1,35 +1,35 @@
 import React from 'react';
 
 import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
-  Button,
   Grid,
   Link,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core';
 
-import { tvShowsActions } from '../../../reducers/ducks';
+import TruncatedOverview from '../../common/TruncatedOverview';
 
 import { selectSeason } from '../../../utils/functions';
 
+import { TV_SHOW_OVERVIEW_MAX_WORDS } from '../../../constants';
+
 const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(2),
+  },
   button: {
     marginTop: theme.spacing(2),
   },
 }));
 
 const TVShowSeasonDetails = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
-  const dispatch = useDispatch();
 
   const { seasons, name, tmdb } = tvShow;
 
@@ -37,17 +37,21 @@ const TVShowSeasonDetails = () => {
     air_date: airDate,
     episode_count: episodeCount,
     overview,
+    season_number: seasonNumber,
+    name: seasonName,
   } = selectSeason(seasons, selectedSeason);
 
-  const handleSeasonChange = () => {
-    dispatch(tvShowsActions.setSeasonDrawerSelectedSeason(false));
-    dispatch(tvShowsActions.setSeasonDrawer(true));
-  };
+  const seasonNameDisplay = seasonName.includes('Season')
+    ? seasonName
+    : `S${seasonNumber}: ${seasonName}`;
 
   return (
-    <Grid item container spacing={2}>
+    <Grid item container spacing={2} className={classes.root}>
       <Grid item xs={12}>
-        <Typography variant="subtitle1" color="textSecondary">
+        <Typography variant="h6">
+          {seasonNameDisplay}
+        </Typography>
+        <Typography color="textSecondary">
           {airDate ? moment(airDate).format('MMM D, YYYY') : 'No release date.'}
           &nbsp;&nbsp;&middot;&nbsp;&nbsp;
           {`${episodeCount} episodes`}
@@ -57,9 +61,7 @@ const TVShowSeasonDetails = () => {
         <Grid item xs={12}>
           {overview
             ? (
-              <Typography variant="body1">
-                {overview}
-              </Typography>
+              <TruncatedOverview overview={overview} maxWords={TV_SHOW_OVERVIEW_MAX_WORDS} />
             )
             : (
               <>
@@ -75,21 +77,6 @@ const TVShowSeasonDetails = () => {
               </>
             )}
         </Grid>
-      </Grid>
-      <Grid
-        className={classes.button}
-        container
-        item
-        justify="flex-end"
-        xs={12}
-      >
-        <Button
-          onClick={handleSeasonChange}
-          size={isMobile ? 'small' : 'medium'}
-          variant="outlined"
-        >
-          Change season
-        </Button>
       </Grid>
     </Grid>
   );

@@ -19,6 +19,7 @@ import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
 import TVShowMedia from '../components/tvShow/TVShowDetails/TVShowMedia';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
+import TVShowSeasonList from '../components/tvShow/TVShowDetails/TVShowSeasonList';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 import TVShowCrew from '../components/tvShow/TVShowDetails/TVShowCrew';
 import TVShowRecommendations from '../components/tvShow/TVShowDetails/TVShowRecommendations';
@@ -156,10 +157,10 @@ const TVShows = () => {
 
         <Section
           anchorId="tvshow-season-details"
-          chipContent={numberOfSeasons === selectedSeason ? 'Latest' : 'Finished'}
-          title={`Season ${selectedSeason}`}
+          title="Seasons"
           visible={sectionVisibility.seasonDetails}
         >
+          <TVShowSeasonList />
           <div ref={seasonDetailRef}>
             <TVShowSeasonDetails />
           </div>
