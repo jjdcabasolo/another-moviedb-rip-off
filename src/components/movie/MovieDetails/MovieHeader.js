@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
@@ -14,8 +14,7 @@ import {
 
 import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
-
-import { truncateText } from '../../../utils/functions';
+import TruncatedOverview from '../../common/TruncatedOverview';
 
 import {
   MOVIE_BREADCRUMBS_CONFIG,
@@ -50,8 +49,6 @@ const MovieHeader = ({ sectionVisibility }) => {
 
   const movie = useSelector((state) => state.movies.movie);
 
-  const [showMoreOverview, setShowMoreOverview] = useState(false);
-
   const {
     genres,
     original_title: originalTitle,
@@ -69,15 +66,9 @@ const MovieHeader = ({ sectionVisibility }) => {
   } = movie;
 
   const breadcrumbs = MOVIE_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
-  const [overviewTruncated, isOverviewTruncated] = truncateText(overview, MOVIE_OVERVIEW_MAX_WORDS, 'words');
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(runtime / 60);
   const runtimeMinutes = runtime % 60;
-
-  const handleReadMore = () => {
-    if (!isOverviewTruncated) return;
-    setShowMoreOverview(!showMoreOverview);
-  };
 
   return (
     <Grid item xs={12} container spacing={2}>
@@ -123,23 +114,7 @@ const MovieHeader = ({ sectionVisibility }) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body1" gutterBottom>
-          {isOverviewTruncated
-            ? (
-              <>
-                {showMoreOverview ? overview : overviewTruncated }
-                <Typography
-                  className={classes.readMore}
-                  color="textSecondary"
-                  onClick={handleReadMore}
-                  display="inline"
-                >
-                  {showMoreOverview ? ' Read less.' : '... read more.' }
-                </Typography>
-              </>
-            )
-            : overview}
-        </Typography>
+        <TruncatedOverview overview={overview} maxWords={MOVIE_OVERVIEW_MAX_WORDS} />
       </Grid>
       {tagline && (
         <Grid item xs={12}>

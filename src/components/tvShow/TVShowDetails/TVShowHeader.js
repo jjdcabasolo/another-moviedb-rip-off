@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
@@ -14,11 +14,9 @@ import {
 
 import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
+import TruncatedOverview from '../../common/TruncatedOverview';
 
-import {
-  getTVShowStatus,
-  truncateText,
-} from '../../../utils/functions';
+import { getTVShowStatus } from '../../../utils/functions';
 
 import {
   TV_SHOW_BREADCRUMBS_CONFIG,
@@ -53,8 +51,6 @@ const TVShowHeader = ({ sectionVisibility }) => {
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
 
-  const [showMoreOverview, setShowMoreOverview] = useState(false);
-
   const {
     episode_run_time: episodeRunTime,
     first_air_date: firstAirDate,
@@ -73,15 +69,9 @@ const TVShowHeader = ({ sectionVisibility }) => {
   } = tvShow;
 
   const breadcrumbs = TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
-  const [overviewTruncated, isOverviewTruncated] = truncateText(overview, TV_SHOW_OVERVIEW_MAX_WORDS, 'words');
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(episodeRunTime[0] / 60);
   const runtimeMinutes = episodeRunTime[0] % 60;
-
-  const handleReadMore = () => {
-    if (!isOverviewTruncated) return;
-    setShowMoreOverview(!showMoreOverview);
-  };
 
   return (
     <Grid item xs={12} container spacing={2}>
@@ -130,23 +120,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body1" gutterBottom>
-          {isOverviewTruncated
-            ? (
-              <>
-                {showMoreOverview ? overview : overviewTruncated }
-                <Typography
-                  className={classes.readMore}
-                  color="textSecondary"
-                  onClick={handleReadMore}
-                  display="inline"
-                >
-                  {showMoreOverview ? ' Read less.' : '... read more.' }
-                </Typography>
-              </>
-            )
-            : overview}
-        </Typography>
+        <TruncatedOverview overview={overview} maxWords={TV_SHOW_OVERVIEW_MAX_WORDS} />
       </Grid>
       {tagline && (
         <Grid item xs={12}>

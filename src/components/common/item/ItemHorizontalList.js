@@ -7,14 +7,14 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Button,
   Grid,
-  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 
 import ItemCard from './ItemCard';
 import ItemHorizontalContainer from './ItemHorizontalContainer';
+import TruncatedOverview from '../TruncatedOverview';
 
-import { scrollToID, truncateText } from '../../../utils/functions';
+import { scrollToID } from '../../../utils/functions';
 
 const MAX_WORD_COUNT = 12;
 
@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 const ItemHorizontalList = ({
   anchorId,
   items,
-  isOverviewCollapsed = false,
   overview,
 }) => {
   const theme = useTheme();
@@ -46,15 +45,7 @@ const ItemHorizontalList = ({
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
 
-  const [showMoreOverview, setShowMoreOverview] = useState(!isOverviewCollapsed);
   const [showMoreItems, setShowMoreItems] = useState(false);
-
-  const [overviewTruncated, isOverviewTruncated] = truncateText(overview, MAX_WORD_COUNT, 'words');
-
-  const handleReadMore = () => {
-    if (!isOverviewTruncated) return;
-    setShowMoreOverview(!showMoreOverview);
-  };
 
   const handleButtonClick = () => {
     if (!showMoreItems) scrollToID(anchorId);
@@ -67,26 +58,10 @@ const ItemHorizontalList = ({
     <Grid item container spacing={2}>
       {overview.length > 0 && (
         <Grid item xs={12}>
-          <Typography variant="body1">
-            {isOverviewTruncated
-              ? (
-                <>
-                  {showMoreOverview ? overview : overviewTruncated }
-                  <Typography
-                    className={classes.readMore}
-                    color="textSecondary"
-                    onClick={handleReadMore}
-                    display="inline"
-                  >
-                    {showMoreOverview ? ' Read less.' : '... read more.' }
-                  </Typography>
-                </>
-              )
-              : overview}
-          </Typography>
+          <TruncatedOverview overview={overview} maxWords={MAX_WORD_COUNT} />
         </Grid>
       )}
-      { showMoreItems
+      {showMoreItems
         ? (
           <Grid item xs={12} container>
             {items.map((item, index) => (
@@ -152,7 +127,6 @@ ItemHorizontalList.propTypes = {
     label: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
   }).isRequired,
-  isOverviewCollapsed: PropTypes.bool.isRequired,
   overview: PropTypes.string.isRequired,
 };
 

@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     display: 'flex',
     overflowX: 'auto',
+    overflowY: 'hidden',
     '&::-webkit-scrollbar': {
       display: 'none',
     },
