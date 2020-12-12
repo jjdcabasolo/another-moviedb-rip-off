@@ -23,6 +23,9 @@ import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
+  media: {
+    borderRadius: theme.shape.borderRadius,
+  },
   mediaDrawerOpen: {
     height: 0,
     [theme.breakpoints.down('sm')]: {
@@ -176,6 +179,7 @@ const ItemCard = ({
             { !(typeof (imagePath) === 'string') && imagePath }
             <CardMedia
               className={clsx(
+                classes.media,
                 { [classes.mediaDrawerOpen]: drawerOpen },
                 { [classes.mediaDrawerClosed]: !drawerOpen },
               )}

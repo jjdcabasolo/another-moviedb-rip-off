@@ -37,19 +37,14 @@ const TVShowSeasonDetails = () => {
     air_date: airDate,
     episode_count: episodeCount,
     overview,
-    season_number: seasonNumber,
     name: seasonName,
   } = selectSeason(seasons, selectedSeason);
-
-  const seasonNameDisplay = seasonName.includes('Season')
-    ? seasonName
-    : `S${seasonNumber}: ${seasonName}`;
 
   return (
     <Grid item container spacing={2} className={classes.root}>
       <Grid item xs={12}>
         <Typography variant="h6">
-          {seasonNameDisplay}
+          {seasonName}
         </Typography>
         <Typography color="textSecondary">
           {airDate ? moment(airDate).format('MMM D, YYYY') : 'No release date.'}

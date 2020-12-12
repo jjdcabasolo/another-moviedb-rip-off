@@ -16,7 +16,8 @@ import TruncatedOverview from '../TruncatedOverview';
 
 import { scrollToID } from '../../../utils/functions';
 
-const MAX_WORD_COUNT = 12;
+const MAX_WORD_COUNT = 20;
+const MAX_ITEMS_BEFORE_COLLAPSING = 3;
 
 const useStyles = makeStyles((theme) => ({
   itemHorizontalListContainer: {
@@ -102,21 +103,23 @@ const ItemHorizontalList = ({
             </ItemHorizontalContainer>
           </Grid>
         )}
-      <Grid
-        className={classes.button}
-        container
-        item
-        justify="flex-end"
-        xs={12}
-      >
-        <Button
-          onClick={handleButtonClick}
-          variant="outlined"
-          size={isMobile ? 'small' : 'medium'}
+      {items.length > MAX_ITEMS_BEFORE_COLLAPSING && (
+        <Grid
+          className={classes.button}
+          container
+          item
+          justify="flex-end"
+          xs={12}
         >
-          {showMoreItems ? 'Show less' : 'Show all'}
-        </Button>
-      </Grid>
+          <Button
+            onClick={handleButtonClick}
+            variant="outlined"
+            size={isMobile ? 'small' : 'medium'}
+          >
+            {showMoreItems ? 'Show less' : 'Show all'}
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 };

@@ -1,3 +1,6 @@
+// number of words for allowance before truncating the text;
+const TRUNCATION_ALLOWANCE = 3;
+
 export const truncateText = (text, length, type) => {
   switch (type) {
     case 'characters':
@@ -6,7 +9,9 @@ export const truncateText = (text, length, type) => {
 
     case 'words': {
       const fragmentedWords = text.split(' ');
-      if (fragmentedWords.length <= length) return [text, false];
+      if (fragmentedWords.length <= (length + TRUNCATION_ALLOWANCE)) {
+        return [text, false];
+      }
       return [fragmentedWords.splice(0, length).join(' '), true];
     }
 

@@ -30,14 +30,14 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(18.75),
   },
   activeImage: {
-    border: `1px solid ${theme.palette.divider} !important`,
+    border: `2px solid ${theme.palette.divider} !important`,
     borderRadius: theme.shape.borderRadius,
   },
   emphasis: {
     fontWeight: 600,
   },
   horizontalScrollItemSpacing: {
-    border: '1px solid transparent',
+    border: '2px solid transparent',
     cursor: 'pointer',
     margin: 0,
     padding: theme.spacing(0.5),
@@ -99,7 +99,7 @@ const TVShowSeasonList = () => {
   return (
     <Grid container className={classes.container}>
       <ItemHorizontalContainer
-        imageSize={theme.spacing(25)}
+        imageSize={theme.spacing(26)}
         scrollAmount={theme.spacing(63)}
       >
         {seasons.map((season) => {
