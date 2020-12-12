@@ -47,46 +47,47 @@ export const getTVShowDetails = (
   success,
   fail,
   after = () => {},
-) => axios.all([
-  axios.get(`/tv/${tv_id}`, { params: { api_key } }),
-  axios.get(`/tv/${tv_id}/videos`, { params: { api_key } }),
-  axios.get(`/tv/${tv_id}/credits`, { params: { api_key } }),
-  axios.get(`/tv/${tv_id}/external_ids`, { params: { api_key } }),
-  axios.get(`/tv/${tv_id}/recommendations`, { params: { api_key } }),
-])
-  .then((axios).spread((details, videos, credits, external_ids, recommendations) => {
-    // extracting external links
-    const { data: externalIDData } = external_ids;
+) => axios.get(`/tv/${tv_id}`, {
+  params: {
+    api_key,
+    append_to_response: 'credits,external_ids,recommendations',
+  },
+})
+  .then((response) => {
+    const { data } = response;
+    const details = { ...data };
+
+    const {
+      credits,
+      external_ids,
+      id: tmdb_id,
+      recommendations,
+    } = details;
+
     const {
       facebook_id,
       instagram_id,
       twitter_id,
       imdb_id,
-      id: tmdb_id,
-    } = externalIDData;
+    } = external_ids;
 
-    // extracting recommendations
-    const { data: recommendationsData } = recommendations;
-    const { results: recommendationResults } = recommendationsData;
+    // extract cast from credits
+    details.cast = credits.cast;
+    delete details.credits;
 
-    const tvShowDetails = {
-      ...details.data,
-      video: videos.data.results[0]
-        ? {
-          link: `https://www.youtube.com/watch?v=${videos.data.results[0].key}`,
-          type: videos.data.results[0].type,
-        }
-        : null,
-      cast: credits.data.cast,
-      facebook: external_ids.data.facebook_id !== null ? `https://www.facebook.com/${facebook_id}` : null,
-      instagram: external_ids.data.instagram_id !== null ? `https://www.instagram.com/${instagram_id}` : null,
-      twitter: external_ids.data.twitter_id !== null ? `https://www.twitter.com/${twitter_id}` : null,
-      imdb: external_ids.data.imdb_id !== null ? `https://www.imdb.com/title/${imdb_id}` : null,
-      tmdb: external_ids.data.id !== null ? `https://www.themoviedb.org/tv/${tmdb_id}` : null,
-      recommendations: recommendationResults,
-    };
-    success(tvShowDetails);
-  }))
+    // simplify recommendations response
+    details.recommendations = recommendations.results;
+
+    // extract external link id's
+    details.facebook = facebook_id !== null ? `https://www.facebook.com/${facebook_id}` : null;
+    details.instagram = instagram_id !== null ? `https://www.instagram.com/${instagram_id}` : null;
+    details.twitter = twitter_id !== null ? `https://www.twitter.com/${twitter_id}` : null;
+    details.imdb = imdb_id !== null ? `https://www.imdb.com/title/${imdb_id}` : null;
+    details.tmdb = tmdb_id !== null ? `https://www.themoviedb.org/movie/${tmdb_id}` : null;
+    delete details.external_ids;
+
+    success(details);
+  })
   .catch((error) => fail(error))
   .finally(() => after());
 

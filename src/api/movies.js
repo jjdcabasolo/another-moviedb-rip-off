@@ -70,62 +70,70 @@ export const getMovieDetails = (
   success,
   fail,
   after = () => {},
-) => axios.all([
-  axios.get(`/movie/${movie_id}`, { params: { api_key } }),
-  axios.get(`/movie/${movie_id}/videos`, { params: { api_key } }),
-  axios.get(`/movie/${movie_id}/credits`, { params: { api_key } }),
-  axios.get(`/movie/${movie_id}/external_ids`, { params: { api_key } }),
-  axios.get(`/movie/${movie_id}/recommendations`, { params: { api_key } }),
-])
-  .then(axios.spread((details, videos, credits, external_ids, recommendations) => {
-    // extracting external links
-    const { data: externalIDData } = external_ids;
+) => axios.get(`/movie/${movie_id}`, {
+  params: {
+    api_key,
+    append_to_response: 'videos,credits,external_ids,recommendations',
+  },
+})
+  .then((response) => {
+    const { data } = response;
+    const details = { ...data };
+
+    const {
+      belongs_to_collection: collection,
+      credits,
+      external_ids,
+      id: tmdb_id,
+      recommendations,
+      videos,
+    } = details;
+
     const {
       facebook_id,
       instagram_id,
       twitter_id,
       imdb_id,
-      id: tmdb_id,
-    } = externalIDData;
+    } = external_ids;
 
-    // extracting recommendations
-    const { data: recommendationsData } = recommendations;
-    const { results: recommendationResults } = recommendationsData;
+    // extract cast and crew from credits
+    details.cast = credits.cast;
+    details.crew = credits.crew;
+    delete details.credits;
 
-    // check if a video of type trailer exists
-    let hasVideo = videos.data.results.length > 0;
-    const trailerIndex = hasVideo ? videos.data.results.map((e) => e.type).indexOf('Trailer') : -1;
-    if (trailerIndex === -1) hasVideo = false;
+    // simplify recommendations response
+    details.recommendations = recommendations.results;
 
-    const movieDetails = {
-      ...details.data,
-      youtube: hasVideo ? `https://www.youtube.com/watch?v=${videos.data.results[trailerIndex].key}` : null,
-      cast: credits.data.cast,
-      crew: credits.data.crew,
-      facebook: external_ids.data.facebook_id !== null ? `https://www.facebook.com/${facebook_id}` : null,
-      instagram: external_ids.data.instagram_id !== null ? `https://www.instagram.com/${instagram_id}` : null,
-      twitter: external_ids.data.twitter_id !== null ? `https://www.twitter.com/${twitter_id}` : null,
-      imdb: external_ids.data.imdb_id !== null ? `https://www.imdb.com/title/${imdb_id}` : null,
-      tmdb: external_ids.data.id !== null ? `https://www.themoviedb.org/movie/${tmdb_id}` : null,
-      recommendations: recommendationResults,
-    };
+    // check if a trailer exists on video response
+    const trailer = videos.results.filter((e) => e.type === 'Trailer');
+    details.youtube = trailer.length > 0 && trailer[0].key
+      ? `https://www.youtube.com/watch?v=${trailer[0].key}`
+      : null;
+    delete details.videos;
+
+    // extract external link id's
+    details.facebook = facebook_id !== null ? `https://www.facebook.com/${facebook_id}` : null;
+    details.instagram = instagram_id !== null ? `https://www.instagram.com/${instagram_id}` : null;
+    details.twitter = twitter_id !== null ? `https://www.twitter.com/${twitter_id}` : null;
+    details.imdb = imdb_id !== null ? `https://www.imdb.com/title/${imdb_id}` : null;
+    details.tmdb = tmdb_id !== null ? `https://www.themoviedb.org/movie/${tmdb_id}` : null;
+    delete details.external_ids;
 
     // check for collection, fetch if it exists, append to movieDetails if successful
-    const { belongs_to_collection: collection } = movieDetails;
     if (collection) {
-      getMovieCollection(api_key, collection.id, (response) => {
-        const { data } = response;
-        const { parts } = data;
+      getMovieCollection(api_key, collection.id, (collectionResponse) => {
+        const { data: collectionData } = collectionResponse;
+        const { parts } = collectionData;
 
         // arrange movies in collection by date
-        data.parts = parts.sort((a, b) => moment.utc(a.release_date).diff(moment.utc(b.release_date)));
-        movieDetails.collection_content = data;
+        collectionData.parts = parts.sort((a, b) => moment.utc(a.release_date).diff(moment.utc(b.release_date)));
+        details.collection_content = collectionData;
 
-        success(movieDetails);
+        success(details);
       }, () => {}, () => {});
     } else {
-      success(movieDetails);
+      success(details);
     }
-  }))
+  })
   .catch((error) => fail(error))
   .finally(() => after());
