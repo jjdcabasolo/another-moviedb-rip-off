@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
 const MovieCast = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
-  const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
-  const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
+  const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
+  const isBigTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const classes = useStyles();
 
@@ -46,8 +46,8 @@ const MovieCast = () => {
   const [cardCol, setCardCol] = useState(0);
 
   useEffect(() => {
-    setCardCol(getCastCol(isMobile, isLowerTablet));
-  }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
+    setCardCol(getCastCol(isMobile, isSmallTablet));
+  }, [isMobile, isSmallTablet, isBigTablet, isDesktop]);
 
   const handleButtonClick = () => {
     if (!castShowMore) scrollToID('movie-cast');
@@ -57,7 +57,7 @@ const MovieCast = () => {
   return (
     <>
       <Grid container spacing={2} className={classes.castContainer}>
-        { castShowMore
+        {castShowMore
           ? cast.slice(0, cast.length).map((castMore) => (
             <PersonAvatar
               character={castMore.character}

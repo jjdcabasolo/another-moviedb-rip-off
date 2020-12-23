@@ -53,19 +53,19 @@ const TVShowHeader = ({ sectionVisibility }) => {
 
   const {
     episode_run_time: episodeRunTime,
+    facebook,
     first_air_date: firstAirDate,
     genres,
+    imdb,
+    instagram,
     name,
     original_name: originalName,
     overview,
     status,
-    facebook,
-    imdb,
-    instagram,
+    tagline,
     tmdb,
     twitter,
     youtube,
-    tagline,
   } = tvShow;
 
   const breadcrumbs = TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
@@ -144,12 +144,12 @@ const TVShowHeader = ({ sectionVisibility }) => {
 
 TVShowHeader.propTypes = {
   sectionVisibility: PropTypes.shape({
-    seasonDetails: PropTypes.bool.isRequired,
-    episodeDetails: PropTypes.bool.isRequired,
     cast: PropTypes.bool.isRequired,
     crew: PropTypes.bool.isRequired,
+    episodes: PropTypes.bool.isRequired,
     production: PropTypes.bool.isRequired,
     recommendations: PropTypes.bool.isRequired,
+    seasons: PropTypes.bool.isRequired,
   }).isRequired,
 };
 

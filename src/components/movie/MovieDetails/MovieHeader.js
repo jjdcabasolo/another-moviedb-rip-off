@@ -50,16 +50,16 @@ const MovieHeader = ({ sectionVisibility }) => {
   const movie = useSelector((state) => state.movies.movie);
 
   const {
+    facebook,
     genres,
+    imdb,
+    instagram,
     original_title: originalTitle,
     overview,
     release_date: releaseDate,
     runtime,
     tagline,
     title,
-    facebook,
-    imdb,
-    instagram,
     tmdb,
     twitter,
     youtube,
@@ -138,12 +138,12 @@ const MovieHeader = ({ sectionVisibility }) => {
 
 MovieHeader.propTypes = {
   sectionVisibility: PropTypes.shape({
-    trailer: PropTypes.bool.isRequired,
     cast: PropTypes.bool.isRequired,
+    collection: PropTypes.bool.isRequired,
     crew: PropTypes.bool.isRequired,
     production: PropTypes.bool.isRequired,
-    collection: PropTypes.bool.isRequired,
     recommendations: PropTypes.bool.isRequired,
+    trailer: PropTypes.bool.isRequired,
   }).isRequired,
 };
 

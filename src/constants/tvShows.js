@@ -26,23 +26,18 @@ export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
 export const TV_SHOW_BREADCRUMBS_CONFIG = [
   {
     label: 'Seasons',
-    link: '#tvshow-season-details',
-    visibilityId: 'seasonDetails',
+    link: '#tvshow-seasons',
+    visibilityId: 'seasons',
   },
   {
     label: 'Episodes',
-    link: '#tvshow-episode-details',
-    visibilityId: 'episodeDetails',
+    link: '#tvshow-episodes',
+    visibilityId: 'episodes',
   },
   {
     label: 'Cast',
     link: '#tvshow-cast',
     visibilityId: 'cast',
-  },
-  {
-    label: 'Crew',
-    link: '#tvshow-crew',
-    visibilityId: 'crew',
   },
   {
     label: 'Production',

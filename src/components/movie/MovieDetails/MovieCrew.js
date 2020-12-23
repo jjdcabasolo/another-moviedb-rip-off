@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
 const MovieCrew = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
-  const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
-  const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
+  const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
+  const isBigTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const classes = useStyles();
 
@@ -40,8 +40,8 @@ const MovieCrew = () => {
   const [crewCol, setCrewCol] = useState(getCrewCol());
 
   useEffect(() => {
-    setCrewCol(getCrewCol(isMobile, isLowerTablet));
-  }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
+    setCrewCol(getCrewCol(isMobile, isSmallTablet));
+  }, [isMobile, isSmallTablet, isBigTablet, isDesktop]);
 
   useEffect(() => {
     if (crew && crew.length > 0) {
@@ -88,11 +88,11 @@ const MovieCrew = () => {
       for (let a = i; a < masonryConfig.length; a += crewCol) {
         if (!crewShowMore) {
           if (masonryConfig[a] === 'production'
-          || masonryConfig[a] === 'composer'
-          || masonryConfig[a] === 'cinematography'
-          || masonryConfig[a] === 'editor'
-          || masonryConfig[a] === 'costume'
-          || masonryConfig[a] === 'makeup') break;
+            || masonryConfig[a] === 'composer'
+            || masonryConfig[a] === 'cinematography'
+            || masonryConfig[a] === 'editor'
+            || masonryConfig[a] === 'costume'
+            || masonryConfig[a] === 'makeup') break;
         }
         const members = crewMembers[masonryConfig[a]];
         const title = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
@@ -123,8 +123,8 @@ const MovieCrew = () => {
   return (
     <>
       <Grid container spacing={2}>
-        { renderMasonryGrid() }
-        { crewShowMore
+        {renderMasonryGrid()}
+        {crewShowMore
           ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
           : <Statistic count={crew.length} label="Total Crew" isTotal />}
         <Grid

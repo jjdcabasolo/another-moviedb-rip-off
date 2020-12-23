@@ -83,7 +83,7 @@ export const getTVShowDetails = (
     details.instagram = instagram_id !== null ? `https://www.instagram.com/${instagram_id}` : null;
     details.twitter = twitter_id !== null ? `https://www.twitter.com/${twitter_id}` : null;
     details.imdb = imdb_id !== null ? `https://www.imdb.com/title/${imdb_id}` : null;
-    details.tmdb = tmdb_id !== null ? `https://www.themoviedb.org/movie/${tmdb_id}` : null;
+    details.tmdb = tmdb_id !== null ? `https://www.themoviedb.org/tv/${tmdb_id}` : null;
     delete details.external_ids;
 
     success(details);

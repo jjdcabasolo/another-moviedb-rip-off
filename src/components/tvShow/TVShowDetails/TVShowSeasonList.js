@@ -67,7 +67,7 @@ const TVShowSeasonList = () => {
     if (selectedSeason !== index) {
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, (response) => {
         dispatch(tvShowsActions.setEpisode(response));
-      });
+      }, () => {});
     }
     dispatch(tvShowsActions.setSelectedSeason(index));
   };
@@ -81,11 +81,7 @@ const TVShowSeasonList = () => {
   const renderSeasonCard = (posterPath) => {
     let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
     if (posterPath) imagePath += `/w780${posterPath}`;
-    else imagePath = renderBrokenImage();
-
-    if (!(typeof (imagePath) === 'string')) {
-      return imagePath;
-    }
+    else return renderBrokenImage();
 
     return (
       <img

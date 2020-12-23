@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,18 +11,15 @@ import ComponentLoader from '../components/common/ComponentLoader';
 import ItemFooter from '../components/common/item/ItemFooter';
 import Note from '../components/common/Note';
 import ScrollToTop from '../components/common/ScrollToTop';
-import SeasonDrawer from '../components/tvShow/SeasonDrawer';
 import Section from '../components/common/item/detail/Section';
 import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
-import TVShowEpisodeDetails from '../components/tvShow/TVShowDetails/TVShowEpisodeDetails';
+import TVShowEpisodes from '../components/tvShow/TVShowDetails/TVShowEpisodes';
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
-import TVShowMedia from '../components/tvShow/TVShowDetails/TVShowMedia';
+import TVShowRecommendations from '../components/tvShow/TVShowDetails/TVShowRecommendations';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import TVShowSeasonList from '../components/tvShow/TVShowDetails/TVShowSeasonList';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
-import TVShowCrew from '../components/tvShow/TVShowDetails/TVShowCrew';
-import TVShowRecommendations from '../components/tvShow/TVShowDetails/TVShowRecommendations';
 
 import { getTVShowDetails } from '../api';
 
@@ -56,39 +53,33 @@ const TVShows = () => {
 
   const [isLoaded, setIsLoaded] = useState(true);
 
-  const seasonDetailRef = useRef(null);
-
   const { tvShowId } = useParams();
 
   const {
     cast,
     created_by: createdBy,
+    first_air_date: firstAirDate,
+    name,
     number_of_episodes: numberOfEpisodes,
     number_of_seasons: numberOfSeasons,
-    last_episode_to_air: lastEpisodeToAir,
+    original_name: originalName,
     production_companies: productionCompanies,
+    recommendations,
     seasons,
     tmdb,
-    name,
-    original_name: originalName,
-    first_air_date: firstAirDate,
-    recommendations,
   } = tvShow;
 
   const currentSeason = seasons && selectSeason(seasons, selectedSeason);
   const currentEpisode = selectEpisode(episodes, selectedEpisode);
-  const latestEpisode = lastEpisodeToAir ? lastEpisodeToAir.episode_number : -1;
   const hasEpisode = selectedEpisode > 0;
-  const hasEpisodeList = episodes.length > 0
-    && episodes.length >= selectedEpisode
-    && selectedEpisode !== 0;
 
   const sectionVisibility = {
-    seasonDetails: currentSeason && currentSeason.air_date,
-    episodeDetails: hasEpisodeList,
+    seasons: currentSeason && currentSeason.air_date,
+    episodes: currentSeason && currentSeason.air_date,
     cast: cast && cast.length > 0,
     crew: currentEpisode.crew && currentEpisode.crew.length > 0,
-    production: (createdBy && createdBy.length > 0) || (productionCompanies && productionCompanies.length > 0),
+    production: (createdBy && createdBy.length > 0)
+      || (productionCompanies && productionCompanies.length > 0),
     recommendations: recommendations && recommendations.length > 0,
   };
 
@@ -149,30 +140,20 @@ const TVShows = () => {
         </Section>
 
         <Section
-          title="Media"
-          visible={currentSeason.poster_path}
-        >
-          <TVShowMedia />
-        </Section>
-
-        <Section
-          anchorId="tvshow-season-details"
+          anchorId="tvshow-seasons"
+          divider={false}
           title="Seasons"
           visible={sectionVisibility.seasonDetails}
         >
           <TVShowSeasonList />
-          <div ref={seasonDetailRef}>
-            <TVShowSeasonDetails />
-          </div>
         </Section>
 
         <Section
-          anchorId="tvshow-episode-details"
-          chipContent={numberOfSeasons === selectedSeason && latestEpisode === selectedEpisode ? 'Latest' : 'Finished'}
-          title={hasEpisodeList ? `Episode ${selectedEpisode}: ${currentEpisode.name}` : ''}
-          visible={sectionVisibility.episodeDetails}
+          anchorId="tvshow-episodes"
+          title="Episodes"
         >
-          <TVShowEpisodeDetails />
+          <TVShowSeasonDetails />
+          <TVShowEpisodes />
         </Section>
 
         <Section
@@ -181,14 +162,6 @@ const TVShows = () => {
           visible={sectionVisibility.cast}
         >
           <TVShowCast />
-        </Section>
-
-        <Section
-          anchorId="tvshow-crew"
-          title="Crew"
-          visible={sectionVisibility.crew}
-        >
-          <TVShowCrew />
         </Section>
 
         <Section
@@ -219,9 +192,6 @@ const TVShows = () => {
           />
         </Section>
       </Grid>
-      <SeasonDrawer
-        seasonDetailRef={seasonDetailRef}
-      />
       {!itemDrawerOpen && <ScrollToTop />}
     </>
   );

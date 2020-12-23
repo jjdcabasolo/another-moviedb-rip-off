@@ -55,6 +55,7 @@ export const tvShowsActions = {
 const initialState = {
   category: 'airingToday',
   episodes: [],
+  isSeasonLoading: false,
   isTVShowLoading: false,
   list: {
     airingToday: [],
@@ -127,6 +128,7 @@ const setEpisode = (state, action) => {
   return {
     ...state,
     episodes: action.payload.episodes,
+    isSeasonLoading: false,
     selectedEpisode: descendingEpisodes.episode_number,
   };
 };
@@ -146,6 +148,7 @@ const setSelectedSeason = (state, action) => {
 
   return {
     ...state,
+    isSeasonLoading: true,
     selectedEpisode,
     selectedSeason: action.payload.selectedSeason,
   };

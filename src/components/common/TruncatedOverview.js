@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,8 +12,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TruncatedOverview = ({ overview, maxWords }) => {
+const TruncatedOverview = ({
+  overview,
+  maxWords,
+  variant = 'body1',
+}) => {
   const classes = useStyles();
+
+  const overviewRef = useRef(null);
 
   const [showMoreOverview, setShowMoreOverview] = useState(false);
 
@@ -25,16 +31,17 @@ const TruncatedOverview = ({ overview, maxWords }) => {
   };
 
   return (
-    <Typography variant="body1" gutterBottom>
+    <Typography variant={variant} gutterBottom ref={overviewRef}>
       {isOverviewTruncated
         ? (
           <>
-            {showMoreOverview ? overview : overviewTruncated }
+            {showMoreOverview ? overview : overviewTruncated}
             <Typography
               className={classes.readMore}
               color="textSecondary"
-              onClick={handleReadMore}
               display="inline"
+              onClick={handleReadMore}
+              variant={variant}
             >
               {showMoreOverview ? ' Read less.' : '... read more.' }
             </Typography>
@@ -48,6 +55,7 @@ const TruncatedOverview = ({ overview, maxWords }) => {
 TruncatedOverview.propTypes = {
   maxWords: PropTypes.number.isRequired,
   overview: PropTypes.string.isRequired,
+  variant: PropTypes.string.isRequired,
 };
 
 export default TruncatedOverview;

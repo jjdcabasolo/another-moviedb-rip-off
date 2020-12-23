@@ -1,7 +1,3 @@
-// import React from 'react';
-
-// import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
-
 export const API_KEY_DIALOG_TITLE = 'Enter TMDb API key';
 
 export const API_KEY_DIALOG_SUBTITLE = 'To view the contents of this application, you need to enter your own API key. ';
@@ -143,29 +139,6 @@ export const MOVIE_BREADCRUMBS_CONFIG = [
     visibilityId: 'recommendations',
   },
 ];
-
-// export const MOVIE_SECTIONS = [
-//   // section structure
-//   // {
-//   //   section: ({ divider, visible }) => ({
-//   //     anchorId: '',
-//   //     divider,
-//   //     isCollapsible: false,
-//   //     title: '',
-//   //     visible,
-//   //   }),
-//   //   component: </>,
-//   // },
-//   {
-//     section: ({ divider, visible }) => ({
-//       anchorId: 'movie-header',
-//       divider,
-//       isCollapsible: false,
-//       visible,
-//     }),
-//     component: <MovieHeader />,
-//   },
-// ];
 
 export const MOVIE_MAX_CAST_HORIZONTAL_ITEMS = 8;
 
