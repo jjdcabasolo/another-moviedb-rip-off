@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   Chip,
   Collapse,
@@ -12,6 +12,7 @@ import {
   IconButton,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
@@ -51,6 +52,8 @@ const Section = ({
   title,
   visible = true,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const [expanded, setExpanded] = useState(true);
@@ -101,7 +104,11 @@ const Section = ({
                 {isCollapsible && (
                   <Grid item xs={1} container justify="flex-end">
                     <Tooltip title={expanded ? 'Hide content' : 'Show content'}>
-                      <IconButton onClick={handleSectionToggle} className={classes.margin}>
+                      <IconButton
+                        onClick={handleSectionToggle}
+                        className={classes.margin}
+                        size={isMobile ? 'small' : 'medium'}
+                      >
                         {expanded ? <ExpandLess /> : <ExpandMore />}
                       </IconButton>
                     </Tooltip>

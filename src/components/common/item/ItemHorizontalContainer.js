@@ -39,18 +39,25 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(7),
   },
   rightScroller: {
-    right: theme.spacing(3),
+    right: -theme.spacing(2.5),
   },
   leftScroller: {
-    left: theme.spacing(3),
+    left: -theme.spacing(2.5),
+  },
+  rightScrollerList: {
+    right: -theme.spacing(1.5),
+  },
+  leftScrollerList: {
+    left: -theme.spacing(1.5),
   },
 }));
 
 const ItemHorizontalContainer = ({
   children,
-  imageSize,
-  isWithSeeMore = false,
   handleSeeMore,
+  imageSize,
+  isHorizontalList = false,
+  isWithSeeMore = false,
   scrollAmount,
   seeMoreComponent,
 }) => {
@@ -117,7 +124,11 @@ const ItemHorizontalContainer = ({
           <Zoom in={hideScrollLeft}>
             <Fab
               aria-label="scroll to left"
-              className={clsx(classes.scroller, classes.leftScroller)}
+              className={clsx(
+                classes.scroller,
+                { [classes.leftScrollerList]: isHorizontalList },
+                { [classes.leftScroller]: !isHorizontalList },
+              )}
               style={{ top: scrollerTopHeight }}
               onClick={() => handleScroll(-scrollAmount)}
               size="small"
@@ -128,7 +139,11 @@ const ItemHorizontalContainer = ({
           <Zoom in={hideScrollRight}>
             <Fab
               aria-label="scroll to right"
-              className={clsx(classes.scroller, classes.rightScroller)}
+              className={clsx(
+                classes.scroller,
+                { [classes.rightScrollerList]: isHorizontalList },
+                { [classes.rightScroller]: !isHorizontalList },
+              )}
               style={{ top: scrollerTopHeight }}
               onClick={() => handleScroll(scrollAmount)}
               size="small"
@@ -144,9 +159,10 @@ const ItemHorizontalContainer = ({
 
 ItemHorizontalContainer.propTypes = {
   children: PropTypes.node.isRequired,
-  isWithSeeMore: PropTypes.bool.isRequired,
   handleSeeMore: PropTypes.func.isRequired,
   imageSize: PropTypes.number.isRequired,
+  isHorizontalList: PropTypes.bool.isRequired,
+  isWithSeeMore: PropTypes.bool.isRequired,
   scrollAmount: PropTypes.number.isRequired,
   seeMoreComponent: PropTypes.node.isRequired,
 };

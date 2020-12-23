@@ -84,6 +84,7 @@ const ItemHorizontalList = ({
             xs={12}
           >
             <ItemHorizontalContainer
+              isHorizontalList
               imageSize={theme.spacing(23)}
               scrollAmount={theme.spacing(45 + 2)}
             >

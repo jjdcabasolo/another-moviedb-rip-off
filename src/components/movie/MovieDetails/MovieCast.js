@@ -19,7 +19,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   castContainer: {
+    [theme.breakpoints.only('xs')]: {
+      margin: theme.spacing(2, 0),
+    },
     position: 'relative',
+    width: 'inherit',
   },
   horizontalScrollItemSpacing: {
     margin: theme.spacing(0, 1),

@@ -40,7 +40,10 @@ const useStyles = makeStyles((theme) => ({
     '& div': {
       borderRadius: theme.shape.borderRadius,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.only('xs')]: {
+      height: `${theme.spacing(25)}px !important`,
+    },
+    [theme.breakpoints.only('sm')]: {
       height: `${theme.spacing(35)}px !important`,
     },
     [theme.breakpoints.between('sm', 'md')]: {

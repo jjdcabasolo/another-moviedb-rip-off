@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid transparent',
     cursor: 'pointer',
     margin: 0,
-    padding: theme.spacing(0.5),
-    maxWidth: theme.spacing(21),
+    padding: theme.spacing(1),
+    maxWidth: theme.spacing(22.25),
   },
   gridItem: {
     maxWidth: '100%',
@@ -93,7 +93,7 @@ const TVShowSeasonList = () => {
   };
 
   return (
-    <Grid container className={classes.container}>
+    <Grid container item xs={12} className={classes.container}>
       <ItemHorizontalContainer
         imageSize={theme.spacing(26)}
         scrollAmount={theme.spacing(63)}

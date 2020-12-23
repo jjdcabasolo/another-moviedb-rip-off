@@ -101,6 +101,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightMedium,
   },
   horizontalScrollItemWidth: {
+    [theme.breakpoints.down('sm')]: {
+      width: `calc(100vw - ${theme.spacing(10)}px)`,
+    },
     width: theme.spacing(45),
     paddingBottom: theme.spacing(2),
     [theme.breakpoints.up('md')]: {

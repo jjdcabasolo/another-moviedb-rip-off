@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   containerItemSelected: {
     [theme.breakpoints.only('xs')]: {
-      marginTop: -theme.spacing(18),
+      marginTop: -theme.spacing(14),
     },
     marginTop: -theme.spacing(12),
   },
