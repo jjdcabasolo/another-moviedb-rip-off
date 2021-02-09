@@ -18,6 +18,11 @@ export const MOVIE_DRAWER_TMDB_IMAGE_PREFIX = 'http://image.tmdb.org/t/p/';
 
 export const MOVIE_DRAWER_CATEGORY_CHIPS = [
   {
+    label: 'Trending',
+    identifier: 'trending',
+    isActive: (e) => e === 'trending',
+  },
+  {
     label: 'Now Playing',
     identifier: 'nowPlaying',
     isActive: (e) => e === 'nowPlaying',

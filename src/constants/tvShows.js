@@ -2,6 +2,11 @@ import { MOVIE_OVERVIEW_MAX_WORDS } from './movies';
 
 export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
   {
+    label: 'Trending',
+    identifier: 'trending',
+    isActive: (e) => e === 'trending',
+  },
+  {
     label: 'Airing Today',
     identifier: 'airingToday',
     isActive: (e) => e === 'airingToday',

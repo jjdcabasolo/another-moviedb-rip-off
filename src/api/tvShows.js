@@ -41,6 +41,16 @@ export const getTopRatedShows = (
   .catch((error) => fail(error))
   .finally(() => after());
 
+export const getTrendingShows = (
+  api_key,
+  success,
+  fail,
+  after = () => {},
+) => axios.get('/trending/tv/week', { params: { api_key } })
+  .then((response) => success(response))
+  .catch((error) => fail(error))
+  .finally(() => after());
+
 export const getTVShowDetails = (
   api_key,
   tv_id,

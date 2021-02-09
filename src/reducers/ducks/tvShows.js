@@ -53,7 +53,7 @@ export const tvShowsActions = {
 
 // REDUCER
 const initialState = {
-  category: 'airingToday',
+  category: 'trending',
   episodes: [],
   isSeasonLoading: false,
   isTVShowLoading: false,
@@ -62,6 +62,7 @@ const initialState = {
     onTheAir: [],
     popular: [],
     topRated: [],
+    trending: [],
   },
   loadedContent: 0,
   seasonDrawerIsSeasonSelected: true,

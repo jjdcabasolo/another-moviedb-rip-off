@@ -53,6 +53,16 @@ export const getHighestGrossingMovies = (
   .catch((error) => fail(error))
   .finally(() => after());
 
+export const getTrendingMovies = (
+  api_key,
+  success,
+  fail,
+  after = () => {},
+) => axios.get('/trending/movie/week', { params: { api_key } })
+  .then((response) => success(response))
+  .catch((error) => fail(error))
+  .finally(() => after());
+
 export const getMovieCollection = (
   api_key,
   collectionId,

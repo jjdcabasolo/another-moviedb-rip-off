@@ -38,13 +38,14 @@ export const moviesActions = {
 
 // REDUCER
 const initialState = {
-  category: 'nowPlaying',
+  category: 'trending',
   list: {
+    highestGrossing: [],
     nowPlaying: [],
-    upcoming: [],
     popular: [],
     topRated: [],
-    highestGrossing: [],
+    trending: [],
+    upcoming: [],
   },
   movie: {},
   loadedContent: 0,
