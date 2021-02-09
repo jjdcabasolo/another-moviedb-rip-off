@@ -1,5 +1,3 @@
-import { MOVIE_OVERVIEW_MAX_WORDS } from './movies';
-
 export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
   {
     label: 'Trending',
@@ -55,5 +53,3 @@ export const TV_SHOW_BREADCRUMBS_CONFIG = [
     visibilityId: 'recommendations',
   },
 ];
-
-export const TV_SHOW_OVERVIEW_MAX_WORDS = MOVIE_OVERVIEW_MAX_WORDS;

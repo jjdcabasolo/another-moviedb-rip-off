@@ -20,7 +20,7 @@ import { getTVShowStatus } from '../../../utils/functions';
 
 import {
   TV_SHOW_BREADCRUMBS_CONFIG,
-  TV_SHOW_OVERVIEW_MAX_WORDS,
+  OVERVIEW_MAX_WORDS,
 } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -125,7 +125,10 @@ const TVShowHeader = ({ sectionVisibility }) => {
       </Grid>
       {overview && overview.length > 0 && (
         <Grid item xs={12}>
-          <TruncatedOverview overview={overview} maxWords={TV_SHOW_OVERVIEW_MAX_WORDS} />
+          <TruncatedOverview
+            overview={overview}
+            maxWords={OVERVIEW_MAX_WORDS}
+          />
         </Grid>
       )}
       {tagline && (

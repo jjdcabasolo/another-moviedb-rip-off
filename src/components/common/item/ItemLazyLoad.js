@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgress, Grid } from '@material-ui/core';
 
-const MAX_ITEM_PER_LOAD = 10;
+import { MAX_ITEM_PER_LOAD } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   progressContainer: {

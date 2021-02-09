@@ -15,8 +15,10 @@ import TruncatedOverview from '../TruncatedOverview';
 
 import { scrollToID } from '../../../utils/functions';
 
-const MAX_WORD_COUNT = 20;
-const MAX_ITEMS_BEFORE_COLLAPSING = 3;
+import {
+  MAX_WORD_COUNT,
+  MAX_ITEMS_BEFORE_COLLAPSING,
+} from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {

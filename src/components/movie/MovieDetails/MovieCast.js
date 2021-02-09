@@ -13,7 +13,7 @@ import SeeMoreIconButton from '../../common/SeeMoreIconButton';
 
 import { getCastCol, scrollToID } from '../../../utils/functions';
 
-import { MOVIE_MAX_CAST_HORIZONTAL_ITEMS as maxCount } from '../../../constants';
+import { MAX_CAST_HORIZONTAL_ITEMS as maxCount } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {

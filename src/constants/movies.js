@@ -144,7 +144,3 @@ export const MOVIE_BREADCRUMBS_CONFIG = [
     visibilityId: 'recommendations',
   },
 ];
-
-export const MOVIE_MAX_CAST_HORIZONTAL_ITEMS = 8;
-
-export const MOVIE_OVERVIEW_MAX_WORDS = 32;

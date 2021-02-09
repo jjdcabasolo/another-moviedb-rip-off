@@ -1,6 +1,6 @@
 /* eslint-disable prefer-destructuring */
 // number of words for allowance before truncating the text;
-const TRUNCATION_ALLOWANCE = 3;
+import { TRUNCATION_ALLOWANCE } from '../../constants';
 
 export const truncateText = (text, length, type) => {
   switch (type) {
