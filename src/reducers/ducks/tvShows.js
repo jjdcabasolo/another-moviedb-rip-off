@@ -21,9 +21,9 @@ export const tvShowsActions = {
     type: tvShowsActionType.SET_TV_SHOWS_LIST,
     payload: { category, list },
   }),
-  setActiveTVShow: (tvShow) => ({
+  setActiveTVShow: (tvShow, episodes, selectedSeason) => ({
     type: tvShowsActionType.SET_ACTIVE_TV_SHOW,
-    payload: { tvShow },
+    payload: { tvShow, episodes, selectedSeason },
   }),
   setDetailsLoading: (isTVShowLoading) => ({
     type: tvShowsActionType.SET_DETAILS_LOADING,
@@ -86,24 +86,15 @@ const setTVShowsList = (state, action) => ({
 });
 
 const setActiveTVShow = (state, action) => {
-  const { payload } = action;
-  const { tvShow } = payload;
-  const { seasons } = tvShow;
-
-  let selectedSeason = 0;
-
-  if (seasons) {
-    const descendingSeasons = seasons
-      .sort((a, b) => b.season_number - a.season_number)
-      .find((e) => e.season_number > 0 && e.air_date);
-
-    selectedSeason = descendingSeasons.season_number;
-  }
+  const descendingEpisodes = action.payload.episodes && action.payload.episodes.length > 0
+    ? action.payload.episodes.sort((a, b) => b.episode_number - a.episode_number)
+    : [];
 
   return {
     ...state,
+    episodes: descendingEpisodes,
+    selectedSeason: action.payload.selectedSeason,
     tvShow: action.payload.tvShow,
-    selectedSeason,
   };
 };
 
@@ -117,42 +108,17 @@ const setSeasonDrawer = (state, action) => ({
   seasonDrawerOpen: action.payload.seasonDrawerOpen,
 });
 
-const setEpisode = (state, action) => {
-  const { payload } = action;
-  const { episodes } = payload;
+const setEpisode = (state, action) => ({
+  ...state,
+  episodes: action.payload.episodes.sort((a, b) => b.episode_number - a.episode_number),
+  isSeasonLoading: false,
+});
 
-  const descendingEpisodes = episodes
-    .sort((a, b) => b.episode_number - a.episode_number)
-    .find((e) => e.episode_number > 0 && e.air_date);
-
-  return {
-    ...state,
-    episodes: action.payload.episodes,
-    isSeasonLoading: false,
-    selectedEpisode: descendingEpisodes.episode_number,
-  };
-};
-
-const setSelectedSeason = (state, action) => {
-  const { payload } = action;
-  const { episodes } = payload;
-  let selectedEpisode = 0;
-
-  if (episodes) {
-    const descendingEpisodes = episodes
-      .sort((a, b) => b.episode_number - a.episode_number)
-      .find((e) => e.episode_number > 0 && e.air_date);
-
-    selectedEpisode = descendingEpisodes.episode_number;
-  }
-
-  return {
-    ...state,
-    isSeasonLoading: true,
-    selectedEpisode,
-    selectedSeason: action.payload.selectedSeason,
-  };
-};
+const setSelectedSeason = (state, action) => ({
+  ...state,
+  isSeasonLoading: true,
+  selectedSeason: action.payload.selectedSeason,
+});
 
 const setSelectedEpisode = (state, action) => ({
   ...state,

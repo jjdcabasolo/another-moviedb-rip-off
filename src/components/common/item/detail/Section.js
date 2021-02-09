@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
+import { useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -15,6 +16,8 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
+
+import { sidebarActions } from '../../../../reducers/ducks';
 
 const useStyles = makeStyles((theme) => ({
   titleGrid: {
@@ -40,6 +43,11 @@ const useStyles = makeStyles((theme) => ({
   sectionContainerSpacing: {
     marginTop: theme.spacing(2),
   },
+  dividerContainer: {
+    [theme.breakpoints.only('xs')]: {
+      padding: `${theme.spacing(2, 0)} !important`,
+    },
+  },
 }));
 
 const Section = ({
@@ -56,12 +64,15 @@ const Section = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
   const [expanded, setExpanded] = useState(true);
 
   const handleSectionToggle = () => {
     if (isCollapsible) {
       setExpanded(!expanded);
     }
+    dispatch(sidebarActions.incrementSeeMore());
   };
 
   return (
@@ -88,7 +99,7 @@ const Section = ({
                   item
                   xs={isCollapsible ? 11 : 12}
                 >
-                  <Typography variant="h5">
+                  <Typography variant="h6">
                     {title}
                     {chipContent && (
                       <Chip
@@ -141,7 +152,7 @@ const Section = ({
           </Grid>
           {divider
             ? (
-              <Grid item xs={12}>
+              <Grid item xs={12} className={classes.dividerContainer}>
                 <Divider />
               </Grid>
             )

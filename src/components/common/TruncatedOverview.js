@@ -1,13 +1,16 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import clsx from 'clsx';
+
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 import { truncateText } from '../../utils/functions';
 
 const useStyles = makeStyles(() => ({
-  readMore: {
+  overview: {
+    userSelect: 'none',
     cursor: 'pointer',
   },
 }));
@@ -31,16 +34,20 @@ const TruncatedOverview = ({
   };
 
   return (
-    <Typography variant={variant} gutterBottom ref={overviewRef}>
+    <Typography
+      className={clsx({ [classes.overview]: isOverviewTruncated })}
+      gutterBottom
+      onClick={handleReadMore}
+      ref={overviewRef}
+      variant={variant}
+    >
       {isOverviewTruncated
         ? (
           <>
             {showMoreOverview ? overview : overviewTruncated}
             <Typography
-              className={classes.readMore}
               color="textSecondary"
               display="inline"
-              onClick={handleReadMore}
               variant={variant}
             >
               {showMoreOverview ? ' Read less.' : '... read more.' }

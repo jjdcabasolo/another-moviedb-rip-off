@@ -12,7 +12,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  AppBar,
   BottomNavigation,
   BottomNavigationAction,
   CssBaseline,
@@ -23,6 +22,8 @@ import {
 import { Skeleton } from '@material-ui/lab';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
+import AppBar from '../../overrides/AppBar';
+
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import AppbarMenu from './AppbarMenu';
 import DarkModeToggle from '../../common/DarkModeToggle';
@@ -32,10 +33,9 @@ import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
 import ReadingProgress from '../../common/ReadingProgress';
 
-import { browserActions, moviesActions, sidebarActions } from '../../../reducers/ducks';
+import { moviesActions, sidebarActions } from '../../../reducers/ducks';
 
-import { evaluateLocation } from '../../../utils/functions';
-import HideOnScroll from '../../../utils/components/HideOnScroll';
+import { evaluateLocation, scrollToID } from '../../../utils/functions';
 
 import { routes } from '../../../routes/config';
 
@@ -50,36 +50,36 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(9),
+    paddingBottom: theme.spacing(15),
   },
   containerItemSelected: {
-    [theme.breakpoints.only('xs')]: {
-      marginTop: -theme.spacing(14),
-    },
     marginTop: -theme.spacing(12),
   },
   category: {
-    padding: theme.spacing(0, 1),
+    backgroundColor: theme.palette.background.paper,
+    bottom: theme.spacing(7),
+    position: 'fixed',
+    width: '100%',
   },
   detailContainer: {
     overflowY: 'auto',
     overflowX: 'hidden',
     width: '100%',
-    height: theme.browserSize.height,
   },
 }));
 
 const Appbar = ({ children }) => {
   const classes = useStyles();
 
-  const target = useRef(null);
+  const appbarContainerRef = useRef(null);
+  const itemListContainerRef = useRef(null);
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const movie = useSelector((state) => state.movies.movie);
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
-  const scrollY = useSelector((state) => state.browser.scrollY);
+  // const scrollY = useSelector((state) => state.browser.scrollY);
   const dispatch = useDispatch();
 
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
@@ -100,13 +100,13 @@ const Appbar = ({ children }) => {
 
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
-    setTimeout(() => window.scrollTo(0, scrollY), 100);
+    // setTimeout(() => window.scrollTo(0, scrollY), 100);
     history.goBack();
-  }, [dispatch, scrollY, history]);
+  }, [dispatch, history]);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!('id' in movie)) dispatch(browserActions.changeBrowserScrollY(window.pageYOffset));
+      // if (!('id' in movie)) dispatch(browserActions.changeBrowserScrollY(window.pageYOffset));
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -114,6 +114,7 @@ const Appbar = ({ children }) => {
   }, [dispatch, movie]);
 
   const handleBottomNavigationClick = (index) => {
+    scrollToID('scroll-to-top-anchor', true);
     setActiveBottomTab(index);
     const tab = index === 1 ? 'movies' : 'tvshows';
     dispatch(sidebarActions.setActiveTab(tab));
@@ -180,37 +181,23 @@ const Appbar = ({ children }) => {
   const renderTopContents = () => {
     if (isMovieTabActive) {
       return (
-        <>
-          <ReadingProgress
-            isLoading={isMovieEmpty}
-            isVisible={isMovieSelected && !isMovieLoading}
-            target={target}
-          />
-          <GradientBackground
-            image={movie.poster_path}
-            isItemSelected={isMovieSelected}
-            isLoading={isMovieEmpty}
-            isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
-          />
-        </>
+        <GradientBackground
+          image={movie.poster_path}
+          isItemSelected={isMovieSelected}
+          isLoading={isMovieEmpty}
+          isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
+        />
       );
     }
 
     if (isTVShowTabActive) {
       return (
-        <>
-          <ReadingProgress
-            isLoading={isTVShowEmpty}
-            isVisible={isTVShowSelected && !isTVShowLoading}
-            target={target}
-          />
-          <GradientBackground
-            image={tvShow.poster_path}
-            isItemSelected={isTVShowSelected}
-            isLoading={isTVShowEmpty}
-            isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
-          />
-        </>
+        <GradientBackground
+          image={tvShow.poster_path}
+          isItemSelected={isTVShowSelected}
+          isLoading={isTVShowEmpty}
+          isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
+        />
       );
     }
 
@@ -222,29 +209,18 @@ const Appbar = ({ children }) => {
       <Helmet />
       <CssBaseline />
 
-      <HideOnScroll
-        replacement={(
-          <AppBar color="default">
-            <Toolbar variant="dense" className={classes.category}>
-              <ItemCategory isList replacement />
-            </Toolbar>
-          </AppBar>
-        )}
-        willReplace={!isMovieSelected}
-      >
-        <AppBar color="default">
-          <Toolbar variant="dense">
-            {renderToolbarContents()}
-          </Toolbar>
-        </AppBar>
-      </HideOnScroll>
+      <AppBar color="inherit">
+        <Toolbar>
+          {renderToolbarContents()}
+        </Toolbar>
+      </AppBar>
 
       <div
         className={clsx({
           [classes.detailContainer]: (isMovieSelected && isMovieTabActive)
             || (isTVShowSelected && isTVShowTabActive),
         })}
-        ref={target}
+        ref={appbarContainerRef}
       >
         <div id="scroll-to-top-anchor" />
         {renderTopContents()}
@@ -253,27 +229,33 @@ const Appbar = ({ children }) => {
             classes.container,
             { [classes.containerItemSelected]: isMovieSelected || isTVShowSelected },
           )}
+          ref={itemListContainerRef}
         >
           {renderList()}
         </div>
       </div>
 
       {(!isMovieSelected && !isTVShowSelected) && (
-        <BottomNavigation
-          className={classes.bottomNavigation}
-          onChange={(_, index) => handleBottomNavigationClick(index)}
-          showLabels={false}
-          value={activeBottomTab}
-        >
-          {routes.map((element, index) => (index !== 0) && (
-            <BottomNavigationAction
-              component={Link}
-              icon={element.icon}
-              label={element.title}
-              to={element.path}
-            />
-          ))}
-        </BottomNavigation>
+        <>
+          <div className={classes.category}>
+            <ItemCategory type="appbarHorizontalList" />
+          </div>
+          <BottomNavigation
+            className={classes.bottomNavigation}
+            onChange={(_, index) => handleBottomNavigationClick(index)}
+            showLabels={false}
+            value={activeBottomTab}
+          >
+            {routes.map((element, index) => (index !== 0) && (
+              <BottomNavigationAction
+                component={Link}
+                icon={element.icon}
+                label={element.title}
+                to={element.path}
+              />
+            ))}
+          </BottomNavigation>
+        </>
       )}
     </>
   );

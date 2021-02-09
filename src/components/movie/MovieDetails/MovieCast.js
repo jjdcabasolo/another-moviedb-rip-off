@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, Button, useMediaQuery } from '@material-ui/core';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
 import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
+import ItemLazyLoad from '../../common/item/ItemLazyLoad';
+import ItemSeeMore from '../../common/item/ItemSeeMore';
 import PersonAvatar from '../../common/item/detail/PersonAvatar';
-
-import { moviesActions } from '../../../reducers/ducks';
+import SeeMoreIconButton from '../../common/SeeMoreIconButton';
 
 import { getCastCol, scrollToID } from '../../../utils/functions';
 
 import { MOVIE_MAX_CAST_HORIZONTAL_ITEMS as maxCount } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    marginTop: theme.spacing(2),
-  },
-  castContainer: {
+  container: {
     [theme.breakpoints.only('xs')]: {
       margin: theme.spacing(2, 0),
     },
@@ -42,10 +40,12 @@ const MovieCast = () => {
   const classes = useStyles();
 
   const movie = useSelector((state) => state.movies.movie);
-  const castShowMore = useSelector((state) => state.movies.castShowMore);
-  const dispatch = useDispatch();
 
-  const { cast } = movie;
+  const {
+    cast,
+    original_title: originalTitle,
+    title,
+  } = movie;
 
   const [cardCol, setCardCol] = useState(0);
 
@@ -53,68 +53,46 @@ const MovieCast = () => {
     setCardCol(getCastCol(isMobile, isSmallTablet));
   }, [isMobile, isSmallTablet, isBigTablet, isDesktop]);
 
-  const handleButtonClick = () => {
-    if (!castShowMore) scrollToID('movie-cast');
-    dispatch(moviesActions.setCastShowMore(!castShowMore));
-  };
-
   return (
-    <>
-      <Grid container spacing={2} className={classes.castContainer}>
-        {castShowMore
-          ? cast.slice(0, cast.length).map((castMore) => (
-            <PersonAvatar
-              character={castMore.character}
-              col={12 / cardCol}
-              image={castMore.profile_path}
-              name={castMore.name}
-            />
-          ))
-          : (
-            <ItemHorizontalContainer
-              isWithSeeMore={cast.length > maxCount}
-              handleSeeMore={handleButtonClick}
-              scrollAmount={144}
-              seeMoreComponent={(
+    <Grid container className={classes.container}>
+      <ItemSeeMore
+        appbarTitle={[title || originalTitle, 'Cast']}
+        collapsedClickEvent={() => scrollToID('movie-cast')}
+        collapsedContent={(
+          <ItemHorizontalContainer
+            isWithSeeMore={cast.length > maxCount}
+            scrollAmount={144}
+            seeMoreComponent={<SeeMoreIconButton />}
+          >
+            {cast.slice(0, maxCount).map((item) => (
+              <div className={classes.horizontalScrollItemSpacing}>
                 <PersonAvatar
-                  character={`...and ${cast.length - maxCount} more`}
+                  character={item.character}
                   col={12}
-                  image="seemore"
-                  name="Click to view"
+                  image={item.profile_path}
+                  name={item.name}
                   isHorizontalScroll
                 />
-              )}
-            >
-              {cast.slice(0, maxCount).map((item) => (
-                <div className={classes.horizontalScrollItemSpacing}>
-                  <PersonAvatar
-                    character={item.character}
-                    col={12}
-                    image={item.profile_path}
-                    name={item.name}
-                    isHorizontalScroll
-                  />
-                </div>
-              ))}
-            </ItemHorizontalContainer>
-          )}
-        <Grid
-          className={classes.button}
-          container
-          item
-          justify="flex-end"
-          xs={12}
-        >
-          <Button
-            onClick={handleButtonClick}
-            variant="outlined"
-            size={isMobile ? 'small' : 'medium'}
-          >
-            {castShowMore ? 'Show less' : 'Show all'}
-          </Button>
-        </Grid>
-      </Grid>
-    </>
+              </div>
+            ))}
+          </ItemHorizontalContainer>
+        )}
+        expandedContent={(
+          <Grid container spacing={2}>
+            <ItemLazyLoad
+              contents={cast}
+              maxItemPerLoad={20}
+              node={<PersonAvatar />}
+              otherProps={{ col: 12 / cardCol }}
+              type="itemCast"
+            />
+          </Grid>
+        )}
+        isButtonShown={cast.length > maxCount}
+        sectionId="cast"
+        seeMoreText={`Show all ${cast.length} cast`}
+      />
+    </Grid>
   );
 };
 

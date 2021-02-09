@@ -15,11 +15,9 @@ import {
   BrightnessLowTwoTone,
 } from '@material-ui/icons';
 
-import Tooltip from '../../utils/components/Tooltip';
-
 import { sidebarActions } from '../../reducers/ducks';
 
-const DarkModeToggle = ({ type, tooltipVisible, edge }) => {
+const DarkModeToggle = ({ type, edge }) => {
   const darkMode = useSelector((state) => state.sidebar.darkMode);
   const dispatch = useDispatch();
 
@@ -37,11 +35,9 @@ const DarkModeToggle = ({ type, tooltipVisible, edge }) => {
     case 'listItem':
       return (
         <ListItem button onClick={handleToggleLights}>
-          <Tooltip title="Toggle lights" placement="right" visible={tooltipVisible}>
-            <ListItemIcon>
-              {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
-            </ListItemIcon>
-          </Tooltip>
+          <ListItemIcon>
+            {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
+          </ListItemIcon>
           <ListItemText primary="Toggle lights" />
         </ListItem>
       );

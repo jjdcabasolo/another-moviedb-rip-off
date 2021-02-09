@@ -24,23 +24,24 @@ import {
 } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
-  note: {
-    padding: theme.spacing(8, 2),
-  },
   title: {
     fontWeight: 600,
   },
   subtitle: {
     fontWeight: 400,
   },
-  chipContainer: {
-    margin: theme.spacing(1, 0),
-  },
   chip: {
     margin: theme.spacing(0.25, 0.5, 0.25, 0),
   },
-  readMore: {
-    cursor: 'pointer',
+  releaseYear: {
+    color: theme.palette.text.secondary,
+    fontSize: theme.typography.h4.fontSize,
+    fontWeight: theme.typography.fontWeightLight,
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: theme.spacing(1),
+      fontSize: theme.typography.h5.fontSize,
+    },
   },
 }));
 
@@ -81,6 +82,9 @@ const TVShowHeader = ({ sectionVisibility }) => {
           variant={isMobile ? 'h4' : 'h2'}
         >
           {name || originalName}
+          <span className={classes.releaseYear}>
+            {`(${moment(firstAirDate).format('YYYY')})`}
+          </span>
         </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
@@ -119,9 +123,11 @@ const TVShowHeader = ({ sectionVisibility }) => {
           youtube={youtube}
         />
       </Grid>
-      <Grid item xs={12}>
-        <TruncatedOverview overview={overview} maxWords={TV_SHOW_OVERVIEW_MAX_WORDS} />
-      </Grid>
+      {overview && overview.length > 0 && (
+        <Grid item xs={12}>
+          <TruncatedOverview overview={overview} maxWords={TV_SHOW_OVERVIEW_MAX_WORDS} />
+        </Grid>
+      )}
       {tagline && (
         <Grid item xs={12}>
           <Typography

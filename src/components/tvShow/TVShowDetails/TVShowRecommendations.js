@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
 
-import ItemHorizontalList from '../../common/item/ItemHorizontalList';
+import ItemCardHorizontalList from '../../common/item/ItemCardHorizontalList';
 
 const TVShowRecommendations = ({ anchorId }) => {
   const tvShow = useSelector((state) => state.tvShows.tvShow);
@@ -17,9 +17,11 @@ const TVShowRecommendations = ({ anchorId }) => {
   if (!recommendations) return null;
 
   return (
-    <ItemHorizontalList
+    <ItemCardHorizontalList
       anchorId={anchorId}
-      items={recommendations.slice(0, 10)}
+      appbarTitle={[name || originalName, 'Recommendations']}
+      areRecommendations
+      items={recommendations}
       overview={`If you liked ${name || originalName}, check out these other TV shows:`}
     />
   );

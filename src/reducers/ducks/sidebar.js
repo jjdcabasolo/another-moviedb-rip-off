@@ -3,10 +3,11 @@ import { encrypt, decrypt } from '../../utils/functions/encrypt';
 // ACTION TYPE
 const sidebarActionType = {
   CLEAR_API_KEY: '@sidebar/CLEAR_API_KEY',
+  INCREMENT_SEE_MORE: '@sidebar/INCREMENT_SEE_MORE',
   SET_ACTIVE_TAB: '@sidebar/SET_ACTIVE_TAB',
   SET_API_KEY: '@sidebar/SET_API_KEY',
-  SET_ITEM_DRAWER: '@sidebar/SET_ITEM_DRAWER',
   SET_DRAWER: '@sidebar/SET_DRAWER',
+  SET_ITEM_DRAWER: '@sidebar/SET_ITEM_DRAWER',
   TOGGLE_DRAWER: '@sidebar/TOGGLE_DRAWER',
   TOGGLE_LIGHTS: '@sidebar/TOGGLE_LIGHTS',
 };
@@ -44,6 +45,10 @@ export const sidebarActions = {
     type: sidebarActionType.SET_ITEM_DRAWER,
     payload: { itemDrawerOpen },
   }),
+
+  incrementSeeMore: () => ({
+    type: sidebarActionType.INCREMENT_SEE_MORE,
+  }),
 };
 
 // REDUCER
@@ -63,7 +68,8 @@ const initialState = {
   apiKey: initialApiKey,
   darkMode: localStorage.getItem('darkMode') === 'true',
   drawerOpen: false,
-  itemDrawerOpen: false,
+  itemDrawerOpen: true,
+  seeMore: 0,
   username: decrypt(initialUsername, initialApiKey),
 };
 
@@ -122,9 +128,19 @@ const setItemDrawer = (state, action) => ({
   itemDrawerOpen: action.payload.itemDrawerOpen,
 });
 
+const incrementSeeMore = (state) => {
+  const updatedSeeMore = state.seeMore + 1;
+
+  return {
+    ...state,
+    seeMore: updatedSeeMore,
+  };
+};
+
 export const sidebarReducer = (state = initialState, action) => {
   switch (action.type) {
     case sidebarActionType.CLEAR_API_KEY: return clearAPIKey(state, action);
+    case sidebarActionType.INCREMENT_SEE_MORE: return incrementSeeMore(state);
     case sidebarActionType.SET_ACTIVE_TAB: return setActiveTab(state, action);
     case sidebarActionType.SET_API_KEY: return setAPIKey(state, action);
     case sidebarActionType.SET_DRAWER: return setDrawer(state, action);

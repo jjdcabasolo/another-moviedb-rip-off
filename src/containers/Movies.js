@@ -37,11 +37,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 2),
   },
   trailer: {
-    '& div': {
-      borderRadius: theme.shape.borderRadius,
-    },
     [theme.breakpoints.only('xs')]: {
-      height: `${theme.spacing(25)}px !important`,
+      height: `${theme.spacing(24)}px !important`,
     },
     [theme.breakpoints.only('sm')]: {
       height: `${theme.spacing(35)}px !important`,
@@ -78,14 +75,14 @@ const Movies = () => {
     cast,
     collection_content: collectionContent,
     crew,
-    production_companies: productionCompanies,
-    revenue,
-    youtube,
     original_title: originalTitle,
+    production_companies: productionCompanies,
+    recommendations,
     release_date: releaseDate,
+    revenue,
     title,
     tmdb,
-    recommendations,
+    youtube,
   } = movie;
 
   const sectionVisibility = {
@@ -122,7 +119,7 @@ const Movies = () => {
   }
 
   if (isMovieLoading) {
-    return <ComponentLoader />;
+    return <ComponentLoader location="itemcontainer" />;
   }
 
   if (isLoaded === 34) {
@@ -134,7 +131,7 @@ const Movies = () => {
   }
 
   if (Object.keys(movie).length === 0 && movie.constructor === Object) {
-    return <ComponentLoader />;
+    return <ComponentLoader location="itemcontainer" />;
   }
 
   return (

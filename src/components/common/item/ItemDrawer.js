@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  AppBar,
-  Toolbar,
+  Container,
   Drawer,
   Grid,
   IconButton,
+  Toolbar,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
+
+import AppBar from '../../overrides/AppBar';
 import ComponentLoader from '../ComponentLoader';
-import ItemCategory from './ItemCategory';
 import ItemCard from './ItemCard';
+import ItemCategory from './ItemCategory';
+import ItemHeader from './ItemHeader';
+import ItemSearch from './ItemSearch';
 import Note from '../Note';
 
-import ResponsiveComponent from '../../../utils/components/ResponsiveComponent';
+import { toCamelCase } from '../../../utils/functions';
 
-import { sidebarActions, tvShowsActions } from '../../../reducers/ducks';
+import { sidebarActions } from '../../../reducers/ducks';
 
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
@@ -37,13 +42,15 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
   },
   drawerPaper: {
+    backgroundColor: theme.palette.background.default,
     position: 'inherit',
     [theme.breakpoints.up('lg')]: {
       height: theme.browserSize.height,
     },
   },
   drawerOpenPaperPadding: {
-    padding: theme.spacing(5),
+    padding: theme.spacing(3, 5, 0, 5),
+    height: '100%',
   },
   drawerClose: {
     width: ITEM_DRAWER_WIDTH,
@@ -63,46 +70,55 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerOpen: {
     width: theme.browserSize.width - theme.spacing(7),
-    overflow: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   toolbar: {
-    marginBottom: theme.spacing(1),
-  },
-  chip: {
-    margin: theme.spacing(0.5),
-  },
-  extendItem: {
-    flex: 1,
+    [theme.breakpoints.up('lg')]: {
+      padding: theme.spacing(1, 2),
+    },
   },
   grow: {
     flexGrow: 1,
   },
-  desktopDrawerClosedContainer: {
-    paddingBottom: theme.spacing(2),
-  },
-  desktopDrawerOpenContainer: {
-    overflow: 'hidden',
-  },
   itemCardContainer: {
-    padding: theme.spacing(1, 3),
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
       width: 0,
       height: 0,
     },
   },
-  itemDrawerAppbar: {
-    marginTop: theme.spacing(1),
-    boxShadow: theme.shadows[0],
+  desktopDrawerOpenItemCardContainer: {
+    marginBottom: theme.spacing(10),
+  },
+  desktopDrawerClosedItemCardContainer: {
+    padding: theme.spacing(1),
+  },
+  itemHeader: {
+    padding: theme.spacing(16, 0),
+  },
+  options: {
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.brokenImage.border}`,
+    borderRadius: theme.shape.borderRadius,
+    maxWidth: '50%',
+    position: 'fixed',
+    right: theme.spacing(8),
+    top: theme.spacing(4),
+    width: 'auto',
+    zIndex: 2,
   },
 }));
 
-const ItemDrawer = () => {
+const ItemDrawer = ({
+  isItemSelected,
+}) => {
   const theme = useTheme();
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isBigTablet = useMediaQuery(theme.breakpoints.only('md'));
+  const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const classes = useStyles();
 
@@ -115,31 +131,33 @@ const ItemDrawer = () => {
   const tvShowLoadedContent = useSelector((state) => state.tvShows.loadedContent);
   const dispatch = useDispatch();
 
+  const [itemDrawerOpen, setItemDrawerOpen] = useState(true);
+
   const isMovie = activeTab === 'movies';
-  const getLocalStorage = localStorage.getItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen');
-  const localStorageEval = getLocalStorage === null ? true : getLocalStorage === 'true';
-  const finalDrawerState = isDesktop ? localStorageEval : true;
-  const [itemDrawerOpen, setItemDrawerOpen] = useState(finalDrawerState);
-  const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
+  const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
 
   useEffect(() => {
-    setItemDrawerOpen(finalDrawerState);
-    dispatch(sidebarActions.setItemDrawer(finalDrawerState));
-  }, [finalDrawerState]);
+    let itemDrawerFinalState = false;
+    if (isDesktop && !isItemSelected) itemDrawerFinalState = true;
+    if (isTablet) itemDrawerFinalState = true;
+    setItemDrawerOpen(itemDrawerFinalState);
+    dispatch(sidebarActions.setItemDrawer(itemDrawerFinalState));
+  }, [isDesktop, isTablet, isItemSelected]);
 
   const handleDrawerToggle = () => {
     const isDrawerOpen = !itemDrawerOpen;
-    localStorage.setItem(isMovie ? 'movieDrawerOpen' : 'tvShowDrawerOpen', isDrawerOpen);
     setItemDrawerOpen(isDrawerOpen);
-    if (!itemDrawerOpen) dispatch(tvShowsActions.setSeasonDrawer(false));
+    dispatch(sidebarActions.setItemDrawer(isDrawerOpen));
   };
 
-  const renderToggleItemDrawer = () => (
-    <IconButton onClick={handleDrawerToggle} edge="end">
-      {itemDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
-    </IconButton>
+  const renderToggleItemDrawer = (isEdgeEnd) => (
+    <Tooltip title={itemDrawerOpen ? 'See less' : 'See all'}>
+      <IconButton onClick={handleDrawerToggle} edge={isEdgeEnd ? 'end' : ''}>
+        {itemDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
+      </IconButton>
+    </Tooltip>
   );
 
   const renderItemCards = () => {
@@ -152,58 +170,25 @@ const ItemDrawer = () => {
     }
 
     if (loadedContent !== categoryChips.length) {
-      return <ComponentLoader />;
+      return <ComponentLoader location="itemdrawer" isItemDrawerOpen={itemDrawerOpen} />;
     }
 
-    if (itemDrawerOpen) {
-      return (
-        <ResponsiveComponent
-          mobileComponent={null}
-          tabletComponent={(
-            <Grid container spacing={2}>
-              {new Array(5).fill({}).map((_, index) => (
-                <Grid item container spacing={2}>
-                  {contentToDisplay.slice((2 * index), (2 * index) + 2).map((item, rank) => (
-                    <ItemCard
-                      col={6}
-                      content={item}
-                      drawerOpen={itemDrawerOpen}
-                      handleDrawerToggle={handleDrawerToggle}
-                      rank={(2 * index) + rank + 1}
-                      type={activeTab}
-                    />
-                  ))}
-                </Grid>
-              ))}
-            </Grid>
-          )}
-          desktopComponent={(
-            <Grid container spacing={2} className={classes.desktopDrawerOpenContainer}>
-              {new Array(2).fill({}).map((_, index) => (
-                <Grid item container spacing={2} direction="row" justify="center" alignItems="flex-start">
-                  {contentToDisplay.slice((5 * index), (5 * index) + 5).map((item, rank) => (
-                    <ItemCard
-                      col={2}
-                      content={item}
-                      drawerOpen={itemDrawerOpen}
-                      handleDrawerToggle={handleDrawerToggle}
-                      rank={(5 * index) + rank + 1}
-                      type={activeTab}
-                    />
-                  ))}
-                </Grid>
-              ))}
-            </Grid>
-          )}
-        />
-      );
-    }
+    let itemCardCol = 12; // 1 card per row
+    if (isBigTablet) itemCardCol = 4; // 3 cards per row
+    if (isSmallTablet) itemCardCol = 6; // 2 cards per row
+    if (isDesktop) itemCardCol = 2; // 5 cards per row
+    if (!itemDrawerOpen) itemCardCol = 12; // 1 card per row
 
     return (
-      <Grid item container justify="center" spacing={2} className={classes.desktopDrawerClosedContainer}>
+      <Grid
+        className={classes.cardGridContainer}
+        container
+        item
+        justify="center"
+      >
         {contentToDisplay.slice(0, 10).map((item, rank) => (
           <ItemCard
-            col={12}
+            col={itemCardCol}
             content={item}
             drawerOpen={itemDrawerOpen}
             handleDrawerToggle={handleDrawerToggle}
@@ -220,50 +205,89 @@ const ItemDrawer = () => {
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: itemDrawerOpen },
-        { [classes.drawerClose]: !itemDrawerOpen && isDesktop },
-        { [classes.drawerPermanentClose]: !itemDrawerOpen && !isDesktop },
+        { [classes.drawerClose]: !itemDrawerOpen && !isTablet },
+        { [classes.drawerPermanentClose]: !itemDrawerOpen && isTablet },
       )}
       variant="permanent"
       open={itemDrawerOpen}
       classes={{
         paper: clsx(
           classes.drawerPaper,
-          { [classes.drawerOpenPaperPadding]: itemDrawerOpen },
-          { [classes.drawerOpen]: itemDrawerOpen },
-          { [classes.drawerClose]: !itemDrawerOpen && isDesktop },
-          { [classes.drawerPermanentClose]: !itemDrawerOpen && !isDesktop },
+          {
+            [classes.drawerOpenPaperPadding]: itemDrawerOpen,
+            [classes.drawerOpen]: itemDrawerOpen,
+            [classes.drawerClose]: !itemDrawerOpen && !isTablet,
+            [classes.drawerPermanentClose]: !itemDrawerOpen && isTablet,
+          },
         ),
       }}
     >
       {itemDrawerOpen
         ? (
-          <Grid container direction="row" alignItems="center" spacing={2} className={classes.toolbar}>
-            <Grid item>
-              <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
+          <Grid
+            alignItems="center"
+            container
+            direction="row"
+          >
+            <Grid
+              item
+              container
+              justify="flex-end"
+              alignItems="center"
+              className={classes.options}
+              spacing={1}
+            >
+              <Grid item>
+                <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />
+              </Grid>
+              <Grid item>
+                <ItemSearch />
+              </Grid>
+              <Grid item>
+                {isDesktop && renderToggleItemDrawer()}
+              </Grid>
             </Grid>
-            <Grid item container justify="flex-end" alignItems="center" className={classes.extendItem}>
-              {contentToDisplay.length > 0
-                && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
-              {isDesktop && renderToggleItemDrawer()}
+            <Grid
+              alignItems="center"
+              className={classes.itemHeader}
+              container
+              direction="column"
+              item
+              justify="center"
+            >
+              <ItemHeader />
             </Grid>
           </Grid>
         )
         : (
-          <AppBar position="static" color="inherit" className={classes.itemDrawerAppbar}>
-            <Toolbar>
-              <Typography variant="h6">{isMovie ? 'Movies' : 'TV Shows'}</Typography>
+          <AppBar position="static" color="inherit">
+            <Toolbar className={classes.toolbar}>
+              <Typography variant="h6">
+                {`Top 10 ${toCamelCase(isMovie ? movieCategory : tvShowCategory)}`}
+              </Typography>
               <div className={classes.grow} />
               {contentToDisplay.length > 0
-                && <ItemCategory isDrawer={itemDrawerOpen} type={activeTab} />}
-              {isDesktop && renderToggleItemDrawer()}
+                && <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />}
+              <ItemSearch />
+              {isDesktop && renderToggleItemDrawer(true)}
             </Toolbar>
           </AppBar>
         )}
-      <div className={classes.itemCardContainer}>
+      <Container
+        className={clsx(
+          classes.itemCardContainer,
+          { [classes.desktopDrawerOpenItemCardContainer]: itemDrawerOpen },
+          { [classes.desktopDrawerClosedItemCardContainer]: !itemDrawerOpen },
+        )}
+      >
         {renderItemCards()}
-      </div>
+      </Container>
     </Drawer>
   );
+};
+
+ItemDrawer.propTypes = {
+  isItemSelected: PropTypes.bool.isRequired,
 };
 
 export default ItemDrawer;

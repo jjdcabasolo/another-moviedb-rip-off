@@ -2,14 +2,37 @@ import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
 
+import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
+import ItemLazyLoad from '../../common/item/ItemLazyLoad';
+import ItemSeeMore from '../../common/item/ItemSeeMore';
 import PersonAvatar from '../../common/item/detail/PersonAvatar';
+import SeeMoreIconButton from '../../common/SeeMoreIconButton';
 
-import { getCastCol } from '../../../utils/functions';
+import { getCastCol, scrollToID } from '../../../utils/functions';
+
+import { MOVIE_MAX_CAST_HORIZONTAL_ITEMS as maxCount } from '../../../constants';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    [theme.breakpoints.only('xs')]: {
+      margin: theme.spacing(2, 0),
+    },
+    position: 'relative',
+    width: 'inherit',
+  },
+  horizontalScrollItemSpacing: {
+    margin: theme.spacing(0, 1),
+    [theme.breakpoints.only('xs')]: {
+      margin: theme.spacing(0, 0.125),
+    },
+  },
+}));
 
 const TVShowCast = () => {
+  const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
@@ -20,22 +43,63 @@ const TVShowCast = () => {
 
   const [cardCol, setCardCol] = useState(0);
 
-  const { cast } = tvShow;
+  const {
+    cast,
+    name,
+    original_name: originalName,
+  } = tvShow;
 
   useEffect(() => {
     setCardCol(getCastCol(isMobile, isSmallTablet));
   }, [isMobile, isSmallTablet, isBigTablet, isDesktop]);
 
   return (
-    <Grid container spacing={2}>
-      {cast.map((person) => (
-        <PersonAvatar
-          character={person.character}
-          col={12 / cardCol}
-          image={person.profile_path}
-          name={person.name}
-        />
-      ))}
+    <Grid container className={classes.container}>
+      <ItemSeeMore
+        appbarTitle={[name || originalName, 'Cast']}
+        collapsedClickEvent={() => scrollToID('tvshow-cast')}
+        collapsedContent={(
+          <ItemHorizontalContainer
+            isWithSeeMore={cast.length > maxCount}
+            scrollAmount={144}
+            seeMoreComponent={<SeeMoreIconButton />}
+          >
+            {cast.slice(0, maxCount).map((item) => (
+              <div className={classes.horizontalScrollItemSpacing}>
+                <PersonAvatar
+                  character={item.character}
+                  col={12}
+                  image={item.profile_path}
+                  name={item.name}
+                  isHorizontalScroll
+                />
+              </div>
+            ))}
+          </ItemHorizontalContainer>
+        )}
+        expandedContent={(
+          <Grid container spacing={2}>
+            <ItemLazyLoad
+              contents={cast}
+              maxItemPerLoad={20}
+              node={<PersonAvatar />}
+              otherProps={{ col: 12 / cardCol }}
+              type="itemCast"
+            />
+            {/* {cast.slice(0, cast.length).map((castMore) => (
+              <PersonAvatar
+                character={castMore.character}
+                col={12 / cardCol}
+                image={castMore.profile_path}
+                name={castMore.name}
+              />
+            ))} */}
+          </Grid>
+        )}
+        isButtonShown={cast.length > maxCount}
+        sectionId="cast"
+        seeMoreText={`Show all ${cast.length} cast`}
+      />
     </Grid>
   );
 };

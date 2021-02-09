@@ -9,8 +9,10 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Fab, Zoom, useMediaQuery } from '@material-ui/core';
+import { Zoom, useMediaQuery } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+
+import Fab from '../../overrides/Fab';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -24,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
     '&::-webkit-scrollbar': {
       display: 'none',
     },
+    [theme.breakpoints.only('xs')]: {
+      margin: theme.spacing(0, -2),
+      padding: theme.spacing(0, 2),
+    },
   },
   horizontalScrollItem: {
     margin: theme.spacing(0, 1),
@@ -33,8 +39,13 @@ const useStyles = makeStyles((theme) => ({
   },
   seeMoreItem: {
     cursor: 'pointer',
+    [theme.breakpoints.only('xs')]: {
+      paddingRight: theme.spacing(2),
+    },
   },
   scroller: {
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
     position: 'absolute',
     top: theme.spacing(7),
   },
@@ -44,19 +55,12 @@ const useStyles = makeStyles((theme) => ({
   leftScroller: {
     left: -theme.spacing(2.5),
   },
-  rightScrollerList: {
-    right: -theme.spacing(1.5),
-  },
-  leftScrollerList: {
-    left: -theme.spacing(1.5),
-  },
 }));
 
 const ItemHorizontalContainer = ({
   children,
   handleSeeMore,
   imageSize,
-  isHorizontalList = false,
   isWithSeeMore = false,
   scrollAmount,
   seeMoreComponent,
@@ -83,7 +87,7 @@ const ItemHorizontalContainer = ({
       const { clientWidth, scrollLeft, scrollWidth } = current;
 
       setHideScrollLeft(scrollLeft !== 0);
-      setHideScrollRight(scrollLeft !== (scrollWidth - clientWidth));
+      setHideScrollRight(Math.floor(scrollLeft) !== (scrollWidth - clientWidth));
     }
   }, [children]);
 
@@ -124,14 +128,10 @@ const ItemHorizontalContainer = ({
           <Zoom in={hideScrollLeft}>
             <Fab
               aria-label="scroll to left"
-              className={clsx(
-                classes.scroller,
-                { [classes.leftScrollerList]: isHorizontalList },
-                { [classes.leftScroller]: !isHorizontalList },
-              )}
-              style={{ top: scrollerTopHeight }}
+              className={clsx(classes.scroller, classes.leftScroller)}
               onClick={() => handleScroll(-scrollAmount)}
               size="small"
+              style={{ top: scrollerTopHeight }}
             >
               <KeyboardArrowLeft />
             </Fab>
@@ -139,14 +139,10 @@ const ItemHorizontalContainer = ({
           <Zoom in={hideScrollRight}>
             <Fab
               aria-label="scroll to right"
-              className={clsx(
-                classes.scroller,
-                { [classes.rightScrollerList]: isHorizontalList },
-                { [classes.rightScroller]: !isHorizontalList },
-              )}
-              style={{ top: scrollerTopHeight }}
+              className={clsx(classes.scroller, classes.rightScroller)}
               onClick={() => handleScroll(scrollAmount)}
               size="small"
+              style={{ top: scrollerTopHeight }}
             >
               <KeyboardArrowRight />
             </Fab>
@@ -161,7 +157,6 @@ ItemHorizontalContainer.propTypes = {
   children: PropTypes.node.isRequired,
   handleSeeMore: PropTypes.func.isRequired,
   imageSize: PropTypes.number.isRequired,
-  isHorizontalList: PropTypes.bool.isRequired,
   isWithSeeMore: PropTypes.bool.isRequired,
   scrollAmount: PropTypes.number.isRequired,
   seeMoreComponent: PropTypes.node.isRequired,

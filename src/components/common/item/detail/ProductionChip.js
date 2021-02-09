@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Chip } from '@material-ui/core';
-import { BrokenImage } from '@material-ui/icons';
+
+import BrokenImage from '../../BrokenImage';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
@@ -12,7 +13,12 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.5, 1, 0.5, 0),
   },
   avatar: {
-    width: theme.spacing(10),
+    border: `1px solid ${theme.palette.brokenImage.border}`,
+  },
+  brokenImage: {
+    height: theme.spacing(3),
+    marginLeft: theme.spacing(0.5),
+    width: theme.spacing(3),
   },
 }));
 
@@ -23,21 +29,28 @@ const ProductionChip = ({
 }) => {
   const classes = useStyles();
 
-  const doesPathExist = image !== null;
+  const isImageValid = image !== null;
 
   let label = name;
   if (country) label += ` (${country})`;
 
   return (
     <Chip
-      avatar={(
-        <Avatar
-          alt={doesPathExist ? `Image not loading? Visit ${image} to view.` : `${name}'s avatar.`}
-          src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}` : ''}
-        >
-          {!doesPathExist && <BrokenImage fontSize="small" />}
-        </Avatar>
-      )}
+      avatar={isImageValid
+        ? (
+          <Avatar
+            alt={`${name}'s avatar.`}
+            className={classes.avatar}
+            src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}`}
+          />
+        )
+        : (
+          <BrokenImage
+            avatarSize="small"
+            extraClass={classes.brokenImage}
+            type="avatar"
+          />
+        )}
       variant="outlined"
       label={label}
       className={classes.chip}

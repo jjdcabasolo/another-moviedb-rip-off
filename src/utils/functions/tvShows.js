@@ -5,7 +5,7 @@ export const getTVShowStatus = (status) => {
     case 'Returning Series':
       return 'Ongoing';
     default:
-      return '';
+      return status;
   }
 };
 

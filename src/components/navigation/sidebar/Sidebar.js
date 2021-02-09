@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
     }),
     width: SIDEBAR_WIDTH,
   },
+  drawerPaper: {
+    backgroundColor: theme.palette.background.default,
+  },
   itemContainer: {
     overflowY: 'scroll',
     width: '100%',
@@ -63,17 +66,6 @@ const useStyles = makeStyles((theme) => ({
   },
   marginDrawerOpen: {
     marginLeft: theme.spacing(7),
-  },
-  backdrop: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    zIndex: theme.zIndex.appBar + 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    transition: theme.transitions.create('backgroundColor', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   },
 }));
 
@@ -92,62 +84,55 @@ const Sidebar = ({ children }) => {
   const dispatch = useDispatch();
 
   const location = useLocation();
+  const {
+    movie: moviePath,
+    movieId,
+    tvShow: tvShowPath,
+    tvShowId,
+  } = evaluateLocation(location);
 
-  const currentLocation = evaluateLocation(location);
-  const isMovieSelected = 'movieId' in currentLocation;
-  const isMovieTabActive = 'movie' in currentLocation;
-  const isTVShowSelected = 'tvShowId' in currentLocation;
-  const isTVShowTabActive = 'tvShow' in currentLocation;
+  const isMovieSelected = typeof movieId !== 'undefined' && movieId.length > 0;
+  const isMovieTabActive = typeof moviePath !== 'undefined' && moviePath;
+  const isTVShowSelected = typeof tvShowId !== 'undefined' && tvShowId.length > 0;
+  const isTVShowTabActive = typeof tvShowPath !== 'undefined' && tvShowPath;
+  const isMovie = isMovieSelected && isMovieTabActive;
+  const isTVShow = isTVShowSelected && isTVShowTabActive;
   const isMovieEmpty = Object.keys(movie).length === 0 && movie.constructor === Object;
   const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
 
-  const handleDrawerState = () => {
-    if (drawerOpen) dispatch(sidebarActions.setDrawer(false));
+  const handleDrawerState = (open) => {
+    dispatch(sidebarActions.setDrawer(open));
   };
 
   const evaluateDrawerVisibility = () => {
     if (isMovieTabActive) {
       if (!isDesktop && isMovieSelected) return <SidebarTitlebar item={movie} />;
-      return <ItemDrawer />;
+      return <ItemDrawer isItemSelected={isMovieSelected} />;
     } if (isTVShowTabActive) {
       if (!isDesktop && isTVShowSelected) return <SidebarTitlebar item={tvShow} />;
-      return <ItemDrawer />;
+      return <ItemDrawer options={isTVShowSelected} />;
     }
     return null;
   };
 
   const renderTopContents = () => {
-    if (isMovieTabActive) {
+    if (isMovie) {
       return (
-        <>
-          <ReadingProgress
-            isLoading={isMovieEmpty}
-            isVisible={isMovieSelected && !isMovieLoading}
-            target={target}
-          />
-          <GradientBackground
-            image={movie.backdrop_path}
-            isItemSelected={isMovieSelected}
-            isLoading={isMovieEmpty}
-            isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
-          />
-        </>
+        <GradientBackground
+          image={movie.backdrop_path}
+          isItemSelected={isMovieSelected}
+          isLoading={isMovieEmpty}
+          isVisible={isMovie && !isMovieLoading}
+        />
       );
-    } if (isTVShowTabActive) {
+    } if (isTVShow) {
       return (
-        <>
-          <ReadingProgress
-            isLoading={isTVShowEmpty}
-            isVisible={isTVShowSelected && !isTVShowLoading}
-            target={target}
-          />
-          <GradientBackground
-            image={tvShow.backdrop_path}
-            isItemSelected={isTVShowSelected}
-            isLoading={isTVShowEmpty}
-            isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
-          />
-        </>
+        <GradientBackground
+          image={tvShow.backdrop_path}
+          isItemSelected={isTVShowSelected}
+          isLoading={isTVShowEmpty}
+          isVisible={isTVShow && !isTVShowLoading}
+        />
       );
     }
     return null;
@@ -159,7 +144,7 @@ const Sidebar = ({ children }) => {
 
       <CssBaseline />
 
-      <ClickAwayListener onClickAway={handleDrawerState}>
+      <ClickAwayListener onClickAway={() => handleDrawerState(false)}>
         <Drawer
           className={clsx(
             classes.drawer,
@@ -168,11 +153,14 @@ const Sidebar = ({ children }) => {
           )}
           classes={{
             paper: clsx(
+              classes.drawerPaper,
               { [classes.drawerOpen]: drawerOpen },
               { [classes.drawerClose]: !drawerOpen },
             ),
           }}
           open={drawerOpen}
+          onMouseEnter={() => handleDrawerState(true)}
+          onMouseLeave={() => handleDrawerState(false)}
           style={drawerOpen ? { position: 'absolute' } : {}}
           variant="permanent"
         >
@@ -180,11 +168,8 @@ const Sidebar = ({ children }) => {
         </Drawer>
       </ClickAwayListener>
 
-      { drawerOpen && (
-        <>
-          <div className={classes.marginDrawerOpen} />
-          <div className={classes.backdrop} />
-        </>
+      {drawerOpen && (
+        <div className={classes.marginDrawerOpen} />
       )}
 
       {evaluateDrawerVisibility()}
@@ -195,7 +180,7 @@ const Sidebar = ({ children }) => {
         <main
           className={clsx(
             classes.content,
-            { [classes.contentItemSelected]: isMovieSelected || isTVShowSelected },
+            { [classes.contentItemSelected]: isMovie || isTVShow },
           )}
         >
           <Container maxWidth="md">

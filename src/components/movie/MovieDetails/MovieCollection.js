@@ -3,19 +3,24 @@ import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
 
-import ItemHorizontalList from '../../common/item/ItemHorizontalList';
+import ItemCardHorizontalList from '../../common/item/ItemCardHorizontalList';
 
 const MovieCollection = ({ anchorId }) => {
   const movie = useSelector((state) => state.movies.movie);
 
-  const { collection_content: collectionContent } = movie;
+  const {
+    collection_content: collectionContent,
+    original_title: originalTitle,
+    title,
+  } = movie;
 
   if (!collectionContent) return null;
 
   const { overview, parts } = collectionContent;
 
   return (
-    <ItemHorizontalList
+    <ItemCardHorizontalList
+      appbarTitle={[title || originalTitle, 'Collection']}
       anchorId={anchorId}
       items={parts}
       isOverviewCollapsed

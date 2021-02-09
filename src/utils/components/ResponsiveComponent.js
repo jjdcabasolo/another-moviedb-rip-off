@@ -2,9 +2,9 @@ import { useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 const ResponsiveComponent = ({
-  desktopComponent,
-  mobileComponent,
-  tabletComponent,
+  desktopComponent = null,
+  mobileComponent = null,
+  tabletComponent = null,
 }) => {
   const theme = useTheme();
 

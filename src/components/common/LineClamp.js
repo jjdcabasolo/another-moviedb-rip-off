@@ -4,20 +4,20 @@ import ClampLines from 'react-clamp-lines';
 
 import { styled } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
+import { KeyboardArrowUp, KeyboardArrowDown } from '@material-ui/icons';
 
 const ReadMoreButton = styled(Button)(({
   theme,
 }) => ({
-  width: '100%',
   marginTop: '8px !important',
+  width: '100%',
   color: theme.palette.text.secondary,
+  zIndex: 1,
 }));
 
 export default class LineClamp extends ClampLines {
   getButton() {
     if (this.state.noClamp || !this.props.buttons) return null;
-
-    const buttonText = this.watch ? this.props.moreText : this.props.lessText;
 
     return (
       <ReadMoreButton
@@ -27,7 +27,7 @@ export default class LineClamp extends ClampLines {
         onClick={this.clickHandler}
         size="small"
       >
-        {buttonText}
+        {this.watch ? <KeyboardArrowDown /> : <KeyboardArrowUp /> }
       </ReadMoreButton>
     );
   }

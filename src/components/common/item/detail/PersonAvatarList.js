@@ -11,7 +11,8 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core';
-import { BrokenImage } from '@material-ui/icons';
+
+import BrokenImage from '../../BrokenImage';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
@@ -21,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: theme.typography.h6.fontWeight,
+  },
+  brokenImage: {
+    color: theme.palette.action.disabled,
+  },
+  avatar: {
+    border: `1px solid ${theme.palette.brokenImage.border}`,
   },
 }));
 
@@ -45,17 +52,20 @@ const PersonAvatarList = ({
             name,
             profile_path: profilePath,
           } = person;
-          const doesPathExist = profilePath !== null;
+          const isImageValid = profilePath !== null;
 
           return (
             <ListItem>
               <ListItemAvatar>
-                <Avatar
-                  alt={doesPathExist ? `Image not loading? Visit ${profilePath} to view.` : `${name}'s avatar.`}
-                  src={doesPathExist ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${profilePath}` : ''}
-                >
-                  {!doesPathExist && <BrokenImage />}
-                </Avatar>
+                {isImageValid
+                  ? (
+                    <Avatar
+                      alt={`${name}'s avatar.`}
+                      className={classes.avatar}
+                      src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${profilePath}`}
+                    />
+                  )
+                  : <BrokenImage type="avatar" avatarSize="small" />}
               </ListItemAvatar>
               <ListItemText primary={name} secondary={job} />
             </ListItem>

@@ -7,12 +7,13 @@ import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  AppBar,
   IconButton,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 import { ArrowBackTwoTone } from '@material-ui/icons';
+
+import AppBar from '../../overrides/AppBar';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 

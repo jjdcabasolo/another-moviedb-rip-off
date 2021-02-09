@@ -10,16 +10,14 @@ const useStyles = makeStyles((theme) => ({
   progressBar: {
     position: 'sticky',
     zIndex: 1,
-    [theme.breakpoints.down('sm')]: {
-      top: theme.spacing(6),
+    [theme.breakpoints.between('xs', 'lg')]: {
+      bottom: 0,
       position: 'fixed',
       width: '100%',
     },
-    [theme.breakpoints.between('sm', 'lg')]: {
-      top: theme.spacing(6),
-    },
     [theme.breakpoints.up('lg')]: {
       top: 0,
+      bottom: 'unset',
     },
   },
 }));
@@ -31,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
 const ReadingProgress = ({ target, isVisible, isLoading }) => {
   const classes = useStyles();
 
-  const crewShowMore = useSelector((state) => state.movies.crewShowMore);
   const castShowMore = useSelector((state) => state.movies.castShowMore);
+  const crewShowMore = useSelector((state) => state.movies.crewShowMore);
   const drawerOpen = useSelector((state) => state.sidebar.drawerOpen);
-  const movie = useSelector((state) => state.movies.movie);
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
+  const movie = useSelector((state) => state.movies.movie);
+  const seeMore = useSelector((state) => state.sidebar.seeMore);
 
   const [readingProgress, setReadingProgress] = useState(0);
 
@@ -47,9 +46,9 @@ const ReadingProgress = ({ target, isVisible, isLoading }) => {
 
     const element = target.current;
 
+    const elementBottomPos = element.offsetHeight;
     const elementHeight = element.scrollHeight;
     const elementTopPos = element.scrollTop;
-    const elementBottomPos = element.offsetHeight;
 
     const maxProgress = elementHeight - elementBottomPos;
     const totalProgress = Math.floor((elementTopPos / maxProgress) * 100);
@@ -65,7 +64,7 @@ const ReadingProgress = ({ target, isVisible, isLoading }) => {
     }
 
     setReadingProgress(totalProgress);
-  }, [target]);
+  }, [target.current]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, true);
@@ -73,14 +72,15 @@ const ReadingProgress = ({ target, isVisible, isLoading }) => {
   });
 
   useEffect(() => handleScroll(), [
-    target,
-    crewShowMore,
     castShowMore,
-    isMovieLoading,
-    isTVShowLoading,
-    handleScroll,
-    isMovieSelected,
+    crewShowMore,
     drawerOpen,
+    handleScroll,
+    isMovieLoading,
+    isMovieSelected,
+    isTVShowLoading,
+    seeMore,
+    target.current,
   ]);
 
   if (!isVisible || isLoading) return null;

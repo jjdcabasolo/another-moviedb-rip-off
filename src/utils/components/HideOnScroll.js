@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 
 import { Slide, useScrollTrigger } from '@material-ui/core';
 
-const HideOnScroll = ({ children, replacement, willReplace }) => {
-  const trigger = useScrollTrigger();
+const HideOnScroll = ({
+  children,
+  replacement,
+  target,
+  willReplace,
+}) => {
+  const trigger = useScrollTrigger({
+    target: target && target.current
+      ? target.current
+      : undefined,
+  });
 
   return (
     <>
@@ -24,6 +33,9 @@ HideOnScroll.propTypes = {
   children: PropTypes.node.isRequired,
   replacement: PropTypes.node.isRequired,
   willReplace: PropTypes.bool.isRequired,
+  target: PropTypes.shape({
+    current: PropTypes.node.isRequired,
+  }).isRequired,
 };
 
 export default HideOnScroll;

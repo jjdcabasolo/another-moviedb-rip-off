@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 // number of words for allowance before truncating the text;
 const TRUNCATION_ALLOWANCE = 3;
 
@@ -27,23 +28,28 @@ export const evaluateLocation = (location) => {
   if (path[0].match(/movies/g)) {
     result.movie = true;
     if (path[1] !== undefined) {
-      // eslint-disable-next-line prefer-destructuring
       result.movieId = path[1];
+    }
+    if (path[2] !== undefined) {
+      result.movieSection = path[2];
     }
   }
 
   if (path[0].match(/tvshows/g)) {
     result.tvShow = true;
     if (path[1] !== undefined) {
-      // eslint-disable-next-line prefer-destructuring
       result.tvShowId = path[1];
+    }
+    if (path[2] !== undefined) {
+      result.tvShowSection = path[2];
     }
   }
 
   return result;
 };
 
-// money format for millions and billions credit: https://stackoverflow.com/q/36734201
+// money format for millions and billions
+// taken from https://stackoverflow.com/q/36734201
 export const toMillionsOrBillions = (num) => {
   const absoluteNumber = Math.abs(Number(num));
   if (absoluteNumber >= 1.0e+9) {
@@ -56,4 +62,12 @@ export const toMillionsOrBillions = (num) => {
     return `${Math.floor(absoluteNumber / 1.0e+3)}K`;
   }
   return `${absoluteNumber}`;
+};
+
+// convert camel case to sentence case
+// taken from: https://stackoverflow.com/a/7225450
+export const toCamelCase = (text) => {
+  const result = text.replace(/([A-Z])/g, ' $1');
+
+  return result.charAt(0).toUpperCase() + result.slice(1);
 };

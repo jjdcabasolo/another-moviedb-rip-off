@@ -5,11 +5,9 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 
+import BrokenImage from '../../common/BrokenImage';
 import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
 
 import { getTVShowSeasonDetails } from '../../../api';
@@ -25,35 +23,47 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   image: {
+    border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
     width: theme.spacing(18.75),
   },
   activeImage: {
-    border: `2px solid ${theme.palette.divider} !important`,
+    border: `1px solid ${theme.palette.divider} !important`,
     borderRadius: theme.shape.borderRadius,
   },
   emphasis: {
     fontWeight: 600,
   },
   horizontalScrollItemSpacing: {
-    border: '2px solid transparent',
+    border: '1px solid transparent',
     cursor: 'pointer',
     margin: 0,
     padding: theme.spacing(1),
     maxWidth: theme.spacing(22.25),
+    [theme.breakpoints.only('xs')]: {
+      '&:last-child': {
+        marginRight: theme.spacing(2),
+      },
+    },
   },
   gridItem: {
     maxWidth: '100%',
   },
-  brokenImage: {
+  brokenImageContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.action.hover,
+  },
+  lastEntry: {
+    width: theme.spacing(2.5),
   },
 }));
 
 const TVShowSeasonList = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
@@ -72,30 +82,10 @@ const TVShowSeasonList = () => {
     dispatch(tvShowsActions.setSelectedSeason(index));
   };
 
-  const renderBrokenImage = () => (
-    <div className={clsx(classes.image, classes.activeImage, classes.brokenImage)}>
-      <Typography variant="body1">No image available.</Typography>
-    </div>
-  );
-
-  const renderSeasonCard = (posterPath) => {
-    let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
-    if (posterPath) imagePath += `/w780${posterPath}`;
-    else return renderBrokenImage();
-
-    return (
-      <img
-        className={classes.image}
-        alt="Season cover"
-        src={imagePath}
-      />
-    );
-  };
-
   return (
     <Grid container item xs={12} className={classes.container}>
       <ItemHorizontalContainer
-        imageSize={theme.spacing(26)}
+        imageSize={theme.spacing(28)}
         scrollAmount={theme.spacing(63)}
       >
         {seasons.map((season) => {
@@ -109,6 +99,9 @@ const TVShowSeasonList = () => {
           const isActive = seasonNumber === selectedSeason;
           const seasonName = seasonNumber === 0 ? name : `S${seasonNumber}`;
 
+          let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+          if (posterPath) imagePath += `/w780${posterPath}`;
+
           return (
             <Grid
               className={clsx(
@@ -121,7 +114,20 @@ const TVShowSeasonList = () => {
               spacing={1}
             >
               <Grid item className={classes.gridItem}>
-                {renderSeasonCard(posterPath)}
+                {posterPath
+                  ? (
+                    <img
+                      className={classes.image}
+                      alt="Season cover"
+                      src={imagePath}
+                    />
+                  )
+                  : (
+                    <BrokenImage
+                      type="baseImage"
+                      extraClass={`${classes.activeImage} ${classes.image} ${classes.brokenImageContainer}`}
+                    />
+                  )}
               </Grid>
               <Grid item className={classes.gridItem}>
                 <Typography noWrap className={clsx({ [classes.emphasis]: isActive })}>
@@ -134,6 +140,11 @@ const TVShowSeasonList = () => {
             </Grid>
           );
         })}
+        {isMobile && (
+          <Grid container direction="column" spacing={1}>
+            <Grid item className={classes.lastEntry} />
+          </Grid>
+        )}
       </ItemHorizontalContainer>
     </Grid>
   );

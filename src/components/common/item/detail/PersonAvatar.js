@@ -5,7 +5,8 @@ import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Grid, Typography } from '@material-ui/core';
-import { BrokenImage, MoreHoriz } from '@material-ui/icons';
+
+import BrokenImage from '../../BrokenImage';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
 
@@ -17,14 +18,19 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightMedium,
   },
   avatar: {
-    width: theme.spacing(12),
+    border: `1px solid ${theme.palette.brokenImage.border}`,
     height: theme.spacing(12),
+    width: theme.spacing(12),
   },
   text: {
+    width: 'inherit',
     marginTop: theme.spacing(1),
   },
   horizontalScrollItemWidth: {
     width: theme.spacing(16),
+  },
+  brokenImage: {
+    color: theme.palette.action.disabled,
   },
 }));
 
@@ -36,6 +42,8 @@ const PersonAvatar = ({
   isHorizontalScroll = false,
 }) => {
   const classes = useStyles();
+
+  const isImageValid = image !== null;
 
   return (
     <Grid
@@ -50,16 +58,18 @@ const PersonAvatar = ({
       xs={col}
     >
       <Grid item>
-        <Avatar
-          src={image !== null ? `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w780${image}` : ''}
-          className={classes.avatar}
-        >
-          {image === null && <BrokenImage fontSize="large" />}
-          {image === 'seemore' && <MoreHoriz fontSize="large" />}
-        </Avatar>
+        {isImageValid
+          ? (
+            <Avatar
+              alt={`${name}'s avatar.`}
+              className={classes.avatar}
+              src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w780${image}`}
+            />
+          )
+          : <BrokenImage type="avatar" extraClass={classes.avatar} />}
       </Grid>
       <Grid item className={classes.text}>
-        <Typography variant="body1" className={classes.title} align="center">
+        <Typography variant="body1" className={classes.title} align="center" noWrap>
           {character}
         </Typography>
       </Grid>

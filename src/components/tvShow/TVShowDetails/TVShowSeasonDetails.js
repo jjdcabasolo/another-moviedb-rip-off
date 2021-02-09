@@ -12,17 +12,20 @@ import { selectSeason } from '../../../utils/functions';
 import { TV_SHOW_OVERVIEW_MAX_WORDS } from '../../../constants';
 
 const TVShowSeasonDetails = () => {
-  const tvShow = useSelector((state) => state.tvShows.tvShow);
+  const episodes = useSelector((state) => state.tvShows.episodes);
   const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
 
   const { seasons } = tvShow;
 
   const {
     air_date: airDate,
-    episode_count: episodeCount,
     name: seasonName,
     overview,
   } = selectSeason(seasons, selectedSeason);
+
+  const filteredEpisodes = episodes.filter((e) => (!e.air_date && e.air_date.length > 0)
+    || moment(e.air_date).diff(moment()) < 0).length;
 
   return (
     <Grid item container spacing={2}>
@@ -32,20 +35,22 @@ const TVShowSeasonDetails = () => {
         </Typography>
         <Typography color="textSecondary">
           {airDate ? moment(airDate).format('MMM D, YYYY') : 'No release date.'}
-          &nbsp;&nbsp;&middot;&nbsp;&nbsp;
-          {`${episodeCount} episodes`}
+          {filteredEpisodes > 0 && (
+            <>
+              &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+              {`${filteredEpisodes} episode${filteredEpisodes > 1 ? 's' : ''}`}
+            </>
+          )}
         </Typography>
       </Grid>
-      <Grid item xs={12} container>
+      {overview && (
         <Grid item xs={12}>
-          {overview && (
-            <TruncatedOverview
-              overview={overview}
-              maxWords={TV_SHOW_OVERVIEW_MAX_WORDS}
-            />
-          )}
+          <TruncatedOverview
+            overview={overview}
+            maxWords={TV_SHOW_OVERVIEW_MAX_WORDS}
+          />
         </Grid>
-      </Grid>
+      )}
     </Grid>
   );
 };

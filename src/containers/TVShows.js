@@ -21,11 +21,11 @@ import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeason
 import TVShowSeasonList from '../components/tvShow/TVShowDetails/TVShowSeasonList';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
 
-import { getTVShowDetails } from '../api';
+import { getTVShowDetails, getTVShowSeasonDetails } from '../api';
 
 import { tvShowsActions } from '../reducers/ducks';
 
-import { decryptKey, selectEpisode, selectSeason } from '../utils/functions';
+import { decryptKey } from '../utils/functions';
 
 import { NOTE_NO_SELECTED_TV_SHOW, NOTE_TV_SHOW_NOT_FOUND } from '../constants';
 
@@ -46,8 +46,6 @@ const TVShows = () => {
   const episodes = useSelector((state) => state.tvShows.episodes);
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
-  const selectedEpisode = useSelector((state) => state.tvShows.selectedEpisode);
-  const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const dispatch = useDispatch();
 
@@ -69,15 +67,11 @@ const TVShows = () => {
     tmdb,
   } = tvShow;
 
-  const currentSeason = seasons && selectSeason(seasons, selectedSeason);
-  const currentEpisode = selectEpisode(episodes, selectedEpisode);
-  const hasEpisode = selectedEpisode > 0;
-
   const sectionVisibility = {
-    seasons: currentSeason && currentSeason.air_date,
-    episodes: currentSeason && currentSeason.air_date,
+    seasonList: seasons && seasons.length > 0,
+    episodes: episodes.filter((e) => (!e.air_date && e.air_date.length > 0)
+      || moment(e.air_date).diff(moment()) < 0).length > 0,
     cast: cast && cast.length > 0,
-    crew: currentEpisode.crew && currentEpisode.crew.length > 0,
     production: (createdBy && createdBy.length > 0)
       || (productionCompanies && productionCompanies.length > 0),
     recommendations: recommendations && recommendations.length > 0,
@@ -85,10 +79,23 @@ const TVShows = () => {
 
   useEffect(() => {
     if (tvShowId) {
-      getTVShowDetails(decryptKey(), tvShowId, (response) => {
-        dispatch(tvShowsActions.setActiveTVShow(response));
-        dispatch(tvShowsActions.setDetailsLoading(false));
-        setIsLoaded(true);
+      getTVShowDetails(decryptKey(), tvShowId, (tvShowResponse) => {
+        const { seasons: fetchedSeason } = tvShowResponse;
+
+        if (fetchedSeason) {
+          const { season_number: latestSeason } = fetchedSeason
+            .sort((a, b) => b.season_number - a.season_number)
+            .find((e) => e.season_number > 0 && e.air_date);
+
+          getTVShowSeasonDetails(decryptKey(), tvShowId, latestSeason, (episodeResponse) => {
+            dispatch(tvShowsActions.setActiveTVShow(tvShowResponse, episodeResponse, latestSeason));
+            dispatch(tvShowsActions.setDetailsLoading(false));
+            setIsLoaded(true);
+          }, (error) => {
+            dispatch(tvShowsActions.setActiveTVShow({}));
+            setIsLoaded(error.response.data.status_code);
+          });
+        }
       }, (error) => {
         if (error.response) {
           dispatch(tvShowsActions.setActiveTVShow({}));
@@ -107,7 +114,9 @@ const TVShows = () => {
     );
   }
 
-  if (isTVShowLoading) return <ComponentLoader />;
+  if (isTVShowLoading) {
+    return <ComponentLoader location="itemcontainer" />;
+  }
 
   if (isLoaded === 34) {
     return (
@@ -117,7 +126,9 @@ const TVShows = () => {
     );
   }
 
-  if (Object.keys(tvShow).length === 0 && tvShow.constructor === Object) return <ComponentLoader />;
+  if (Object.keys(tvShow).length === 0 && tvShow.constructor === Object) {
+    return <ComponentLoader location="itemcontainer" />;
+  }
 
   return (
     <>
@@ -143,22 +154,32 @@ const TVShows = () => {
           anchorId="tvshow-seasons"
           divider={false}
           title="Seasons"
-          visible={sectionVisibility.seasonDetails}
+          visible={sectionVisibility.seasonList}
         >
           <TVShowSeasonList />
         </Section>
 
         <Section
-          anchorId="tvshow-episodes"
-          title="Episodes"
+          anchorId="tvshow-season-details"
+          divider={!sectionVisibility.episodes}
+          isCollapsible={false}
+          visible={sectionVisibility.seasonList}
         >
           <TVShowSeasonDetails />
+        </Section>
+
+        <Section
+          anchorId="tvshow-episodes"
+          isCollapsible={false}
+          title="Episodes"
+          visible={sectionVisibility.episodes}
+        >
           <TVShowEpisodes />
         </Section>
 
         <Section
           anchorId="tvshow-cast"
-          title={hasEpisode ? 'Cast' : 'Main cast'}
+          title="Cast"
           visible={sectionVisibility.cast}
         >
           <TVShowCast />

@@ -22,23 +22,24 @@ import {
 } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
-  note: {
-    padding: theme.spacing(8, 2),
-  },
   title: {
     fontWeight: 600,
   },
   subtitle: {
     fontWeight: 400,
   },
-  chipContainer: {
-    margin: theme.spacing(1, 0),
-  },
   chip: {
     margin: theme.spacing(0.25, 0.5, 0.25, 0),
   },
-  readMore: {
-    cursor: 'pointer',
+  releaseYear: {
+    color: theme.palette.text.secondary,
+    fontSize: theme.typography.h4.fontSize,
+    fontWeight: theme.typography.fontWeightLight,
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.only('xs')]: {
+      marginLeft: theme.spacing(1),
+      fontSize: theme.typography.h5.fontSize,
+    },
   },
 }));
 
@@ -78,6 +79,9 @@ const MovieHeader = ({ sectionVisibility }) => {
           variant={isMobile ? 'h4' : 'h2'}
         >
           {title || originalTitle}
+          <span className={classes.releaseYear}>
+            {`(${moment(releaseDate).format('YYYY')})`}
+          </span>
         </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
@@ -89,7 +93,9 @@ const MovieHeader = ({ sectionVisibility }) => {
           >
             {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : 'No release date.'}
             &nbsp;&middot;&nbsp;&nbsp;
-            {runtime ? `${runtimeHours}hr ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}` : 'No runtime yet.'}
+            {runtime
+              ? `${runtimeHours}hr ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`
+              : 'No runtime yet.'}
           </Typography>
         </Grid>
       </Grid>
@@ -113,9 +119,11 @@ const MovieHeader = ({ sectionVisibility }) => {
           youtube={youtube}
         />
       </Grid>
-      <Grid item xs={12}>
-        <TruncatedOverview overview={overview} maxWords={MOVIE_OVERVIEW_MAX_WORDS} />
-      </Grid>
+      {overview && overview.length > 0 && (
+        <Grid item xs={12}>
+          <TruncatedOverview overview={overview} maxWords={MOVIE_OVERVIEW_MAX_WORDS} />
+        </Grid>
+      )}
       {tagline && (
         <Grid item xs={12}>
           <Typography

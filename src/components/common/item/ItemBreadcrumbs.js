@@ -7,16 +7,12 @@ import {
   Breadcrumbs,
   Grid,
   Link,
-  Typography,
 } from '@material-ui/core';
 
 const ItemBreadcrumbs = ({ content }) => (
   <Grid container spacing={2}>
-    <Grid item>
-      <Typography>Jump to: </Typography>
-    </Grid>
-    <Grid item>
-      <Breadcrumbs aria-label="breadcrumb">
+    <Grid item xs={12}>
+      <Breadcrumbs separator=" | " aria-label="breadcrumb">
         {content.map((e) => (
           <Link component={HashLink} smooth to={e.link} color="inherit">
             {e.label}

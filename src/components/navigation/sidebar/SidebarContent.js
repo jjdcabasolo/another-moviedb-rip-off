@@ -22,8 +22,6 @@ import APIKeyDialog from '../../apiKey/APIKeyDialog';
 
 import { moviesActions, sidebarActions, tvShowsActions } from '../../../reducers/ducks';
 
-import Tooltip from '../../../utils/components/Tooltip';
-
 import {
   API_KEY_DIALOG_TMDB_LINK,
   FIGMA_LINK,
@@ -80,13 +78,11 @@ const SidebarContent = () => {
 
   const handleDrawerState = () => dispatch(sidebarActions.toggleDrawer());
 
-  const renderListItemLink = (link, tooltipTitle, icon, primary, secondary) => (
+  const renderListItemLink = (link, icon, primary, secondary) => (
     <ListItem button onClick={() => window.open(link, '_blank')}>
-      <Tooltip title={tooltipTitle} placement="right" visible={drawerOpen}>
-        <ListItemIcon>
-          {icon}
-        </ListItemIcon>
-      </Tooltip>
+      <ListItemIcon>
+        {icon}
+      </ListItemIcon>
       <ListItemText primary={primary} secondary={secondary} />
     </ListItem>
   );
@@ -110,9 +106,7 @@ const SidebarContent = () => {
               onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase())}
               selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
             >
-              <Tooltip title={element.title} placement="right" visible={drawerOpen}>
-                <ListItemIcon>{element.icon}</ListItemIcon>
-              </Tooltip>
+              <ListItemIcon>{element.icon}</ListItemIcon>
               <ListItemText primary={element.title} />
             </ListItem>
           </Link>
@@ -125,18 +119,18 @@ const SidebarContent = () => {
             External Links
           </ListSubheader>
         )}
-        {renderListItemLink(GITHUB_REPO_LINK, 'GitHub', <CodeTwoTone />, 'GitHub Repository', undefined)}
-        {renderListItemLink(FIGMA_LINK, 'Figma', <WebTwoTone />, 'Figma (Wireframes)', undefined)}
+        {renderListItemLink(GITHUB_REPO_LINK, <CodeTwoTone />, 'GitHub Repository', undefined)}
+        {renderListItemLink(FIGMA_LINK, <WebTwoTone />, 'Figma (Wireframes)', undefined)}
         <Divider className={classes.divider} />
-        <DarkModeToggle type="listItem" tooltipVisible={drawerOpen} />
+        <DarkModeToggle type="listItem" />
         <APIKeyDialog />
-        {renderListItemLink(API_KEY_DIALOG_TMDB_LINK, 'Le TMDb', (
+        {renderListItemLink(API_KEY_DIALOG_TMDB_LINK, (
           <img
             alt="TMDb Logo"
             className={classes.tmdbLogo}
             src={darkMode ? TMDB_LOGO_DARK : TMDB_LOGO}
           />
-        ), undefined, 'Made with ❤ and TMDb')}
+        ), 'Made with y540 and TMDb', 'by jjdcabasolo')}
       </List>
     </>
   );

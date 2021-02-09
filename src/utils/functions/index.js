@@ -10,6 +10,7 @@ export {
 
 export {
   evaluateLocation,
+  toCamelCase,
   toMillionsOrBillions,
   truncateText,
 } from './text';
