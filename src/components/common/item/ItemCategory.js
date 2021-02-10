@@ -51,9 +51,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  topCategoriesReplacement: {
-    margin: 0,
-  },
   category: {
     fontWeight: theme.typography.h6.fontWeight,
   },
@@ -65,10 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ItemCategory = ({
-  replacement,
-  type,
-}) => {
+const ItemCategory = ({ type }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
@@ -151,12 +145,7 @@ const ItemCategory = ({
       );
     case 'appbarHorizontalList':
       return (
-        <div
-          className={clsx(
-            classes.topCategories,
-            { [classes.topCategoriesReplacement]: replacement },
-          )}
-        >
+        <div className={clsx(classes.topCategories)}>
           {renderCategoryChips()}
           <div className={classes.lastEntry} />
         </div>
@@ -183,7 +172,6 @@ const ItemCategory = ({
 };
 
 ItemCategory.propTypes = {
-  replacement: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
 };
 

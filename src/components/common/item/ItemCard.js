@@ -31,12 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
   mediaDrawerOpen: {
     height: 0,
-    // [theme.breakpoints.only('sm')]: {
-    //   paddingTop: theme.browserSize.height / 2.5,
-    // },
-    // [theme.breakpoints.up('lg')]: {
-    //   paddingTop: theme.spacing(45),
-    // },
     [theme.breakpoints.up('sm')]: {
       paddingTop: theme.spacing(45),
     },
@@ -263,7 +257,14 @@ const ItemCard = ({
                 )}
                 color="textSecondary"
               >
-                <span className={classes.rankText}>{rank}</span>
+                <span
+                  className={clsx(
+                    classes.rankText,
+                    { [classes.textImageInvalid]: !isImageValid },
+                  )}
+                >
+                  {rank}
+                </span>
                 {dateDisplay}
               </Typography>
             </div>

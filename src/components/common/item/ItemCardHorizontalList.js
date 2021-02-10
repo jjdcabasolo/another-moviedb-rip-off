@@ -28,12 +28,6 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     width: 'inherit',
   },
-  ItemCardHorizontalListContainer: {
-    position: 'relative',
-    [theme.breakpoints.only('xs')]: {
-      padding: `${0} !important`,
-    },
-  },
   horizontalScrollItemSpacing: {
     paddingRight: theme.spacing(2),
     [theme.breakpoints.up('md')]: {
@@ -41,12 +35,6 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 0,
       },
     },
-  },
-  button: {
-    marginTop: theme.spacing(2),
-  },
-  readMore: {
-    cursor: 'pointer',
   },
   overview: {
     marginBottom: theme.spacing(1),

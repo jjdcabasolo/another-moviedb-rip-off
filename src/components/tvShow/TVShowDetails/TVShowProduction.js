@@ -8,9 +8,6 @@ import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 import ProductionChip from '../../common/item/detail/ProductionChip';
 
 const useStyles = makeStyles((theme) => ({
-  demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
   title: {
     fontWeight: theme.typography.h6.fontWeight,
     width: '100%',

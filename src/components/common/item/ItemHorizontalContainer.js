@@ -15,9 +15,6 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import Fab from '../../overrides/Fab';
 
 const useStyles = makeStyles((theme) => ({
-  button: {
-    marginTop: theme.spacing(2),
-  },
   horizontalScroll: {
     position: 'relative',
     display: 'flex',

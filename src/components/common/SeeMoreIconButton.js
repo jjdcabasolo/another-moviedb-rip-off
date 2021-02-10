@@ -37,8 +37,8 @@ const SeeMoreIconButton = () => {
           <ArrowForward />
         </Fab>
       </Grid>
-      <Grid item className={classes.text}>
-        <Typography variant="body1" className={classes.title} align="center" noWrap>
+      <Grid item>
+        <Typography variant="body1" align="center" noWrap>
           View all
         </Typography>
       </Grid>

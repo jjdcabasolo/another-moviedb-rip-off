@@ -104,7 +104,8 @@ export default function APIKeyDialog() {
   useEffect(() => {
     setApiKeyState({ ...apiKeyState, value: apiKey });
     setUsernameState({ ...usernameState, value: username });
-  }, [apiKeyState, apiKey, usernameState, username]);
+    // eslint-disable-next-line
+  }, []);
 
   const handleClickOpen = () => setOpen(true);
 

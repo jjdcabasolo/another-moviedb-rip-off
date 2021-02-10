@@ -86,14 +86,6 @@ const TVShowCast = () => {
               otherProps={{ col: 12 / cardCol }}
               type="itemCast"
             />
-            {/* {cast.slice(0, cast.length).map((castMore) => (
-              <PersonAvatar
-                character={castMore.character}
-                col={12 / cardCol}
-                image={castMore.profile_path}
-                name={castMore.name}
-              />
-            ))} */}
           </Grid>
         )}
         isButtonShown={cast.length > maxCount}
