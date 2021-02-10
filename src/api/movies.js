@@ -58,7 +58,7 @@ export const getTrendingMovies = (
   success,
   fail,
   after = () => {},
-) => axios.get('/trending/movie/week', { params: { api_key } })
+) => axios.get('/trending/movie/day', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
   .finally(() => after());

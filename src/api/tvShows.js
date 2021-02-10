@@ -5,7 +5,7 @@ export const getAiringTodayShows = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/tv/airing_today', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -15,7 +15,7 @@ export const getOnTheAirShows = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/tv/on_the_air', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -25,7 +25,7 @@ export const getPopularShows = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/tv/popular', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -35,7 +35,7 @@ export const getTopRatedShows = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/tv/top_rated', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -45,8 +45,8 @@ export const getTrendingShows = (
   api_key,
   success,
   fail,
-  after = () => {},
-) => axios.get('/trending/tv/week', { params: { api_key } })
+  after = () => { },
+) => axios.get('/trending/tv/day', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
   .finally(() => after());
@@ -56,7 +56,7 @@ export const getTVShowDetails = (
   tv_id,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get(`/tv/${tv_id}`, {
   params: {
     api_key,
@@ -107,7 +107,7 @@ export const getTVShowSeasonDetails = (
   season_number,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get(`/tv/${tv_id}/season/${season_number}`, { params: { api_key } })
   .then((response) => success(response.data.episodes))
   .catch((error) => fail(error))
