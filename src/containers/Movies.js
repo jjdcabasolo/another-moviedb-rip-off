@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Movies = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);

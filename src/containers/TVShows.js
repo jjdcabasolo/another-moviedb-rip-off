@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TVShows = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const episodes = useSelector((state) => state.tvShows.episodes);

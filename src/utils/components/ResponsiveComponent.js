@@ -15,13 +15,12 @@ const ResponsiveComponent = ({
   // range         |   xs   |   sm   |   md   |   lg   |   xl
   // responsiveComp|-mobile-|-----tablet------|-----desktop-----
 
-  const desktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const tablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
-  // const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   // if all components are declared/specified
-  if (desktop) return desktopComponent;
-  if (tablet) return tabletComponent;
+  if (isDesktop) return desktopComponent;
+  if (isTablet) return tabletComponent;
   return mobileComponent;
 };
 

@@ -37,7 +37,7 @@ const CustomSnackbar = ({
   variant,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
   const darkMode = useSelector((state) => state.sidebar.darkMode);

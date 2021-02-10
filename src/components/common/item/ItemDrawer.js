@@ -59,14 +59,14 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-  },
-  drawerPermanentClose: {
-    width: 0,
-    overflow: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: 0,
+      overflow: 'hidden',
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
   },
   drawerOpen: {
     width: theme.browserSize.width - theme.spacing(7),
@@ -205,8 +205,7 @@ const ItemDrawer = ({
       className={clsx(
         classes.drawer,
         { [classes.drawerOpen]: itemDrawerOpen },
-        { [classes.drawerClose]: !itemDrawerOpen && !isTablet },
-        { [classes.drawerPermanentClose]: !itemDrawerOpen && isTablet },
+        { [classes.drawerClose]: !itemDrawerOpen },
       )}
       variant="permanent"
       open={itemDrawerOpen}
@@ -216,8 +215,7 @@ const ItemDrawer = ({
           {
             [classes.drawerOpenPaperPadding]: itemDrawerOpen,
             [classes.drawerOpen]: itemDrawerOpen,
-            [classes.drawerClose]: !itemDrawerOpen && !isTablet,
-            [classes.drawerPermanentClose]: !itemDrawerOpen && isTablet,
+            [classes.drawerClose]: !itemDrawerOpen,
           },
         ),
       }}
