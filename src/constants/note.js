@@ -83,8 +83,9 @@ export const NOTE_MOVIE_NOT_FOUND = {
   icon: (className) => <ErrorTwoTone className={className} />,
   header: 'Movie does not exist.',
   content: [
-    'The movie you are trying to access is not found on the TMDb Database.',
-    'Try searching for it on the search tab.',
+    'The movie is not found on the TMDb Database.',
+    'Or, maybe the community is still working on it.',
+    'Try again a bit later.',
   ],
 };
 
@@ -92,7 +93,7 @@ export const NOTE_TV_SHOW_NOT_FOUND = {
   icon: (className) => <ErrorTwoTone className={className} />,
   header: 'TV Show does not exist.',
   content: [
-    'The TV show you are trying to access is not found on the TMDb Database.',
+    'The TV show is not found on the TMDb Database.',
     'Try searching for it on the search tab.',
   ],
 };

@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   note: {
-    padding: theme.spacing(8, 2),
+    padding: theme.spacing(16, 2),
   },
 }));
 
