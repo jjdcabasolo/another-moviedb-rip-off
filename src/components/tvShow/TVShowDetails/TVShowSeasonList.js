@@ -73,7 +73,6 @@ const TVShowSeasonList = () => {
   const { seasons } = tvShow;
 
   const handleCardClick = (index) => {
-    dispatch(tvShowsActions.setSeasonDrawerSelectedSeason(true));
     if (selectedSeason !== index) {
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, (response) => {
         dispatch(tvShowsActions.setEpisode(response));

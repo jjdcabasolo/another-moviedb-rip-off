@@ -161,7 +161,6 @@ const ItemCard = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const seasonDrawerOpen = useSelector((state) => state.tvShows.seasonDrawerOpen);
   const dispatch = useDispatch();
 
   const isMovie = type === 'movies';
@@ -175,9 +174,6 @@ const ItemCard = ({
     if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
     if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
     else {
-      if (seasonDrawerOpen) {
-        dispatch(tvShowsActions.setSeasonDrawer(false));
-      }
       dispatch(tvShowsActions.setDetailsLoading(true));
     }
   };

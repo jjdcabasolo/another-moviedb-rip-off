@@ -77,7 +77,6 @@ const Appbar = ({ children }) => {
   const movie = useSelector((state) => state.movies.movie);
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
-  // const scrollY = useSelector((state) => state.browser.scrollY);
   const dispatch = useDispatch();
 
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
@@ -98,18 +97,8 @@ const Appbar = ({ children }) => {
 
   const goBack = useCallback(() => {
     dispatch(moviesActions.setActiveMovie({}));
-    // setTimeout(() => window.scrollTo(0, scrollY), 100);
     history.goBack();
   }, [dispatch, history]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // if (!('id' in movie)) dispatch(browserActions.changeBrowserScrollY(window.pageYOffset));
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [dispatch, movie]);
 
   const handleBottomNavigationClick = (index) => {
     scrollToID('scroll-to-top-anchor', true);

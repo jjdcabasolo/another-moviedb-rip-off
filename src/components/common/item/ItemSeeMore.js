@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import { useHistory, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -29,8 +28,6 @@ import { ArrowBack, Close } from '@material-ui/icons';
 import AppBar from '../../overrides/AppBar';
 
 import { truncateText } from '../../../utils/functions';
-
-import { sidebarActions } from '../../../reducers/ducks';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -84,8 +81,6 @@ const ItemSeeMore = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const dispatch = useDispatch();
-
   const history = useHistory();
   const { section } = useParams();
 
@@ -98,7 +93,6 @@ const ItemSeeMore = ({
     else history.push(`${history.location.pathname}/${sectionId}`);
 
     setSeeMore(!seeMore);
-    dispatch(sidebarActions.incrementSeeMore());
   };
 
   const handleClose = () => {

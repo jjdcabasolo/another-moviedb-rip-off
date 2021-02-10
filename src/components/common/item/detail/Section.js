@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -16,8 +15,6 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { ExpandMore, ExpandLess } from '@material-ui/icons';
-
-import { sidebarActions } from '../../../../reducers/ducks';
 
 const useStyles = makeStyles((theme) => ({
   titleGrid: {
@@ -64,15 +61,12 @@ const Section = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const dispatch = useDispatch();
-
   const [expanded, setExpanded] = useState(true);
 
   const handleSectionToggle = () => {
     if (isCollapsible) {
       setExpanded(!expanded);
     }
-    dispatch(sidebarActions.incrementSeeMore());
   };
 
   return (

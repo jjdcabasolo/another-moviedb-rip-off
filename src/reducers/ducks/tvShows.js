@@ -29,10 +29,6 @@ export const tvShowsActions = {
     type: tvShowsActionType.SET_DETAILS_LOADING,
     payload: { isTVShowLoading },
   }),
-  setSeasonDrawer: (seasonDrawerOpen) => ({
-    type: tvShowsActionType.SET_SEASON_DRAWER,
-    payload: { seasonDrawerOpen },
-  }),
   setEpisode: (episodes) => ({
     type: tvShowsActionType.SET_EPISODE,
     payload: { episodes },
@@ -40,14 +36,6 @@ export const tvShowsActions = {
   setSelectedSeason: (selectedSeason) => ({
     type: tvShowsActionType.SET_SELECTED_SEASON,
     payload: { selectedSeason },
-  }),
-  setSelectedEpisode: (selectedEpisode) => ({
-    type: tvShowsActionType.SET_SELECTED_EPISODE,
-    payload: { selectedEpisode },
-  }),
-  setSeasonDrawerSelectedSeason: (seasonDrawerIsSeasonSelected) => ({
-    type: tvShowsActionType.SET_SEASON_DRAWER_SELECTED_SEASON,
-    payload: { seasonDrawerIsSeasonSelected },
   }),
 };
 
@@ -65,9 +53,6 @@ const initialState = {
     trending: [],
   },
   loadedContent: 0,
-  seasonDrawerIsSeasonSelected: true,
-  seasonDrawerOpen: false,
-  selectedEpisode: 0,
   selectedSeason: 0,
   tvShow: {},
 };
@@ -104,11 +89,6 @@ const setDetailsLoading = (state, action) => ({
   isTVShowLoading: action.payload.isTVShowLoading,
 });
 
-const setSeasonDrawer = (state, action) => ({
-  ...state,
-  seasonDrawerOpen: action.payload.seasonDrawerOpen,
-});
-
 const setEpisode = (state, action) => ({
   ...state,
   episodes: action.payload.episodes.sort((a, b) => b.episode_number - a.episode_number),
@@ -121,25 +101,12 @@ const setSelectedSeason = (state, action) => ({
   selectedSeason: action.payload.selectedSeason,
 });
 
-const setSelectedEpisode = (state, action) => ({
-  ...state,
-  selectedEpisode: action.payload.selectedEpisode,
-});
-
-const setSeasonDrawerSelectedSeason = (state, action) => ({
-  ...state,
-  seasonDrawerIsSeasonSelected: action.payload.seasonDrawerIsSeasonSelected,
-});
-
 export const tvShowsReducer = (state = initialState, action) => {
   switch (action.type) {
     case tvShowsActionType.SET_ACTIVE_TV_SHOW: return setActiveTVShow(state, action);
     case tvShowsActionType.SET_CATEGORY: return setCategory(state, action);
     case tvShowsActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
     case tvShowsActionType.SET_EPISODE: return setEpisode(state, action);
-    case tvShowsActionType.SET_SEASON_DRAWER: return setSeasonDrawer(state, action);
-    case tvShowsActionType.SET_SEASON_DRAWER_SELECTED_SEASON: return setSeasonDrawerSelectedSeason(state, action);
-    case tvShowsActionType.SET_SELECTED_EPISODE: return setSelectedEpisode(state, action);
     case tvShowsActionType.SET_SELECTED_SEASON: return setSelectedSeason(state, action);
     case tvShowsActionType.SET_TV_SHOWS_LIST: return setTVShowsList(state, action);
     default: return state;
