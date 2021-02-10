@@ -22,16 +22,14 @@ import {
 import { Skeleton } from '@material-ui/lab';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
-import AppBar from '../../overrides/AppBar';
-
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
+import AppBar from '../../overrides/AppBar';
 import AppbarMenu from './AppbarMenu';
 import DarkModeToggle from '../../common/DarkModeToggle';
 import GradientBackground from '../../common/GradientBackground';
 import Helmet from '../Helmet';
 import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
-import ReadingProgress from '../../common/ReadingProgress';
 
 import { moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -139,7 +137,7 @@ const Appbar = ({ children }) => {
             <ArrowBackTwoTone />
           </IconButton>
 
-          {isLoading || hasItemContent
+          {isLoading && hasItemContent
             ? <Skeleton variant="rect" height={24} width="75%" />
             : (
               <>

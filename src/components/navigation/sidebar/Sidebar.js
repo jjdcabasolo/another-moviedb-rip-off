@@ -17,7 +17,6 @@ import {
 import GradientBackground from '../../common/GradientBackground';
 import Helmet from '../Helmet';
 import ItemDrawer from '../../common/item/ItemDrawer';
-import ReadingProgress from '../../common/ReadingProgress';
 import SidebarContent from './SidebarContent';
 import SidebarTitlebar from './SidebarTitlebar';
 
