@@ -97,12 +97,12 @@ const ItemSeeMore = ({
     if (seeMore) history.goBack();
     else history.push(`${history.location.pathname}/${sectionId}`);
 
-    // collapsedClickEvent();
     setSeeMore(!seeMore);
     dispatch(sidebarActions.incrementSeeMore());
   };
 
   const handleClose = () => {
+    collapsedClickEvent();
     setSeeMore(!seeMore);
     history.goBack();
   };

@@ -204,8 +204,10 @@ const ItemDrawer = ({
     <Drawer
       className={clsx(
         classes.drawer,
-        { [classes.drawerOpen]: itemDrawerOpen },
-        { [classes.drawerClose]: !itemDrawerOpen },
+        {
+          [classes.drawerOpen]: itemDrawerOpen,
+          [classes.drawerClose]: !itemDrawerOpen,
+        },
       )}
       variant="permanent"
       open={itemDrawerOpen}
@@ -274,8 +276,10 @@ const ItemDrawer = ({
       <Container
         className={clsx(
           classes.itemCardContainer,
-          { [classes.desktopDrawerOpenItemCardContainer]: itemDrawerOpen },
-          { [classes.desktopDrawerClosedItemCardContainer]: !itemDrawerOpen },
+          {
+            [classes.desktopDrawerOpenItemCardContainer]: itemDrawerOpen,
+            [classes.desktopDrawerClosedItemCardContainer]: !itemDrawerOpen,
+          },
         )}
       >
         {renderItemCards()}

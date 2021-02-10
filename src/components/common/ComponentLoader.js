@@ -48,9 +48,11 @@ const ComponentLoader = ({
     <Grid
       alignItems="center"
       className={clsx(
-        { [classes.loaderContainerDesktop]: location === 'itemcontainer' },
-        { [classes.loaderContainerDrawerOpen]: location === 'itemdrawer' && isItemDrawerOpen },
-        { [classes.loaderContainerDrawerClosed]: location === 'itemdrawer' && !isItemDrawerOpen },
+        {
+          [classes.loaderContainerDesktop]: location === 'itemcontainer',
+          [classes.loaderContainerDrawerOpen]: location === 'itemdrawer' && isItemDrawerOpen,
+          [classes.loaderContainerDrawerClosed]: location === 'itemdrawer' && !isItemDrawerOpen,
+        },
       )}
       container
       direction="column"

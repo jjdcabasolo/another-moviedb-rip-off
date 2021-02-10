@@ -148,14 +148,18 @@ const Sidebar = ({ children }) => {
         <Drawer
           className={clsx(
             classes.drawer,
-            { [classes.drawerOpen]: drawerOpen },
-            { [classes.drawerClose]: !drawerOpen },
+            {
+              [classes.drawerOpen]: drawerOpen,
+              [classes.drawerClose]: !drawerOpen,
+            },
           )}
           classes={{
             paper: clsx(
               classes.drawerPaper,
-              { [classes.drawerOpen]: drawerOpen },
-              { [classes.drawerClose]: !drawerOpen },
+              {
+                [classes.drawerOpen]: drawerOpen,
+                [classes.drawerClose]: !drawerOpen,
+              },
             ),
           }}
           open={drawerOpen}

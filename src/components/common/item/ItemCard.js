@@ -200,9 +200,11 @@ const ItemCard = ({
     <Grid
       className={clsx(
         classes.cardContainer,
-        { [classes.itemExtension]: col === 2 && !isHorizontalScroll },
-        { [classes.horizontalScrollItemWidth]: isHorizontalScroll },
-        { [classes.horizontalScrollItemSpacing]: hasSpacingHorizontalScroll },
+        {
+          [classes.itemExtension]: col === 2 && !isHorizontalScroll,
+          [classes.horizontalScrollItemWidth]: isHorizontalScroll,
+          [classes.horizontalScrollItemSpacing]: hasSpacingHorizontalScroll,
+        },
       )}
       item
       xs={col}
@@ -219,17 +221,21 @@ const ItemCard = ({
             <CardMedia
               className={clsx(
                 classes.media,
-                { [classes.mediaDrawerOpen]: drawerOpen },
-                { [classes.mediaDrawerClosed]: !drawerOpen },
+                {
+                  [classes.mediaDrawerOpen]: drawerOpen,
+                  [classes.mediaDrawerClosed]: !drawerOpen,
+                },
               )}
               image={imagePath}
             />
             <div
               className={clsx(
                 classes.typoOverlay,
-                { [classes.typoOverlayBackgroundGradient]: isImageValid },
-                { [classes.typoOverlayMediaDrawerOpen]: drawerOpen },
-                { [classes.typoOverlayMediaDrawerClosed]: !drawerOpen },
+                {
+                  [classes.typoOverlayBackgroundGradient]: isImageValid,
+                  [classes.typoOverlayMediaDrawerOpen]: drawerOpen,
+                  [classes.typoOverlayMediaDrawerClosed]: !drawerOpen,
+                },
               )}
               gutterBottom
               variant="button"
