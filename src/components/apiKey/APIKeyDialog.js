@@ -104,7 +104,7 @@ export default function APIKeyDialog() {
   useEffect(() => {
     setApiKeyState({ ...apiKeyState, value: apiKey });
     setUsernameState({ ...usernameState, value: username });
-  }, [username]);
+  }, [apiKeyState, apiKey, usernameState, username]);
 
   const handleClickOpen = () => setOpen(true);
 

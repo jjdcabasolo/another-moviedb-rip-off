@@ -91,7 +91,7 @@ const ItemSeeMore = ({
 
   const [seeMore, setSeeMore] = useState(sectionId === section);
 
-  useEffect(() => setSeeMore(sectionId === section), [section]);
+  useEffect(() => setSeeMore(sectionId === section), [sectionId, section]);
 
   const handleButtonClick = () => {
     if (seeMore) history.goBack();

@@ -89,7 +89,7 @@ const ItemHorizontalContainer = ({
       setHideScrollLeft(scrollLeft !== 0);
       setHideScrollRight(Math.floor(scrollLeft) !== (scrollWidth - clientWidth));
     }
-  }, [children]);
+  }, []);
 
   useEffect(() => {
     setTimeout(() => updateScrollers(), 100);

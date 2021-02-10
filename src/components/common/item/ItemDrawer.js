@@ -144,7 +144,7 @@ const ItemDrawer = ({
     if (isTablet) itemDrawerFinalState = true;
     setItemDrawerOpen(itemDrawerFinalState);
     dispatch(sidebarActions.setItemDrawer(itemDrawerFinalState));
-  }, [isDesktop, isTablet, isItemSelected]);
+  }, [isDesktop, isTablet, isItemSelected, dispatch]);
 
   const handleDrawerToggle = () => {
     const isDrawerOpen = !itemDrawerOpen;

@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 // import { useSelector } from 'react-redux';
 
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import SearchIcon from '@material-ui/icons/Search';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
