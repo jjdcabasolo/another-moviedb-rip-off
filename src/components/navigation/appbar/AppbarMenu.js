@@ -15,6 +15,11 @@ import {
 
 import DarkModeToggle from '../../common/DarkModeToggle';
 
+import {
+  FIGMA_LINK,
+  GITHUB_REPO_LINK,
+} from '../../../constants';
+
 const useStyles = makeStyles({
   listItemIcon: {
     display: 'flex',
@@ -35,6 +40,20 @@ const AppbarMenu = () => {
     setAnchorEl(null);
   };
 
+  const handleLinkClick = (link) => {
+    window.open(link, '_blank');
+    handleClose();
+  };
+
+  const renderMenuItem = (link, primary) => (
+    <MenuItem onClick={() => handleLinkClick(link)}>
+      <ListItemText primary={primary} />
+      <ListItemIcon className={classes.listItemIcon}>
+        <OpenInNewTwoTone fontSize="small" />
+      </ListItemIcon>
+    </MenuItem>
+  );
+
   return (
     <>
       <IconButton
@@ -53,18 +72,8 @@ const AppbarMenu = () => {
         open={Boolean(anchorEl)}
       >
         <DarkModeToggle type="menuItem" />
-        <MenuItem onClick={handleClose}>
-          <ListItemText primary="GitHub Repository" />
-          <ListItemIcon className={classes.listItemIcon}>
-            <OpenInNewTwoTone fontSize="small" />
-          </ListItemIcon>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemText primary="Figma (Wireframes)" />
-          <ListItemIcon className={classes.listItemIcon}>
-            <OpenInNewTwoTone fontSize="small" />
-          </ListItemIcon>
-        </MenuItem>
+        {renderMenuItem(GITHUB_REPO_LINK, 'GitHub Repository')}
+        {renderMenuItem(FIGMA_LINK, 'Figma (Wireframes)')}
       </Menu>
     </>
   );
