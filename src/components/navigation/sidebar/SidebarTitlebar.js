@@ -17,8 +17,6 @@ import AppBar from '../../overrides/AppBar';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
-import HideOnScroll from '../../../utils/components/HideOnScroll';
-
 const useStyles = makeStyles((theme) => ({
   toolbarDrawer: {
     marginLeft: theme.spacing(7) - theme.spacing(1),
@@ -58,36 +56,44 @@ const SidebarTitlebar = ({ item }) => {
   };
 
   return (
-    <HideOnScroll>
-      <AppBar color="default" className={classes.appbar}>
-        <Toolbar
-          className={classes.toolbarDrawer}
-          variant="dense"
+    <AppBar color="default" className={classes.appbar}>
+      <Toolbar
+        className={classes.toolbarDrawer}
+        variant="dense"
+      >
+        <IconButton
+          aria-label="back"
+          edge="start"
+          onClick={goBack}
         >
-          <IconButton
-            aria-label="back"
-            edge="start"
-            onClick={goBack}
-          >
-            <ArrowBackTwoTone />
-          </IconButton>
-          <Typography component="h1" variant="h6">
-            {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </HideOnScroll>
+          <ArrowBackTwoTone />
+        </IconButton>
+        <Typography component="h1" variant="h6">
+          {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
+        </Typography>
+      </Toolbar>
+    </AppBar>
   );
+};
+
+SidebarTitlebar.defaultProps = {
+  item: {
+    date: '',
+    name: '',
+    original_name: '',
+    original_title: '',
+    title: '',
+  },
 };
 
 SidebarTitlebar.propTypes = {
   item: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    original_name: PropTypes.string.isRequired,
-    original_title: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-  }).isRequired,
+    date: PropTypes.string,
+    name: PropTypes.string,
+    original_name: PropTypes.string,
+    original_title: PropTypes.string,
+    title: PropTypes.string,
+  }),
 };
 
 export default SidebarTitlebar;

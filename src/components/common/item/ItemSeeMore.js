@@ -95,6 +95,12 @@ const ItemSeeMore = ({
     setSeeMore(!seeMore);
   };
 
+  const collapsedProps = collapsedContent.type.name === 'ItemHorizontalContainer' ? {
+    handleSeeMore: () => {
+      handleButtonClick();
+    },
+  } : {};
+
   const handleClose = () => {
     collapsedClickEvent();
     setSeeMore(!seeMore);
@@ -163,11 +169,7 @@ const ItemSeeMore = ({
     <Grid container>
       <Grid container item xs={12} className={classes.contentContainer}>
         {renderContent()}
-        {cloneElement(collapsedContent, {
-          handleSeeMore: () => {
-            handleButtonClick();
-          },
-        })}
+        {cloneElement(collapsedContent, collapsedProps)}
       </Grid>
       {isButtonShown && (
         <Grid
@@ -191,17 +193,25 @@ const ItemSeeMore = ({
   );
 };
 
+ItemSeeMore.defaultProps = {
+  isButtonShown: false,
+  isEpisode: false,
+  maxWidth: 'md',
+  seeLessText: 'Show less',
+  seeMoreText: 'Show all',
+};
+
 ItemSeeMore.propTypes = {
   appbarTitle: PropTypes.arrayOf(PropTypes.string).isRequired,
   collapsedClickEvent: PropTypes.func.isRequired,
   collapsedContent: PropTypes.node.isRequired,
   expandedContent: PropTypes.node.isRequired,
-  isButtonShown: PropTypes.bool.isRequired,
-  isEpisode: PropTypes.bool.isRequired,
-  maxWidth: PropTypes.string.isRequired,
+  isButtonShown: PropTypes.bool,
+  isEpisode: PropTypes.bool,
+  maxWidth: PropTypes.string,
   sectionId: PropTypes.string.isRequired,
-  seeLessText: PropTypes.string.isRequired,
-  seeMoreText: PropTypes.string.isRequired,
+  seeLessText: PropTypes.string,
+  seeMoreText: PropTypes.string,
 };
 
 export default ItemSeeMore;

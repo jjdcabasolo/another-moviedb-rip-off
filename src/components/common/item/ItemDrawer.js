@@ -154,7 +154,7 @@ const ItemDrawer = ({
 
   const renderToggleItemDrawer = (isEdgeEnd) => (
     <Tooltip title={itemDrawerOpen ? 'See less' : 'See all'}>
-      <IconButton onClick={handleDrawerToggle} edge={isEdgeEnd ? 'end' : ''}>
+      <IconButton onClick={handleDrawerToggle} edge={isEdgeEnd ? 'end' : false}>
         {itemDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
       </IconButton>
     </Tooltip>
@@ -194,6 +194,7 @@ const ItemDrawer = ({
             handleDrawerToggle={handleDrawerToggle}
             rank={rank + 1}
             type={activeTab}
+            key={`item-drawer-item-card-${rank + 1}-${item.id}`}
           />
         ))}
       </Grid>
@@ -288,8 +289,12 @@ const ItemDrawer = ({
   );
 };
 
+ItemDrawer.defaultProps = {
+  isItemSelected: false,
+};
+
 ItemDrawer.propTypes = {
-  isItemSelected: PropTypes.bool.isRequired,
+  isItemSelected: PropTypes.bool,
 };
 
 export default ItemDrawer;

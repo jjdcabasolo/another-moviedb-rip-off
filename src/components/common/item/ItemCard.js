@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -227,8 +227,6 @@ const ItemCard = ({
                   [classes.typoOverlayMediaDrawerClosed]: !drawerOpen,
                 },
               )}
-              gutterBottom
-              variant="button"
             >
               <Typography
                 variant="h6"
@@ -271,15 +269,48 @@ const ItemCard = ({
   );
 };
 
+ItemCard.defaultProps = {
+  col: 12,
+  content: PropTypes.shape({
+    backdrop_path: '',
+    first_air_date: '',
+    name: '',
+    original_name: '',
+    original_title: '',
+    poster_path: '',
+    release_date: '',
+    title: '',
+  }),
+  drawerOpen: false,
+  handleDrawerToggle: () => {},
+  hasSpacingHorizontalScroll: false,
+  isHorizontalScroll: false,
+  rank: 0,
+  type: '',
+};
+
 ItemCard.propTypes = {
-  col: PropTypes.number.isRequired,
-  content: PropTypes.string.isRequired,
-  drawerOpen: PropTypes.bool.isRequired,
-  handleDrawerToggle: PropTypes.func.isRequired,
-  hasSpacingHorizontalScroll: PropTypes.bool.isRequired,
-  isHorizontalScroll: PropTypes.bool.isRequired,
-  rank: PropTypes.number.isRequired,
-  type: PropTypes.string.isRequired,
+  col: PropTypes.number,
+  content: PropTypes.oneOfType([
+    PropTypes.shape({
+      backdrop_path: PropTypes.string,
+      first_air_date: PropTypes.string,
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string,
+      original_name: PropTypes.string,
+      original_title: PropTypes.string,
+      poster_path: PropTypes.string,
+      release_date: PropTypes.string,
+      title: PropTypes.string,
+    }),
+    PropTypes.func,
+  ]),
+  drawerOpen: PropTypes.bool,
+  handleDrawerToggle: PropTypes.func,
+  hasSpacingHorizontalScroll: PropTypes.bool,
+  isHorizontalScroll: PropTypes.bool,
+  rank: PropTypes.number,
+  type: PropTypes.string,
 };
 
 export default ItemCard;

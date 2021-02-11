@@ -150,13 +150,20 @@ const ItemHorizontalContainer = ({
   );
 };
 
+ItemHorizontalContainer.defaultProps = {
+  handleSeeMore: () => {},
+  imageSize: 0,
+  isWithSeeMore: false,
+  seeMoreComponent: null,
+};
+
 ItemHorizontalContainer.propTypes = {
   children: PropTypes.node.isRequired,
-  handleSeeMore: PropTypes.func.isRequired,
-  imageSize: PropTypes.number.isRequired,
-  isWithSeeMore: PropTypes.bool.isRequired,
+  handleSeeMore: PropTypes.func,
+  imageSize: PropTypes.number,
+  isWithSeeMore: PropTypes.bool,
   scrollAmount: PropTypes.number.isRequired,
-  seeMoreComponent: PropTypes.node.isRequired,
+  seeMoreComponent: PropTypes.node,
 };
 
 export default ItemHorizontalContainer;

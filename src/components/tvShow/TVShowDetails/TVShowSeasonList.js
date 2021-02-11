@@ -90,8 +90,9 @@ const TVShowSeasonList = () => {
         {seasons.map((season) => {
           const {
             air_date: airDate,
-            poster_path: posterPath,
+            id,
             name,
+            poster_path: posterPath,
             season_number: seasonNumber,
           } = season;
 
@@ -111,6 +112,7 @@ const TVShowSeasonList = () => {
               direction="column"
               onClick={() => handleCardClick(seasonNumber)}
               spacing={1}
+              key={`tv-show-season-list-${id}`}
             >
               <Grid item className={classes.gridItem}>
                 {posterPath

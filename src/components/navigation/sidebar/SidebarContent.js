@@ -97,12 +97,15 @@ const SidebarContent = () => {
       </div>
 
       <List>
-        { routes.map((element, index) => (index !== 0) && (
-          <Link to={element.path} className={classes.link}>
+        {routes.map((element, index) => (index !== 0) && (
+          <Link
+            className={classes.link}
+            key={`sidebar-content-link-${element.path}`}
+            to={element.path}
+          >
             <ListItem
               button
               classes={{ selected: classes.activeTab }}
-              key={element.key}
               onClick={() => handleListItemClick(element.title.replace(/ /g, '').toLowerCase())}
               selected={activeTab === element.title.replace(/ /g, '').toLowerCase()}
             >
@@ -110,7 +113,7 @@ const SidebarContent = () => {
               <ListItemText primary={element.title} />
             </ListItem>
           </Link>
-        )) }
+        ))}
       </List>
 
       <List className={classes.bottomTabs}>

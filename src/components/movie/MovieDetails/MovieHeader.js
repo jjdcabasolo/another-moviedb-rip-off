@@ -103,6 +103,7 @@ const MovieHeader = ({ sectionVisibility }) => {
         { genres.map((i) => (
           <Chip
             className={classes.chip}
+            key={`movie-header-chip-${i.id}`}
             label={i.name}
             size="small"
             variant="outlined"
@@ -148,9 +149,15 @@ const MovieHeader = ({ sectionVisibility }) => {
 };
 
 MovieHeader.propTypes = {
+  sectionVisibility: {
+    collection: false,
+  },
+};
+
+MovieHeader.propTypes = {
   sectionVisibility: PropTypes.shape({
     cast: PropTypes.bool.isRequired,
-    collection: PropTypes.bool.isRequired,
+    collection: PropTypes.bool,
     crew: PropTypes.bool.isRequired,
     production: PropTypes.bool.isRequired,
     recommendations: PropTypes.bool.isRequired,

@@ -13,13 +13,7 @@ const Fab = styled(MuiFab)(({
       boxShadow: 'none',
     },
   },
-  '&$focusVisible': {
-    boxShadow: 'none',
-  },
   '&:active': {
-    boxShadow: 'none',
-  },
-  '&$disabled': {
     boxShadow: 'none',
   },
   color: theme.palette.text.primary,

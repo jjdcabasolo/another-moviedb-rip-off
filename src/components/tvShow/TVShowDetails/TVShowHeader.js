@@ -106,6 +106,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
         />
         { genres.map((i) => (
           <Chip
+            key={`tv-show-header-chip-${i.id}`}
             className={classes.chip}
             label={i.name}
             size="small"
@@ -154,11 +155,10 @@ const TVShowHeader = ({ sectionVisibility }) => {
 TVShowHeader.propTypes = {
   sectionVisibility: PropTypes.shape({
     cast: PropTypes.bool.isRequired,
-    crew: PropTypes.bool.isRequired,
     episodes: PropTypes.bool.isRequired,
     production: PropTypes.bool.isRequired,
     recommendations: PropTypes.bool.isRequired,
-    seasons: PropTypes.bool.isRequired,
+    seasonList: PropTypes.bool.isRequired,
   }).isRequired,
 };
 

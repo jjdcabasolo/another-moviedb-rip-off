@@ -86,12 +86,13 @@ const MovieCrew = () => {
         const crewTitle = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
         colItem.push(
           <PersonAvatarList
+            key={`movie-crew-person-avatar-list-${crewTitle.identifier}`}
             content={members}
             title={crewTitle.label(members.length)}
           />,
         );
       }
-      col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
+      col.push(<Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{colItem}</Grid>);
     }
     return col;
   };
@@ -120,9 +121,10 @@ const MovieCrew = () => {
       <Statistic
         col={12 / crewStatistic.length}
         count={e.length}
-        label={e.label}
         divider={e.divider}
         isTotal={e.isTotal}
+        key={`movie-crew-statistic-${e.label}`}
+        label={e.label}
       />
     ));
   };

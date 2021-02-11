@@ -62,8 +62,12 @@ const GradientBackground = ({
   return null;
 };
 
+GradientBackground.defaultProps = {
+  image: '',
+};
+
 GradientBackground.propTypes = {
-  image: PropTypes.string.isRequired,
+  image: PropTypes.string,
   isItemSelected: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   isVisible: PropTypes.bool.isRequired,

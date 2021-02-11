@@ -76,11 +76,19 @@ const Statistic = ({
   );
 };
 
+Statistic.defaultProps = {
+  divider: false,
+  isTotal: false,
+};
+
 Statistic.propTypes = {
   col: PropTypes.number.isRequired,
-  count: PropTypes.number.isRequired,
-  divider: PropTypes.bool.isRequired,
-  isTotal: PropTypes.bool.isRequired,
+  count: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]).isRequired,
+  divider: PropTypes.bool,
+  isTotal: PropTypes.bool,
   label: PropTypes.string.isRequired,
 };
 

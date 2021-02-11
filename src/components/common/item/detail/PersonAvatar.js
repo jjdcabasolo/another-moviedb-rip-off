@@ -38,8 +38,8 @@ const PersonAvatar = ({
   character,
   col,
   image,
-  name,
   isHorizontalScroll = false,
+  name,
 }) => {
   const classes = useStyles();
 
@@ -82,12 +82,20 @@ const PersonAvatar = ({
   );
 };
 
+PersonAvatar.defaultProps = {
+  character: '',
+  col: 12,
+  image: '',
+  isHorizontalScroll: false,
+  name: '',
+};
+
 PersonAvatar.propTypes = {
-  character: PropTypes.string.isRequired,
-  col: PropTypes.number.isRequired,
-  isHorizontalScroll: PropTypes.bool.isRequired,
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  character: PropTypes.string,
+  col: PropTypes.number,
+  image: PropTypes.string,
+  isHorizontalScroll: PropTypes.bool,
+  name: PropTypes.string,
 };
 
 export default PersonAvatar;

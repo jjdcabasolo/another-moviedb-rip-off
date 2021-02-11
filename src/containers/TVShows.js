@@ -68,14 +68,17 @@ const TVShows = () => {
   } = tvShow;
 
   const sectionVisibility = {
-    seasonList: seasons && seasons.length > 0,
+    cast: cast && cast.length > 0,
     episodes: episodes.filter((e) => (!e.air_date && e.air_date.length > 0)
       || moment(e.air_date).diff(moment()) < 0).length > 0,
-    cast: cast && cast.length > 0,
     production: (createdBy && createdBy.length > 0)
       || (productionCompanies && productionCompanies.length > 0),
     recommendations: recommendations && recommendations.length > 0,
+    seasonList: seasons && seasons.length > 0,
   };
+  const hasStatistics = !Number.isNaN(numberOfEpisodes)
+    && !Number.isNaN(numberOfSeasons)
+    && (numberOfEpisodes !== 0 && numberOfSeasons !== 0);
 
   useEffect(() => {
     if (tvShowId) {
@@ -135,9 +138,9 @@ const TVShows = () => {
       <Grid container spacing={isMobile ? 4 : 8} className={classes.root}>
         <Section
           anchorId="tvshow-budget"
-          divider={false}
+          divider={!hasStatistics}
           isCollapsible={false}
-          visible={tvShow}
+          visible={Object.keys(tvShow).length !== 0 && tvShow.constructor === Object}
         >
           <TVShowHeader sectionVisibility={sectionVisibility} />
         </Section>
@@ -145,7 +148,7 @@ const TVShows = () => {
         <Section
           anchorId="tvshow-statistics"
           isCollapsible={false}
-          visible={numberOfEpisodes || numberOfSeasons}
+          visible={hasStatistics}
         >
           <TVShowStatistics />
         </Section>

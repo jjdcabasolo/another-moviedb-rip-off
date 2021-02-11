@@ -14,7 +14,13 @@ const ItemBreadcrumbs = ({ content }) => (
     <Grid item xs={12}>
       <Breadcrumbs separator=" | " aria-label="breadcrumb">
         {content.map((e) => (
-          <Link component={HashLink} smooth to={e.link} color="inherit">
+          <Link
+            component={HashLink}
+            smooth
+            to={e.link}
+            color="inherit"
+            key={`item-breadcrumbs-link-${e.label}`}
+          >
             {e.label}
           </Link>
         ))}
@@ -24,10 +30,10 @@ const ItemBreadcrumbs = ({ content }) => (
 );
 
 ItemBreadcrumbs.propTypes = {
-  content: PropTypes.arrayOf({
+  content: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string.isRequired,
     link: PropTypes.string.isRequired,
-  }).isRequired,
+  })).isRequired,
 };
 
 export default ItemBreadcrumbs;

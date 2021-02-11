@@ -46,6 +46,7 @@ const TruncatedOverview = ({
           <>
             {showMoreOverview ? overview : overviewTruncated}
             <Typography
+              component="span"
               color="textSecondary"
               display="inline"
               variant={variant}
@@ -59,10 +60,14 @@ const TruncatedOverview = ({
   );
 };
 
+TruncatedOverview.defaultProps = {
+  variant: 'body1',
+};
+
 TruncatedOverview.propTypes = {
   maxWords: PropTypes.number.isRequired,
   overview: PropTypes.string.isRequired,
-  variant: PropTypes.string.isRequired,
+  variant: PropTypes.string,
 };
 
 export default TruncatedOverview;

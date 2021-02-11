@@ -162,7 +162,7 @@ const TVShowEpisode = ({
           </Typography>
           <AvatarGroup className={classes.avatarGroup}>
             {guestStars.map((guest, i) => {
-              const { profile_path: profilePath } = guest;
+              const { id, profile_path: profilePath } = guest;
 
               let guestImagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
               if (stillPath) guestImagePath += `/w780${profilePath}`;
@@ -171,6 +171,7 @@ const TVShowEpisode = ({
                 return (
                   <Tooltip
                     enterTouchDelay={50}
+                    key={`tv-show-episode-avatar-group-${id}`}
                     title={`${guest.character} / ${guest.name}`}
                     placement="top"
                   >
@@ -198,18 +199,32 @@ const TVShowEpisode = ({
   );
 };
 
+TVShowEpisode.defaultProps = {
+  episode: {
+    air_date: '',
+    crew: [],
+    episode_number: 0,
+    guest_stars: [],
+    name: '',
+    overview: '',
+    still_path: '',
+  },
+  isCollapsed: false,
+  isLastItem: false,
+};
+
 TVShowEpisode.propTypes = {
   episode: PropTypes.shape({
-    air_date: PropTypes.string.isRequired,
-    crew: PropTypes.arrayOf().isRequired,
-    episode_number: PropTypes.number.isRequired,
-    guest_stars: PropTypes.arrayOf().isRequired,
-    name: PropTypes.string.isRequired,
-    overview: PropTypes.string.isRequired,
-    still_path: PropTypes.string.isRequired,
-  }).isRequired,
-  isCollapsed: PropTypes.bool.isRequired,
-  isLastItem: PropTypes.bool.isRequired,
+    air_date: PropTypes.string,
+    crew: PropTypes.arrayOf(PropTypes.shape()),
+    episode_number: PropTypes.number,
+    guest_stars: PropTypes.arrayOf(PropTypes.shape()),
+    name: PropTypes.string,
+    overview: PropTypes.string,
+    still_path: PropTypes.string,
+  }),
+  isCollapsed: PropTypes.bool,
+  isLastItem: PropTypes.bool,
 };
 
 export default TVShowEpisode;

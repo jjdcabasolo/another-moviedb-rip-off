@@ -77,7 +77,10 @@ const ItemCardHorizontalList = ({
         collapsedContent={(
           <ItemHorizontalContainer scrollAmount={theme.spacing(45 + 2)}>
             {collapsedItems.map((item, index) => (
-              <div className={classes.horizontalScrollItemSpacing}>
+              <div
+                className={classes.horizontalScrollItemSpacing}
+                key={`item-card-horizontal-list-${item.id}`}
+              >
                 <Grid container>
                   <ItemCard
                     col={12}
@@ -108,16 +111,6 @@ const ItemCardHorizontalList = ({
                 }}
                 type="itemCardHorizontalList"
               />
-              {/* {items.map((item, index) => (
-                <ItemCard
-                  col={12}
-                  content={item}
-                  hasSpacingHorizontalScroll={hasSpacingHorizontalScroll}
-                  isHorizontalScroll
-                  rank={index + 1}
-                  type={activeTab}
-                />
-              ))} */}
             </Grid>
           </>
         )}
@@ -128,14 +121,22 @@ const ItemCardHorizontalList = ({
   );
 };
 
+ItemCardHorizontalList.defaultProps = {
+  areRecommendations: false,
+  items: PropTypes.arrayOf(PropTypes.shape({
+    label: '',
+    link: '',
+  })),
+};
+
 ItemCardHorizontalList.propTypes = {
   anchorId: PropTypes.string.isRequired,
   appbarTitle: PropTypes.arrayOf(PropTypes.string).isRequired,
-  areRecommendations: PropTypes.bool.isRequired,
-  items: PropTypes.arrayOf({
-    label: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired,
-  }).isRequired,
+  areRecommendations: PropTypes.bool,
+  items: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    link: PropTypes.string,
+  })),
   overview: PropTypes.string.isRequired,
 };
 

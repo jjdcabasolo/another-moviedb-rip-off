@@ -54,10 +54,15 @@ const BrokenImage = ({
   }
 };
 
+BrokenImage.defaultProps = {
+  avatarSize: 'default',
+  extraClass: '',
+};
+
 BrokenImage.propTypes = {
-  avatarSize: PropTypes.string.isRequired,
+  avatarSize: PropTypes.string,
   type: PropTypes.string.isRequired,
-  extraClass: PropTypes.string.isRequired,
+  extraClass: PropTypes.string,
 };
 
 export default BrokenImage;

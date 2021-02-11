@@ -18,13 +18,22 @@ const Note = ({ details }) => {
     content,
     header,
     icon,
+    id,
   } = details;
 
   return (
     <>
       {icon(classes.icon)}
       <Typography variant="h6" gutterBottom>{header}</Typography>
-      {content.map((e) => <Typography variant="body2">{e}</Typography>)}
+      {content.map((e, i) => (
+        <Typography
+          // eslint-disable-next-line react/no-array-index-key
+          key={`${id}-${i}`}
+          variant="body2"
+        >
+          {e}
+        </Typography>
+      ))}
     </>
   );
 };
@@ -34,6 +43,7 @@ Note.propTypes = {
     content: PropTypes.arrayOf(PropTypes.string).isRequired,
     header: PropTypes.string.isRequired,
     icon: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
   }).isRequired,
 };
 

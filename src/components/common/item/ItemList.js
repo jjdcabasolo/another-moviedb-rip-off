@@ -83,7 +83,12 @@ const ItemList = () => {
       </Grid>
       <Grid container item xs={12}>
         {contentList[activeCategory].slice(0, 10).map((content, rank) => (
-          <Grid item xs={12} className={classes.itemListCard}>
+          <Grid
+            className={classes.itemListCard}
+            item
+            key={`item-list-grid-item-card-${content.id}`}
+            xs={12}
+          >
             <ItemCard
               col={12}
               content={content}

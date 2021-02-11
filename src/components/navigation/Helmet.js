@@ -35,8 +35,12 @@ const Helmet = ({ isDefault }) => {
   );
 };
 
+Helmet.defaultProps = {
+  isDefault: false,
+};
+
 Helmet.propTypes = {
-  isDefault: PropTypes.bool.isRequired,
+  isDefault: PropTypes.bool,
 };
 
 export default Helmet;

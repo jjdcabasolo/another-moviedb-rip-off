@@ -86,13 +86,16 @@ const Movies = () => {
   } = movie;
 
   const sectionVisibility = {
-    trailer: youtube,
+    trailer: youtube && youtube.length > 0,
     cast: cast && cast.length > 0,
     crew: crew && crew.length > 0,
     production: productionCompanies && productionCompanies.length > 0,
-    collection: belongsToCollection,
+    collection: belongsToCollection && Object.keys(belongsToCollection).length > 0,
     recommendations: recommendations && recommendations.length > 0,
   };
+  const hasStatistics = !Number.isNaN(budget)
+    && !Number.isNaN(revenue)
+    && (budget !== 0 && revenue !== 0);
 
   useEffect(() => {
     if (movieId) {
@@ -139,9 +142,9 @@ const Movies = () => {
       <Grid container spacing={isMobile ? 4 : 8} className={classes.root}>
         <Section
           anchorId="movie-header"
-          divider={!(budget && revenue)}
+          divider={!hasStatistics}
           isCollapsible={false}
-          visible={movie}
+          visible={Object.keys(movie).length !== 0 && movie.constructor === Object}
         >
           <MovieHeader sectionVisibility={sectionVisibility} />
         </Section>
@@ -149,7 +152,7 @@ const Movies = () => {
         <Section
           anchorId="movie-budget"
           isCollapsible={false}
-          visible={budget && revenue}
+          visible={hasStatistics}
         >
           <MovieBudget />
         </Section>

@@ -13,6 +13,7 @@ import {
 
 export const NOTE_NO_API_KEY = {
   icon: (className) => <VpnKeyTwoTone className={className} />,
+  id: 'note-no-api-key',
   header: 'Set your TMDb API key.',
   content: [
     'It seems you have not yet set a TMDb API key.',
@@ -22,6 +23,7 @@ export const NOTE_NO_API_KEY = {
 
 export const NOTE_NO_SELECTED_MOVIE = {
   icon: (className) => <MovieTwoTone className={className} />,
+  id: 'note-no-selected-movie',
   header: 'No movie selected yet.',
   content: [
     'To view a movie detail, select one from the left panel.',
@@ -30,6 +32,7 @@ export const NOTE_NO_SELECTED_MOVIE = {
 
 export const NOTE_NO_SELECTED_TV_SHOW = {
   icon: (className) => <LiveTvTwoTone className={className} />,
+  id: 'note-no-selected-tv-show',
   header: 'No TV Show selected yet.',
   content: [
     'To view a TV Show detail, select one from the left panel.',
@@ -38,6 +41,7 @@ export const NOTE_NO_SELECTED_TV_SHOW = {
 
 export const NOTE_OFFLINE = {
   icon: (className) => <CloudOffTwoTone className={className} />,
+  id: 'note-offline',
   header: 'You are offline.',
   content: [
     'Check your device\'s internet connection.',
@@ -45,18 +49,15 @@ export const NOTE_OFFLINE = {
   ],
 };
 
-const awaken = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/4/4c/Treant_happy_09.mp3');
-const areYouLost = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/1/12/Treant_attack_07.mp3');
-const beCareful = new Audio('https://gamepedia.cursecdn.com/dota2_gamepedia/2/20/Treant_attack_06.mp3');
+const areYouLost = new Audio('https://static.wikia.nocookie.net/dota2_gamepedia/images/f/f6/Vo_treant_treant_attack_07.mp3');
+const beCareful = new Audio('https://static.wikia.nocookie.net/dota2_gamepedia/images/c/c8/Vo_treant_treant_attack_06.mp3');
 
 export const NOTE_PAGE_NOT_FOUND = {
   icon: (className) => <NaturePeopleTwoTone className={className} />,
+  id: 'note-page-not-found',
   header: (
     <span>
       Rooftrellen awakens.
-      <IconButton aria-label="playAwaken" size="small" onClick={() => awaken.play()}>
-        <PlayCircleFilledTwoTone fontSize="inherit" />
-      </IconButton>
     </span>
   ),
   content: [
@@ -81,6 +82,7 @@ export const NOTE_PAGE_NOT_FOUND = {
 
 export const NOTE_MOVIE_NOT_FOUND = {
   icon: (className) => <ErrorTwoTone className={className} />,
+  id: 'note-movie-not-found',
   header: 'Movie does not exist.',
   content: [
     'The movie is not found on the TMDb Database.',
@@ -91,6 +93,7 @@ export const NOTE_MOVIE_NOT_FOUND = {
 
 export const NOTE_TV_SHOW_NOT_FOUND = {
   icon: (className) => <ErrorTwoTone className={className} />,
+  id: 'note-tv-show-not-found',
   header: 'TV Show does not exist.',
   content: [
     'The TV show is not found on the TMDb Database.',

@@ -48,13 +48,13 @@ const ItemFooter = ({
   );
 
   return (
-    <Grid container spacing="3" className={classes.footer}>
-      <Grid item xs="12">
+    <Grid container spacing={3} className={classes.footer}>
+      <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
           {`${title} (${year})${companies.length > 0 ? ` © ${formattedCompanies}` : ''}.`}
         </Typography>
       </Grid>
-      <Grid item xs="12">
+      <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
           Noticed something wrong on the details? Visit&nbsp;
           {renderLinkOpenNewTab(`${title}'s TMDb page`, link)}
@@ -66,14 +66,14 @@ const ItemFooter = ({
           .
         </Typography>
       </Grid>
-      <Grid item xs="12">
+      <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
           All contents came from the community-built movie and TV database,&nbsp;
           {renderLinkOpenNewTab('The Movie Database (TMDb)', API_KEY_DIALOG_TMDB_LINK)}
           .
         </Typography>
       </Grid>
-      <Grid item xs="12">
+      <Grid item xs={12}>
         <Typography variant="body2" color="textSecondary">
           Social media icons made by&nbsp;
           {renderLinkOpenNewTab('Freepik', 'https://www.flaticon.com/authors/freepik')}
@@ -81,12 +81,12 @@ const ItemFooter = ({
           {renderLinkOpenNewTab('www.flaticon.com', 'https://www.flaticon.com/')}
         </Typography>
       </Grid>
-      <Grid item xs="12">
+      <Grid item xs={12}>
         <Typography variant="body2" color="textSecondary">
           © 2020 All Rights Reserved.
         </Typography>
       </Grid>
-      <Grid item xs="12">
+      <Grid item xs={12}>
         <Typography variant="body2" color="textSecondary">
           Made with y540 and TMDb by jjdcabasolo
         </Typography>
@@ -101,7 +101,7 @@ ItemFooter.propTypes = {
   ).isRequired,
   link: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  year: PropTypes.number.isRequired,
+  year: PropTypes.string.isRequired,
 };
 
 export default ItemFooter;

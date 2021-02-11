@@ -52,9 +52,12 @@ const DarkModeToggle = ({ type, edge }) => {
   }
 };
 
+DarkModeToggle.defaultProps = {
+  edge: '',
+};
+
 DarkModeToggle.propTypes = {
-  edge: PropTypes.bool.isRequired,
-  tooltipVisible: PropTypes.bool.isRequired,
+  edge: PropTypes.string,
   type: PropTypes.string.isRequired,
 };
 

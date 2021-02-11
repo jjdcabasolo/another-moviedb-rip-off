@@ -58,9 +58,14 @@ const ProductionChip = ({
   );
 };
 
+ProductionChip.defaultProps = {
+  country: '',
+  image: '',
+};
+
 ProductionChip.propTypes = {
-  country: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
+  country: PropTypes.string,
+  image: PropTypes.string,
   name: PropTypes.string.isRequired,
 };
 

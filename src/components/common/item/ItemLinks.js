@@ -82,13 +82,22 @@ const ItemLinks = ({
   );
 };
 
+ItemLinks.defaultProps = {
+  facebook: null,
+  imdb: null,
+  instagram: null,
+  tmdb: null,
+  twitter: null,
+  youtube: null,
+};
+
 ItemLinks.propTypes = {
-  facebook: PropTypes.string.isRequired,
-  imdb: PropTypes.string.isRequired,
-  instagram: PropTypes.string.isRequired,
-  tmdb: PropTypes.string.isRequired,
-  twitter: PropTypes.string.isRequired,
-  youtube: PropTypes.string.isRequired,
+  facebook: PropTypes.string,
+  imdb: PropTypes.string,
+  instagram: PropTypes.string,
+  tmdb: PropTypes.string,
+  twitter: PropTypes.string,
+  youtube: PropTypes.string,
 };
 
 export default ItemLinks;

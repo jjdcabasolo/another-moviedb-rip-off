@@ -1,6 +1,5 @@
 import React, {
   useCallback,
-  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -237,6 +236,7 @@ const Appbar = ({ children }) => {
               <BottomNavigationAction
                 component={Link}
                 icon={element.icon}
+                key={`appbar-bottom-nav-${element.title}`}
                 label={element.title}
                 to={element.path}
               />

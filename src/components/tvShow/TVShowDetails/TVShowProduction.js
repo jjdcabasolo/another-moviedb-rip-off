@@ -32,7 +32,15 @@ const TVShowProduction = () => {
 
   return (
     <Grid item container>
-      <Grid item xs={12} container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
+      <Grid
+        alignItems="flex-start"
+        container
+        direction="row"
+        item
+        justify="flex-start"
+        spacing={2}
+        xs={12}
+      >
         {hasCreatedBy && (
           <Grid item xs={hasProduction && !isMobile ? 6 : 12} container>
             <Typography variant="body1" gutterBottom className={classes.title}>
@@ -40,13 +48,14 @@ const TVShowProduction = () => {
             </Typography>
             {createdBy.map((person) => {
               const {
-                profile_path: profilePath,
+                id,
                 name,
                 origin_country: originCountry,
+                profile_path: profilePath,
               } = person;
 
               return (
-                <Grid item>
+                <Grid item key={`tv-show-production-created-by-chip-${id}`}>
                   <ProductionChip
                     country={originCountry}
                     image={profilePath}
@@ -64,13 +73,14 @@ const TVShowProduction = () => {
             </Typography>
             {productionCompanies.map((company) => {
               const {
+                id,
                 logo_path: logoPath,
                 name,
                 origin_country: originCountry,
               } = company;
 
               return (
-                <Grid item>
+                <Grid item key={`tv-show-production-production-company-chip-${id}`}>
                   <ProductionChip
                     country={originCountry}
                     image={logoPath}

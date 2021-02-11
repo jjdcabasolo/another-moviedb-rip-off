@@ -90,6 +90,7 @@ const Section = ({
                 <Grid
                   alignItems="center"
                   className={classes.titleGrid}
+                  container
                   item
                   xs={isCollapsible ? 11 : 12}
                 >
@@ -110,8 +111,8 @@ const Section = ({
                   <Grid item xs={1} container justify="flex-end">
                     <Tooltip title={expanded ? 'Hide content' : 'Show content'}>
                       <IconButton
-                        onClick={handleSectionToggle}
                         className={classes.margin}
+                        onClick={handleSectionToggle}
                         size={isMobile ? 'small' : 'medium'}
                       >
                         {expanded ? <ExpandLess /> : <ExpandMore />}
@@ -157,15 +158,24 @@ const Section = ({
   );
 };
 
+Section.defaultProps = {
+  chipContent: '',
+  col: 12,
+  divider: true,
+  isCollapsible: true,
+  title: '',
+  visible: true,
+};
+
 Section.propTypes = {
   anchorId: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  chipContent: PropTypes.string.isRequired,
-  col: PropTypes.number.isRequired,
-  divider: PropTypes.bool.isRequired,
-  isCollapsible: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  visible: PropTypes.bool.isRequired,
+  chipContent: PropTypes.string,
+  col: PropTypes.number,
+  divider: PropTypes.bool,
+  isCollapsible: PropTypes.bool,
+  title: PropTypes.string,
+  visible: PropTypes.bool,
 };
 
 export default Section;

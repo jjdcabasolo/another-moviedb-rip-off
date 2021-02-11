@@ -65,7 +65,10 @@ const TVShowCast = () => {
             seeMoreComponent={<SeeMoreIconButton />}
           >
             {cast.slice(0, maxCount).map((item) => (
-              <div className={classes.horizontalScrollItemSpacing}>
+              <div
+                className={classes.horizontalScrollItemSpacing}
+                key={`tv-show-cast-person-avatar-${item.id}`}
+              >
                 <PersonAvatar
                   character={item.character}
                   col={12}

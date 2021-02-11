@@ -55,7 +55,7 @@ const PersonAvatarList = ({
           const isImageValid = profilePath !== null;
 
           return (
-            <ListItem>
+            <ListItem key={`person-avatar-list-${name}`}>
               <ListItemAvatar>
                 {isImageValid
                   ? (
@@ -76,9 +76,20 @@ const PersonAvatarList = ({
   );
 };
 
+PersonAvatarList.defaultProps = {
+  col: 12,
+  content: PropTypes.arrayOf(PropTypes.shape({
+    profile_path: '',
+  })),
+};
+
 PersonAvatarList.propTypes = {
-  col: PropTypes.number.isRequired,
-  content: PropTypes.string.isRequired,
+  col: PropTypes.number,
+  content: PropTypes.arrayOf(PropTypes.shape({
+    job: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    profile_path: PropTypes.string,
+  })),
   title: PropTypes.string.isRequired,
 };
 

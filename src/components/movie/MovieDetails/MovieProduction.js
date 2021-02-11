@@ -16,6 +16,7 @@ const MovieProduction = () => {
       <Grid item xs={12}>
         {productionCompanies.map((company) => {
           const {
+            id,
             logo_path: logoPath,
             name,
             origin_country: originCountry,
@@ -23,6 +24,7 @@ const MovieProduction = () => {
 
           return (
             <ProductionChip
+              key={`movie-production-${id}`}
               country={originCountry}
               image={logoPath}
               name={name}

@@ -83,10 +83,16 @@ const ComponentLoader = ({
   );
 };
 
+ComponentLoader.defaultProps = {
+  isItemDrawerOpen: false,
+  label: '',
+  location: '',
+};
+
 ComponentLoader.propTypes = {
-  isItemDrawerOpen: PropTypes.bool.isRequired,
-  location: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  isItemDrawerOpen: PropTypes.bool,
+  label: PropTypes.string,
+  location: PropTypes.string,
 };
 
 export default ComponentLoader;

@@ -102,7 +102,7 @@ const ItemCategory = ({ type }) => {
       <Chip
         className={classes.chip}
         color={e.isActive(category) ? 'primary' : 'default'}
-        key={e.label}
+        key={`item-category-chip-${e.label}`}
         label={e.label}
         onClick={() => handleChipClick(e.identifier)}
         variant={e.isActive(category) ? 'default' : 'outlined'}
