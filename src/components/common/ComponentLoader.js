@@ -85,7 +85,7 @@ const ComponentLoader = ({
 
 ComponentLoader.defaultProps = {
   isItemDrawerOpen: false,
-  label: '',
+  label: 'Hang tight! Contents are loading.',
   location: '',
 };
 

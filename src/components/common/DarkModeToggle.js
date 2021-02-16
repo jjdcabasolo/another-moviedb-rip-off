@@ -29,14 +29,14 @@ const DarkModeToggle = ({ type, edge }) => {
     case 'iconButton':
       return (
         <IconButton aria-label="menu" onClick={handleToggleLights} edge={edge}>
-          {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
+          {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone />}
         </IconButton>
       );
     case 'listItem':
       return (
         <ListItem button onClick={handleToggleLights}>
           <ListItemIcon>
-            {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone /> }
+            {darkMode ? <Brightness2TwoTone /> : <BrightnessLowTwoTone />}
           </ListItemIcon>
           <ListItemText primary="Toggle lights" />
         </ListItem>

@@ -194,7 +194,7 @@ const ItemSeeMore = ({
 };
 
 ItemSeeMore.defaultProps = {
-  isButtonShown: false,
+  isButtonShown: true,
   isEpisode: false,
   maxWidth: 'md',
   seeLessText: 'Show less',

@@ -55,7 +55,7 @@ const BrokenImage = ({
 };
 
 BrokenImage.defaultProps = {
-  avatarSize: 'default',
+  avatarSize: 'large',
   extraClass: '',
 };
 
