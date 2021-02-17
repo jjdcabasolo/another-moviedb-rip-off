@@ -9,7 +9,6 @@ import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
 import ItemLazyLoad from '../../common/item/ItemLazyLoad';
 import ItemSeeMore from '../../common/item/ItemSeeMore';
 import PersonAvatar from '../../common/item/detail/PersonAvatar';
-import SeeMoreIconButton from '../../common/SeeMoreIconButton';
 
 import { getCastCol, scrollToID } from '../../../utils/functions';
 
@@ -26,8 +25,11 @@ const useStyles = makeStyles((theme) => ({
   horizontalScrollItemSpacing: {
     margin: theme.spacing(0, 1),
     [theme.breakpoints.only('xs')]: {
-      margin: theme.spacing(0, 0.125),
+      margin: theme.spacing(0, 0.5),
     },
+  },
+  lastEntry: {
+    padding: theme.spacing(0.5),
   },
 }));
 
@@ -62,7 +64,6 @@ const TVShowCast = () => {
           <ItemHorizontalContainer
             isWithSeeMore={cast.length > maxCount}
             scrollAmount={144}
-            seeMoreComponent={<SeeMoreIconButton />}
           >
             {cast.slice(0, maxCount).map((item) => (
               <div
@@ -78,6 +79,9 @@ const TVShowCast = () => {
                 />
               </div>
             ))}
+            {cast.length <= maxCount && isMobile && (
+              <div className={classes.lastEntry} />
+            )}
           </ItemHorizontalContainer>
         )}
         expandedContent={(

@@ -57,8 +57,7 @@ const TVShowEpisodes = () => {
       collapsedContent={renderEpisodeList(filteredEpisodes.slice(0, maxEpisodesToShow), true)}
       expandedContent={renderEpisodeList(filteredEpisodes, false)}
       isButtonShown={filteredEpisodes.length > maxEpisodesToShow}
-      isEpisode
-      maxWidth="xs"
+      maxWidth="sm"
       sectionId="episodes"
       seeMoreText={`Show all ${filteredEpisodes.length} episodes`}
     />

@@ -106,7 +106,6 @@ const TVShows = () => {
         }
       });
     }
-    // setTimeout(() => window.scrollTo(0, 0), 100);
   }, [tvShowId, dispatch]);
 
   if (tvShowId === undefined) {

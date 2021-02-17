@@ -92,7 +92,7 @@ const ItemCategory = ({ type }) => {
   const handleClose = () => setAnchorEl(null);
 
   const handleChipClick = (itemCategory) => {
-    if (isMobile) scrollToID('scroll-to-top-anchor', true);
+    if (isMobile) scrollToID('scroll-to-top-anchor', false);
     if (isMovie) dispatch(moviesActions.setCategory(itemCategory));
     if (isTVShow) dispatch(tvShowsActions.setCategory(itemCategory));
   };

@@ -18,13 +18,11 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import AppBar from '../../overrides/AppBar';
 import AppbarMenu from './AppbarMenu';
-import DarkModeToggle from '../../common/DarkModeToggle';
 import GradientBackground from '../../common/GradientBackground';
 import Helmet from '../Helmet';
 import ItemCategory from '../../common/item/ItemCategory';
@@ -100,18 +98,15 @@ const Appbar = ({ children }) => {
   }, [dispatch, history]);
 
   const handleBottomNavigationClick = (index) => {
-    scrollToID('scroll-to-top-anchor', true);
-    setActiveBottomTab(index);
     const tab = index === 1 ? 'movies' : 'tvshows';
+    scrollToID('scroll-to-top-anchor', tab === activeTab);
+    setActiveBottomTab(index);
     dispatch(sidebarActions.setActiveTab(tab));
     history.push(tab);
   };
 
   const renderToolbarContents = () => {
     const isLoading = isMovieSelected ? isMovieLoading : isTVShowLoading;
-    const hasItemContent = isMovieSelected
-      ? (Object.keys(movie).length === 0 && movie.constructor === Object)
-      : (Object.keys(tvShow).length === 0 && tvShow.constructor === Object);
     const displayTitle = isMovieSelected ? (title || originalTitle) : (name || originalName);
 
     if (isMovieSelected || isTVShowSelected) {
@@ -124,17 +119,14 @@ const Appbar = ({ children }) => {
           >
             <ArrowBackTwoTone />
           </IconButton>
-
-          {isLoading && hasItemContent
-            ? <Skeleton variant="rect" height={24} width="75%" />
+          {isLoading
+            ? <div className={classes.title} />
             : (
-              <>
-                <Typography component="h1" variant="h6" noWrap className={classes.title}>
-                  {displayTitle}
-                </Typography>
-                <DarkModeToggle type="iconButton" edge="end" />
-              </>
+              <Typography component="h1" variant="h6" noWrap className={classes.title}>
+                {displayTitle}
+              </Typography>
             )}
+          <AppbarMenu />
         </>
       );
     }

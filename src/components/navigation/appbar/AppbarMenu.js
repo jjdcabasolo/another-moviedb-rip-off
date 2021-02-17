@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
   IconButton,
@@ -30,6 +33,10 @@ const useStyles = makeStyles({
 const AppbarMenu = () => {
   const classes = useStyles();
 
+  const history = useHistory();
+
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -40,17 +47,28 @@ const AppbarMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleLinkClick = (link) => {
-    window.open(link, '_blank');
+  const handleMenuItemClick = (menuItemClickType, link) => {
+    switch (menuItemClickType) {
+      case 'newLink':
+        window.open(link, '_blank');
+        break;
+      case 'home':
+        history.push(`/${activeTab}`);
+        break;
+      default:
+        break;
+    }
     handleClose();
   };
 
-  const renderMenuItem = (link, primary) => (
-    <MenuItem onClick={() => handleLinkClick(link)}>
+  const renderMenuItem = (primary, link, menuItemClickType, icon) => (
+    <MenuItem onClick={() => handleMenuItemClick(menuItemClickType, link)}>
       <ListItemText primary={primary} />
-      <ListItemIcon className={classes.listItemIcon}>
-        <OpenInNewTwoTone fontSize="small" />
-      </ListItemIcon>
+      {icon && (
+        <ListItemIcon className={classes.listItemIcon}>
+          {icon}
+        </ListItemIcon>
+      )}
     </MenuItem>
   );
 
@@ -71,9 +89,24 @@ const AppbarMenu = () => {
         onClose={handleClose}
         open={Boolean(anchorEl)}
       >
+        {renderMenuItem(
+          'Go home',
+          '',
+          'home',
+        )}
         <DarkModeToggle type="menuItem" />
-        {renderMenuItem(GITHUB_REPO_LINK, 'GitHub Repository')}
-        {renderMenuItem(FIGMA_LINK, 'Figma (Wireframes)')}
+        {renderMenuItem(
+          'GitHub Repository',
+          GITHUB_REPO_LINK,
+          'newTab',
+          <OpenInNewTwoTone fontSize="small" />,
+        )}
+        {renderMenuItem(
+          'Figma (Wireframes)',
+          FIGMA_LINK,
+          'newTab',
+          <OpenInNewTwoTone fontSize="small" />,
+        )}
       </Menu>
     </>
   );

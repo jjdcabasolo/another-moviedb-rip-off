@@ -1,8 +1,8 @@
 import React, {
   useCallback,
   useEffect,
-  useState,
   useRef,
+  useState,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -13,6 +13,7 @@ import { Zoom, useMediaQuery } from '@material-ui/core';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 
 import Fab from '../../overrides/Fab';
+import SeeMoreIconButton from '../SeeMoreIconButton';
 
 const useStyles = makeStyles((theme) => ({
   horizontalScroll: {
@@ -32,12 +33,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 1),
     [theme.breakpoints.only('xs')]: {
       margin: theme.spacing(0, 0.125),
-    },
-  },
-  seeMoreItem: {
-    cursor: 'pointer',
-    [theme.breakpoints.only('xs')]: {
-      paddingRight: theme.spacing(2),
     },
   },
   scroller: {
@@ -60,7 +55,6 @@ const ItemHorizontalContainer = ({
   imageSize,
   isWithSeeMore = false,
   scrollAmount,
-  seeMoreComponent,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
@@ -106,17 +100,8 @@ const ItemHorizontalContainer = ({
       <div className={classes.horizontalScroll} onScroll={updateScrollers} ref={scroller}>
         {children}
         {isWithSeeMore && (
-          <div
-            className={clsx(
-              classes.horizontalScrollItem,
-              classes.seeMoreItem,
-            )}
-            onClick={handleSeeMore}
-            onKeyDown={handleSeeMore}
-            role="button"
-            tabIndex={0}
-          >
-            {seeMoreComponent}
+          <div className={classes.horizontalScrollItem}>
+            <SeeMoreIconButton handleSeeMore={handleSeeMore} />
           </div>
         )}
       </div>
@@ -154,7 +139,6 @@ ItemHorizontalContainer.defaultProps = {
   handleSeeMore: () => {},
   imageSize: 0,
   isWithSeeMore: false,
-  seeMoreComponent: null,
 };
 
 ItemHorizontalContainer.propTypes = {
@@ -163,7 +147,6 @@ ItemHorizontalContainer.propTypes = {
   imageSize: PropTypes.number,
   isWithSeeMore: PropTypes.bool,
   scrollAmount: PropTypes.number.isRequired,
-  seeMoreComponent: PropTypes.node,
 };
 
 export default ItemHorizontalContainer;

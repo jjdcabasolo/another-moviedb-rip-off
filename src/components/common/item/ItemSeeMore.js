@@ -27,8 +27,6 @@ import { ArrowBack, Close } from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 
-import { truncateText } from '../../../utils/functions';
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.default,
@@ -59,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appbarTitle: {
     fontWeight: 300,
+  },
+  titlebar: {
+    margin: theme.spacing(1, 0),
   },
 }));
 
@@ -124,12 +125,14 @@ const ItemSeeMore = ({
               <IconButton edge="start" onClick={handleClose} aria-label="close">
                 <ArrowBack />
               </IconButton>
-              <Typography variant="h6" className={classes.title} noWrap>
-                <span className={classes.appbarTitle}>
-                  {`${truncateText(title, 18, 'characters')} `}
-                </span>
-                {titleSection}
-              </Typography>
+              <div className={classes.titlebar}>
+                <Typography variant="h6" noWrap>
+                  {titleSection}
+                </Typography>
+                <Typography variant="caption" noWrap>
+                  {title}
+                </Typography>
+              </div>
             </Toolbar>
           </AppBar>
           <div className={classes.content}>

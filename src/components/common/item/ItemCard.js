@@ -80,6 +80,10 @@ const useStyles = makeStyles((theme) => ({
     )`,
   },
   cardContainer: {
+    transition: theme.transitions.create('padding', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
     [theme.breakpoints.only('xs')]: {
       padding: theme.spacing(1, 0),
     },
@@ -124,9 +128,6 @@ const useStyles = makeStyles((theme) => ({
       '&:first-child': {
         paddingTop: theme.spacing(1),
       },
-      '&:last-child': {
-        paddingBottom: 0,
-      },
     },
   },
   brokenImageContainer: {
@@ -170,7 +171,7 @@ const ItemCard = ({
   if (!content) return null;
 
   const handleCardClick = () => {
-    scrollToID('scroll-to-top-anchor', true);
+    scrollToID('scroll-to-top-anchor', false);
     if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
     if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
     else {

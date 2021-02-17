@@ -75,7 +75,10 @@ const ItemCardHorizontalList = ({
         appbarTitle={appbarTitle}
         collapsedClickEvent={() => scrollToID(anchorId)}
         collapsedContent={(
-          <ItemHorizontalContainer scrollAmount={theme.spacing(45 + 2)}>
+          <ItemHorizontalContainer
+            scrollAmount={theme.spacing(45 + 2)}
+            isWithSeeMore={items.length > MAX_ITEMS_BEFORE_COLLAPSING}
+          >
             {collapsedItems.map((item, index) => (
               <div
                 className={classes.horizontalScrollItemSpacing}

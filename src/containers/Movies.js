@@ -110,7 +110,6 @@ const Movies = () => {
         }
       });
     }
-    // setTimeout(() => window.scrollTo(0, 0), 100);
   }, [movieId, dispatch]);
 
   if (movieId === undefined) {
