@@ -1,17 +1,19 @@
 export {
-  getPopularMovies,
-  getNowPlayingMovies,
-  getTopRatedMovies,
-  getUpcomingMovies,
   getHighestGrossingMovies,
   getMovieDetails,
+  getNowPlayingMovies,
+  getPopularMovies,
+  getTopRatedMovies,
+  getTrendingMovies,
+  getUpcomingMovies,
 } from './movies';
 
 export {
   getAiringTodayShows,
   getOnTheAirShows,
   getPopularShows,
-  getTopRatedShows,
   getTVShowDetails,
   getTVShowSeasonDetails,
+  getTopRatedShows,
+  getTrendingShows,
 } from './tvShows';

@@ -1,120 +1,106 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import SwipeableViews from 'react-swipeable-views';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
-import ItemCard from './ItemCard';
-import ItemCategory from './ItemCategory';
 import ComponentLoader from '../ComponentLoader';
-import Note from '../../common/Note';
-
-import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
+import ItemCard from './ItemCard';
+import ItemHeader from './ItemHeader';
+import Note from '../Note';
 
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
-  TV_SHOW_DRAWER_CATEGORY_CHIPS,
   NOTE_NO_API_KEY,
   NOTE_OFFLINE,
+  TV_SHOW_DRAWER_CATEGORY_CHIPS,
 } from '../../../constants';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
+  itemListContainer: {
+    padding: theme.spacing(0, 2),
+  },
   note: {
     padding: theme.spacing(8, 2),
   },
-  loaderContainer: {
-    height: theme.browserSize.height - theme.spacing(17),
-  },
-  loaderText: {
-    marginTop: theme.spacing(2),
+  titleContainer: {
+    padding: theme.spacing(15, 0),
   },
 }));
-
-const getIndexCategoryMapping = (type, movieCategory, tvShowCategory) => {
-  if (type === 'movies') {
-    if (movieCategory === 'nowPlaying') return 0;
-    if (movieCategory === 'upcoming') return 1;
-    if (movieCategory === 'popular') return 2;
-    if (movieCategory === 'topRated') return 3;
-    if (movieCategory === 'highestGrossing') return 4;
-  } else if (type === 'tvshows') {
-    if (tvShowCategory === 'airingToday') return 0;
-    if (tvShowCategory === 'onTheAir') return 1;
-    if (tvShowCategory === 'popular') return 2;
-    if (tvShowCategory === 'topRated') return 3;
-  }
-};
 
 const ItemList = () => {
   const classes = useStyles();
 
-  const activeTab = useSelector(state => state.sidebar.activeTab);
-  const movieCategory = useSelector(state => state.movies.category);
-  const movieList = useSelector(state => state.movies.list);
-  const movieLoadedContent = useSelector(state => state.movies.loadedContent);
-  const tvShowCategory = useSelector(state => state.tvShows.category);
-  const tvShowList = useSelector(state => state.tvShows.list);
-  const tvShowLoadedContent = useSelector(state => state.tvShows.loadedContent);
-  const dispatch = useDispatch();
-
-  const [categoryIndex, setCategoryIndex] = useState(0);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const movieCategory = useSelector((state) => state.movies.category);
+  const movieList = useSelector((state) => state.movies.list);
+  const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
+  const tvShowCategory = useSelector((state) => state.tvShows.category);
+  const tvShowList = useSelector((state) => state.tvShows.list);
+  const tvShowLoadedContent = useSelector((state) => state.tvShows.loadedContent);
 
   const isMovie = activeTab === 'movies';
-  const isTVShow = activeTab === 'tvshows';
   const contentList = isMovie ? movieList : tvShowList;
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
+  const activeCategory = isMovie ? movieCategory : tvShowCategory;
 
-  useEffect(() => {
-    setCategoryIndex(getIndexCategoryMapping(activeTab, movieCategory, tvShowCategory));
-  }, [activeTab, movieCategory, tvShowCategory])
+  if (!window.navigator.onLine) {
+    return (
+      <div className={classes.note}>
+        <Note details={NOTE_OFFLINE} />
+      </div>
+    );
+  }
 
-  const handleSwipe = index => {
-    setCategoryIndex(index);
-    if (isMovie) dispatch(moviesActions.setCategory(categoryChips[index].identifier));
-    if (isTVShow) dispatch(tvShowsActions.setCategory(categoryChips[index].identifier));
-  };
+  if (localStorage.getItem('apiKey') === null) {
+    return (
+      <div className={classes.note}>
+        <Note details={NOTE_NO_API_KEY} />
+      </div>
+    );
+  }
 
-  if (!window.navigator.onLine) return (
-    <div className={classes.note}>
-      <Note details={NOTE_OFFLINE} />
-    </div>
-  );
-
-  if (localStorage.getItem('apiKey') === null) return (
-    <div className={classes.note}>
-      <Note details={NOTE_NO_API_KEY} />
-    </div>
-  );
-
-  if (loadedContent !== categoryChips.length) return (
-    <ComponentLoader />
-  );
+  if (loadedContent !== categoryChips.length) {
+    return (
+      <ComponentLoader />
+    );
+  }
 
   return (
-    <>
-      <ItemCategory isList />
-      <SwipeableViews enableMouseEvents index={categoryIndex} onChangeIndex={handleSwipe}>
-        {Object.keys(contentList).map(cat => (
-          <div>
-            <Grid container justify="center">
-              {contentList[cat].slice(0, 10).map((content, rank) => (
-                <ItemCard
-                  col={12}
-                  content={content}
-                  drawerOpen
-                  mobile
-                  rank={rank + 1}
-                  type={activeTab}
-                />
-              ))}
-            </Grid>
-          </div>
+    <Grid container justify="center" className={classes.itemListContainer}>
+      <Grid
+        alignItems="center"
+        className={classes.titleContainer}
+        container
+        direction="column"
+        item
+        justify="center"
+        xs={12}
+      >
+        <ItemHeader />
+      </Grid>
+      <Grid container item xs={12}>
+        {contentList[activeCategory].slice(0, 10).map((content, rank) => (
+          <Grid
+            className={classes.itemListCard}
+            item
+            key={`item-list-grid-item-card-${content.id}`}
+            xs={12}
+          >
+            <ItemCard
+              col={12}
+              content={content}
+              drawerOpen
+              mobile
+              rank={rank + 1}
+              type={activeTab}
+            />
+          </Grid>
         ))}
-      </SwipeableViews>
-    </>
+      </Grid>
+    </Grid>
   );
 };
 

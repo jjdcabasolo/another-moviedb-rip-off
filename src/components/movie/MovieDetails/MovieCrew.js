@@ -1,117 +1,156 @@
 import React, { useState, useEffect } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { useTheme } from '@material-ui/core/styles';
-import { Grid, Button, useMediaQuery } from '@material-ui/core';
+import { Grid, useMediaQuery } from '@material-ui/core';
 
+import ItemSeeMore from '../../common/item/ItemSeeMore';
 import PersonAvatarList from '../../common/item/detail/PersonAvatarList';
 import Statistic from '../../common/item/detail/Statistic';
-import ComponentLoader from '../../common/ComponentLoader';
 
-import { moviesActions } from '../../../reducers/ducks';
-
-import { getCrewMembers, getCrewCol } from '../../../utils/functions';
+import { getCrewMembers, getCrewCol, scrollToID } from '../../../utils/functions';
 
 import { CREW_TO_DISPLAY } from '../../../constants';
 
 const MovieCrew = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
-  const isLowerTablet = useMediaQuery(theme.breakpoints.only('sm'));
-  const isUpperTablet = useMediaQuery(theme.breakpoints.only('md'));
+  const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
+  const isBigTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
-  const movie = useSelector(state => state.movies.movie);
-  const crewShowMore = useSelector(state => state.movies.crewShowMore);
-  const dispatch = useDispatch();
+  const movie = useSelector((state) => state.movies.movie);
 
-  const { crew } = movie;
+  const {
+    crew,
+    original_title: originalTitle,
+    title,
+  } = movie;
 
   const [crewMembers, setCrewMembers] = useState({});
   const [masonryConfig, setMasonryConfig] = useState([]);
   const [crewCol, setCrewCol] = useState(getCrewCol());
 
-  const {lighting, visualEffects} = crewMembers;
+  useEffect(() => {
+    setCrewCol(getCrewCol(isMobile, isSmallTablet));
+  }, [isMobile, isSmallTablet, isBigTablet, isDesktop]);
 
   useEffect(() => {
-    setCrewCol(getCrewCol(isMobile, isLowerTablet));
-  }, [isMobile, isLowerTablet, isUpperTablet, isDesktop]);
+    if (crew && crew.length > 0) {
+      const [director] = getCrewMembers(crew, 'directing', ['director']);
+      const [writer] = getCrewMembers(crew, 'writing');
+      const [producer, executiveProducer] = getCrewMembers(crew, 'production', ['producer', 'executive producer']);
+      const [composer] = getCrewMembers(crew, 'sound', ['original music composer']);
+      const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
+      const [editor] = getCrewMembers(crew, 'editing', ['editor']);
+      const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
+      const [lighting] = getCrewMembers(crew, 'lighting');
+      const [visualEffects] = getCrewMembers(crew, 'visual effects');
+      const production = [...producer, ...executiveProducer];
+      const finalCrew = {
+        director,
+        writer,
+        production,
+        composer,
+        cinematography,
+        editor,
+        costume,
+        makeup,
+        lighting,
+        visualEffects,
+      };
+      setCrewMembers(finalCrew);
 
-  useEffect(() => {
-    const { crew } = movie;
-    const [director] = getCrewMembers(crew, 'directing', ['director']);
-    const [writer] = getCrewMembers(crew, 'writing');
-    const [producer, executiveProducer] = getCrewMembers(crew, 'production', ['producer', 'executive producer']);
-    const [composer] = getCrewMembers(crew, 'sound', ['original music composer']);
-    const [cinematography] = getCrewMembers(crew, 'camera', ['director of photography']);
-    const [editor] = getCrewMembers(crew, 'editing', ['editor']);
-    const [costume, makeup] = getCrewMembers(crew, 'costume & make-up', ['costume design', 'makeup artist']);
-    const [lighting] = getCrewMembers(crew, 'lighting');
-    const [visualEffects] = getCrewMembers(crew, 'visual effects');
-    const production = [...producer, ...executiveProducer];
-    const finalCrew = {director, writer, production: production, composer, cinematography, editor, costume, makeup, lighting, visualEffects};
-    setCrewMembers(finalCrew);
+      setMasonryConfig([]);
+      CREW_TO_DISPLAY.forEach((e) => {
+        if (finalCrew[e.identifier].length > 0) setMasonryConfig((a) => [...a, e.identifier]);
+      });
+    }
+  }, [movie, crew]);
 
-    setMasonryConfig([]);
-    CREW_TO_DISPLAY.forEach(e => {
-      if (finalCrew[e.identifier].length > 0) setMasonryConfig(a => [...a, e.identifier]);
-    });
-  }, [movie]);
-
-  const constructMasonryGrid = () => {
+  const renderMasonryGrid = (crewShowMore) => {
     const col = [];
-    for (let i = 0; i < crewCol; ++i) {
+    for (let i = 0; i < crewCol; i += 1) {
       const colItem = [];
       for (let a = i; a < masonryConfig.length; a += crewCol) {
         if (!crewShowMore) {
           if (masonryConfig[a] === 'production'
-          || masonryConfig[a] === 'composer'
-          || masonryConfig[a] === 'cinematography'
-          || masonryConfig[a] === 'editor'
-          || masonryConfig[a] === 'costume'
-          || masonryConfig[a] === 'makeup') break;
+            || masonryConfig[a] === 'composer'
+            || masonryConfig[a] === 'cinematography'
+            || masonryConfig[a] === 'editor'
+            || masonryConfig[a] === 'costume'
+            || masonryConfig[a] === 'makeup') break;
         }
         const members = crewMembers[masonryConfig[a]];
-        const title = CREW_TO_DISPLAY.filter(c => c.identifier === masonryConfig[a])[0];
-        colItem.push(<PersonAvatarList title={title.label(members.length)} content={members} location="crew" />);
+        const crewTitle = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
+        colItem.push(
+          <PersonAvatarList
+            key={`movie-crew-person-avatar-list-${crewTitle.identifier}`}
+            content={members}
+            title={crewTitle.label(members.length)}
+          />,
+        );
       }
-      col.push(<Grid item xs={12 / crewCol}>{colItem}</Grid>);
+      col.push(<Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{colItem}</Grid>);
     }
     return col;
   };
 
   const renderStatistic = () => {
-    const hasLighting = lighting.length > 0;
-    const hasVE = visualEffects.length > 0;
-    let count = 1;
-    if (hasLighting) count++;
-    if (hasVE) count++;
-    const col = 12 / count;
-    return [
-      (hasLighting && <Statistic col={col} count={lighting.length} label="Lighting" divider />),
-      (hasVE && <Statistic col={col} count={visualEffects.length} label="VFX" divider /> ),
-      <Statistic col={col} count={crew.length} label="Total" isTotal />,
-    ];
+    const { lighting, visualEffects } = crewMembers;
+    const crewStatistic = [
+      {
+        length: lighting.length,
+        label: 'Lighting',
+        divider: true,
+      },
+      {
+        length: visualEffects.length,
+        label: 'VFX',
+        divider: true,
+      },
+      {
+        length: crew.length,
+        label: 'Total Crew',
+        isTotal: true,
+      },
+    ].filter((e) => e.length > 0);
+
+    return crewStatistic.map((e) => (
+      <Statistic
+        col={12 / crewStatistic.length}
+        count={e.length}
+        divider={e.divider}
+        isTotal={e.isTotal}
+        key={`movie-crew-statistic-${e.label}`}
+        label={e.label}
+      />
+    ));
   };
 
-  if (!('director' in crewMembers)) return <ComponentLoader />;
+  if (!('director' in crewMembers)) return null;
 
   return (
-    <>
-      <Grid container spacing={2}>
-        { constructMasonryGrid() }
-        { crewShowMore
-          ? <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
-          : <Statistic count={crew.length} label="Total Crew" isTotal />
-        }
-        <Grid item xs={12} container justify="flex-end">
-          <Button onClick={() => dispatch(moviesActions.setCrewShowMore(!crewShowMore))}>
-            {crewShowMore ? 'Show less' : 'Show all'}
-          </Button>
-        </Grid>
-      </Grid>
-    </>
+    <Grid container>
+      <ItemSeeMore
+        appbarTitle={[title || originalTitle, 'Crew']}
+        collapsedClickEvent={() => scrollToID('movie-crew')}
+        collapsedContent={(
+          <Grid container>
+            {renderMasonryGrid()}
+          </Grid>
+        )}
+        expandedContent={(
+          <Grid container spacing={2}>
+            {renderMasonryGrid(true)}
+            <Grid item container justify="center" alignItems="center">{renderStatistic()}</Grid>
+          </Grid>
+        )}
+        sectionId="crew"
+        seeMoreText={`Show all ${crew.length} crew`}
+      />
+    </Grid>
   );
 };
 

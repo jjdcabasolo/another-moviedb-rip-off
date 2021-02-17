@@ -2,12 +2,10 @@ import { useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 const ResponsiveComponent = ({
-  mobileComponent,
-  tabletComponent,
-  desktopComponent
+  desktopComponent = null,
+  mobileComponent = null,
+  tabletComponent = null,
 }) => {
-  const theme = useTheme();
-
   // https://material-ui.com/customization/breakpoints/
   // value         |0px     600px    960px    1280px   1920px
   // key           |xs      sm       md       lg       xl
@@ -15,13 +13,17 @@ const ResponsiveComponent = ({
   // range         |   xs   |   sm   |   md   |   lg   |   xl
   // responsiveComp|-mobile-|-----tablet------|-----desktop-----
 
-  const desktop = useMediaQuery(theme.breakpoints.up('lg'));
-  const tablet = useMediaQuery(theme.breakpoints.between('sm', 'lg'));
-  // const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
+  if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    return mobileComponent;
+  }
 
   // if all components are declared/specified
-  if (desktop) return desktopComponent;
-  else if (tablet) return tabletComponent;
+  if (isDesktop) return desktopComponent;
+  if (isTablet) return tabletComponent;
   return mobileComponent;
 };
 

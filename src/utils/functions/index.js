@@ -10,12 +10,10 @@ export {
 
 export {
   evaluateLocation,
+  toCamelCase,
+  toMillionsOrBillions,
   truncateText,
 } from './text';
-
-export {
-  toMillionsOrBillions,
-} from './monetary';
 
 export {
   getCastCol,
@@ -23,5 +21,11 @@ export {
 } from './movies';
 
 export {
+  scrollToID,
+} from './scroll';
+
+export {
   getTVShowStatus,
+  selectEpisode,
+  selectSeason,
 } from './tvShows';

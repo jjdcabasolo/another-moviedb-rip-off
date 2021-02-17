@@ -7,22 +7,23 @@ import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
+import grey from '@material-ui/core/colors/grey';
 
-import Snackbars from './Snackbars';
-import InitAPICalls from './InitAPICalls';
-import Sidebar from '../components/navigation/sidebar/Sidebar';
 import Appbar from '../components/navigation/appbar/Appbar';
 import Helmet from '../components/navigation/Helmet';
+import InitAPICalls from './InitAPICalls';
 import ResponsiveComponent from '../utils/components/ResponsiveComponent';
+import Sidebar from '../components/navigation/sidebar/Sidebar';
+import Snackbars from './Snackbars';
 
 import { browserActions } from '../reducers/ducks';
 
 import Routes from '../routes';
 
 const App = () => {
-  const darkMode = useSelector(state => state.sidebar.darkMode);
-  const height = useSelector(state => state.browser.height);
-  const width = useSelector(state => state.browser.width);
+  const darkMode = useSelector((state) => state.sidebar.darkMode);
+  const height = useSelector((state) => state.browser.height);
+  const width = useSelector((state) => state.browser.width);
 
   const dispatch = useDispatch();
 
@@ -39,21 +40,28 @@ const App = () => {
     palette: {
       primary: { main: darkMode ? amber[200] : amber[500] },
       type: darkMode ? 'dark' : 'light',
+      brokenImage: {
+        border: darkMode ? grey[700] : grey[300],
+        background: darkMode ? grey[800] : grey[200],
+      },
+      divider: darkMode ? grey[700] : grey[300],
     },
     browserSize: { width, height },
+    shape: {
+      borderRadius: 8,
+    },
   });
 
   return (
     <>
       <Helmet isDefault />
-
       <MuiThemeProvider theme={theme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Router basename="/">
             <ResponsiveComponent
-              mobileComponent={<Appbar><Routes/></Appbar>}
-              tabletComponent={<Sidebar><Routes/></Sidebar>}
-              desktopComponent={<Sidebar><Routes/></Sidebar>}
+              mobileComponent={<Appbar><Routes /></Appbar>}
+              tabletComponent={<Sidebar><Routes /></Sidebar>}
+              desktopComponent={<Sidebar><Routes /></Sidebar>}
             />
           </Router>
           <Snackbars />

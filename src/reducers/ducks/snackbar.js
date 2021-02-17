@@ -10,7 +10,6 @@ export const snackbarActions = {
     type: snackbarActionType.SHOW_SNACKBAR,
     payload: { snackbarMessage, variant },
   }),
-
   hideSnackbar: () => ({
     type: snackbarActionType.HIDE_SNACKBAR,
   }),

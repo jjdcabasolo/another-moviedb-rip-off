@@ -1,62 +1,181 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Divider, Grid, Typography, Chip } from '@material-ui/core';
+import clsx from 'clsx';
 
-const useStyles = makeStyles(theme => ({
-  title: {
-    marginBottom: theme.spacing(2),
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import {
+  Chip,
+  Collapse,
+  Divider,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
+import { ExpandMore, ExpandLess } from '@material-ui/icons';
+
+const useStyles = makeStyles((theme) => ({
+  titleGrid: {
+    flexGrow: 1,
+    display: 'flex',
   },
   chip: {
     marginLeft: theme.spacing(1),
     marginBottom: theme.spacing(0.5),
   },
+  collapseContainer: {
+    width: '100%',
+  },
+  sectionHeader: {
+    cursor: 'pointer',
+  },
+  sectionContainer: {
+    transition: theme.transitions.create('margin-top', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  sectionContainerSpacing: {
+    marginTop: theme.spacing(2),
+  },
+  dividerContainer: {
+    [theme.breakpoints.only('xs')]: {
+      padding: `${theme.spacing(2, 0)} !important`,
+    },
+  },
 }));
 
 const Section = ({
-  title,
+  anchorId,
   children,
-  visible = true,
+  chipContent,
   col = 12,
   divider = true,
-  anchorId,
-  chipContent,
+  isCollapsible = true,
+  title,
+  visible = true,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
+  const [expanded, setExpanded] = useState(true);
+
+  const handleSectionToggle = () => {
+    if (isCollapsible) {
+      setExpanded(!expanded);
+    }
+  };
+
   return (
-    visible 
+    visible
       ? (
         <>
-          <Grid item xs={col} id={anchorId}>
+          <div id={anchorId} />
+          <Grid
+            container
+            item
+            xs={col}
+          >
             {title && (
-              <Typography variant="h5" className={classes.title}>
-                {title}
-                {chipContent && (
-                  <Chip
-                    variant="outlined"
-                    label={chipContent}
-                    color="default"
-                    size="small"
-                    className={classes.chip}
-                  />
+              <Grid
+                className={classes.sectionHeader}
+                container
+                item
+                onClick={handleSectionToggle}
+                xs={12}
+              >
+                <Grid
+                  alignItems="center"
+                  className={classes.titleGrid}
+                  container
+                  item
+                  xs={isCollapsible ? 11 : 12}
+                >
+                  <Typography variant="h6">
+                    {title}
+                    {chipContent && (
+                      <Chip
+                        className={classes.chip}
+                        color="default"
+                        label={chipContent}
+                        size="small"
+                        variant="outlined"
+                      />
+                    )}
+                  </Typography>
+                </Grid>
+                {isCollapsible && (
+                  <Grid item xs={1} container justify="flex-end">
+                    <Tooltip title={expanded ? 'Hide content' : 'Show content'}>
+                      <IconButton
+                        className={classes.margin}
+                        onClick={handleSectionToggle}
+                        size={isMobile ? 'small' : 'medium'}
+                      >
+                        {expanded ? <ExpandLess /> : <ExpandMore />}
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
                 )}
-              </Typography>
+              </Grid>
             )}
-            {children}
+            <Grid
+              item
+              xs={12}
+              className={clsx(
+                classes.sectionContainer,
+                { [classes.sectionContainerSpacing]: expanded && title },
+              )}
+              container
+            >
+              {isCollapsible
+                ? (
+                  <Collapse
+                    className={classes.collapseContainer}
+                    in={expanded}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    {children}
+                  </Collapse>
+                )
+                : children}
+            </Grid>
           </Grid>
           {divider
             ? (
-              <Grid item xs={12}>
-                <Divider/>
+              <Grid item xs={12} className={classes.dividerContainer}>
+                <Divider />
               </Grid>
             )
-            : null
-          }      
+            : null}
         </>
       )
       : null
   );
+};
+
+Section.defaultProps = {
+  chipContent: '',
+  col: 12,
+  divider: true,
+  isCollapsible: true,
+  title: '',
+  visible: true,
+};
+
+Section.propTypes = {
+  anchorId: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+  chipContent: PropTypes.string,
+  col: PropTypes.number,
+  divider: PropTypes.bool,
+  isCollapsible: PropTypes.bool,
+  title: PropTypes.string,
+  visible: PropTypes.bool,
 };
 
 export default Section;

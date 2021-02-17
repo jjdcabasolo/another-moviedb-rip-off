@@ -9,18 +9,41 @@ import Statistic from '../../common/item/detail/Statistic';
 import { toMillionsOrBillions } from '../../../utils/functions';
 
 const MovieBudget = () => {
-  const movie = useSelector(state => state.movies.movie);
+  const movie = useSelector((state) => state.movies.movie);
 
   const { budget, revenue } = movie;
-  
+
   const renderStatistics = () => {
     const income = revenue - budget;
     const hasIncome = income > 0;
 
     return [
-      <Statistic col={4} count={toMillionsOrBillions(revenue)} label="Revenue" divider />,
-      <Statistic col={4} count={toMillionsOrBillions(budget)} label="Budget" divider={revenue && hasIncome} />,
-      (hasIncome && <Statistic col={4} count={toMillionsOrBillions(income)} label="Income" />),
+      (revenue !== 0 && (
+        <Statistic
+          col={4}
+          count={toMillionsOrBillions(revenue)}
+          divider
+          key="movie-budget-revenue"
+          label="Revenue"
+        />
+      )),
+      (budget !== 0 && (
+        <Statistic
+          col={4}
+          count={toMillionsOrBillions(budget)}
+          divider={!Number.isNaN(revenue) && hasIncome}
+          key="movie-budget-budget"
+          label="Budget"
+        />
+      )),
+      (hasIncome && (
+        <Statistic
+          col={4}
+          count={toMillionsOrBillions(income)}
+          key="movie-budget-income"
+          label="Income"
+        />
+      )),
     ];
   };
 

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,18 +7,17 @@ import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  AppBar,
+  IconButton,
   Toolbar,
   Typography,
-  IconButton,
 } from '@material-ui/core';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
+import AppBar from '../../overrides/AppBar';
+
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
-import HideOnScroll from '../../../utils/components/HideOnScroll';
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   toolbarDrawer: {
     marginLeft: theme.spacing(7) - theme.spacing(1),
     transition: theme.transitions.create('margin-left', {
@@ -27,16 +27,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SidebarTitlebar = props => {
+const SidebarTitlebar = ({ item }) => {
   const classes = useStyles();
 
-  const { item } = props;
-
-  const activeTab = useSelector(state => state.sidebar.activeTab);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const { title, original_title, date, name, original_name } = item;
+  const {
+    date,
+    name,
+    original_name: originalName,
+    original_title: originalTitle,
+    title,
+  } = item;
 
   const isItemSelected = 'id' in item;
 
@@ -47,31 +51,49 @@ const SidebarTitlebar = props => {
   }, [dispatch, history, activeTab]);
 
   const evaluateTitle = () => {
-    if (activeTab === 'movies') return title || original_title;
-    return name || original_name;
+    if (activeTab === 'movies') return title || originalTitle;
+    return name || originalName;
   };
 
   return (
-    <HideOnScroll>
-      <AppBar color="default" className={classes.appbar}>
-        <Toolbar
-          variant="dense"
-          className={classes.toolbarDrawer}
+    <AppBar color="default" className={classes.appbar}>
+      <Toolbar
+        className={classes.toolbarDrawer}
+        variant="dense"
+      >
+        <IconButton
+          aria-label="back"
+          edge="start"
+          onClick={goBack}
         >
-          <IconButton
-            aria-label="back"
-            edge="start"
-            onClick={goBack}
-          >
-            <ArrowBackTwoTone />
-          </IconButton>
-          <Typography component="h1" variant="h6">
-            {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </HideOnScroll>
+          <ArrowBackTwoTone />
+        </IconButton>
+        <Typography component="h1" variant="h6">
+          {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
+        </Typography>
+      </Toolbar>
+    </AppBar>
   );
+};
+
+SidebarTitlebar.defaultProps = {
+  item: {
+    date: '',
+    name: '',
+    original_name: '',
+    original_title: '',
+    title: '',
+  },
+};
+
+SidebarTitlebar.propTypes = {
+  item: PropTypes.shape({
+    date: PropTypes.string,
+    name: PropTypes.string,
+    original_name: PropTypes.string,
+    original_title: PropTypes.string,
+    title: PropTypes.string,
+  }),
 };
 
 export default SidebarTitlebar;

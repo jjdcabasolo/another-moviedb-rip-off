@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -11,13 +12,13 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import {
+  CheckCircleOutlineOutlined,
   Close,
   ErrorOutlineOutlined,
-  CheckCircleOutlineOutlined,
 } from '@material-ui/icons';
 import { green, red } from '@material-ui/core/colors';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   message: {
     display: 'flex',
     alignItems: 'center',
@@ -29,19 +30,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CustomSnackbar = (props) => {
+const CustomSnackbar = ({
+  handleOnClose,
+  isOpen,
+  message,
+  variant,
+}) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const {
-    handleOnClose,
-    isOpen,
-    message,
-    variant,
-  } = props;
-
-  const darkMode = useSelector(state => state.sidebar.darkMode);
+  const darkMode = useSelector((state) => state.sidebar.darkMode);
 
   const closeIcon = (
     <IconButton
@@ -79,8 +78,7 @@ const CustomSnackbar = (props) => {
     <Snackbar
       anchorOrigin={isMobile
         ? { vertical: 'bottom', horizontal: 'left' }
-        : { vertical: 'top', horizontal: 'center' }
-      }
+        : { vertical: 'top', horizontal: 'center' }}
       autoHideDuration={snackbarSettings[variant].autoHideDuration}
       onClose={handleOnClose}
       open={isOpen}
@@ -96,7 +94,6 @@ const CustomSnackbar = (props) => {
 };
 
 CustomSnackbar.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
   handleOnClose: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
