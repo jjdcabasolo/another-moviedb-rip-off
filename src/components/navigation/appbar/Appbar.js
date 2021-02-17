@@ -40,8 +40,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     bottom: 0,
   },
-  title: {
+  titlebar: {
     flexGrow: 1,
+    margin: theme.spacing(0, 1),
   },
   container: {
     paddingTop: theme.spacing(8),
@@ -120,9 +121,9 @@ const Appbar = ({ children }) => {
             <ArrowBackTwoTone />
           </IconButton>
           {isLoading
-            ? <div className={classes.title} />
+            ? <div className={classes.titlebar} />
             : (
-              <Typography component="h1" variant="h6" noWrap className={classes.title}>
+              <Typography component="h1" variant="h6" noWrap className={classes.titlebar}>
                 {displayTitle}
               </Typography>
             )}
@@ -133,7 +134,7 @@ const Appbar = ({ children }) => {
 
     return (
       <>
-        <Typography component="h1" variant="h6" className={classes.title}>
+        <Typography component="h1" variant="h6" className={classes.titlebar}>
           ATMDbRo
         </Typography>
         <APIKeyDialog />

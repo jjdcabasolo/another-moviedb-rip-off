@@ -26,6 +26,7 @@ import {
 import { ArrowBack, Close } from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
+import AppbarMenu from '../../navigation/appbar/AppbarMenu';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -59,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 300,
   },
   titlebar: {
-    margin: theme.spacing(1, 0),
+    flexGrow: 1,
+    margin: theme.spacing(1),
   },
 }));
 
@@ -133,6 +135,7 @@ const ItemSeeMore = ({
                   {title}
                 </Typography>
               </div>
+              {isMobile && <AppbarMenu />}
             </Toolbar>
           </AppBar>
           <div className={classes.content}>
