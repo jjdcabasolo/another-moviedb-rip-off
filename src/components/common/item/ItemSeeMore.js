@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   episodeDialog: {
-    maxWidth: theme.spacing(65),
+    padding: theme.spacing(4, 10),
   },
   appbarTitle: {
     fontWeight: 300,
@@ -147,7 +147,7 @@ const ItemSeeMore = ({
 
     return (
       <Dialog
-        classes={{ paper: clsx(classes.paper, { [classes.episodeDialog]: isEpisode }) }}
+        classes={{ paper: classes.paper }}
         maxWidth={maxWidth}
         onClose={handleClose}
         open={seeMore}
@@ -159,7 +159,7 @@ const ItemSeeMore = ({
             <Close />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent className={clsx({ [classes.episodeDialog]: isEpisode })} dividers>
           {expandedContent}
         </DialogContent>
         <DialogActions>
