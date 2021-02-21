@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
     objectFit: 'cover',
+    objectPosition: '50% 0%',
     width: '100%',
   },
   brokenImageContainer: {
@@ -48,9 +49,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     marginBottom: theme.spacing(0.5),
     padding: theme.spacing(1),
-  },
-  avatarGroup: {
-    marginLeft: theme.spacing(1),
   },
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
@@ -150,17 +148,17 @@ const TVShowEpisode = ({
       </Grid>
       {director && Object.keys(director).length > 0
         && writer && Object.keys(writer).length > 0 && (
-        <Grid item className={classes.gridItem} container>
-          {renderCrew(director, 'Director')}
-          {renderCrew(writer, 'Writer')}
-        </Grid>
-      )}
+          <Grid item className={classes.gridItem} container>
+            {renderCrew(director, 'Director')}
+            {renderCrew(writer, 'Writer')}
+          </Grid>
+        )}
       {guestStars.length > 0 && (
         <Grid item className={classes.gridItem}>
           <Typography color="textSecondary" variant="caption">
             Guests
           </Typography>
-          <AvatarGroup className={classes.avatarGroup}>
+          <AvatarGroup max={maxGuestsToShow}>
             {guestStars.map((guest, i) => {
               const { id, profile_path: profilePath } = guest;
 
@@ -191,10 +189,10 @@ const TVShowEpisode = ({
       {!isCollapsed
         && (isMobile || isSectionActive)
         && isLastItem && (
-        <Grid item className={classes.dividerContainer}>
-          <Divider />
-        </Grid>
-      )}
+          <Grid item className={classes.dividerContainer}>
+            <Divider />
+          </Grid>
+        )}
     </Grid>
   );
 };

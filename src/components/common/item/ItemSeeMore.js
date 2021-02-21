@@ -1,5 +1,4 @@
 import React, {
-  cloneElement,
   forwardRef,
   useEffect,
   useState,
@@ -63,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     margin: theme.spacing(1),
   },
+  titleSection: {
+    lineHeight: 1.2,
+  },
 }));
 
 // eslint-disable-next-line react/jsx-props-no-spreading
@@ -71,7 +73,7 @@ const Transition = forwardRef((props, ref) => <Slide direction="up" ref={ref} {.
 const ItemSeeMore = ({
   appbarTitle,
   collapsedClickEvent,
-  collapsedContent = () => {},
+  collapsedContent = () => { },
   expandedContent,
   isButtonShown = true,
   isEpisode,
@@ -98,12 +100,6 @@ const ItemSeeMore = ({
     setSeeMore(!seeMore);
   };
 
-  const collapsedProps = collapsedContent.type.name === 'ItemHorizontalContainer' ? {
-    handleSeeMore: () => {
-      handleButtonClick();
-    },
-  } : {};
-
   const handleClose = () => {
     collapsedClickEvent();
     setSeeMore(!seeMore);
@@ -128,7 +124,11 @@ const ItemSeeMore = ({
                 <ArrowBack />
               </IconButton>
               <div className={classes.titlebar}>
-                <Typography variant="h6" noWrap>
+                <Typography
+                  className={classes.titleSection}
+                  noWrap
+                  variant="h6"
+                >
                   {titleSection}
                 </Typography>
                 <Typography variant="caption" noWrap>
@@ -175,7 +175,7 @@ const ItemSeeMore = ({
     <Grid container>
       <Grid container item xs={12} className={classes.contentContainer}>
         {renderContent()}
-        {cloneElement(collapsedContent, collapsedProps)}
+        {collapsedContent}
       </Grid>
       {isButtonShown && (
         <Grid

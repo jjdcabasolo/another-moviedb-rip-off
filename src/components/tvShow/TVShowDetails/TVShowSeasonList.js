@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
+    objectFit: 'cover',
+    objectPosition: '50% 0%',
     width: theme.spacing(18.75),
   },
   activeImage: {
@@ -76,9 +78,9 @@ const TVShowSeasonList = () => {
     if (selectedSeason !== index) {
       getTVShowSeasonDetails(decryptKey(), tvShow.id, index, (response) => {
         dispatch(tvShowsActions.setEpisode(response));
-      }, () => {});
+      }, () => { });
+      dispatch(tvShowsActions.setSelectedSeason(index));
     }
-    dispatch(tvShowsActions.setSelectedSeason(index));
   };
 
   return (

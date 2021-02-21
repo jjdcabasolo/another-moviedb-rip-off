@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -24,14 +25,13 @@ const useStyles = makeStyles((theme) => ({
   },
   horizontalScrollItemSpacing: {
     margin: theme.spacing(0, 1),
-    [theme.breakpoints.only('xs')]: {
-      margin: theme.spacing(0, 0.5),
-    },
   },
   lastEntry: {
-    padding: theme.spacing(0.5),
+    padding: theme.spacing(1.5),
   },
 }));
+
+const SECTION_ID = 'cast';
 
 const MovieCast = () => {
   const theme = useTheme();
@@ -42,6 +42,8 @@ const MovieCast = () => {
   const classes = useStyles();
 
   const movie = useSelector((state) => state.movies.movie);
+
+  const history = useHistory();
 
   const {
     cast,
@@ -55,6 +57,10 @@ const MovieCast = () => {
     setCardCol(getCastCol(isMobile, isSmallTablet));
   }, [isMobile, isSmallTablet, isBigTablet, isDesktop]);
 
+  const handleSeeMore = () => {
+    history.push(`${history.location.pathname}/${SECTION_ID}`);
+  };
+
   return (
     <Grid container className={classes.container}>
       <ItemSeeMore
@@ -62,6 +68,7 @@ const MovieCast = () => {
         collapsedClickEvent={() => scrollToID('movie-cast')}
         collapsedContent={(
           <ItemHorizontalContainer
+            handleSeeMore={handleSeeMore}
             isWithSeeMore={cast.length > maxCount}
             scrollAmount={144}
           >
@@ -96,7 +103,7 @@ const MovieCast = () => {
           </Grid>
         )}
         isButtonShown={cast.length > maxCount}
-        sectionId="cast"
+        sectionId={SECTION_ID}
         seeMoreText={`Show all ${cast.length} cast`}
       />
     </Grid>

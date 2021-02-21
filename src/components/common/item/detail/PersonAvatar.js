@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
-    height: theme.spacing(12),
-    width: theme.spacing(12),
+    height: theme.spacing(14),
+    width: theme.spacing(14),
   },
   text: {
     width: 'inherit',
@@ -69,12 +69,21 @@ const PersonAvatar = ({
           : <BrokenImage type="avatar" extraClass={classes.avatar} />}
       </Grid>
       <Grid item className={classes.text}>
-        <Typography variant="body1" className={classes.title} align="center" noWrap>
+        <Typography
+          align="center"
+          className={classes.title}
+          variant="body1"
+        >
           {character}
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant="body2" className={classes.subtitle} align="center" color="textSecondary">
+        <Typography
+          align="center"
+          className={classes.subtitle}
+          color="textSecondary"
+          variant="body2"
+        >
           {name}
         </Typography>
       </Grid>
