@@ -86,7 +86,7 @@ const SidebarTitlebar = ({ item }) => {
           </Typography>
         )}
         <div className={classes.grow} />
-        <ItemSearch />
+        <ItemSearch withSearchIcon={false} />
       </Toolbar>
     </AppBar>
   );

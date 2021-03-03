@@ -1,10 +1,7 @@
 import React, { useCallback, useState } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
-
-// import MenuIcon from '@material-ui/icons/Menu';
-// import SearchIcon from '@material-ui/icons/Search';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -14,53 +11,71 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import {
-  DeleteTwoTone,
   CloseTwoTone,
   SearchTwoTone,
 } from '@material-ui/icons';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
-import { debounceEvent } from '../../../utils/functions';
+import { debounceEvent, decryptKey } from '../../../utils/functions';
+
+import { searchMovie, searchTVShow } from '../../../api';
 
 const useStyles = makeStyles((theme) => ({
-  input: {
-    // marginLeft: theme.spacing(2),
+  searchIcon: {
+    marginRight: theme.spacing(2),
   },
 }));
 
-const ItemSearch = () => {
+const ItemSearch = ({
+  isPermanentlyOpen = false,
+  withSearchIcon = true,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
-  
+
   const activeTab = useSelector((state) => state.sidebar.activeTab);
-  const searchQuery = useSelector((state) => state.sidebar.searchQuery);
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
+  const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
+  const searchQuery = useSelector((state) => state.sidebar.searchQuery);
   const dispatch = useDispatch();
-  
+
   const [query, setQuery] = useState('');
-  
+
   const isMovie = activeTab === 'movies';
 
   const debouncedQuery = useCallback(
     debounceEvent((q) => {
       handleSetSearchQuery(q);
-    }, 500),
-  []);
+      if (isMovie) {
+        searchMovie(decryptKey(), q, (response) => {
+          console.log('searchMovie', response);
+        }, (error) => {
+          console.log('searchMovie', error);
+        });
+      }
+      else {
+        searchTVShow(decryptKey(), q, (response) => {
+          console.log('searchTVShow', response);
+        }, (error) => {
+          console.log('searchTVShow', error);
+        });
+      }
+    }, 500), []);
 
   const handleSetSearch = (isOpen) => {
+    if (isOpen) {
+      setQuery('');
+      dispatch(sidebarActions.setSearchQuery(''));
+    }
+
     if (isSearchOpen !== isOpen) {
       dispatch(sidebarActions.setSearch(isOpen));
     }
   };
 
   const handleSetSearchQuery = (newQuery) => {
-    if (newQuery === '') {
-      setQuery(newQuery);
-      dispatch(sidebarActions.setSearchQuery(newQuery));
-    }
-
     if (searchQuery !== newQuery) {
       dispatch(sidebarActions.setSearchQuery(newQuery));
     }
@@ -71,33 +86,25 @@ const ItemSearch = () => {
     debouncedQuery(e.target.value);
   };
 
-  return isSearchOpen
+  return isSearchOpen || isPermanentlyOpen
     ? (
       <InputBase
         autoFocus
         className={classes.input}
         endAdornment={(
-          <>
-            <Tooltip title="Clear search">
-              <IconButton
-                onClick={() => handleSetSearchQuery('')}
-              >
-                <DeleteTwoTone />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Close search">
-              <IconButton
-                onClick={() => handleSetSearch(false)}
-                edge={isMobile ? 'end' : false}
-              >
-                <CloseTwoTone />
-              </IconButton>
-            </Tooltip>
-          </>
+          <Tooltip title="Close search">
+            <IconButton
+              onClick={() => handleSetSearch(false)}
+              edge={isMobile || !itemDrawerOpen ? 'end' : false}
+            >
+              <CloseTwoTone />
+            </IconButton>
+          </Tooltip>
         )}
         fullWidth
         onChange={handleInputChange}
         placeholder={`Search ${isMovie ? 'Movies' : 'TV Shows'}`}
+        startAdornment={withSearchIcon && (<SearchTwoTone className={classes.searchIcon} />)}
         value={query}
       />
     )
@@ -110,8 +117,14 @@ const ItemSearch = () => {
     );
 };
 
-ItemSearch.propTypes = {
+ItemSearch.defaultProps = {
+  isPermanentlyOpen: false,
+  withSearchIcon: true,
+};
 
+ItemSearch.propTypes = {
+  isPermanentlyOpen: PropTypes.bool,
+  withSearchIcon: PropTypes.bool,
 };
 
 export default ItemSearch;

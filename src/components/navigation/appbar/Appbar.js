@@ -132,7 +132,7 @@ const Appbar = ({ children }) => {
             <ArrowBackTwoTone />
           </IconButton>
           {!isSearchOpen && titleComponent}
-          <ItemSearch />
+          <ItemSearch withSearchIcon={false} />
           {!isSearchOpen && (
             <AppbarMenu />
           )}

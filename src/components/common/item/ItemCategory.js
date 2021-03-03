@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
@@ -13,13 +13,9 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import {
-  CategoryTwoTone,
-  ArrowDropUp,
-  ArrowDropDown,
-} from '@material-ui/icons';
+import { ArrowDropDown } from '@material-ui/icons';
 
-import { scrollToID, toCamelCase } from '../../../utils/functions';
+import { scrollToID } from '../../../utils/functions';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
@@ -73,8 +69,6 @@ const ItemCategory = ({ type }) => {
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const chipDropdownRef = useRef(null);
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -137,7 +131,7 @@ const ItemCategory = ({ type }) => {
         <>
           <Tooltip title="Set category">
             <IconButton aria-label="setCategory" onClick={handleClick}>
-              <CategoryTwoTone />
+              <ArrowDropDown />
             </IconButton>
           </Tooltip>
           {renderPopover()}
@@ -149,22 +143,6 @@ const ItemCategory = ({ type }) => {
           {renderCategoryChips()}
           <div className={classes.lastEntry} />
         </div>
-      );
-    case 'chipDropdown':
-      return (
-        <>
-          <Chip
-            className={classes.chipDropdown}
-            color="default"
-            deleteIcon={open ? <ArrowDropUp /> : <ArrowDropDown />}
-            label={toCamelCase(isMovie ? movieCategory : tvShowCategory)}
-            onClick={handleClick}
-            onDelete={() => handleClick(chipDropdownRef)}
-            ref={chipDropdownRef}
-            variant="outlined"
-          />
-          {renderPopover()}
-        </>
       );
     default:
       return renderCategoryChips();

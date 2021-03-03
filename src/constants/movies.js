@@ -21,7 +21,7 @@ export const MOVIE_DRAWER_CATEGORY_CHIPS = [
     label: 'Trending',
     identifier: 'trending',
     isActive: (e) => e === 'trending',
-    description: 'Trending movies on TMDb. Changes everyday',
+    description: 'Trending movies on TMDb. Changes everyday.',
   },
   {
     label: 'Popular',
@@ -39,7 +39,7 @@ export const MOVIE_DRAWER_CATEGORY_CHIPS = [
     label: 'Top Rated',
     identifier: 'topRated',
     isActive: (e) => e === 'topRated',
-    description: 'Top rated movies on TMDb. And no, the ratings system of TMDb will not be implemented.',
+    description: 'Top rated movies on TMDb. And no, the rating system of TMDb will not be implemented.',
   },
   {
     label: 'Upcoming',

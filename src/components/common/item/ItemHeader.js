@@ -9,6 +9,8 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
+import ItemCategory from './ItemCategory';
+
 import { toCamelCase } from '../../../utils/functions';
 
 import {
@@ -32,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
   subtitle: {
     color: theme.palette.action.disabled,
   },
+  categoryContainer: {
+    marginLeft: theme.spacing(2),
+    position: 'absolute',
+  },
 }));
 
 const ItemHeader = () => {
@@ -48,7 +54,7 @@ const ItemHeader = () => {
   const categoryChips = isMovie
     ? MOVIE_DRAWER_CATEGORY_CHIPS
     : TV_SHOW_DRAWER_CATEGORY_CHIPS;
-  const [ { description } ] = categoryChips.filter(e => e.identifier === activeCategory);
+  const [{ description }] = categoryChips.filter(e => e.identifier === activeCategory);
 
   return (
     <>
@@ -57,6 +63,11 @@ const ItemHeader = () => {
       </Typography>
       <Typography variant={isMobile ? 'h2' : 'h1'} className={classes.title}>
         {toCamelCase(activeCategory)}
+        {!isMobile && (
+          <span className={classes.categoryContainer}>
+            <ItemCategory type="iconButton" />
+          </span>
+        )}
       </Typography>
       <Typography variant={isMobile ? 'h3' : 'h2'} gutterBottom className={classes.titleLite}>
         {activeTab === 'movies' ? ' Movies' : ' TV Shows'}

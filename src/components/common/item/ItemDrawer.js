@@ -15,7 +15,10 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { ChevronLeft, ChevronRight } from '@material-ui/icons';
+import {
+  ChevronLeft,
+  ChevronRight,
+} from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 import ComponentLoader from '../ComponentLoader';
@@ -49,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   drawerOpenPaperPadding: {
-    padding: theme.spacing(3, 5, 0, 5),
+    padding: theme.spacing(5),
     height: '100%',
   },
   drawerClose: {
@@ -97,12 +100,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   itemHeader: {
-    paddingTop: theme.spacing(16 + 10),
-    paddingBottom: theme.spacing(16),
+    padding: theme.spacing(16, 0),
   },
   itemSearch: {
-    width: theme.spacing(50),
-    paddingLeft: `${theme.spacing(2)}px !important`,
+    width: theme.spacing(40),
   },
   options: {
     backgroundColor: theme.palette.background.paper,
@@ -231,44 +232,39 @@ const ItemDrawer = ({
     >
       {itemDrawerOpen
         ? (
-          <Grid
-            alignItems="center"
-            container
-            direction="row"
-          >
+          <Container>
             <Grid
-              item
-              container
-              justify="flex-end"
               alignItems="center"
-              className={classes.options}
-              spacing={1}
+              container
+              direction="row"
             >
-              {!isSearchOpen && (
-                <Grid item>
-                  <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />
+              <Grid
+                alignItems="center"
+                container
+                item
+                justify="flex-end"
+              >
+                <Grid item className={clsx({ [classes.itemSearch]: isSearchOpen })}>
+                  <ItemSearch isPermanentlyOpen={isTablet || false} />
                 </Grid>
-              )}
-              <Grid item className={clsx({ [classes.itemSearch]: isSearchOpen })}>
-                <ItemSearch />
+                {!isSearchOpen && (
+                  <Grid item>
+                    {isDesktop && renderToggleItemDrawer()}
+                  </Grid>
+                )}
               </Grid>
-              {!isSearchOpen && (
-                <Grid item>
-                  {isDesktop && renderToggleItemDrawer()}
-                </Grid>
-              )}
+              <Grid
+                alignItems="center"
+                className={classes.itemHeader}
+                container
+                direction="column"
+                item
+                justify="center"
+              >
+                <ItemHeader />
+              </Grid>
             </Grid>
-            <Grid
-              alignItems="center"
-              className={classes.itemHeader}
-              container
-              direction="column"
-              item
-              justify="center"
-            >
-              <ItemHeader />
-            </Grid>
-          </Grid>
+          </Container>
         )
         : (
           <AppBar position="static" color="inherit">
@@ -276,13 +272,14 @@ const ItemDrawer = ({
               {!isSearchOpen && (
                 <>
                   <Typography variant="h6">
-                    {`Top 10 ${toCamelCase(isMovie ? movieCategory : tvShowCategory)}`}
+                    {`Top 10 ${toCamelCase(isMovie ? movieCategory : tvShowCategory).replace('Highest', 'H. ')}`}
                   </Typography>
-                  <div className={classes.grow} />
-                  {contentToDisplay.length > 0
-                    && <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />}
+                  {contentToDisplay.length > 0 && (
+                    <ItemCategory type="iconButton" />
+                  )}
                 </>
               )}
+              <div className={classes.grow} />
               <ItemSearch />
               {!isSearchOpen && isDesktop && renderToggleItemDrawer(true)}
             </Toolbar>

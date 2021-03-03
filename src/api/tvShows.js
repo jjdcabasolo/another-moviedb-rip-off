@@ -112,3 +112,14 @@ export const getTVShowSeasonDetails = (
   .then((response) => success(response.data.episodes))
   .catch((error) => fail(error))
   .finally(() => after());
+
+export const searchTVShow = (
+  api_key,
+  query,
+  success,
+  fail,
+  after = () => { },
+) => axios.get(`/search/tv`, { params: { api_key, query } })
+  .then((response) => success(response.data.results))
+  .catch((error) => fail(error))
+  .finally(() => after());
