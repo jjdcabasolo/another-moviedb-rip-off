@@ -123,6 +123,7 @@ const ItemDrawer = ({
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const movieCategory = useSelector((state) => state.movies.category);
   const movieList = useSelector((state) => state.movies.list);
   const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
@@ -238,9 +239,11 @@ const ItemDrawer = ({
               className={classes.options}
               spacing={1}
             >
-              <Grid item>
-                <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />
-              </Grid>
+              {!isSearchOpen && (
+                <Grid item>
+                  <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />
+                </Grid>
+              )}
               <Grid item>
                 <ItemSearch />
               </Grid>

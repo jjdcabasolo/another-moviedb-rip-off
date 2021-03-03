@@ -25,6 +25,10 @@ export {
 } from './scroll';
 
 export {
+  debounceEvent,
+} from './debounce';
+
+export {
   getTVShowStatus,
   selectEpisode,
   selectSeason,
