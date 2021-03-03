@@ -74,6 +74,7 @@ const ItemSearch = () => {
   return isSearchOpen
     ? (
       <InputBase
+        autoFocus
         className={classes.input}
         endAdornment={(
           <>

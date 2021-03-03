@@ -66,7 +66,6 @@ const TVShowHeader = ({ sectionVisibility }) => {
     tagline,
     tmdb,
     twitter,
-    youtube,
   } = tvShow;
 
   const breadcrumbs = TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
@@ -121,7 +120,6 @@ const TVShowHeader = ({ sectionVisibility }) => {
           instagram={instagram}
           tmdb={tmdb}
           twitter={twitter}
-          youtube={youtube}
         />
       </Grid>
       {overview && overview.length > 0 && (

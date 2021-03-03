@@ -63,7 +63,6 @@ const MovieHeader = ({ sectionVisibility }) => {
     title,
     tmdb,
     twitter,
-    youtube,
   } = movie;
 
   const breadcrumbs = MOVIE_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
@@ -117,7 +116,6 @@ const MovieHeader = ({ sectionVisibility }) => {
           instagram={instagram}
           tmdb={tmdb}
           twitter={twitter}
-          youtube={youtube}
         />
       </Grid>
       {overview && overview.length > 0 && (

@@ -5,17 +5,17 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Divider,
   Grid,
   IconButton,
   SvgIcon,
   Tooltip,
 } from '@material-ui/core';
-import { ShareTwoTone } from '@material-ui/icons';
+import { LinkTwoTone } from '@material-ui/icons';
 
 import Facebook from '../../../assets/images/013-facebook';
 import Instagram from '../../../assets/images/014-instagram';
 import Twitter from '../../../assets/images/004-twitter';
-import YouTube from '../../../assets/images/018-youtube';
 
 import { snackbarActions } from '../../../reducers/ducks';
 
@@ -27,6 +27,17 @@ import {
 } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
+  divider: {
+    height: '50%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(0.5),
+      marginRight: theme.spacing(0.5),
+    }
+  },
+  dividerContainer: {
+    alignItems: 'center',
+    display: 'flex',
+  },
   logo: {
     width: theme.spacing(3),
     height: theme.spacing(3),
@@ -39,7 +50,6 @@ const ItemLinks = ({
   instagram,
   tmdb,
   twitter,
-  youtube,
 }) => {
   const classes = useStyles();
 
@@ -49,9 +59,9 @@ const ItemLinks = ({
   const [start, setStart] = useState('');
 
   useEffect(() => {
-    const links = [facebook, instagram, twitter, youtube, imdb, tmdb].filter((e) => e !== null);
+    const links = [facebook, instagram, twitter, imdb, tmdb].filter((e) => e !== null);
     setStart(links[0] || '');
-  }, [facebook, instagram, twitter, youtube, imdb, tmdb]);
+  }, [facebook, instagram, twitter, imdb, tmdb]);
 
   const handleShareLinkClick = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -85,19 +95,26 @@ const ItemLinks = ({
 
   return (
     <Grid container spacing={1}>
-      { facebook && facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook, 'Facebook')}
-      { instagram && instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram, 'Instagram')}
-      { twitter && twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter, 'Twitter')}
-      { youtube && youtube !== null && renderSocialNetworkLinks(<YouTube />, youtube, 'Trailer at YouTube')}
-      { imdb && imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true)}
-      { tmdb && tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true)}
+      {facebook && facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook, 'Facebook')}
+      {instagram && instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram, 'Instagram')}
+      {twitter && twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter, 'Twitter')}
+      {start.match(/(facebook)|(twitter)|(instagram)/g) && (
+        <Grid item className={classes.dividerContainer}>
+          <Divider orientation="vertical" className={classes.divider} />
+        </Grid>
+      )}
+      {imdb && imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true)}
+      {tmdb && tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true)}
+      <Grid item className={classes.dividerContainer}>
+        <Divider orientation="vertical" className={classes.divider} />
+      </Grid>
       <Grid item>
         <Tooltip title="Share">
           <IconButton
             onClick={handleShareLinkClick}
             className={classes.iconButton}
           >
-            <ShareTwoTone />
+            <LinkTwoTone />
           </IconButton>
         </Tooltip>
       </Grid>
@@ -111,7 +128,6 @@ ItemLinks.defaultProps = {
   instagram: null,
   tmdb: null,
   twitter: null,
-  youtube: null,
 };
 
 ItemLinks.propTypes = {
@@ -120,7 +136,6 @@ ItemLinks.propTypes = {
   instagram: PropTypes.string,
   tmdb: PropTypes.string,
   twitter: PropTypes.string,
-  youtube: PropTypes.string,
 };
 
 export default ItemLinks;

@@ -21,31 +21,37 @@ export const MOVIE_DRAWER_CATEGORY_CHIPS = [
     label: 'Trending',
     identifier: 'trending',
     isActive: (e) => e === 'trending',
-  },
-  {
-    label: 'Now Playing',
-    identifier: 'nowPlaying',
-    isActive: (e) => e === 'nowPlaying',
-  },
-  {
-    label: 'Upcoming',
-    identifier: 'upcoming',
-    isActive: (e) => e === 'upcoming',
+    description: 'Trending movies on TMDb. Changes everyday',
   },
   {
     label: 'Popular',
     identifier: 'popular',
     isActive: (e) => e === 'popular',
+    description: 'Winners of the popularity contest, I guess.',
+  },
+  {
+    label: 'Now Playing',
+    identifier: 'nowPlaying',
+    isActive: (e) => e === 'nowPlaying',
+    description: 'Movies in theatres. Oh, theatres still a thing?',
   },
   {
     label: 'Top Rated',
     identifier: 'topRated',
     isActive: (e) => e === 'topRated',
+    description: 'Top rated movies on TMDb. And no, the ratings system of TMDb will not be implemented.',
+  },
+  {
+    label: 'Upcoming',
+    identifier: 'upcoming',
+    isActive: (e) => e === 'upcoming',
+    description: 'Upcoming movies in theatres. Movies may vary, depending on where are.',
   },
   {
     label: 'Highest Grossing',
     identifier: 'highestGrossing',
     isActive: (e) => e === 'highestGrossing',
+    description: 'Highest grossing movies of all time.',
   },
 ];
 
