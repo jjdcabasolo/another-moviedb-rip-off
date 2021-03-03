@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -20,7 +20,11 @@ import BrokenImage from '../BrokenImage';
 
 import { scrollToID, truncateText } from '../../../utils/functions';
 
-import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
+import {
+  moviesActions,
+  sidebarActions,
+  tvShowsActions,
+} from '../../../reducers/ducks';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
@@ -166,6 +170,7 @@ const ItemCard = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const dispatch = useDispatch();
 
   const isMovie = type === 'movies';
@@ -176,7 +181,11 @@ const ItemCard = ({
 
   const handleCardClick = () => {
     scrollToID('scroll-to-top-anchor', false);
+
+    if (isSearchOpen) dispatch(sidebarActions.setSearch(false));
+    
     if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
+
     if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
     else {
       dispatch(tvShowsActions.setDetailsLoading(true));

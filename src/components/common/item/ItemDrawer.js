@@ -97,7 +97,12 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   itemHeader: {
-    padding: theme.spacing(16, 0),
+    paddingTop: theme.spacing(16 + 10),
+    paddingBottom: theme.spacing(16),
+  },
+  itemSearch: {
+    width: theme.spacing(50),
+    paddingLeft: `${theme.spacing(2)}px !important`,
   },
   options: {
     backgroundColor: theme.palette.background.paper,
@@ -106,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '50%',
     position: 'fixed',
     right: theme.spacing(8),
-    top: theme.spacing(4),
+    top: theme.spacing(8),
     width: 'auto',
     zIndex: 2,
   },
@@ -244,12 +249,14 @@ const ItemDrawer = ({
                   <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />
                 </Grid>
               )}
-              <Grid item>
+              <Grid item className={clsx({ [classes.itemSearch]: isSearchOpen })}>
                 <ItemSearch />
               </Grid>
-              <Grid item>
-                {isDesktop && renderToggleItemDrawer()}
-              </Grid>
+              {!isSearchOpen && (
+                <Grid item>
+                  {isDesktop && renderToggleItemDrawer()}
+                </Grid>
+              )}
             </Grid>
             <Grid
               alignItems="center"
@@ -266,14 +273,18 @@ const ItemDrawer = ({
         : (
           <AppBar position="static" color="inherit">
             <Toolbar className={classes.toolbar}>
-              <Typography variant="h6">
-                {`Top 10 ${toCamelCase(isMovie ? movieCategory : tvShowCategory)}`}
-              </Typography>
-              <div className={classes.grow} />
-              {contentToDisplay.length > 0
-                && <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />}
+              {!isSearchOpen && (
+                <>
+                  <Typography variant="h6">
+                    {`Top 10 ${toCamelCase(isMovie ? movieCategory : tvShowCategory)}`}
+                  </Typography>
+                  <div className={classes.grow} />
+                  {contentToDisplay.length > 0
+                    && <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />}
+                </>
+              )}
               <ItemSearch />
-              {isDesktop && renderToggleItemDrawer(true)}
+              {!isSearchOpen && isDesktop && renderToggleItemDrawer(true)}
             </Toolbar>
           </AppBar>
         )}

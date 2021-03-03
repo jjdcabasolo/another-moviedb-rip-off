@@ -27,6 +27,7 @@ import GradientBackground from '../../common/GradientBackground';
 import Helmet from '../Helmet';
 import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
+import ItemSearch from '../../common/item/ItemSearch';
 
 import { moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -71,10 +72,11 @@ const Appbar = ({ children }) => {
   const itemListContainerRef = useRef(null);
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
-  const tvShow = useSelector((state) => state.tvShows.tvShow);
-  const movie = useSelector((state) => state.movies.movie);
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
+  const movie = useSelector((state) => state.movies.movie);
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
   const dispatch = useDispatch();
 
   const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
@@ -94,9 +96,11 @@ const Appbar = ({ children }) => {
   const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
 
   const goBack = useCallback(() => {
+    if (isSearchOpen) dispatch(sidebarActions.setSearch(false));
+
     dispatch(moviesActions.setActiveMovie({}));
     history.goBack();
-  }, [dispatch, history]);
+  }, [dispatch, history, isSearchOpen]);
 
   const handleBottomNavigationClick = (index) => {
     const tab = index === 1 ? 'movies' : 'tvshows';
@@ -109,6 +113,13 @@ const Appbar = ({ children }) => {
   const renderToolbarContents = () => {
     const isLoading = isMovieSelected ? isMovieLoading : isTVShowLoading;
     const displayTitle = isMovieSelected ? (title || originalTitle) : (name || originalName);
+    const titleComponent = isLoading
+      ? <div className={classes.titlebar} />
+      : (
+        <Typography component="h1" variant="h6" noWrap className={classes.titlebar}>
+          {displayTitle}
+        </Typography>
+      );
 
     if (isMovieSelected || isTVShowSelected) {
       return (
@@ -120,25 +131,29 @@ const Appbar = ({ children }) => {
           >
             <ArrowBackTwoTone />
           </IconButton>
-          {isLoading
-            ? <div className={classes.titlebar} />
-            : (
-              <Typography component="h1" variant="h6" noWrap className={classes.titlebar}>
-                {displayTitle}
-              </Typography>
-            )}
-          <AppbarMenu />
+          {!isSearchOpen && titleComponent}
+          <ItemSearch />
+          {!isSearchOpen && (
+            <AppbarMenu />
+          )}
         </>
       );
     }
 
     return (
       <>
-        <Typography component="h1" variant="h6" className={classes.titlebar}>
-          ATMDbRo
-        </Typography>
-        <APIKeyDialog />
-        <AppbarMenu />
+        {!isSearchOpen && (
+          <Typography component="h1" variant="h6" className={classes.titlebar}>
+            ATMDbRo
+          </Typography>
+        )}
+        <ItemSearch />
+        {!isSearchOpen && (
+          <>
+            <APIKeyDialog />
+            <AppbarMenu />
+          </>
+        )}
       </>
     );
   };

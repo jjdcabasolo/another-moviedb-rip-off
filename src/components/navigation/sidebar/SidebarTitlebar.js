@@ -13,9 +13,15 @@ import {
 } from '@material-ui/core';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
+import ItemSearch from '../../common/item/ItemSearch';
+
 import AppBar from '../../overrides/AppBar';
 
-import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
+import {
+  moviesActions,
+  sidebarActions,
+  tvShowsActions,
+} from '../../../reducers/ducks';
 
 const useStyles = makeStyles((theme) => ({
   toolbarDrawer: {
@@ -25,12 +31,16 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  grow: {
+    flexGrow: 1,
+  },
 }));
 
 const SidebarTitlebar = ({ item }) => {
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -47,8 +57,11 @@ const SidebarTitlebar = ({ item }) => {
   const goBack = useCallback(() => {
     if (activeTab === 'movies') dispatch(moviesActions.setActiveMovie({}));
     else dispatch(tvShowsActions.setActiveTVShow({}));
+
+    if (isSearchOpen) dispatch(sidebarActions.setSearch(false));
+
     history.goBack();
-  }, [dispatch, history, activeTab]);
+  }, [dispatch, history, isSearchOpen, activeTab]);
 
   const evaluateTitle = () => {
     if (activeTab === 'movies') return title || originalTitle;
@@ -63,14 +76,17 @@ const SidebarTitlebar = ({ item }) => {
       >
         <IconButton
           aria-label="back"
-          edge="start"
           onClick={goBack}
         >
           <ArrowBackTwoTone />
         </IconButton>
-        <Typography component="h1" variant="h6">
-          {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
-        </Typography>
+        {!isSearchOpen && (
+          <Typography component="h1" variant="h6">
+            {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
+          </Typography>
+        )}
+        <div className={classes.grow} />
+        <ItemSearch />
       </Toolbar>
     </AppBar>
   );

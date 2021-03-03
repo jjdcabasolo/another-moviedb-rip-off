@@ -100,7 +100,9 @@ const Sidebar = ({ children }) => {
   const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
 
   const handleDrawerState = (open) => {
-    dispatch(sidebarActions.setDrawer(open));
+    if (drawerOpen !== open) {
+      dispatch(sidebarActions.setDrawer(open));
+    }
   };
 
   const evaluateDrawerVisibility = () => {
