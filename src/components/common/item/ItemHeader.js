@@ -65,7 +65,7 @@ const ItemHeader = () => {
         {toCamelCase(activeCategory)}
         {!isMobile && (
           <span className={classes.categoryContainer}>
-            <ItemCategory type="iconButton" />
+            <ItemCategory type="iconButton" iconSize="large" />
           </span>
         )}
       </Typography>

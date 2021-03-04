@@ -58,7 +58,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ItemCategory = ({ type }) => {
+const ItemCategory = ({
+  iconSize = 'default',
+  type,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
@@ -107,12 +110,12 @@ const ItemCategory = ({ type }) => {
   const renderPopover = () => (
     <Popover
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      anchorOrigin={{ vertical: 'center', horizontal: 'left' }}
       classes={{ paper: classes.popover }}
       id={id}
       onClose={handleClose}
       open={open}
-      transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      transformOrigin={{ vertical: 'center', horizontal: 'left' }}
     >
       <Typography
         className={classes.category}
@@ -131,7 +134,7 @@ const ItemCategory = ({ type }) => {
         <>
           <Tooltip title="Set category">
             <IconButton aria-label="setCategory" onClick={handleClick}>
-              <ArrowDropDown />
+              <ArrowDropDown fontSize={iconSize} />
             </IconButton>
           </Tooltip>
           {renderPopover()}
@@ -149,7 +152,12 @@ const ItemCategory = ({ type }) => {
   }
 };
 
+ItemCategory.defaultProps = {
+  iconSize: 'default',
+};
+
 ItemCategory.propTypes = {
+  iconSize: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 };
 

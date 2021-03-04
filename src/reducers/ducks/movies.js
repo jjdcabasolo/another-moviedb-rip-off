@@ -4,6 +4,7 @@ const moviesActionType = {
   SET_CATEGORY: '@movies/SET_CATEGORY',
   SET_DETAILS_LOADING: '@movies/SET_DETAILS_LOADING',
   SET_MOVIE_LIST: '@movies/SET_MOVIE_LIST',
+  SET_SEARCH_RESULTS: '@movies/SET_SEARCH_RESULTS',
 };
 
 // ACTIONS
@@ -24,6 +25,10 @@ export const moviesActions = {
     type: moviesActionType.SET_DETAILS_LOADING,
     payload: { isMovieLoading },
   }),
+  setSearchResults: (searchResults) => ({
+    type: moviesActionType.SET_SEARCH_RESULTS,
+    payload: { searchResults },
+  }),
 };
 
 // REDUCER
@@ -39,6 +44,7 @@ const initialState = {
     upcoming: [],
   },
   loadedContent: 0,
+  searchResults: [],
   movie: {},
 };
 
@@ -68,12 +74,18 @@ const setDetailsLoading = (state, action) => ({
   isMovieLoading: action.payload.isMovieLoading,
 });
 
+const setSearchResults = (state, action) => ({
+  ...state,
+  searchResults: action.payload.searchResults,
+});
+
 export const moviesReducer = (state = initialState, action) => {
   switch (action.type) {
     case moviesActionType.SET_ACTIVE_MOVIE: return setActiveMovie(state, action);
     case moviesActionType.SET_CATEGORY: return setCategory(state, action);
     case moviesActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
     case moviesActionType.SET_MOVIE_LIST: return setMovieList(state, action);
+    case moviesActionType.SET_SEARCH_RESULTS: return setSearchResults(state, action);
     default: return state;
   }
 };

@@ -33,7 +33,7 @@ export const MOVIE_DRAWER_CATEGORY_CHIPS = [
     label: 'Now Playing',
     identifier: 'nowPlaying',
     isActive: (e) => e === 'nowPlaying',
-    description: 'Movies in theatres. Oh, theatres still a thing?',
+    description: 'Movies in theatres. Oh, are theatres still a thing?',
   },
   {
     label: 'Top Rated',

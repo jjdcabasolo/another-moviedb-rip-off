@@ -15,7 +15,11 @@ import {
   SearchTwoTone,
 } from '@material-ui/icons';
 
-import { sidebarActions } from '../../../reducers/ducks';
+import {
+  moviesActions,
+  sidebarActions,
+  tvShowsActions,
+} from '../../../reducers/ducks';
 
 import { debounceEvent, decryptKey } from '../../../utils/functions';
 
@@ -50,19 +54,19 @@ const ItemSearch = ({
       handleSetSearchQuery(q);
       if (isMovie) {
         searchMovie(decryptKey(), q, (response) => {
-          console.log('searchMovie', response);
+          dispatch(moviesActions.setSearchResults(response));
         }, (error) => {
           console.log('searchMovie', error);
         });
       }
       else {
         searchTVShow(decryptKey(), q, (response) => {
-          console.log('searchTVShow', response);
+          dispatch(tvShowsActions.setSearchResults(response));
         }, (error) => {
           console.log('searchTVShow', error);
         });
       }
-    }, 500), []);
+    }, 500), [isMovie, activeTab]);
 
   const handleSetSearch = (isOpen) => {
     if (isOpen) {

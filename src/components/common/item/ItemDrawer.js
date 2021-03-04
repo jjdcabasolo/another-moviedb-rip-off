@@ -26,6 +26,7 @@ import ItemCard from './ItemCard';
 import ItemCategory from './ItemCategory';
 import ItemHeader from './ItemHeader';
 import ItemSearch from './ItemSearch';
+import ItemSearchResults from './ItemSearchResults';
 import Note from '../Note';
 
 import { toCamelCase } from '../../../utils/functions';
@@ -133,6 +134,7 @@ const ItemDrawer = ({
   const movieCategory = useSelector((state) => state.movies.category);
   const movieList = useSelector((state) => state.movies.list);
   const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
+  const searchQuery = useSelector((state) => state.sidebar.searchQuery);
   const tvShowCategory = useSelector((state) => state.tvShows.category);
   const tvShowList = useSelector((state) => state.tvShows.list);
   const tvShowLoadedContent = useSelector((state) => state.tvShows.loadedContent);
@@ -144,6 +146,7 @@ const ItemDrawer = ({
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
+  const hasSearched = searchQuery.length > 0 && isSearchOpen;
 
   useEffect(() => {
     let itemDrawerFinalState = false;
@@ -253,16 +256,18 @@ const ItemDrawer = ({
                   </Grid>
                 )}
               </Grid>
-              <Grid
-                alignItems="center"
-                className={classes.itemHeader}
-                container
-                direction="column"
-                item
-                justify="center"
-              >
-                <ItemHeader />
-              </Grid>
+              {!hasSearched && (
+                <Grid
+                  alignItems="center"
+                  className={classes.itemHeader}
+                  container
+                  direction="column"
+                  item
+                  justify="center"
+                >
+                  <ItemHeader />
+                </Grid>
+              )}
             </Grid>
           </Container>
         )
@@ -285,17 +290,21 @@ const ItemDrawer = ({
             </Toolbar>
           </AppBar>
         )}
-      <Container
-        className={clsx(
-          classes.itemCardContainer,
-          {
-            [classes.desktopDrawerOpenItemCardContainer]: itemDrawerOpen,
-            [classes.desktopDrawerClosedItemCardContainer]: !itemDrawerOpen,
-          },
+      {hasSearched
+        ? <ItemSearchResults />
+        : (
+          <Container
+            className={clsx(
+              classes.itemCardContainer,
+              {
+                [classes.desktopDrawerOpenItemCardContainer]: itemDrawerOpen,
+                [classes.desktopDrawerClosedItemCardContainer]: !itemDrawerOpen,
+              },
+            )}
+          >
+            {renderItemCards()}
+          </Container>
         )}
-      >
-        {renderItemCards()}
-      </Container>
     </Drawer>
   );
 };
