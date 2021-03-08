@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -20,11 +20,7 @@ import BrokenImage from '../BrokenImage';
 
 import { scrollToID, truncateText } from '../../../utils/functions';
 
-import {
-  moviesActions,
-  sidebarActions,
-  tvShowsActions,
-} from '../../../reducers/ducks';
+import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
@@ -170,7 +166,6 @@ const ItemCard = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const dispatch = useDispatch();
 
   const isMovie = type === 'movies';
@@ -182,8 +177,6 @@ const ItemCard = ({
   const handleCardClick = () => {
     scrollToID('scroll-to-top-anchor', false);
 
-    if (isSearchOpen) dispatch(sidebarActions.setSearch(false));
-    
     if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
 
     if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
@@ -216,7 +209,7 @@ const ItemCard = ({
       <Link to={`/${type}/${content.id}`}>
         <Card onClick={handleCardClick} variant="outlined" className={classes.card}>
           <CardActionArea>
-            { !isImageValid && (
+            {!isImageValid && (
               <BrokenImage
                 type="cardMedia"
                 extraClass={classes.brokenImageContainer}
@@ -296,7 +289,7 @@ ItemCard.defaultProps = {
     title: '',
   }),
   drawerOpen: false,
-  handleDrawerToggle: () => {},
+  handleDrawerToggle: () => { },
   hasSpacingHorizontalScroll: false,
   isHorizontalScroll: false,
   rank: 0,

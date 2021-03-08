@@ -16,9 +16,10 @@ import {
   CssBaseline,
   IconButton,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
-import { ArrowBackTwoTone } from '@material-ui/icons';
+import { ArrowBackTwoTone, SearchTwoTone } from '@material-ui/icons';
 
 import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import AppBar from '../../overrides/AppBar';
@@ -27,7 +28,7 @@ import GradientBackground from '../../common/GradientBackground';
 import Helmet from '../Helmet';
 import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
-import ItemSearch from '../../common/item/ItemSearch';
+import ItemSearchResults from '../../common/item/ItemSearchResults';
 
 import { moviesActions, sidebarActions } from '../../../reducers/ducks';
 
@@ -87,11 +88,17 @@ const Appbar = ({ children }) => {
   const location = useLocation();
   const history = useHistory();
 
-  const currentLocation = evaluateLocation(location);
-  const isMovieSelected = 'movieId' in currentLocation;
-  const isMovieTabActive = 'movie' in currentLocation;
-  const isTVShowSelected = 'tvShowId' in currentLocation;
-  const isTVShowTabActive = 'tvShow' in currentLocation;
+  const {
+    movie: moviePath,
+    movieId,
+    tvShow: tvShowPath,
+    tvShowId,
+  } = evaluateLocation(location);
+  const isMovieSelected = typeof movieId !== 'undefined' && movieId.length > 0;
+  const isMovieTabActive = typeof moviePath !== 'undefined' && moviePath;
+  const isTVShowSelected = typeof tvShowId !== 'undefined' && tvShowId.length > 0;
+  const isTVShowTabActive = typeof tvShowPath !== 'undefined' && tvShowPath;
+
   const isMovieEmpty = Object.keys(movie).length === 0 && movie.constructor === Object;
   const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
 
@@ -110,6 +117,10 @@ const Appbar = ({ children }) => {
     history.push(tab);
   };
 
+  const handleSearch = () => {
+    history.push(`/${activeTab}/search`);
+  };
+
   const renderToolbarContents = () => {
     const isLoading = isMovieSelected ? isMovieLoading : isTVShowLoading;
     const displayTitle = isMovieSelected ? (title || originalTitle) : (name || originalName);
@@ -120,6 +131,13 @@ const Appbar = ({ children }) => {
           {displayTitle}
         </Typography>
       );
+    const searchComponent = (
+      <Tooltip title="Search">
+        <IconButton onClick={handleSearch}>
+          <SearchTwoTone />
+        </IconButton>
+      </Tooltip>
+    );
 
     if (isMovieSelected || isTVShowSelected) {
       return (
@@ -131,29 +149,21 @@ const Appbar = ({ children }) => {
           >
             <ArrowBackTwoTone />
           </IconButton>
-          {!isSearchOpen && titleComponent}
-          <ItemSearch withSearchIcon={false} />
-          {!isSearchOpen && (
-            <AppbarMenu />
-          )}
+          {titleComponent}
+          {searchComponent}
+          <AppbarMenu />
         </>
       );
     }
 
     return (
       <>
-        {!isSearchOpen && (
-          <Typography component="h1" variant="h6" className={classes.titlebar}>
-            ATMDbRo
-          </Typography>
-        )}
-        <ItemSearch />
-        {!isSearchOpen && (
-          <>
-            <APIKeyDialog />
-            <AppbarMenu />
-          </>
-        )}
+        <Typography component="h1" variant="h6" className={classes.titlebar}>
+          ATMDbRo
+        </Typography>
+        {searchComponent}
+        <APIKeyDialog />
+        <AppbarMenu />
       </>
     );
   };
@@ -252,6 +262,8 @@ const Appbar = ({ children }) => {
           </BottomNavigation>
         </>
       )}
+
+      <ItemSearchResults />
     </>
   );
 };

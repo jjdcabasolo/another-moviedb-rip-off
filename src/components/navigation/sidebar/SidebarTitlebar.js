@@ -9,11 +9,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   IconButton,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
-import { ArrowBackTwoTone } from '@material-ui/icons';
-
-import ItemSearch from '../../common/item/ItemSearch';
+import { ArrowBackTwoTone, SearchTwoTone } from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 
@@ -44,6 +43,7 @@ const SidebarTitlebar = ({ item }) => {
   const dispatch = useDispatch();
 
   const history = useHistory();
+
   const {
     date,
     name,
@@ -63,6 +63,11 @@ const SidebarTitlebar = ({ item }) => {
     history.goBack();
   }, [dispatch, history, isSearchOpen, activeTab]);
 
+  const handleSearch = () => {
+    history.push(`/${activeTab}/search`);
+    dispatch(sidebarActions.setItemDrawer(true));
+  };
+
   const evaluateTitle = () => {
     if (activeTab === 'movies') return title || originalTitle;
     return name || originalName;
@@ -80,13 +85,15 @@ const SidebarTitlebar = ({ item }) => {
         >
           <ArrowBackTwoTone />
         </IconButton>
-        {!isSearchOpen && (
-          <Typography component="h1" variant="h6">
-            {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
-          </Typography>
-        )}
+        <Typography component="h1" variant="h6">
+          {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
+        </Typography>
         <div className={classes.grow} />
-        <ItemSearch withSearchIcon={false} />
+        <Tooltip title="Search">
+          <IconButton onClick={handleSearch}>
+            <SearchTwoTone />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );

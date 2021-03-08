@@ -91,15 +91,15 @@ const MovieHeader = ({ sectionVisibility }) => {
             variant={isMobile ? 'body1' : 'h6'}
           >
             {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : 'No release date.'}
-            &nbsp;&middot;&nbsp;&nbsp;
+            &nbsp;&middot;&nbsp;
             {runtime
-              ? `${runtimeHours}hr ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`
+              ? `${runtimeHours !== 0 ? `${runtimeHours}hr ` : ''}${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`
               : 'No runtime yet.'}
           </Typography>
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        { genres.map((i) => (
+        {genres.map((i) => (
           <Chip
             className={classes.chip}
             key={`movie-header-chip-${i.id}`}

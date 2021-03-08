@@ -72,6 +72,13 @@ const ItemLazyLoad = ({
           image: content.profile_path,
           name: content.name,
         };
+      case 'itemCardSearchResults':
+        return {
+          ...otherProps,
+          key: `item-search-results-item-card-${index + 1}-${content.id}`,
+          content,
+          rank: index + 1,
+        };
       default:
         return {};
     }

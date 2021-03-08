@@ -128,7 +128,6 @@ const setDrawer = (state, action) => ({
 const setItemDrawer = (state, action) => ({
   ...state,
   itemDrawerOpen: action.payload.itemDrawerOpen,
-  isSearchOpen: false,
 });
 
 const setSearchQuery = (state, action) => ({

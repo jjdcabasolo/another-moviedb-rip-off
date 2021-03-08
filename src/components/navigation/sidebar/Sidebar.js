@@ -107,11 +107,15 @@ const Sidebar = ({ children }) => {
 
   const evaluateDrawerVisibility = () => {
     if (isMovieTabActive) {
-      if (!isDesktop && isMovieSelected) return <SidebarTitlebar item={movie} />;
+      if (!isDesktop && isMovieSelected && movieId !== 'search') {
+        return <SidebarTitlebar item={movie} />;
+      }
       return <ItemDrawer isItemSelected={isMovieSelected} />;
     } if (isTVShowTabActive) {
-      if (!isDesktop && isTVShowSelected) return <SidebarTitlebar item={tvShow} />;
-      return <ItemDrawer options={isTVShowSelected} />;
+      if (!isDesktop && isTVShowSelected && tvShowId !== 'search') {
+        return <SidebarTitlebar item={tvShow} />;
+      }
+      return <ItemDrawer isItemSelected={isTVShowSelected} />;
     }
     return null;
   };
@@ -189,7 +193,7 @@ const Sidebar = ({ children }) => {
           )}
         >
           <Container maxWidth="md">
-            { children }
+            {children}
           </Container>
         </main>
       </div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -29,7 +30,7 @@ import ItemSearch from './ItemSearch';
 import ItemSearchResults from './ItemSearchResults';
 import Note from '../Note';
 
-import { toCamelCase } from '../../../utils/functions';
+import { evaluateLocation, toCamelCase } from '../../../utils/functions';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -89,10 +90,6 @@ const useStyles = makeStyles((theme) => ({
   },
   itemCardContainer: {
     overflowY: 'auto',
-    '&::-webkit-scrollbar': {
-      width: 0,
-      height: 0,
-    },
   },
   desktopDrawerOpenItemCardContainer: {
     marginBottom: theme.spacing(10),
@@ -131,10 +128,10 @@ const ItemDrawer = ({
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
+  const itemDrawerOpenStore = useSelector((state) => state.sidebar.itemDrawerOpen);
   const movieCategory = useSelector((state) => state.movies.category);
   const movieList = useSelector((state) => state.movies.list);
   const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
-  const searchQuery = useSelector((state) => state.sidebar.searchQuery);
   const tvShowCategory = useSelector((state) => state.tvShows.category);
   const tvShowList = useSelector((state) => state.tvShows.list);
   const tvShowLoadedContent = useSelector((state) => state.tvShows.loadedContent);
@@ -142,19 +139,30 @@ const ItemDrawer = ({
 
   const [itemDrawerOpen, setItemDrawerOpen] = useState(true);
 
+  const location = useLocation();
+  const { movieId, tvShowId } = evaluateLocation(location);
+
   const isMovie = activeTab === 'movies';
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
-  const hasSearched = searchQuery.length > 0 && isSearchOpen;
+  const searchPath = isMovie ? movieId : tvShowId;
 
   useEffect(() => {
+    setItemDrawerOpen(itemDrawerOpenStore);
+  }, [itemDrawerOpenStore]);
+
+  useEffect(() => {
+    if (searchPath === 'search') return;
+
     let itemDrawerFinalState = false;
+
     if (isDesktop && !isItemSelected) itemDrawerFinalState = true;
     if (isTablet) itemDrawerFinalState = true;
+
     setItemDrawerOpen(itemDrawerFinalState);
     dispatch(sidebarActions.setItemDrawer(itemDrawerFinalState));
-  }, [isDesktop, isTablet, isItemSelected, dispatch]);
+  }, [isDesktop, isTablet, searchPath, isItemSelected, dispatch]);
 
   const handleDrawerToggle = () => {
     const isDrawerOpen = !itemDrawerOpen;
@@ -248,7 +256,7 @@ const ItemDrawer = ({
                 justify="flex-end"
               >
                 <Grid item className={clsx({ [classes.itemSearch]: isSearchOpen })}>
-                  <ItemSearch isPermanentlyOpen={isTablet || false} />
+                  <ItemSearch />
                 </Grid>
                 {!isSearchOpen && (
                   <Grid item>
@@ -256,7 +264,7 @@ const ItemDrawer = ({
                   </Grid>
                 )}
               </Grid>
-              {!hasSearched && (
+              {!isSearchOpen && (
                 <Grid
                   alignItems="center"
                   className={classes.itemHeader}
@@ -290,7 +298,7 @@ const ItemDrawer = ({
             </Toolbar>
           </AppBar>
         )}
-      {hasSearched
+      {isSearchOpen
         ? <ItemSearchResults />
         : (
           <Container

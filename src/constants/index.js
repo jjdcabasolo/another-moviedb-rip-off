@@ -1,6 +1,5 @@
 export {
   ITEM_DRAWER_WIDTH,
-  SEASON_DRAWER_WIDTH,
   SIDEBAR_WIDTH,
 } from './drawers';
 

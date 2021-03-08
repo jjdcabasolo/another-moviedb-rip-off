@@ -13,7 +13,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { ArrowDropDown } from '@material-ui/icons';
+import { ArrowDropDown, SearchTwoTone } from '@material-ui/icons';
 
 import { scrollToID } from '../../../utils/functions';
 
@@ -55,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
   },
   chipDropdown: {
     margin: theme.spacing(1),
+  },
+  chipLabel: {
+    paddingLeft: 0,
+    paddingRight: 9,
   },
 }));
 
@@ -143,6 +147,15 @@ const ItemCategory = ({
     case 'appbarHorizontalList':
       return (
         <div className={clsx(classes.topCategories)}>
+          <Chip
+            className={classes.chip}
+            classes={{ label: classes.chipLabel }}
+            color="default"
+            icon={<SearchTwoTone />}
+            key="item-category-chip-search"
+            onClick={() => { }}
+            variant="outlined"
+          />
           {renderCategoryChips()}
           <div className={classes.lastEntry} />
         </div>

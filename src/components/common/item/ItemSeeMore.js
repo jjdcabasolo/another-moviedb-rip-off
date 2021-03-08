@@ -22,7 +22,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { ArrowBack, Close } from '@material-ui/icons';
+import { ArrowBackTwoTone, CloseTwoTone } from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 import AppbarMenu from '../../navigation/appbar/AppbarMenu';
@@ -121,7 +121,7 @@ const ItemSeeMore = ({
           <AppBar color="default" className={classes.appBar}>
             <Toolbar>
               <IconButton edge="start" onClick={handleClose} aria-label="close">
-                <ArrowBack />
+                <ArrowBackTwoTone />
               </IconButton>
               <div className={classes.titlebar}>
                 <Typography
@@ -152,11 +152,11 @@ const ItemSeeMore = ({
         onClose={handleClose}
         open={seeMore}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose} className={classes.dialogTitle}>
+        <DialogTitle id={`item-see-more-${title}`} onClose={handleClose} className={classes.dialogTitle}>
           <span className={classes.appbarTitle}>{`${title} `}</span>
           {titleSection}
           <IconButton onClick={handleClose} edge="end" className={classes.iconButton}>
-            <Close />
+            <CloseTwoTone />
           </IconButton>
         </DialogTitle>
         <DialogContent className={clsx({ [classes.episodeDialog]: isEpisode })} dividers>

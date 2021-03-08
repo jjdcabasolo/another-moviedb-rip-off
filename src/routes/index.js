@@ -35,6 +35,9 @@ const Routes = () => (
     <Route exact path="/movies">
       {renderComponent('movies')}
     </Route>
+    <Route exact path="/movies/search">
+      {renderComponent('movies')}
+    </Route>
     <Route exact path="/movies/:movieId">
       {renderComponent('movies')}
     </Route>

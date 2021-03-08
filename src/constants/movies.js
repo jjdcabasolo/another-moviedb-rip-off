@@ -45,7 +45,7 @@ export const MOVIE_DRAWER_CATEGORY_CHIPS = [
     label: 'Upcoming',
     identifier: 'upcoming',
     isActive: (e) => e === 'upcoming',
-    description: 'Upcoming movies in theatres. Movies may vary, depending on where are.',
+    description: 'Upcoming movies in theatres. Movies may vary, depending on where you are.',
   },
   {
     label: 'Highest Grossing',
