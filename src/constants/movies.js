@@ -116,6 +116,14 @@ export const CREW_TO_DISPLAY = [
     identifier: 'makeup',
     label: () => 'Hair and Make-up',
   },
+  {
+    identifier: 'lighting',
+    label: () => 'Lighting',
+  },
+  {
+    identifier: 'visualEffects',
+    label: () => 'Visual Effects',
+  },
 ];
 
 export const MOVIE_BREADCRUMBS_CONFIG = [

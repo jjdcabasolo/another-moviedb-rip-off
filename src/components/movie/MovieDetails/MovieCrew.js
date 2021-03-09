@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 
 import ItemSeeMore from '../../common/item/ItemSeeMore';
@@ -13,12 +13,21 @@ import { getCrewMembers, getCrewCol, scrollToID } from '../../../utils/functions
 
 import { CREW_TO_DISPLAY, MAX_CREW_ON_SHOW_LESS } from '../../../constants';
 
+const useStyles = makeStyles((theme) => ({
+  moreCrew: {
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(-2),
+    paddingLeft: theme.spacing(9),
+  },
+}));
+
 const MovieCrew = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
   const isBigTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const classes = useStyles();
 
   const movie = useSelector((state) => state.movies.movie);
 
@@ -71,8 +80,11 @@ const MovieCrew = () => {
 
   const renderMasonryGrid = (crewShowMore) => {
     const col = [];
+    let colItemCount = Array(3).fill(0);
+
     for (let i = 0; i < crewCol; i += 1) {
       const colItem = [];
+      let memberCount = 0;
 
       for (let a = i; a < masonryConfig.length; a += crewCol) {
         if (!crewShowMore) {
@@ -80,11 +92,14 @@ const MovieCrew = () => {
             || masonryConfig[a] === 'cinematography'
             || masonryConfig[a] === 'editor'
             || masonryConfig[a] === 'costume'
-            || masonryConfig[a] === 'makeup') break;
+            || masonryConfig[a] === 'makeup'
+            || masonryConfig[a] === 'lighting'
+            || masonryConfig[a] === 'visualEffects') break;
         }
 
         const members = [...crewMembers[masonryConfig[a]]];
-        const membersToDisplay = crewShowMore ? members : members.splice(0, MAX_CREW_ON_SHOW_LESS)
+        memberCount = members.length;
+        const membersToDisplay = crewShowMore ? members : [...members.splice(0, MAX_CREW_ON_SHOW_LESS)];
         const crewTitle = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
         const crewLabel = crewTitle.label(members.length);
 
@@ -98,51 +113,35 @@ const MovieCrew = () => {
 
         if (!crewShowMore && members.length > MAX_CREW_ON_SHOW_LESS) {
           colItem.push(
-            <Grid item xs={col}>
+            <Grid item xs={col} className={classes.moreCrew}>
               <Typography variant="caption" color="textSecondary">
-                {`...and ${members.length} more ${crewLabel} crew`}
+                {`...and ${members.length} more`}
               </Typography>
             </Grid>,
           );
         }
       }
 
+      const updatedColItemCount = [...colItemCount];
+      updatedColItemCount[i] += memberCount;
+      colItemCount = [...updatedColItemCount];
+
       col.push(<Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{colItem}</Grid>);
     }
+
+    if (crewShowMore) console.log('col', colItemCount);
+
     return col;
   };
 
-  const renderStatistic = () => {
-    const { lighting, visualEffects } = crewMembers;
-    const crewStatistic = [
-      {
-        length: lighting.length,
-        label: 'Lighting',
-        divider: true,
-      },
-      {
-        length: visualEffects.length,
-        label: 'VFX',
-        divider: true,
-      },
-      {
-        length: crew.length,
-        label: 'Total Crew',
-        isTotal: true,
-      },
-    ].filter((e) => e.length > 0);
-
-    return crewStatistic.map((e) => (
-      <Statistic
-        col={12 / crewStatistic.length}
-        count={e.length}
-        divider={e.divider}
-        isTotal={e.isTotal}
-        key={`movie-crew-statistic-${e.label}`}
-        label={e.label}
-      />
-    ));
-  };
+  const renderStatistic = () => (
+    <Statistic
+      col={12 / crew.length}
+      count={crew.length}
+      isTotal
+      label="Total Crew"
+    />
+  );
 
   if (!('director' in crewMembers)) return null;
 

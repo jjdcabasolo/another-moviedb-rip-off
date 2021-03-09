@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
   },
+  listItem: {
+    '&:last-child': {
+      marginBottom: theme.spacing(2),
+    },
+  },
 }));
 
 const PersonAvatarList = ({
@@ -46,7 +51,7 @@ const PersonAvatarList = ({
         </Typography>
       )}
       <List disablePadding>
-        { content.map((person) => {
+        {content.map((person) => {
           const {
             job,
             name,
@@ -55,7 +60,7 @@ const PersonAvatarList = ({
           const isImageValid = profilePath !== null;
 
           return (
-            <ListItem key={`person-avatar-list-${name}`}>
+            <ListItem key={`person-avatar-list-${name}`} className={classes.listItem}>
               <ListItemAvatar>
                 {isImageValid
                   ? (
