@@ -50,3 +50,8 @@ export const MAX_ITEM_PER_LOAD = 10;
   truncating the text.
 */
 export const TRUNCATION_ALLOWANCE = 3;
+
+/*
+
+*/
+export const MAX_CREW_ON_SHOW_LESS = 2;

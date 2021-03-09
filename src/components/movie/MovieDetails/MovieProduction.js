@@ -60,9 +60,10 @@ const MovieProduction = () => {
             <Grid item key={`tv-show-production-production-company-chip-${id}`}>
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
-          )})
+          )
+        })
         )}
-        {hasProductionCountry && renderProduction('Countries', (
+        {hasProductionCountry && renderProduction('Country', (
           <Typography>
             {enumerate(productionCountries.map(e => `${e.name} (${e.iso_3166_1})`))}
           </Typography>
