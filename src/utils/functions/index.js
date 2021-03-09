@@ -9,6 +9,7 @@ export {
 } from './extractCrew';
 
 export {
+  enumerate,
   evaluateLocation,
   toCamelCase,
   toMillionsOrBillions,

@@ -10,9 +10,11 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  IconButton,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
+import { ArrowBackTwoTone } from '@material-ui/icons';
 
 import ItemSearch from './ItemSearch';
 import ItemCard from './ItemCard';
@@ -42,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   dialogContent: {
     padding: theme.spacing(2),
   },
+  itemSearchContainer: {
+    flexGrow: 1,
+  },
 }));
 
 const ItemSearchResults = () => {
@@ -53,6 +58,7 @@ const ItemSearchResults = () => {
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const movieSearchResults = useSelector((state) => state.movies.searchResults);
   const searchQuery = useSelector((state) => state.sidebar.searchQuery);
@@ -70,7 +76,15 @@ const ItemSearchResults = () => {
   }, [movieId, tvShowId]);
 
   useEffect(() => {
-    setContent(activeTab === 'movies' ? movieSearchResults : tvShowSearchResults);
+    setIsDialogOpen(isSearchOpen);
+  }, [isSearchOpen]);
+
+  useEffect(() => {
+    const searchResults = activeTab === 'movies'
+      ? movieSearchResults.filter(e => e.release_date)
+      : tvShowSearchResults.filter(e => e.first_air_date);
+
+    setContent(searchResults);
   }, [activeTab, movieSearchResults, tvShowSearchResults]);
 
   const handleClose = () => {
@@ -129,7 +143,16 @@ const ItemSearchResults = () => {
         open={isDialogOpen}
       >
         <DialogTitle id="item-search-results" onClose={handleClose} className={classes.dialogTitle}>
-          <ItemSearch isPermanentlyOpen withSearchIcon />
+          <Grid container>
+            <Grid item>
+              <IconButton edge="start" onClick={handleClose} aria-label="close">
+                <ArrowBackTwoTone />
+              </IconButton>
+            </Grid>
+            <Grid item className={classes.itemSearchContainer}>
+              <ItemSearch isPermanentlyOpen />
+            </Grid>
+          </Grid>
         </DialogTitle>
         <DialogContent className={classes.dialogContent} dividers>
           {results}

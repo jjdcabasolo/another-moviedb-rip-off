@@ -29,28 +29,28 @@ const ProductionChip = ({
 }) => {
   const classes = useStyles();
 
-  const isImageValid = image !== null;
-
   let label = name;
   if (country) label += ` (${country})`;
 
+  const avatarImage = image !== null
+    ? (
+      <Avatar
+        alt={`${name}'s avatar.`}
+        className={classes.avatar}
+        src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}`}
+      />
+    )
+    : (
+      <BrokenImage
+        avatarSize="small"
+        extraClass={classes.brokenImage}
+        type="avatar"
+      />
+    );
+
   return (
     <Chip
-      avatar={isImageValid
-        ? (
-          <Avatar
-            alt={`${name}'s avatar.`}
-            className={classes.avatar}
-            src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}`}
-          />
-        )
-        : (
-          <BrokenImage
-            avatarSize="small"
-            extraClass={classes.brokenImage}
-            type="avatar"
-          />
-        )}
+      avatar={avatarImage}
       variant="outlined"
       label={label}
       className={classes.chip}

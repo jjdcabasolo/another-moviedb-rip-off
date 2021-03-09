@@ -19,3 +19,7 @@ export {
   getTrendingShows,
   searchTVShow,
 } from './tvShows';
+
+export {
+  getCountries,
+} from './countries';

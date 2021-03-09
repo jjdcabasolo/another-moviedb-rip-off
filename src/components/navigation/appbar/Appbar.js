@@ -118,7 +118,7 @@ const Appbar = ({ children }) => {
   };
 
   const handleSearch = () => {
-    history.push(`/${activeTab}/search`);
+    dispatch(sidebarActions.setSearch(true));
   };
 
   const renderToolbarContents = () => {

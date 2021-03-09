@@ -15,9 +15,16 @@ import {
   getOnTheAirShows,
   getPopularShows,
   getTopRatedShows,
+
+  // getCountries,
 } from '../api';
 
-import { moviesActions, tvShowsActions, snackbarActions } from '../reducers/ducks';
+import {
+  moviesActions,
+  snackbarActions,
+  // tmdbConfigActions,
+  tvShowsActions,
+} from '../reducers/ducks';
 
 import { decryptKey } from '../utils/functions';
 
@@ -107,6 +114,14 @@ const InitAPICalls = () => {
       errorMessage = error;
       hasError = true;
     });
+
+    // // country config
+    // getCountries(decryptKey(), (response) => {
+    //   dispatch(tmdbConfigActions.setCountryConfig(response.data));
+    // }, (error) => {
+    //   errorMessage = error;
+    //   hasError = true;
+    // });
 
     if (hasError) {
       dispatch(snackbarActions.showSnackbar(`Error on fetching now playing movies: ${errorMessage}`, 'error'));

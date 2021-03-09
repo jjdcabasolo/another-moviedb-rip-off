@@ -71,3 +71,7 @@ export const toCamelCase = (text) => {
 
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
+
+export const enumerate = (array) => array.length === 2
+  ? array.join(' and ')
+  : array.join(', ').replace(/, ([^,]*)$/, ', and $1');

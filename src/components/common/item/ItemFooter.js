@@ -12,6 +12,8 @@ import {
   OpenInNew,
 } from '@material-ui/icons';
 
+import { enumerate } from '../../../utils/functions';
+
 import {
   API_KEY_DIALOG_TMDB_LINK,
   TMDB_SIGN_UP,
@@ -36,10 +38,6 @@ const ItemFooter = ({
 }) => {
   const classes = useStyles();
 
-  const formattedCompanies = companies.length === 2
-    ? companies.join(' and ')
-    : companies.join(', ').replace(/, ([^,]*)$/, ', and $1');
-
   const renderLinkOpenNewTab = (content, href) => (
     <Link href={href} rel="noopener" target="_blank">
       {content}
@@ -51,7 +49,7 @@ const ItemFooter = ({
     <Grid container spacing={3} className={classes.footer}>
       <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
-          {`${title} (${year})${companies.length > 0 ? ` © ${formattedCompanies}` : ''}.`}
+          {`${title} (${year})${companies.length > 0 ? ` © ${enumerate(companies)}` : ''}.`}
         </Typography>
       </Grid>
       <Grid item xs={12}>

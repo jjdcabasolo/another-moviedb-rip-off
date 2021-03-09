@@ -2,6 +2,7 @@ import React, {
   useCallback,
   useEffect,
   useState,
+  useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -43,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ItemSearch = ({
   isPermanentlyOpen = false,
-  withSearchIcon = true,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
@@ -54,6 +54,8 @@ const ItemSearch = ({
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const searchQuery = useSelector((state) => state.sidebar.searchQuery);
   const dispatch = useDispatch();
+
+  const inputBaseRef = useRef(null);
 
   const history = useHistory();
 
@@ -85,7 +87,7 @@ const ItemSearch = ({
     debounceEvent((q) => {
       handleSetSearchQuery(q);
 
-      if (q.length > 0) return;
+      if (q.length <= 0) return;
 
       if (isMovie) {
         searchMovie(decryptKey(), q, (response) => {
@@ -104,6 +106,18 @@ const ItemSearch = ({
     }, 500), [isMovie, activeTab]);
 
   const handleSetSearch = (isOpen) => {
+    if (isMobile) {
+      if (!isOpen) {
+        setQuery('');
+        dispatch(sidebarActions.setSearchQuery(''));
+
+        if (inputBaseRef.current) {
+          inputBaseRef.current.focus();
+        }
+        return;
+      }
+    }
+
     if (isOpen) {
       history.push(`/${activeTab}/search`);
       setQuery('');
@@ -155,11 +169,9 @@ const ItemSearch = ({
           </Tooltip>
         )}
         fullWidth
+        inputRef={inputBaseRef}
         onChange={handleInputChange}
         placeholder={`Search ${isMovie ? 'Movies' : 'TV Shows'}`}
-        startAdornment={withSearchIcon && (
-          <SearchTwoTone className={classes.searchIcon} />
-        )}
         value={query}
       />
     )
@@ -174,12 +186,10 @@ const ItemSearch = ({
 
 ItemSearch.defaultProps = {
   isPermanentlyOpen: false,
-  withSearchIcon: true,
 };
 
 ItemSearch.propTypes = {
   isPermanentlyOpen: PropTypes.bool,
-  withSearchIcon: PropTypes.bool,
 };
 
 export default ItemSearch;
