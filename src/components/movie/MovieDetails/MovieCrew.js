@@ -73,65 +73,74 @@ const MovieCrew = () => {
 
       setMasonryConfig([]);
       CREW_TO_DISPLAY.forEach((e) => {
-        if (finalCrew[e.identifier].length > 0) setMasonryConfig((a) => [...a, e.identifier]);
+        if (finalCrew[e.identifier].length > 0) {
+          setMasonryConfig((a) => [...a, e.identifier]);
+        }
       });
     }
   }, [movie, crew]);
 
   const renderMasonryGrid = (crewShowMore) => {
-    const col = [];
-    let colItemCount = Array(3).fill(0);
+    const masonryGrid = Array(crewCol).fill([]);
+    let colItemCount = Array(crewCol).fill(0);
+    let crewSection;
+    let memberCount = 0;
 
-    for (let i = 0; i < crewCol; i += 1) {
-      const colItem = [];
-      let memberCount = 0;
+    for (let a = 0; a < masonryConfig.length; a += 1) {
+      if (!crewShowMore) {
+        if (masonryConfig[a] === 'composer'
+          || masonryConfig[a] === 'cinematography'
+          || masonryConfig[a] === 'editor'
+          || masonryConfig[a] === 'costume'
+          || masonryConfig[a] === 'makeup'
+          || masonryConfig[a] === 'lighting'
+          || masonryConfig[a] === 'visualEffects') break;
+      }
 
-      for (let a = i; a < masonryConfig.length; a += crewCol) {
-        if (!crewShowMore) {
-          if (masonryConfig[a] === 'composer'
-            || masonryConfig[a] === 'cinematography'
-            || masonryConfig[a] === 'editor'
-            || masonryConfig[a] === 'costume'
-            || masonryConfig[a] === 'makeup'
-            || masonryConfig[a] === 'lighting'
-            || masonryConfig[a] === 'visualEffects') break;
-        }
+      const members = [...crewMembers[masonryConfig[a]]];
+      memberCount = members.length;
+      const membersToDisplay = crewShowMore ? members : [...members.splice(0, MAX_CREW_ON_SHOW_LESS)];
+      const crewTitle = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
+      const crewLabel = crewTitle.label(members.length);
 
-        const members = [...crewMembers[masonryConfig[a]]];
-        memberCount = members.length;
-        const membersToDisplay = crewShowMore ? members : [...members.splice(0, MAX_CREW_ON_SHOW_LESS)];
-        const crewTitle = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
-        const crewLabel = crewTitle.label(members.length);
-
-        colItem.push(
+      crewSection = (
+        <>
           <PersonAvatarList
             key={`movie-crew-person-avatar-list-${crewTitle.identifier}`}
             content={membersToDisplay}
             title={crewLabel}
-          />,
-        );
-
-        if (!crewShowMore && members.length > MAX_CREW_ON_SHOW_LESS) {
-          colItem.push(
-            <Grid item xs={col} className={classes.moreCrew}>
+          />
+          {!crewShowMore && members.length > MAX_CREW_ON_SHOW_LESS && (
+            <Grid item xs={12} className={classes.moreCrew}>
               <Typography variant="caption" color="textSecondary">
                 {`...and ${members.length} more`}
               </Typography>
-            </Grid>,
-          );
+            </Grid>
+          )}
+        </>
+      );
+
+      if (crewCol > 1) {
+        let min = colItemCount[0];
+        let minIndex = 0;
+
+        for (let j = 1; j < crewCol; j += 1) {
+          if (min > colItemCount[j]) {
+            min = colItemCount[j];
+            minIndex = j;
+          }
         }
+        
+        colItemCount[minIndex] += memberCount;
+        masonryGrid[minIndex] = [...masonryGrid[minIndex], crewSection];
       }
-
-      const updatedColItemCount = [...colItemCount];
-      updatedColItemCount[i] += memberCount;
-      colItemCount = [...updatedColItemCount];
-
-      col.push(<Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{colItem}</Grid>);
     }
 
-    if (crewShowMore) console.log('col', colItemCount);
+    console.log(masonryGrid);
 
-    return col;
+    return masonryGrid.map((e, i) => (
+      <Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{e}</Grid>
+    ));
   };
 
   const renderStatistic = () => (
