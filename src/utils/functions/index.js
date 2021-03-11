@@ -10,7 +10,6 @@ export {
 
 export {
   enumerate,
-  evaluateLocation,
   toCamelCase,
   toMillionsOrBillions,
   truncateText,

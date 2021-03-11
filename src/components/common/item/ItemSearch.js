@@ -6,8 +6,9 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -28,11 +29,7 @@ import {
   tvShowsActions,
 } from '../../../reducers/ducks';
 
-import {
-  debounceEvent,
-  decryptKey,
-  evaluateLocation,
-} from '../../../utils/functions';
+import { debounceEvent, decryptKey } from '../../../utils/functions';
 
 import { searchMovie, searchTVShow } from '../../../api';
 
@@ -49,7 +46,6 @@ const ItemSearch = ({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
 
-  const activeTab = useSelector((state) => state.sidebar.activeTab);
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const searchQuery = useSelector((state) => state.sidebar.searchQuery);
@@ -58,20 +54,45 @@ const ItemSearch = ({
   const inputBaseRef = useRef(null);
 
   const history = useHistory();
-
+  
   const [query, setQuery] = useState('');
-
-  const location = useLocation();
-  const { movieId, tvShowId } = evaluateLocation(location);
+  const [activeTab, categoryPath, searchQueryOnPath] = usePath();
 
   const isMovie = activeTab === 'movies';
-  const searchPath = isMovie ? movieId : tvShowId;
+
+  const fetchSearchResults = useCallback((q) => {
+    if (isMovie) {
+      searchMovie(decryptKey(), q, (response) => {
+        dispatch(moviesActions.setSearchResults(response));
+      }, (error) => {
+        dispatch(snackbarActions.showSnackbar(`Error on searching the movie: ${error}`, 'error'));
+      });
+    }
+    else {
+      searchTVShow(decryptKey(), q, (response) => {
+        dispatch(tvShowsActions.setSearchResults(response));
+      }, (error) => {
+        dispatch(snackbarActions.showSnackbar(`Error on searching the TV show: ${error}`, 'error'));
+      });
+    }
+  }, [isMovie, dispatch]);
 
   useEffect(() => {
-    if (searchPath === 'search') {
+    if (searchQueryOnPath && searchQueryOnPath.length > 0) {
+      setQuery(searchQueryOnPath);
+      dispatch(sidebarActions.setSearchQuery(searchQueryOnPath));
+      fetchSearchResults(searchQueryOnPath);
+    } else {
+      setQuery('');
+      dispatch(sidebarActions.setSearchQuery(''));
+    }
+  }, [searchQueryOnPath, dispatch, fetchSearchResults]);
+
+  useEffect(() => {
+    if (categoryPath === 'search') {
       dispatch(sidebarActions.setSearch(true));
     }
-  }, [movieId, tvShowId, searchPath, dispatch]);
+  }, [categoryPath, dispatch]);
 
   useEffect(() => {
     if (searchQuery.length > 0) setQuery(searchQuery);
@@ -89,20 +110,8 @@ const ItemSearch = ({
 
       if (q.length <= 0) return;
 
-      if (isMovie) {
-        searchMovie(decryptKey(), q, (response) => {
-          dispatch(moviesActions.setSearchResults(response));
-        }, (error) => {
-          dispatch(snackbarActions.showSnackbar(`Error on searching the movie: ${error}`, 'error'));
-        });
-      }
-      else {
-        searchTVShow(decryptKey(), q, (response) => {
-          dispatch(tvShowsActions.setSearchResults(response));
-        }, (error) => {
-          dispatch(snackbarActions.showSnackbar(`Error on searching the TV show: ${error}`, 'error'));
-        });
-      }
+      history.push(`/${activeTab}/search/${q}`);
+      fetchSearchResults(q);
     }, 500), [isMovie, activeTab]);
 
   const handleSetSearch = (isOpen) => {
@@ -124,7 +133,7 @@ const ItemSearch = ({
       dispatch(sidebarActions.setSearchQuery(''));
     }
     else {
-      if (searchPath && searchPath !== 0 && searchPath === 'search') {
+      if (categoryPath && categoryPath !== 0 && categoryPath === 'search') {
         history.goBack();
       }
       if (isMovie) {

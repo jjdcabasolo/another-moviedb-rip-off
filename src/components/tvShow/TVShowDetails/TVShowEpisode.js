@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -17,8 +17,6 @@ import { AvatarGroup } from '@material-ui/lab';
 
 import BrokenImage from '../../common/BrokenImage';
 import LineClamp from '../../common/LineClamp';
-
-import { evaluateLocation } from '../../../utils/functions';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
@@ -78,9 +76,8 @@ const TVShowEpisode = ({
   const isSmallTablet = useMediaQuery(theme.breakpoints.only('md'));
   const classes = useStyles();
 
-  const location = useLocation();
-  const { tvShowSection } = evaluateLocation(location);
-  const isSectionActive = tvShowSection && tvShowSection.length !== 0;
+  const [, , section] = usePath();
+  const isSectionActive = section && section.length !== 0;
 
   const maxGuestsToShow = isSmallTablet ? 12 : 10;
 

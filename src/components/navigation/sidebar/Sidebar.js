@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -21,8 +21,6 @@ import SidebarContent from './SidebarContent';
 import SidebarTitlebar from './SidebarTitlebar';
 
 import { sidebarActions } from '../../../reducers/ducks';
-
-import { evaluateLocation } from '../../../utils/functions';
 
 import { SIDEBAR_WIDTH } from '../../../constants';
 
@@ -82,22 +80,18 @@ const Sidebar = ({ children }) => {
   const movie = useSelector((state) => state.movies.movie);
   const dispatch = useDispatch();
 
-  const location = useLocation();
-  const {
-    movie: moviePath,
-    movieId,
-    tvShow: tvShowPath,
-    tvShowId,
-  } = evaluateLocation(location);
+  const [activeTab, idPath] = usePath();
+  const isMovie = activeTab === 'movies';
+  const { backdrop_path: movieBG } = movie;
+  const { backdrop_path: tvShowBG } = tvShow;
 
-  const isMovieSelected = typeof movieId !== 'undefined' && movieId.length > 0;
-  const isMovieTabActive = typeof moviePath !== 'undefined' && moviePath;
-  const isTVShowSelected = typeof tvShowId !== 'undefined' && tvShowId.length > 0;
-  const isTVShowTabActive = typeof tvShowPath !== 'undefined' && tvShowPath;
-  const isMovie = isMovieSelected && isMovieTabActive;
-  const isTVShow = isTVShowSelected && isTVShowTabActive;
   const isMovieEmpty = Object.keys(movie).length === 0 && movie.constructor === Object;
   const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
+
+  const isItemSelected = typeof idPath !== 'undefined' && idPath.length > 0;
+  const isTabActive = typeof activeTab !== 'undefined' && activeTab;
+  const isItemEmpty = isMovie ? isMovieEmpty : isTVShowEmpty;
+  const isItemLoading = isMovie ? isMovieLoading : isTVShowLoading;
 
   const handleDrawerState = (open) => {
     if (drawerOpen !== open) {
@@ -106,40 +100,28 @@ const Sidebar = ({ children }) => {
   };
 
   const evaluateDrawerVisibility = () => {
-    if (isMovieTabActive) {
-      if (!isDesktop && isMovieSelected && movieId !== 'search') {
-        return <SidebarTitlebar item={movie} />;
+    if (isTabActive) {
+      if (!isDesktop && isItemSelected && idPath !== 'search') {
+        return <SidebarTitlebar item={isMovie ? movie : tvShow} />;
       }
-      return <ItemDrawer isItemSelected={isMovieSelected} />;
-    } if (isTVShowTabActive) {
-      if (!isDesktop && isTVShowSelected && tvShowId !== 'search') {
-        return <SidebarTitlebar item={tvShow} />;
-      }
-      return <ItemDrawer isItemSelected={isTVShowSelected} />;
+      return <ItemDrawer isItemSelected={isItemSelected} />;
     }
+
     return null;
   };
 
   const renderTopContents = () => {
-    if (isMovie) {
+    if (isItemSelected && isTabActive) {
       return (
         <GradientBackground
-          image={movie.backdrop_path}
-          isItemSelected={isMovieSelected}
-          isLoading={isMovieEmpty}
-          isVisible={isMovie && !isMovieLoading}
-        />
-      );
-    } if (isTVShow) {
-      return (
-        <GradientBackground
-          image={tvShow.backdrop_path}
-          isItemSelected={isTVShowSelected}
-          isLoading={isTVShowEmpty}
-          isVisible={isTVShow && !isTVShowLoading}
+          image={isMovie ? movieBG : tvShowBG}
+          isItemSelected={isItemSelected}
+          isLoading={isItemEmpty}
+          isVisible={isItemSelected && isTabActive && !isItemLoading}
         />
       );
     }
+
     return null;
   };
 
@@ -189,7 +171,7 @@ const Sidebar = ({ children }) => {
         <main
           className={clsx(
             classes.content,
-            { [classes.contentItemSelected]: isMovie || isTVShow },
+            { [classes.contentItemSelected]: isItemSelected && isTabActive },
           )}
         >
           <Container maxWidth="md">

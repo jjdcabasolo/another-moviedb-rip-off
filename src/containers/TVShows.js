@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { usePath } from '../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
@@ -25,7 +25,7 @@ import { getTVShowDetails, getTVShowSeasonDetails } from '../api';
 
 import { tvShowsActions } from '../reducers/ducks';
 
-import { decryptKey, evaluateLocation } from '../utils/functions';
+import { decryptKey } from '../utils/functions';
 
 import { NOTE_NO_SELECTED_TV_SHOW, NOTE_TV_SHOW_NOT_FOUND } from '../constants';
 
@@ -51,8 +51,7 @@ const TVShows = () => {
 
   const [isLoaded, setIsLoaded] = useState(true);
 
-  const location = useLocation();
-  const { tvShowId } = evaluateLocation(location);
+  const [, tvShowId] = usePath();
 
   const {
     cast,

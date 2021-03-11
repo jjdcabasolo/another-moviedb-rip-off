@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -30,7 +30,7 @@ import ItemSearch from './ItemSearch';
 import ItemSearchResults from './ItemSearchResults';
 import Note from '../Note';
 
-import { evaluateLocation, toCamelCase } from '../../../utils/functions';
+import { toCamelCase } from '../../../utils/functions';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -139,14 +139,12 @@ const ItemDrawer = ({
 
   const [itemDrawerOpen, setItemDrawerOpen] = useState(true);
 
-  const location = useLocation();
-  const { movieId, tvShowId } = evaluateLocation(location);
+  const [, searchPath] = usePath();
 
   const isMovie = activeTab === 'movies';
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
-  const searchPath = isMovie ? movieId : tvShowId;
 
   useEffect(() => {
     setItemDrawerOpen(itemDrawerOpenStore);

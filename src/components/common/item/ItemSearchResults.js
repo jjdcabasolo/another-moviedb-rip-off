@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -21,8 +21,6 @@ import ItemCard from './ItemCard';
 import ItemLazyLoad from '../../common/item/ItemLazyLoad';
 
 import { sidebarActions } from '../../../reducers/ducks';
-
-import { evaluateLocation } from '../../../utils/functions';
 
 const useStyles = makeStyles((theme) => ({
   drawerOpenContainer: {
@@ -65,15 +63,14 @@ const ItemSearchResults = () => {
   const tvShowSearchResults = useSelector((state) => state.tvShows.searchResults);
   const dispatch = useDispatch();
 
-  const location = useLocation();
-  const { movieId, tvShowId } = evaluateLocation(location);
+  const [, idPath] = usePath();
 
   const [content, setContent] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
-    setIsDialogOpen(movieId === 'search' || tvShowId === 'search');
-  }, [movieId, tvShowId]);
+    setIsDialogOpen(idPath === 'search');
+  }, [idPath]);
 
   useEffect(() => {
     setIsDialogOpen(isSearchOpen);

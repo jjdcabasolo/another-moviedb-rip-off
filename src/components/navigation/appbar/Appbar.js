@@ -6,8 +6,9 @@ import React, {
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { usePath } from '../../../hooks';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -32,7 +33,7 @@ import ItemSearchResults from '../../common/item/ItemSearchResults';
 
 import { moviesActions, sidebarActions } from '../../../reducers/ducks';
 
-import { evaluateLocation, scrollToID } from '../../../utils/functions';
+import { scrollToID } from '../../../utils/functions';
 
 import { routes } from '../../../routes/config';
 
@@ -72,7 +73,10 @@ const Appbar = ({ children }) => {
   const appbarContainerRef = useRef(null);
   const itemListContainerRef = useRef(null);
 
-  const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const history = useHistory();
+  const [activeTab, idPath] = usePath();
+  const isMovie = activeTab === 'movies';
+
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
@@ -80,27 +84,26 @@ const Appbar = ({ children }) => {
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const dispatch = useDispatch();
 
-  const [activeBottomTab, setActiveBottomTab] = useState(activeTab === 'movies' ? 1 : 2);
-
-  const { title, original_title: originalTitle } = movie;
-  const { name, original_name: originalName } = tvShow;
-
-  const location = useLocation();
-  const history = useHistory();
+  const [activeBottomTab, setActiveBottomTab] = useState(isMovie ? 1 : 2);
 
   const {
-    movie: moviePath,
-    movieId,
-    tvShow: tvShowPath,
-    tvShowId,
-  } = evaluateLocation(location);
-  const isMovieSelected = typeof movieId !== 'undefined' && movieId.length > 0;
-  const isMovieTabActive = typeof moviePath !== 'undefined' && moviePath;
-  const isTVShowSelected = typeof tvShowId !== 'undefined' && tvShowId.length > 0;
-  const isTVShowTabActive = typeof tvShowPath !== 'undefined' && tvShowPath;
+    title,
+    original_title: originalTitle,
+    poster_path: movieBG,
+  } = movie;
+  const {
+    name,
+    original_name: originalName,
+    poster_path: tvShowBG,
+  } = tvShow;
 
   const isMovieEmpty = Object.keys(movie).length === 0 && movie.constructor === Object;
   const isTVShowEmpty = Object.keys(tvShow).length === 0 && tvShow.constructor === Object;
+
+  const isItemSelected = typeof idPath !== 'undefined' && idPath.length > 0;
+  const isTabActive = typeof activeTab !== 'undefined' && activeTab;
+  const isItemEmpty = isMovie ? isMovieEmpty : isTVShowEmpty;
+  const isItemLoading = isMovie ? isMovieLoading : isTVShowLoading;
 
   const goBack = useCallback(() => {
     if (isSearchOpen) dispatch(sidebarActions.setSearch(false));
@@ -118,13 +121,14 @@ const Appbar = ({ children }) => {
   };
 
   const handleSearch = () => {
-    dispatch(sidebarActions.setSearch(true));
+    history.push(`/${activeTab}/search`);
   };
 
   const renderToolbarContents = () => {
-    const isLoading = isMovieSelected ? isMovieLoading : isTVShowLoading;
-    const displayTitle = isMovieSelected ? (title || originalTitle) : (name || originalName);
-    const titleComponent = isLoading
+    const displayTitle = isMovie
+      ? (title || originalTitle)
+      : (name || originalName);
+    const titleComponent = isItemLoading
       ? <div className={classes.titlebar} />
       : (
         <Typography component="h1" variant="h6" noWrap className={classes.titlebar}>
@@ -139,7 +143,7 @@ const Appbar = ({ children }) => {
       </Tooltip>
     );
 
-    if (isMovieSelected || isTVShowSelected) {
+    if (isItemSelected) {
       return (
         <>
           <IconButton
@@ -169,13 +173,8 @@ const Appbar = ({ children }) => {
   };
 
   const renderList = () => {
-    if (isMovieTabActive) {
-      if (isMovieSelected) return children;
-      return <ItemList />;
-    }
-
-    if (isTVShowTabActive) {
-      if (isTVShowSelected) return children;
+    if (isTabActive) {
+      if (isItemSelected) return children;
       return <ItemList />;
     }
 
@@ -183,24 +182,13 @@ const Appbar = ({ children }) => {
   };
 
   const renderTopContents = () => {
-    if (isMovieTabActive) {
+    if (isTabActive) {
       return (
         <GradientBackground
-          image={movie.poster_path}
-          isItemSelected={isMovieSelected}
-          isLoading={isMovieEmpty}
-          isVisible={isMovieSelected && !isMovieLoading && isMovieTabActive}
-        />
-      );
-    }
-
-    if (isTVShowTabActive) {
-      return (
-        <GradientBackground
-          image={tvShow.poster_path}
-          isItemSelected={isTVShowSelected}
-          isLoading={isTVShowEmpty}
-          isVisible={isTVShowSelected && !isTVShowLoading && isTVShowTabActive}
+          image={isMovie ? movieBG : tvShowBG}
+          isItemSelected={isItemSelected}
+          isLoading={isItemEmpty}
+          isVisible={isItemSelected && !isItemLoading}
         />
       );
     }
@@ -221,8 +209,7 @@ const Appbar = ({ children }) => {
 
       <div
         className={clsx({
-          [classes.detailContainer]: (isMovieSelected && isMovieTabActive)
-            || (isTVShowSelected && isTVShowTabActive),
+          [classes.detailContainer]: (isItemSelected && isTabActive),
         })}
         ref={appbarContainerRef}
       >
@@ -231,7 +218,7 @@ const Appbar = ({ children }) => {
         <div
           className={clsx(
             classes.container,
-            { [classes.containerItemSelected]: isMovieSelected || isTVShowSelected },
+            { [classes.containerItemSelected]: isItemSelected },
           )}
           ref={itemListContainerRef}
         >
@@ -239,7 +226,7 @@ const Appbar = ({ children }) => {
         </div>
       </div>
 
-      {(!isMovieSelected && !isTVShowSelected) && (
+      {!isItemSelected && (
         <>
           <div className={classes.category}>
             <ItemCategory type="appbarHorizontalList" />

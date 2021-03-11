@@ -6,7 +6,8 @@ import React, {
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { usePath } from '../../../hooks'; 
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -87,11 +88,15 @@ const ItemSeeMore = ({
   const classes = useStyles();
 
   const history = useHistory();
-  const { section } = useParams();
+  const [, id, section] = usePath();
 
   const [seeMore, setSeeMore] = useState(sectionId === section);
 
-  useEffect(() => setSeeMore(sectionId === section), [sectionId, section]);
+  useEffect(() => {
+    if (id !== 'search') {
+      setSeeMore(sectionId === section);
+    }
+  }, [sectionId, section, id]);
 
   const handleButtonClick = () => {
     if (seeMore) history.goBack();
