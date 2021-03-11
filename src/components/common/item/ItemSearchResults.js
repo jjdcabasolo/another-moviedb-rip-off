@@ -69,12 +69,13 @@ const ItemSearchResults = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
+    console.log('useEffect search results', idPath);
     setIsDialogOpen(idPath === 'search');
   }, [idPath]);
 
-  useEffect(() => {
-    setIsDialogOpen(isSearchOpen);
-  }, [isSearchOpen]);
+  // useEffect(() => {
+  //   setIsDialogOpen(isSearchOpen);
+  // }, [isSearchOpen]);
 
   useEffect(() => {
     const searchResults = activeTab === 'movies'

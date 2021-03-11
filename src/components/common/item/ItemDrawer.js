@@ -146,24 +146,7 @@ const ItemDrawer = ({
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
 
-  // // open drawer on tablet when on search path
-  // useEffect(() => {
-  //   if (isTablet) {
-  //     const isOnSearchPath = searchPath === 'search';
-  //     console.log(searchPath, 'itemdraweruseeffect');
-
-  //     setItemDrawerOpen(isOnSearchPath);
-  //     dispatch(sidebarActions.setItemDrawer(isOnSearchPath));
-  //   }
-  // }, [searchPath, dispatch]);
-
   useEffect(() => {
-    setItemDrawerOpen(itemDrawerOpenStore);
-  }, [itemDrawerOpenStore]);
-
-  useEffect(() => {
-    if (searchPath === 'search') return;
-
     let itemDrawerFinalState = false;
 
     if (isDesktop && !isItemSelected) itemDrawerFinalState = true;
@@ -171,7 +154,7 @@ const ItemDrawer = ({
 
     setItemDrawerOpen(itemDrawerFinalState);
     dispatch(sidebarActions.setItemDrawer(itemDrawerFinalState));
-  }, [isDesktop, isTablet, searchPath, isItemSelected, dispatch]);
+  }, [isDesktop, isTablet, searchPath, isItemSelected, itemDrawerOpenStore, dispatch]);
 
   const handleDrawerToggle = () => {
     const isDrawerOpen = !itemDrawerOpen;

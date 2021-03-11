@@ -114,7 +114,7 @@ const Movies = () => {
     }
   }, [movieId, dispatch]);
 
-  if (movieId === undefined) {
+  if (movieId === undefined || movieId === 'search') {
     return (
       <div className={classes.note}>
         <Note details={NOTE_NO_SELECTED_MOVIE} />

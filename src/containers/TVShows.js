@@ -110,7 +110,7 @@ const TVShows = () => {
     }
   }, [tvShowId, dispatch]);
 
-  if (tvShowId === undefined) {
+  if (tvShowId === undefined || tvShowId === 'search') {
     return (
       <div className={classes.note}>
         <Note details={NOTE_NO_SELECTED_TV_SHOW} />

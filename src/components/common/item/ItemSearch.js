@@ -44,7 +44,6 @@ const ItemSearch = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const classes = useStyles();
 
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
@@ -55,7 +54,7 @@ const ItemSearch = ({
   const inputBaseRef = useRef(null);
 
   const history = useHistory();
-  
+
   const [query, setQuery] = useState('');
   const [activeTab, categoryPath, searchQueryOnPath] = usePath();
 
@@ -80,26 +79,24 @@ const ItemSearch = ({
 
   // automatic search on path change
   useEffect(() => {
-    if (searchQueryOnPath && searchQueryOnPath.length > 0) {
-      setQuery(searchQueryOnPath);
-      dispatch(sidebarActions.setSearchQuery(searchQueryOnPath));
-      fetchSearchResults(searchQueryOnPath);
-    } else {
-      setQuery('');
-      dispatch(sidebarActions.setSearchQuery(''));
+    if (categoryPath === 'search') {
+      if (searchQueryOnPath && searchQueryOnPath.length > 0) {
+        dispatch(sidebarActions.setSearchQuery(searchQueryOnPath));
+        setQuery(searchQueryOnPath);
+        fetchSearchResults(searchQueryOnPath);
+      } else {
+        dispatch(sidebarActions.setSearchQuery(''));
+        setQuery('');
+      }
     }
-  }, [searchQueryOnPath, dispatch, fetchSearchResults]);
+  }, [searchQueryOnPath, dispatch, categoryPath, fetchSearchResults]);
 
   // toggles search when on right path
   useEffect(() => {
     dispatch(sidebarActions.setSearch(categoryPath === 'search'));
   }, [categoryPath, dispatch]);
 
-  // changes local state on store change
-  useEffect(() => {
-    if (searchQuery.length > 0) setQuery(searchQuery);
-  }, [searchQuery]);
-
+  // automatically opens the drawer opn prop set
   useEffect(() => {
     if (isPermanentlyOpen) {
       dispatch(sidebarActions.setSearch(isPermanentlyOpen));

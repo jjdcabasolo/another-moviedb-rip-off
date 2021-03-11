@@ -64,8 +64,8 @@ const SidebarTitlebar = ({ item }) => {
   }, [dispatch, history, isSearchOpen, activeTab]);
 
   const handleSearch = () => {
-    history.push(`/${activeTab}/search`);
     dispatch(sidebarActions.setItemDrawer(true));
+    history.push(`/${activeTab}/search`);
   };
 
   const evaluateTitle = () => {

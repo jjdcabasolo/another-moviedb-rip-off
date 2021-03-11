@@ -106,11 +106,8 @@ const Appbar = ({ children }) => {
   const isItemLoading = isMovie ? isMovieLoading : isTVShowLoading;
 
   const goBack = useCallback(() => {
-    if (isSearchOpen) dispatch(sidebarActions.setSearch(false));
-
-    dispatch(moviesActions.setActiveMovie({}));
     history.goBack();
-  }, [dispatch, history, isSearchOpen]);
+  }, [history]);
 
   const handleBottomNavigationClick = (index) => {
     const tab = index === 1 ? 'movies' : 'tvshows';
