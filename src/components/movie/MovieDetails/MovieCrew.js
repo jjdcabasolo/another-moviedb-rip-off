@@ -133,10 +133,10 @@ const MovieCrew = () => {
         
         colItemCount[minIndex] += memberCount;
         masonryGrid[minIndex] = [...masonryGrid[minIndex], crewSection];
+      } else {
+        masonryGrid[0] = [...masonryGrid[0], crewSection];
       }
     }
-
-    console.log(masonryGrid);
 
     return masonryGrid.map((e, i) => (
       <Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{e}</Grid>
