@@ -26,10 +26,6 @@ import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   media: {
-    // transition: theme.transitions.create('background-image', {
-    //   easing: theme.transitions.easing.sharp,
-    //   duration: theme.transitions.duration.leavingScreen,
-    // }),
     borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(22),
   },

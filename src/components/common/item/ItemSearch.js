@@ -44,6 +44,7 @@ const ItemSearch = ({
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const classes = useStyles();
 
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
@@ -77,6 +78,7 @@ const ItemSearch = ({
     }
   }, [isMovie, dispatch]);
 
+  // automatic search on path change
   useEffect(() => {
     if (searchQueryOnPath && searchQueryOnPath.length > 0) {
       setQuery(searchQueryOnPath);
@@ -88,12 +90,12 @@ const ItemSearch = ({
     }
   }, [searchQueryOnPath, dispatch, fetchSearchResults]);
 
+  // toggles search when on right path
   useEffect(() => {
-    if (categoryPath === 'search') {
-      dispatch(sidebarActions.setSearch(true));
-    }
+    dispatch(sidebarActions.setSearch(categoryPath === 'search'));
   }, [categoryPath, dispatch]);
 
+  // changes local state on store change
   useEffect(() => {
     if (searchQuery.length > 0) setQuery(searchQuery);
   }, [searchQuery]);
