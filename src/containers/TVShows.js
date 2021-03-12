@@ -213,7 +213,7 @@ const TVShows = () => {
             companies={productionCompanies.map((e) => e.name)}
             link={tmdb}
             title={name || originalName}
-            year={moment(firstAirDate).format('YYYY')}
+            year={firstAirDate ? moment(firstAirDate).format('YYYY') : ''}
           />
         </Section>
       </Grid>

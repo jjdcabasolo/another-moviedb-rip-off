@@ -110,7 +110,7 @@ const Appbar = ({ children }) => {
     history.push(tab);
   };
 
-  const handleSearch = () => {
+  const handleSearchClick = () => {
     history.push(`/${activeTab}/search`);
   };
 
@@ -127,7 +127,7 @@ const Appbar = ({ children }) => {
       );
     const searchComponent = (
       <Tooltip title="Search">
-        <IconButton onClick={handleSearch}>
+        <IconButton onClick={handleSearchClick}>
           <SearchTwoTone />
         </IconButton>
       </Tooltip>

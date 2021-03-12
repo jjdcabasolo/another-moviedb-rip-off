@@ -18,6 +18,7 @@ import TruncatedOverview from '../../common/TruncatedOverview';
 
 import {
   MOVIE_BREADCRUMBS_CONFIG,
+  NO_DATE_TEXT,
   OVERVIEW_MAX_WORDS,
 } from '../../../constants';
 
@@ -78,9 +79,11 @@ const MovieHeader = ({ sectionVisibility }) => {
           variant={isMobile ? 'h4' : 'h2'}
         >
           {title || originalTitle}
-          <span className={classes.releaseYear}>
-            {`(${moment(releaseDate).format('YYYY')})`}
-          </span>
+          {releaseDate && (
+            <span className={classes.releaseYear}>
+              {`(${moment(releaseDate).format('YYYY')})`}
+            </span>
+          )}
         </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
@@ -90,7 +93,7 @@ const MovieHeader = ({ sectionVisibility }) => {
             color="textSecondary"
             variant={isMobile ? 'body1' : 'h6'}
           >
-            {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : 'No release date.'}
+            {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : NO_DATE_TEXT}
             &nbsp;&middot;&nbsp;
             {runtime
               ? `${runtimeHours !== 0 ? `${runtimeHours}hr ` : ''}${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`

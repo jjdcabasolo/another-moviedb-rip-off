@@ -35,9 +35,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   content: {
-    marginTop: theme.spacing(7),
+    marginTop: theme.spacing(3),
     padding: theme.spacing(3, 2),
-    height: '100%',
   },
   contentContainer: {
     position: 'relative',
@@ -60,6 +59,8 @@ const useStyles = makeStyles((theme) => ({
   },
   titlebar: {
     flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
     margin: theme.spacing(1),
   },
   titleSection: {
@@ -122,32 +123,34 @@ const ItemSeeMore = ({
           onClose={handleClose}
           open={seeMore}
         >
-          <AppBar color="default" className={classes.appBar}>
-            <Toolbar>
-              <IconButton edge="start" onClick={handleClose} aria-label="close">
-                <ArrowBackTwoTone />
-              </IconButton>
-              <div className={classes.titlebar}>
-                <Typography
-                  className={classes.titleSection}
-                  noWrap
-                  variant="h6"
-                >
-                  {titleSection}
-                </Typography>
-                <Typography variant="caption" noWrap>
-                  {title}
-                </Typography>
-              </div>
-              <IconButton onClick={handleSearch}>
-                <SearchTwoTone />
-              </IconButton>
-              {isMobile && <AppbarMenu />}
-            </Toolbar>
-          </AppBar>
-          <div className={classes.content}>
+          <DialogTitle id={`item-see-more-${title}`} className={classes.dialogTitle}>
+            <AppBar color="default" className={classes.appBar}>
+              <Toolbar>
+                <IconButton edge="start" onClick={handleClose} aria-label="close">
+                  <ArrowBackTwoTone />
+                </IconButton>
+                <div className={classes.titlebar}>
+                  <Typography
+                    className={classes.titleSection}
+                    noWrap
+                    variant="h6"
+                  >
+                    {titleSection}
+                  </Typography>
+                  <Typography variant="caption" noWrap>
+                    {title}
+                  </Typography>
+                </div>
+                <IconButton onClick={handleSearch}>
+                  <SearchTwoTone />
+                </IconButton>
+                {isMobile && <AppbarMenu />}
+              </Toolbar>
+            </AppBar>
+          </DialogTitle>
+          <DialogContent className={classes.content}>
             {expandedContent}
-          </div>
+          </DialogContent>
         </Dialog>
       );
     }

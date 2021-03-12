@@ -51,7 +51,7 @@ const TruncatedOverview = ({
               display="inline"
               variant={variant}
             >
-              {showMoreOverview ? ' Read less.' : '... read more.' }
+              {showMoreOverview ? '' : ' ...read more.' }
             </Typography>
           </>
         )

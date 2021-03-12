@@ -19,8 +19,9 @@ import TruncatedOverview from '../../common/TruncatedOverview';
 import { getTVShowStatus } from '../../../utils/functions';
 
 import {
-  TV_SHOW_BREADCRUMBS_CONFIG,
+  NO_DATE_TEXT,
   OVERVIEW_MAX_WORDS,
+  TV_SHOW_BREADCRUMBS_CONFIG,
 } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -81,9 +82,11 @@ const TVShowHeader = ({ sectionVisibility }) => {
           variant={isMobile ? 'h4' : 'h2'}
         >
           {name || originalName}
-          <span className={classes.releaseYear}>
-            {`(${moment(firstAirDate).format('YYYY')})`}
-          </span>
+          {firstAirDate && (
+            <span className={classes.releaseYear}>
+              {`(${moment(firstAirDate).format('YYYY')})`}
+            </span>
+          )}
         </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
@@ -92,7 +95,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
           color="textSecondary"
           variant={isMobile ? 'body1' : 'h6'}
         >
-          {`${firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : 'No release date.'} `}
+          {firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : NO_DATE_TEXT} 
           {episodeRunTime.length > 0
             && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`}
         </Typography>

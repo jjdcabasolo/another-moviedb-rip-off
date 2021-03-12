@@ -52,6 +52,10 @@ export const MAX_ITEM_PER_LOAD = 10;
 export const TRUNCATION_ALLOWANCE = 3;
 
 /*
-
+  Used on <MovieCrew /> to limit the number of crew to
+  display when it is truncated. Shows the rest in an
+  ellipsis together with the remaining count.
 */
 export const MAX_CREW_ON_SHOW_LESS = 2;
+
+export const NO_DATE_TEXT = 'No release date.';

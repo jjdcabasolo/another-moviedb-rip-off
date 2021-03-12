@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -76,6 +77,8 @@ const ItemCategory = ({
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  
+  const history = useHistory();
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -86,8 +89,12 @@ const ItemCategory = ({
     : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const category = isMovie ? movieCategory : tvShowCategory;
 
-  const handleClick = (event) => {
+  const handleDropdownClick = (event) => {
     setAnchorEl(event.currentTarget || event.current);
+  };
+
+  const handleSearchClick = () => {
+    history.push(`/${activeTab}/search`);
   };
 
   const handleClose = () => setAnchorEl(null);
@@ -137,7 +144,7 @@ const ItemCategory = ({
       return (
         <>
           <Tooltip title="Set category">
-            <IconButton aria-label="setCategory" onClick={handleClick}>
+            <IconButton aria-label="setCategory" onClick={handleDropdownClick}>
               <ArrowDropDown fontSize={iconSize} />
             </IconButton>
           </Tooltip>
@@ -153,7 +160,7 @@ const ItemCategory = ({
             color="default"
             icon={<SearchTwoTone />}
             key="item-category-chip-search"
-            onClick={() => { }}
+            onClick={handleSearchClick}
             variant="outlined"
           />
           {renderCategoryChips()}

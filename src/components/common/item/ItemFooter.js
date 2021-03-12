@@ -49,7 +49,7 @@ const ItemFooter = ({
     <Grid container spacing={3} className={classes.footer}>
       <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
-          {`${title} (${year})${companies.length > 0 ? ` © ${enumerate(companies)}` : ''}.`}
+          {`${title} ${year.length > 0 ? `(${year})` : ''}${companies.length > 0 ? ` © ${enumerate(companies)}` : ''}.`}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -81,7 +81,7 @@ const ItemFooter = ({
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body2" color="textSecondary">
-          © 2020 All Rights Reserved.
+          © 2019-2021 All Rights Reserved.
         </Typography>
       </Grid>
       <Grid item xs={12}>

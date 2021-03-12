@@ -22,7 +22,7 @@ import { scrollToID, truncateText } from '../../../utils/functions';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -166,7 +166,7 @@ const ItemCard = ({
 
   const isMovie = type === 'movies';
   const date = isMovie ? content.release_date : content.first_air_date;
-  const dateDisplay = date ? ` • ${moment(date).format('MMM D, YYYY')}` : '';
+  const dateDisplay = date ? ` • ${moment(date).format('MMM D, YYYY')}` : ` • ${NO_DATE_TEXT}`;
 
   if (!content) return null;
 

@@ -9,7 +9,7 @@ import TruncatedOverview from '../../common/TruncatedOverview';
 
 import { selectSeason } from '../../../utils/functions';
 
-import { OVERVIEW_MAX_WORDS } from '../../../constants';
+import { NO_DATE_TEXT, OVERVIEW_MAX_WORDS } from '../../../constants';
 
 const TVShowSeasonDetails = () => {
   const episodes = useSelector((state) => state.tvShows.episodes);
@@ -34,7 +34,7 @@ const TVShowSeasonDetails = () => {
           {seasonName}
         </Typography>
         <Typography color="textSecondary">
-          {airDate ? moment(airDate).format('MMM D, YYYY') : 'No release date.'}
+          {airDate ? moment(airDate).format('MMM D, YYYY') : NO_DATE_TEXT}
           {filteredEpisodes > 0 && (
             <>
               &nbsp;&nbsp;&middot;&nbsp;&nbsp;

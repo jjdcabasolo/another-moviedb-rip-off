@@ -16,7 +16,7 @@ import { tvShowsActions } from '../../../reducers/ducks';
 
 import { decryptKey } from '../../../utils/functions';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -137,7 +137,7 @@ const TVShowSeasonList = () => {
                   {seasonName}
                 </Typography>
                 <Typography color="textSecondary" variant="body2" noWrap>
-                  {airDate ? moment(airDate).format('MMM D, YYYY') : ''}
+                  {airDate ? moment(airDate).format('MMM D, YYYY') : NO_DATE_TEXT}
                 </Typography>
               </Grid>
             </Grid>

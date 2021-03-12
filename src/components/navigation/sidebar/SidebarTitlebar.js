@@ -86,7 +86,7 @@ const SidebarTitlebar = ({ item }) => {
           <ArrowBackTwoTone />
         </IconButton>
         <Typography component="h1" variant="h6">
-          {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
+          {isItemSelected && `${evaluateTitle()} ${date ? `(${moment(date).format('YYYY')})` : ''}`}
         </Typography>
         <div className={classes.grow} />
         <Tooltip title="Search">

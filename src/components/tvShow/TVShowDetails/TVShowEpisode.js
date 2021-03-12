@@ -18,7 +18,7 @@ import { AvatarGroup } from '@material-ui/lab';
 import BrokenImage from '../../common/BrokenImage';
 import LineClamp from '../../common/LineClamp';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
+import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
@@ -130,7 +130,7 @@ const TVShowEpisode = ({
           {`${episodeNumber} · ${episodeName}`}
         </Typography>
         <Typography color="textSecondary" variant="body2" noWrap gutterBottom>
-          {airDate ? moment(airDate).format('MMM D, YYYY') : ''}
+          {airDate ? moment(airDate).format('MMM D, YYYY') : NO_DATE_TEXT}
         </Typography>
       </Grid>
       <Grid item className={classes.gridItem}>

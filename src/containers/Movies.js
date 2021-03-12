@@ -222,7 +222,7 @@ const Movies = () => {
             companies={productionCompanies.map((e) => e.name)}
             link={tmdb}
             title={title || originalTitle}
-            year={moment(releaseDate).format('YYYY')}
+            year={releaseDate ? moment(releaseDate).format('YYYY') : ''}
           />
         </Section>
       </Grid>
