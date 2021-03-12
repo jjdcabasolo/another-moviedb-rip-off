@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { usePath } from '../../../hooks';
 
@@ -56,26 +57,21 @@ const ItemSearchResults = () => {
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
-  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const movieSearchResults = useSelector((state) => state.movies.searchResults);
   const searchQuery = useSelector((state) => state.sidebar.searchQuery);
   const tvShowSearchResults = useSelector((state) => state.tvShows.searchResults);
   const dispatch = useDispatch();
 
+  const history = useHistory();
   const [, idPath] = usePath();
 
   const [content, setContent] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
-    console.log('useEffect search results', idPath);
     setIsDialogOpen(idPath === 'search');
   }, [idPath]);
-
-  // useEffect(() => {
-  //   setIsDialogOpen(isSearchOpen);
-  // }, [isSearchOpen]);
 
   useEffect(() => {
     const searchResults = activeTab === 'movies'
@@ -85,9 +81,7 @@ const ItemSearchResults = () => {
     setContent(searchResults);
   }, [activeTab, movieSearchResults, tvShowSearchResults]);
 
-  const handleClose = () => {
-    setIsDialogOpen(false);
-  };
+  const handleClose = () => history.goBack();
 
   const handleDrawerToggle = () => {
     dispatch(sidebarActions.setItemDrawer(false));

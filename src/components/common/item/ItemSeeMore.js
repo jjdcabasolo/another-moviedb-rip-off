@@ -1,8 +1,4 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
@@ -18,12 +14,15 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-  Slide,
   Toolbar,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { ArrowBackTwoTone, CloseTwoTone } from '@material-ui/icons';
+import {
+  ArrowBackTwoTone,
+  CloseTwoTone,
+  SearchTwoTone,
+} from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 import AppbarMenu from '../../navigation/appbar/AppbarMenu';
@@ -68,9 +67,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const Transition = forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
-
 const ItemSeeMore = ({
   appbarTitle,
   collapsedClickEvent,
@@ -88,7 +84,7 @@ const ItemSeeMore = ({
   const classes = useStyles();
 
   const history = useHistory();
-  const [, id, section] = usePath();
+  const [activeTab, id, section] = usePath();
 
   const [seeMore, setSeeMore] = useState(sectionId === section);
 
@@ -111,13 +107,16 @@ const ItemSeeMore = ({
     history.goBack();
   };
 
+  const handleSearch = () => {
+    history.push(`/${activeTab}/search`);
+  };
+
   const renderContent = () => {
     const [title, titleSection] = appbarTitle;
 
     if (isMobile) {
       return (
         <Dialog
-          TransitionComponent={Transition}
           classes={{ paper: classes.paper }}
           fullScreen
           onClose={handleClose}
@@ -140,6 +139,9 @@ const ItemSeeMore = ({
                   {title}
                 </Typography>
               </div>
+              <IconButton onClick={handleSearch}>
+                <SearchTwoTone />
+              </IconButton>
               {isMobile && <AppbarMenu />}
             </Toolbar>
           </AppBar>

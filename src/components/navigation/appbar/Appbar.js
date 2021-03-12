@@ -1,8 +1,4 @@
-import React, {
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
@@ -31,7 +27,7 @@ import ItemCategory from '../../common/item/ItemCategory';
 import ItemList from '../../common/item/ItemList';
 import ItemSearchResults from '../../common/item/ItemSearchResults';
 
-import { moviesActions, sidebarActions } from '../../../reducers/ducks';
+import { sidebarActions } from '../../../reducers/ducks';
 
 import { scrollToID } from '../../../utils/functions';
 
@@ -78,7 +74,6 @@ const Appbar = ({ children }) => {
   const isMovie = activeTab === 'movies';
 
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
-  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
   const movie = useSelector((state) => state.movies.movie);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
@@ -105,9 +100,7 @@ const Appbar = ({ children }) => {
   const isItemEmpty = isMovie ? isMovieEmpty : isTVShowEmpty;
   const isItemLoading = isMovie ? isMovieLoading : isTVShowLoading;
 
-  const goBack = useCallback(() => {
-    history.goBack();
-  }, [history]);
+  const goBack = () => history.goBack();
 
   const handleBottomNavigationClick = (index) => {
     const tab = index === 1 ? 'movies' : 'tvshows';
