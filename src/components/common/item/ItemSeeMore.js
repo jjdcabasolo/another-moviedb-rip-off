@@ -61,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    margin: theme.spacing(1),
   },
   titleSection: {
     lineHeight: 1.2,
