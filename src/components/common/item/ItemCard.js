@@ -166,14 +166,14 @@ const ItemCard = ({
 
   const isMovie = type === 'movies';
   const date = isMovie ? content.release_date : content.first_air_date;
-  const dateDisplay = date ? ` • ${moment(date).format('MMM D, YYYY')}` : ` • ${NO_DATE_TEXT}`;
+  const dateDisplay = date ? ` ${moment(date).format('MMM D, YYYY')}` : ` ${NO_DATE_TEXT}`;
 
   if (!content) return null;
 
   const handleCardClick = () => {
     scrollToID('scroll-to-top-anchor', false);
 
-    if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
+    if (handleDrawerToggle) handleDrawerToggle();
 
     if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
     else {
@@ -254,14 +254,16 @@ const ItemCard = ({
                 )}
                 color="textSecondary"
               >
-                <span
-                  className={clsx(
-                    classes.rankText,
-                    { [classes.textImageInvalid]: !isImageValid },
-                  )}
-                >
-                  {rank}
-                </span>
+                {rank !== 0 && (
+                  <span
+                    className={clsx(
+                      classes.rankText,
+                      { [classes.textImageInvalid]: !isImageValid },
+                    )}
+                  >
+                    {`${rank} •`}
+                  </span>
+                )}
                 {dateDisplay}
               </Typography>
             </div>

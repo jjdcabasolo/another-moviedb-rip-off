@@ -153,7 +153,7 @@ export const searchMovie = (
   query,
   success,
   fail,
-  after = () => { },
+  after,
 ) => axios.get(`/search/movie`, { params: { api_key, query } })
   .then((response) => success(response.data.results))
   .catch((error) => fail(error))

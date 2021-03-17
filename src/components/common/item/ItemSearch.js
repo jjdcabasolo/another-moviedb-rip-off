@@ -48,7 +48,9 @@ const ItemSearch = ({
 
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
+  const movieSearchResults = useSelector((state) => state.movies.searchResults);
   const searchQuery = useSelector((state) => state.sidebar.searchQuery);
+  const tvShowSearchResults = useSelector((state) => state.tvShows.searchResults);
   const dispatch = useDispatch();
 
   const inputBaseRef = useRef(null);
@@ -62,17 +64,23 @@ const ItemSearch = ({
 
   const fetchSearchResults = useCallback((q) => {
     if (isMovie) {
+      dispatch(moviesActions.setSearchLoading(true));
       searchMovie(decryptKey(), q, (response) => {
         dispatch(moviesActions.setSearchResults(response));
       }, (error) => {
         dispatch(snackbarActions.showSnackbar(`Error on searching the movie: ${error}`, 'error'));
+      }, () => {
+        dispatch(moviesActions.setSearchLoading(false));
       });
     }
     else {
+      dispatch(tvShowsActions.setSearchLoading(true));
       searchTVShow(decryptKey(), q, (response) => {
         dispatch(tvShowsActions.setSearchResults(response));
       }, (error) => {
         dispatch(snackbarActions.showSnackbar(`Error on searching the TV show: ${error}`, 'error'));
+      }, () => {
+        dispatch(tvShowsActions.setSearchLoading(false));
       });
     }
   }, [isMovie, dispatch]);
@@ -96,7 +104,7 @@ const ItemSearch = ({
     dispatch(sidebarActions.setSearch(categoryPath === 'search'));
   }, [categoryPath, dispatch]);
 
-  // automatically opens the drawer opn prop set
+  // automatically opens the drawer open prop set
   useEffect(() => {
     if (isPermanentlyOpen) {
       dispatch(sidebarActions.setSearch(isPermanentlyOpen));
@@ -107,13 +115,16 @@ const ItemSearch = ({
     debounceEvent((q) => {
       handleSetSearchQuery(q);
 
-      if (q.length <= 0) return;
+      if (q.length <= 0) {
+        dispatch(sidebarActions.setSearchQuery(''));
+        return;
+      }
 
-      history.push(`/${activeTab}/search/${q}`);
       fetchSearchResults(q);
-    }, 500), [isMovie, activeTab]);
+    }, 500), [isMovie, activeTab, searchQueryOnPath]);
 
   const handleSetSearch = (isOpen) => {
+    // works as clear search on mobile only
     if (isMobile) {
       if (!isOpen) {
         setQuery('');
@@ -156,6 +167,12 @@ const ItemSearch = ({
 
   const handleInputChange = ({ target }) => {
     const { value } = target;
+
+    const searchResults = isMovie ? movieSearchResults : tvShowSearchResults;
+    if (searchResults.length > 0) {
+      dispatch(moviesActions.setSearchResults([]));
+      dispatch(tvShowsActions.setSearchResults([]));
+    }
 
     setQuery(value);
     debouncedQuery(value);

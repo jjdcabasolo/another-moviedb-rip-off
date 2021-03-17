@@ -35,7 +35,7 @@ export const TV_SHOW_BREADCRUMBS_CONFIG = [
   {
     label: 'Seasons',
     link: '#tvshow-seasons',
-    visibilityId: 'seasons',
+    visibilityId: 'seasonList',
   },
   {
     label: 'Episodes',

@@ -111,7 +111,7 @@ const Sidebar = ({ children }) => {
   };
 
   const renderTopContents = () => {
-    if (isItemSelected && isTabActive) {
+    if (isItemSelected && isTabActive && idPath !== 'search') {
       return (
         <GradientBackground
           image={isMovie ? movieBG : tvShowBG}

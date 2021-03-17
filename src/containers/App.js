@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import amber from '@material-ui/core/colors/amber';
+import teal from '@material-ui/core/colors/teal';
 import grey from '@material-ui/core/colors/grey';
 
 import Appbar from '../components/navigation/appbar/Appbar';
@@ -38,7 +38,7 @@ const App = () => {
 
   const theme = createMuiTheme({
     palette: {
-      primary: { main: darkMode ? amber[200] : amber[500] },
+      primary: { main: darkMode ? teal[200] : teal[500] },
       type: darkMode ? 'dark' : 'light',
       brokenImage: {
         border: darkMode ? grey[700] : grey[300],

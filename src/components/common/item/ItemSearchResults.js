@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { usePath } from '../../../hooks';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -17,9 +17,10 @@ import {
 } from '@material-ui/core';
 import { ArrowBackTwoTone } from '@material-ui/icons';
 
-import ItemSearch from './ItemSearch';
+import ComponentLoader from '../ComponentLoader';
 import ItemCard from './ItemCard';
 import ItemLazyLoad from '../../common/item/ItemLazyLoad';
+import ItemSearch from './ItemSearch';
 
 import { sidebarActions } from '../../../reducers/ducks';
 
@@ -46,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
   itemSearchContainer: {
     flexGrow: 1,
   },
+  loader: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const ItemSearchResults = () => {
@@ -56,7 +60,9 @@ const ItemSearchResults = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
   const classes = useStyles();
 
-  const activeTab = useSelector((state) => state.sidebar.activeTab);
+  // const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
+  const isMovieSearchLoading = useSelector((state) => state.movies.isSearchLoading);
+  const isTVShowSearchLoading = useSelector((state) => state.tvShows.isSearchLoading);
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const movieSearchResults = useSelector((state) => state.movies.searchResults);
   const searchQuery = useSelector((state) => state.sidebar.searchQuery);
@@ -64,19 +70,19 @@ const ItemSearchResults = () => {
   const dispatch = useDispatch();
 
   const history = useHistory();
-  const [, idPath] = usePath();
+  const [activeTab, idPath] = usePath();
 
   const [content, setContent] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const isMovie = activeTab === 'movies';
 
   useEffect(() => {
     setIsDialogOpen(idPath === 'search');
   }, [idPath]);
 
   useEffect(() => {
-    const searchResults = activeTab === 'movies'
-      ? movieSearchResults.filter(e => e.release_date)
-      : tvShowSearchResults.filter(e => e.first_air_date);
+    const searchResults = isMovie ? movieSearchResults : tvShowSearchResults;
 
     setContent(searchResults);
   }, [activeTab, movieSearchResults, tvShowSearchResults]);
@@ -84,8 +90,13 @@ const ItemSearchResults = () => {
   const handleClose = () => history.goBack();
 
   const handleDrawerToggle = () => {
+    history.push(`/${activeTab}/search/${searchQuery}`);
     dispatch(sidebarActions.setItemDrawer(false));
   };
+
+  const isSearchLoading = isMovie
+    ? isMovieSearchLoading
+    : isTVShowSearchLoading;
 
   let itemCardCol = 12; // 1 card per row
 
@@ -118,11 +129,19 @@ const ItemSearchResults = () => {
         </Grid>
       )
     } else {
-      results = (
-        <Typography className={classes.noResults}>
-          No resuls found.
-        </Typography>
-      );
+      if (isSearchLoading) {
+        results = (
+          <div className={classes.loader}>
+            <ComponentLoader />
+          </div>
+        );
+      } else {
+        results = (
+          <Typography className={classes.noResults}>
+            No resuls found.
+          </Typography>
+        );
+      }
     }
   }
 

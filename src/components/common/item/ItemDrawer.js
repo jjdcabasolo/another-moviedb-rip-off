@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
@@ -146,7 +150,7 @@ const ItemDrawer = ({
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
 
-  useEffect(() => {
+  const evaluateDrawerState = useCallback(() => {
     let itemDrawerFinalState = false;
 
     if (isDesktop && !isItemSelected) itemDrawerFinalState = true;
@@ -154,10 +158,21 @@ const ItemDrawer = ({
 
     setItemDrawerOpen(itemDrawerFinalState);
     dispatch(sidebarActions.setItemDrawer(itemDrawerFinalState));
-  }, [isDesktop, isTablet, searchPath, isItemSelected, itemDrawerOpenStore, dispatch]);
+  }, [dispatch, isDesktop, isItemSelected, isTablet]);
+
+  useEffect(() => {
+    evaluateDrawerState();
+  }, [isDesktop, isTablet, isItemSelected]);
+
+  useEffect(() => {
+    if (!isDesktop || (isDesktop && searchPath !== 'search')) {
+      evaluateDrawerState();
+    }
+  }, [searchPath]);
 
   const handleDrawerToggle = () => {
     const isDrawerOpen = !itemDrawerOpen;
+
     setItemDrawerOpen(isDrawerOpen);
     dispatch(sidebarActions.setItemDrawer(isDrawerOpen));
   };
@@ -180,7 +195,12 @@ const ItemDrawer = ({
     }
 
     if (loadedContent !== categoryChips.length) {
-      return <ComponentLoader location="itemdrawer" isItemDrawerOpen={itemDrawerOpen} />;
+      return (
+        <ComponentLoader
+          location="itemdrawer"
+          isItemDrawerOpen={itemDrawerOpen}
+        />
+      );
     }
 
     let itemCardCol = 12; // 1 card per row

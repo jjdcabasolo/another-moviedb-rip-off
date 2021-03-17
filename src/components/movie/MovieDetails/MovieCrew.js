@@ -110,7 +110,7 @@ const MovieCrew = () => {
             content={membersToDisplay}
             title={crewLabel}
           />
-          {!crewShowMore && members.length > MAX_CREW_ON_SHOW_LESS && (
+          {!crewShowMore && members.length > 0 && (
             <Grid item xs={12} className={classes.moreCrew}>
               <Typography variant="caption" color="textSecondary">
                 {`...and ${members.length} more`}
@@ -130,7 +130,7 @@ const MovieCrew = () => {
             minIndex = j;
           }
         }
-        
+
         colItemCount[minIndex] += memberCount;
         masonryGrid[minIndex] = [...masonryGrid[minIndex], crewSection];
       } else {

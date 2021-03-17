@@ -96,7 +96,6 @@ const ItemCardHorizontalList = ({
                     content={item}
                     hasSpacingHorizontalScroll={hasSpacingHorizontalScroll}
                     isHorizontalScroll
-                    rank={index + 1}
                     type={activeTab}
                   />
                 </Grid>

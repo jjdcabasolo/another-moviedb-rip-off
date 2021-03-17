@@ -6,7 +6,12 @@ import { Avatar, Chip } from '@material-ui/core';
 
 import BrokenImage from '../../BrokenImage';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
+import { truncateText } from '../../../../utils/functions';
+
+import {
+  MAX_CHARACTER_PRODUCTION_CHIP,
+  MOVIE_DRAWER_TMDB_IMAGE_PREFIX,
+} from '../../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -19,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(3),
     marginLeft: theme.spacing(0.5),
     width: theme.spacing(3),
+    marginRight: -6,
   },
 }));
 
@@ -29,7 +35,7 @@ const ProductionChip = ({
 }) => {
   const classes = useStyles();
 
-  let label = name;
+  let label = truncateText(name, MAX_CHARACTER_PRODUCTION_CHIP, 'characters');;
   if (country) label += ` (${country})`;
 
   const avatarImage = image !== null

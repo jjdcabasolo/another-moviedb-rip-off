@@ -58,4 +58,12 @@ export const TRUNCATION_ALLOWANCE = 3;
 */
 export const MAX_CREW_ON_SHOW_LESS = 2;
 
+/*
+
+*/
 export const NO_DATE_TEXT = 'No release date.';
+
+/*
+
+*/
+export const MAX_CHARACTER_PRODUCTION_CHIP = 25;

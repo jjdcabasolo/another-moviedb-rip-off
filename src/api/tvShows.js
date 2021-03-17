@@ -118,7 +118,7 @@ export const searchTVShow = (
   query,
   success,
   fail,
-  after = () => { },
+  after,
 ) => axios.get(`/search/tv`, { params: { api_key, query } })
   .then((response) => success(response.data.results))
   .catch((error) => fail(error))

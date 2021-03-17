@@ -48,6 +48,9 @@ const Routes = () => (
     <Route exact path="/tvshows">
       {renderComponent('tvshows')}
     </Route>
+    <Route exact path="/tvshows/search">
+      {renderComponent('tvshows')}
+    </Route>
     <Route exact path="/tvshows/:tvShowId">
       {renderComponent('tvshows')}
     </Route>
