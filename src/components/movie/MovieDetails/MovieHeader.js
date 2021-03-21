@@ -16,11 +16,7 @@ import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
 import TruncatedOverview from '../../common/TruncatedOverview';
 
-import {
-  MOVIE_BREADCRUMBS_CONFIG,
-  NO_DATE_TEXT,
-  OVERVIEW_MAX_WORDS,
-} from '../../../constants';
+import { MOVIE_BREADCRUMBS_CONFIG, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -42,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
       fontSize: theme.typography.h5.fontSize,
     },
   },
+  ellipsis: {
+    fontSize: '1rem',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: '400',
+    lineHeight: '1.5',
+    letterSpacing: '0.00938em',
+  }
 }));
 
 const MovieHeader = ({ sectionVisibility }) => {
@@ -123,10 +126,7 @@ const MovieHeader = ({ sectionVisibility }) => {
       </Grid>
       {overview && overview.length > 0 && (
         <Grid item xs={12}>
-          <TruncatedOverview
-            overview={overview}
-            maxWords={OVERVIEW_MAX_WORDS}
-          />
+          <TruncatedOverview overview={overview} />
         </Grid>
       )}
       {tagline && (

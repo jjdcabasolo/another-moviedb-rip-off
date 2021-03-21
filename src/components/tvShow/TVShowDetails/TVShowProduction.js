@@ -64,9 +64,8 @@ const TVShowProduction = () => {
             <Grid item key={`tv-show-production-created-by-chip-${id}`}>
               <ProductionChip image={profilePath} name={name} />
             </Grid>
-          )
-        })
-        )}
+          );
+        }))}
         {hasNetworks && renderProduction('Network', networks.map((network) => {
           const { id, logo_path: logoPath, name, origin_country: originCountry } = network;
 
@@ -74,9 +73,8 @@ const TVShowProduction = () => {
             <Grid item key={`tv-show-production-network-chip-${id}`}>
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
-          )
-        })
-        )}
+          );
+        }))}
         {hasProductionCompany && renderProduction('Companies', productionCompanies.map((company) => {
           const { id, logo_path: logoPath, name, origin_country: originCountry } = company;
 
@@ -85,15 +83,14 @@ const TVShowProduction = () => {
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
           )
-        })
-        )}
+        }))}
         {hasProductionCountry && renderProduction('Country', (
-          <Typography>
+          <Typography variant="body2">
             {enumerate(productionCountries.map(e => `${e.name} (${e.iso_3166_1})`))}
           </Typography>
         ))}
         {hasSpokenLanguages && renderProduction('Spoken Languages', (
-          <Typography>
+          <Typography variant="body2">
             {enumerate(spokenLanguages.map(e => `${e.english_name} (${e.iso_639_1})`))}
           </Typography>
         ))}

@@ -83,7 +83,7 @@ export const getMovieDetails = (
 ) => axios.get(`/movie/${movie_id}`, {
   params: {
     api_key,
-    append_to_response: 'videos,credits,external_ids,recommendations',
+    append_to_response: 'videos,credits,external_ids,recommendations,reviews',
   },
 })
   .then((response) => {
@@ -97,6 +97,7 @@ export const getMovieDetails = (
       id: tmdb_id,
       recommendations,
       videos,
+      reviews,
     } = details;
 
     const {
@@ -120,6 +121,9 @@ export const getMovieDetails = (
       ? `https://www.youtube.com/watch?v=${trailer[0].key}`
       : null;
     delete details.videos;
+
+    // extract reviews
+    details.reviews = reviews.results.filter((e) => e.author_details.rating);
 
     // extract external link id's
     details.facebook = facebook_id !== null ? `https://www.facebook.com/${facebook_id}` : null;

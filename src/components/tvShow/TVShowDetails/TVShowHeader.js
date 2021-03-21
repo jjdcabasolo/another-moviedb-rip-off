@@ -18,11 +18,7 @@ import TruncatedOverview from '../../common/TruncatedOverview';
 
 import { getTVShowStatus } from '../../../utils/functions';
 
-import {
-  NO_DATE_TEXT,
-  OVERVIEW_MAX_WORDS,
-  TV_SHOW_BREADCRUMBS_CONFIG,
-} from '../../../constants';
+import { NO_DATE_TEXT, TV_SHOW_BREADCRUMBS_CONFIG } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -95,7 +91,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
           color="textSecondary"
           variant={isMobile ? 'body1' : 'h6'}
         >
-          {firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : NO_DATE_TEXT} 
+          {firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : NO_DATE_TEXT}
           {episodeRunTime.length > 0
             && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`}
         </Typography>
@@ -106,7 +102,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
           label={getTVShowStatus(status)}
           size="small"
         />
-        { genres.map((i) => (
+        {genres.map((i) => (
           <Chip
             key={`tv-show-header-chip-${i.id}`}
             className={classes.chip}
@@ -114,7 +110,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
             size="small"
             variant="outlined"
           />
-        )) }
+        ))}
       </Grid>
       <Grid item xs={12}>
         <ItemLinks
@@ -127,10 +123,7 @@ const TVShowHeader = ({ sectionVisibility }) => {
       </Grid>
       {overview && overview.length > 0 && (
         <Grid item xs={12}>
-          <TruncatedOverview
-            overview={overview}
-            maxWords={OVERVIEW_MAX_WORDS}
-          />
+          <TruncatedOverview overview={overview} />
         </Grid>
       )}
       {tagline && (

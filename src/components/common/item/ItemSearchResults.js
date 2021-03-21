@@ -85,7 +85,7 @@ const ItemSearchResults = () => {
     const searchResults = isMovie ? movieSearchResults : tvShowSearchResults;
 
     setContent(searchResults);
-  }, [activeTab, movieSearchResults, tvShowSearchResults]);
+  }, [activeTab, movieSearchResults, tvShowSearchResults, isMovie]);
 
   const handleClose = () => history.goBack();
 

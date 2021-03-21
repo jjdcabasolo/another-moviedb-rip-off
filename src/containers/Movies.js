@@ -17,6 +17,7 @@ import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
 import MovieRecommendations from '../components/movie/MovieDetails/MovieRecommendations';
+import MovieReviews from '../components/movie/MovieDetails/MovieReviews';
 import Note from '../components/common/Note';
 import ScrollToTop from '../components/common/ScrollToTop';
 import Section from '../components/common/item/detail/Section';
@@ -80,6 +81,7 @@ const Movies = () => {
     recommendations,
     release_date: releaseDate,
     revenue,
+    reviews,
     title,
     tmdb,
     youtube,
@@ -92,6 +94,7 @@ const Movies = () => {
     production: productionCompanies && productionCompanies.length > 0,
     collection: belongsToCollection && Object.keys(belongsToCollection).length > 0,
     recommendations: recommendations && recommendations.length > 0,
+    reviews: reviews && reviews.length > 0,
   };
   const hasStatistics = !Number.isNaN(budget)
     && !Number.isNaN(revenue)
@@ -196,6 +199,15 @@ const Movies = () => {
           visible={sectionVisibility.production}
         >
           <MovieProduction />
+        </Section>
+
+        <Section
+          anchorId="movie-reviews"
+          divider
+          title="Reviews"
+          visible={sectionVisibility.reviews}
+        >
+          <MovieReviews />
         </Section>
 
         <Section

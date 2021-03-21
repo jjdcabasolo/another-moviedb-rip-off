@@ -105,9 +105,6 @@ const ItemLinks = ({
       )}
       {imdb && imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true)}
       {tmdb && tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true)}
-      <Grid item className={classes.dividerContainer}>
-        <Divider orientation="vertical" className={classes.divider} />
-      </Grid>
       <Grid item>
         <Tooltip title="Share">
           <IconButton

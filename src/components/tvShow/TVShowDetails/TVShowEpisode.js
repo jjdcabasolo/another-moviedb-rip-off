@@ -16,7 +16,7 @@ import {
 import { AvatarGroup } from '@material-ui/lab';
 
 import BrokenImage from '../../common/BrokenImage';
-import LineClamp from '../../common/LineClamp';
+import TruncatedOverview from '../../common/TruncatedOverview';
 
 import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
@@ -134,14 +134,7 @@ const TVShowEpisode = ({
         </Typography>
       </Grid>
       <Grid item className={classes.gridItem}>
-        <LineClamp
-          text={overview}
-          lines={2}
-          ellipsis="..."
-          moreText="read more"
-          lessText="read less"
-          className="line-clamp"
-        />
+        <TruncatedOverview overview={overview} variant="body2" />
       </Grid>
       {director && Object.keys(director).length > 0
         && writer && Object.keys(writer).length > 0 && (

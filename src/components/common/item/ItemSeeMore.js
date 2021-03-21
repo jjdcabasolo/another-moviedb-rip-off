@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
-import { usePath } from '../../../hooks'; 
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -58,9 +58,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 300,
   },
   titlebar: {
-    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
+    flexGrow: 1,
+    margin: theme.spacing(0, 1),
+    maxWidth: '60%',
   },
   titleSection: {
     lineHeight: 1.2,
@@ -123,7 +125,7 @@ const ItemSeeMore = ({
           open={seeMore}
         >
           <DialogTitle id={`item-see-more-${title}`} className={classes.dialogTitle}>
-            <AppBar color="default" className={classes.appBar}>
+            <AppBar color="default">
               <Toolbar>
                 <IconButton edge="start" onClick={handleClose} aria-label="close">
                   <ArrowBackTwoTone />
@@ -136,7 +138,7 @@ const ItemSeeMore = ({
                   >
                     {titleSection}
                   </Typography>
-                  <Typography variant="caption" noWrap>
+                  <Typography variant="caption" noWrap >
                     {title}
                   </Typography>
                 </div>

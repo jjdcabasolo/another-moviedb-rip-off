@@ -132,7 +132,6 @@ const ItemDrawer = ({
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
-  const itemDrawerOpenStore = useSelector((state) => state.sidebar.itemDrawerOpen);
   const movieCategory = useSelector((state) => state.movies.category);
   const movieList = useSelector((state) => state.movies.list);
   const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
@@ -162,13 +161,13 @@ const ItemDrawer = ({
 
   useEffect(() => {
     evaluateDrawerState();
-  }, [isDesktop, isTablet, isItemSelected]);
+  }, [isDesktop, isTablet, isItemSelected, evaluateDrawerState]);
 
   useEffect(() => {
     if (!isDesktop || (isDesktop && searchPath !== 'search')) {
       evaluateDrawerState();
     }
-  }, [searchPath]);
+  }, [searchPath, evaluateDrawerState, isDesktop]);
 
   const handleDrawerToggle = () => {
     const isDrawerOpen = !itemDrawerOpen;

@@ -15,10 +15,7 @@ import TruncatedOverview from '../TruncatedOverview';
 
 import { scrollToID } from '../../../utils/functions';
 
-import {
-  MAX_WORD_COUNT,
-  MAX_ITEMS_BEFORE_COLLAPSING,
-} from '../../../constants';
+import { MAX_ITEMS_BEFORE_COLLAPSING } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -69,7 +66,7 @@ const ItemCardHorizontalList = ({
 
   const renderOverview = () => overview.length > 0 && (
     <div className={classes.overview}>
-      <TruncatedOverview overview={overview} maxWords={MAX_WORD_COUNT} />
+      <TruncatedOverview overview={overview} />
     </div>
   );
 

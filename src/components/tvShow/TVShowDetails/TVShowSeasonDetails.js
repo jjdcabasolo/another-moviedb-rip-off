@@ -9,7 +9,7 @@ import TruncatedOverview from '../../common/TruncatedOverview';
 
 import { selectSeason } from '../../../utils/functions';
 
-import { NO_DATE_TEXT, OVERVIEW_MAX_WORDS } from '../../../constants';
+import { NO_DATE_TEXT } from '../../../constants';
 
 const TVShowSeasonDetails = () => {
   const episodes = useSelector((state) => state.tvShows.episodes);
@@ -45,10 +45,7 @@ const TVShowSeasonDetails = () => {
       </Grid>
       {overview && (
         <Grid item xs={12}>
-          <TruncatedOverview
-            overview={overview}
-            maxWords={OVERVIEW_MAX_WORDS}
-          />
+          <TruncatedOverview overview={overview} />
         </Grid>
       )}
     </Grid>

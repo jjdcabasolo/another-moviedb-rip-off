@@ -61,15 +61,14 @@ const MovieProduction = () => {
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
           )
-        })
-        )}
+        }))}
         {hasProductionCountry && renderProduction('Country', (
-          <Typography>
+          <Typography variant="body2">
             {enumerate(productionCountries.map(e => `${e.name} (${e.iso_3166_1})`))}
           </Typography>
         ))}
         {hasSpokenLanguages && renderProduction('Spoken Languages', (
-          <Typography>
+          <Typography variant="body2">
             {enumerate(spokenLanguages.map(e => `${e.english_name} (${e.iso_639_1})`))}
           </Typography>
         ))}
