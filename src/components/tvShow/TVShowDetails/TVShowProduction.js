@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EXTENSION_THRESHOLD = 3;
-
 const TVShowProduction = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
@@ -67,7 +65,7 @@ const TVShowProduction = () => {
               <ProductionChip image={profilePath} name={name} />
             </Grid>
           );
-        }), 6)}
+        }))}
         {hasNetworks && renderProduction('Network', networks.map((network) => {
           const { id, logo_path: logoPath, name, origin_country: originCountry } = network;
 
@@ -76,7 +74,7 @@ const TVShowProduction = () => {
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
           );
-        }), 6)}
+        }))}
         {hasProductionCompany && renderProduction('Companies', productionCompanies.map((company) => {
           const { id, logo_path: logoPath, name, origin_country: originCountry } = company;
 
