@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const EXTENSION_THRESHOLD = 3;
+
 const TVShowProduction = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
@@ -37,8 +39,8 @@ const TVShowProduction = () => {
   const hasProductionCountry = productionCountries && productionCountries.length > 0;
   const hasSpokenLanguages = spokenLanguages && spokenLanguages.length > 0;
 
-  const renderProduction = (title, items) => (
-    <Grid item xs={isMobile ? 12 : 6} container>
+  const renderProduction = (title, items, xs = isMobile ? 12 : 6) => (
+    <Grid item xs={xs} container>
       <Typography variant="body1" gutterBottom className={classes.title}>
         {title}
       </Typography>
@@ -65,7 +67,7 @@ const TVShowProduction = () => {
               <ProductionChip image={profilePath} name={name} />
             </Grid>
           );
-        }))}
+        }), 6)}
         {hasNetworks && renderProduction('Network', networks.map((network) => {
           const { id, logo_path: logoPath, name, origin_country: originCountry } = network;
 
@@ -74,7 +76,7 @@ const TVShowProduction = () => {
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
           );
-        }))}
+        }), 6)}
         {hasProductionCompany && renderProduction('Companies', productionCompanies.map((company) => {
           const { id, logo_path: logoPath, name, origin_country: originCountry } = company;
 
@@ -83,7 +85,7 @@ const TVShowProduction = () => {
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
           )
-        }))}
+        }), 12)}
         {hasProductionCountry && renderProduction('Country', (
           <Typography variant="body2">
             {enumerate(productionCountries.map(e => `${e.name} (${e.iso_3166_1})`))}

@@ -16,21 +16,6 @@ const renderComponent = (component) => (
 
 const Routes = () => (
   <Switch>
-    {/* { routes.map(e => (
-      <>
-        <Route exact path={e.path}>
-          <Suspense fallback={<ComponentLoader />}>
-            {e.component}
-          </Suspense>
-        </Route>
-        { e.child && (
-          <Route exact path={e.child.path}>
-            {e.child.component}
-          </Route>
-        )}
-      </>
-    )) }
-    <Route component={NotFound} /> */}
     <Redirect exact from="/" to="/movies" />
     <Route exact path="/movies">
       {renderComponent('movies')}

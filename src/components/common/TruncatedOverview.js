@@ -10,10 +10,15 @@ const useStyles = makeStyles(() => ({
   overview: {
     userSelect: 'none',
     cursor: 'pointer',
+    whiteSpace: 'pre-wrap',
+  },
+  textEllipsis: {
+    whiteSpace: 'pre-wrap',
   },
 }));
 
 const TruncatedOverview = ({
+  maxLine,
   overview,
   variant = 'body1',
 }) => {
@@ -26,7 +31,7 @@ const TruncatedOverview = ({
   const [showMoreOverview, setShowMoreOverview] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
 
-  const maxLine = isMobile ? 3 : 2;
+  const maxLineDefault = isMobile ? 3 : 2;
 
   const handleReadMore = () => {
     if (!isTruncated) return;
@@ -51,6 +56,7 @@ const TruncatedOverview = ({
         : (
           <LinesEllipsis
             basedOn="letters"
+            className={classes.textEllipsis}
             ellipsis={(
               <Typography
                 component="span"
@@ -61,9 +67,9 @@ const TruncatedOverview = ({
                 ...read more.
               </Typography>
             )}
-            maxLine={maxLine}
+            maxLine={maxLine || maxLineDefault}
             onReflow={handleReflow}
-            text={overview}
+            text={overview.replace(/\n/g, ' ')}
             trimRight
           />
         )}
@@ -72,10 +78,12 @@ const TruncatedOverview = ({
 };
 
 TruncatedOverview.defaultProps = {
+  maxLine: null,
   variant: 'body1',
 };
 
 TruncatedOverview.propTypes = {
+  maxLine: PropTypes.number,
   overview: PropTypes.string.isRequired,
   variant: PropTypes.string,
 };

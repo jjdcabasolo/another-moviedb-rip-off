@@ -53,6 +53,11 @@ export const TV_SHOW_BREADCRUMBS_CONFIG = [
     visibilityId: 'production',
   },
   {
+    label: 'Reviews',
+    link: '#tvshow-reviews',
+    visibilityId: 'reviews',
+  },
+  {
     label: 'Recommendations',
     link: '#tvshow-recommendations',
     visibilityId: 'recommendations',

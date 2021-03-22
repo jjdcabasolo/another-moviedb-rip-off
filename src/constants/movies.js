@@ -148,6 +148,11 @@ export const MOVIE_BREADCRUMBS_CONFIG = [
     visibilityId: 'production',
   },
   {
+    label: 'Reviews',
+    link: '#movie-reviews',
+    visibilityId: 'reviews',
+  },
+  {
     label: 'Collection',
     link: '#movie-collection',
     visibilityId: 'collection',

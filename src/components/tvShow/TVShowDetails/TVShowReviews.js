@@ -11,14 +11,14 @@ import { scrollToID } from '../../../utils/functions';
 
 const SECTION_ID = 'reviews';
 
-const MovieReviews = () => {
-  const movie = useSelector((state) => state.movies.movie);
+const TVShowReviews = () => {
+  const tvShow = useSelector((state) => state.tvShows.tvShow);
 
   const {
-    original_title: originalTitle,
+    name,
+    original_name: originalName,
     reviews,
-    title,
-  } = movie;
+  } = tvShow;
 
   if (!reviews) return null;
 
@@ -46,8 +46,8 @@ const MovieReviews = () => {
   return (
     <Grid container>
       <ItemSeeMore
-        appbarTitle={[title || originalTitle, 'Reviews']}
-        collapsedClickEvent={() => scrollToID('movie-reviews')}
+        appbarTitle={[name || originalName, 'Reviews']}
+        collapsedClickEvent={() => scrollToID('tvshow-reviews')}
         collapsedContent={reviewsUI[0]}
         expandedContent={reviewsUI}
         isButtonShown={reviews.length > 1}
@@ -59,4 +59,4 @@ const MovieReviews = () => {
   );
 };
 
-export default MovieReviews;
+export default TVShowReviews;

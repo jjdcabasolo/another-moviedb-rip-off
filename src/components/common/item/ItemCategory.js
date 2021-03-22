@@ -100,7 +100,7 @@ const ItemCategory = ({
   const handleClose = () => setAnchorEl(null);
 
   const handleChipClick = (itemCategory) => {
-    if (isMobile) scrollToID('scroll-to-top-anchor', false);
+    scrollToID(isMobile ? 'scroll-to-top-anchor' : 'scroll-to-top-anchor-drawer', false);
     if (isMovie) dispatch(moviesActions.setCategory(itemCategory));
     if (isTVShow) dispatch(tvShowsActions.setCategory(itemCategory));
   };
@@ -177,7 +177,7 @@ ItemCategory.defaultProps = {
 };
 
 ItemCategory.propTypes = {
-  iconSize: PropTypes.string.isRequired,
+  iconSize: PropTypes.string,
   type: PropTypes.string.isRequired,
 };
 

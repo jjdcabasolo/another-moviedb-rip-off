@@ -17,6 +17,7 @@ import TVShowEpisodes from '../components/tvShow/TVShowDetails/TVShowEpisodes';
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
 import TVShowRecommendations from '../components/tvShow/TVShowDetails/TVShowRecommendations';
+import TVShowReviews from '../components/tvShow/TVShowDetails/TVShowReviews';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import TVShowSeasonList from '../components/tvShow/TVShowDetails/TVShowSeasonList';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
@@ -63,6 +64,7 @@ const TVShows = () => {
     original_name: originalName,
     production_companies: productionCompanies,
     recommendations,
+    reviews,
     seasons,
     tmdb,
   } = tvShow;
@@ -74,6 +76,7 @@ const TVShows = () => {
     production: (createdBy && createdBy.length > 0)
       || (productionCompanies && productionCompanies.length > 0),
     recommendations: recommendations && recommendations.length > 0,
+    reviews: reviews && reviews.length > 0,
     seasonList: seasons && seasons.length > 0,
   };
   const hasStatistics = !Number.isNaN(numberOfEpisodes)
@@ -195,6 +198,15 @@ const TVShows = () => {
           visible={sectionVisibility.production}
         >
           <TVShowProduction />
+        </Section>
+
+        <Section
+          anchorId="tvshow-reviews"
+          divider
+          title="Reviews"
+          visible={sectionVisibility.reviews}
+        >
+          <TVShowReviews />
         </Section>
 
         <Section

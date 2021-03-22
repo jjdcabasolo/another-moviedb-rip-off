@@ -39,11 +39,13 @@ const SidebarTitlebar = ({ item }) => {
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
+  const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);  
   const dispatch = useDispatch();
-
+  
   const history = useHistory();
-
+  
   const {
     date,
     name,
@@ -52,6 +54,8 @@ const SidebarTitlebar = ({ item }) => {
     title,
   } = item;
 
+  const isMovie = activeTab === 'movies';
+  const isItemLoading = isMovie ? isMovieLoading : isTVShowLoading;
   const isItemSelected = 'id' in item;
 
   const goBack = useCallback(() => {
@@ -85,9 +89,11 @@ const SidebarTitlebar = ({ item }) => {
         >
           <ArrowBackTwoTone />
         </IconButton>
-        <Typography component="h1" variant="h6">
-          {isItemSelected && `${evaluateTitle()} ${date ? `(${moment(date).format('YYYY')})` : ''}`}
-        </Typography>
+        {!isItemLoading && (
+          <Typography component="h1" variant="h6">
+            {isItemSelected && `${evaluateTitle()} ${date ? `(${moment(date).format('YYYY')})` : ''}`}
+          </Typography>
+        )}
         <div className={classes.grow} />
         <Tooltip title="Search">
           <IconButton onClick={handleSearch}>

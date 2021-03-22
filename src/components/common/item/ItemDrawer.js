@@ -118,6 +118,10 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
     zIndex: 2,
   },
+  anchor: {
+    top: 0,
+    position: 'absolute',
+  },
 }));
 
 const ItemDrawer = ({
@@ -215,6 +219,7 @@ const ItemDrawer = ({
         item
         justify="center"
       >
+        {!itemDrawerOpen && <div id="scroll-to-top-anchor-drawer" />}
         {contentToDisplay.slice(0, 10).map((item, rank) => (
           <ItemCard
             col={itemCardCol}

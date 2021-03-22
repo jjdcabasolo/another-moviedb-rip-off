@@ -33,8 +33,8 @@ const MovieProduction = () => {
   const hasProductionCountry = productionCountries && productionCountries.length > 0;
   const hasSpokenLanguages = spokenLanguages && spokenLanguages.length > 0;
 
-  const renderProduction = (title, items) => (
-    <Grid item xs={isMobile ? 12 : 6} container>
+  const renderProduction = (title, items, xs = isMobile ? 12 : 6) => (
+    <Grid item xs={xs} container>
       <Typography variant="body1" gutterBottom className={classes.title}>
         {title}
       </Typography>
@@ -61,7 +61,7 @@ const MovieProduction = () => {
               <ProductionChip country={originCountry} image={logoPath} name={name} />
             </Grid>
           )
-        }))}
+        }), 12)}
         {hasProductionCountry && renderProduction('Country', (
           <Typography variant="body2">
             {enumerate(productionCountries.map(e => `${e.name} (${e.iso_3166_1})`))}
