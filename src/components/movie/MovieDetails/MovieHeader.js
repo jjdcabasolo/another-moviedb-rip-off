@@ -16,10 +16,7 @@ import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
 import ItemLinks from '../../common/item/ItemLinks';
 import TruncatedOverview from '../../common/TruncatedOverview';
 
-import {
-  MOVIE_BREADCRUMBS_CONFIG,
-  OVERVIEW_MAX_WORDS,
-} from '../../../constants';
+import { MOVIE_BREADCRUMBS_CONFIG, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -41,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
       fontSize: theme.typography.h5.fontSize,
     },
   },
+  ellipsis: {
+    fontSize: '1rem',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: '400',
+    lineHeight: '1.5',
+    letterSpacing: '0.00938em',
+  }
 }));
 
 const MovieHeader = ({ sectionVisibility }) => {
@@ -63,7 +67,6 @@ const MovieHeader = ({ sectionVisibility }) => {
     title,
     tmdb,
     twitter,
-    youtube,
   } = movie;
 
   const breadcrumbs = MOVIE_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
@@ -79,9 +82,11 @@ const MovieHeader = ({ sectionVisibility }) => {
           variant={isMobile ? 'h4' : 'h2'}
         >
           {title || originalTitle}
-          <span className={classes.releaseYear}>
-            {`(${moment(releaseDate).format('YYYY')})`}
-          </span>
+          {releaseDate && (
+            <span className={classes.releaseYear}>
+              {`(${moment(releaseDate).format('YYYY')})`}
+            </span>
+          )}
         </Typography>
       </Grid>
       <Grid item xs={12} container alignItems="center">
@@ -91,16 +96,16 @@ const MovieHeader = ({ sectionVisibility }) => {
             color="textSecondary"
             variant={isMobile ? 'body1' : 'h6'}
           >
-            {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : 'No release date.'}
-            &nbsp;&middot;&nbsp;&nbsp;
+            {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : NO_DATE_TEXT}
+            &nbsp;&middot;&nbsp;
             {runtime
-              ? `${runtimeHours}hr ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`
+              ? `${runtimeHours !== 0 ? `${runtimeHours}hr ` : ''}${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`
               : 'No runtime yet.'}
           </Typography>
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        { genres.map((i) => (
+        {genres.map((i) => (
           <Chip
             className={classes.chip}
             key={`movie-header-chip-${i.id}`}
@@ -117,15 +122,11 @@ const MovieHeader = ({ sectionVisibility }) => {
           instagram={instagram}
           tmdb={tmdb}
           twitter={twitter}
-          youtube={youtube}
         />
       </Grid>
       {overview && overview.length > 0 && (
         <Grid item xs={12}>
-          <TruncatedOverview
-            overview={overview}
-            maxWords={OVERVIEW_MAX_WORDS}
-          />
+          <TruncatedOverview overview={overview} />
         </Grid>
       )}
       {tagline && (

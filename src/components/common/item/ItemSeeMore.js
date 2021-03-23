@@ -1,13 +1,9 @@
-import React, {
-  cloneElement,
-  forwardRef,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -18,12 +14,15 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-  Slide,
   Toolbar,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { ArrowBack, Close } from '@material-ui/icons';
+import {
+  ArrowBackTwoTone,
+  CloseTwoTone,
+  SearchTwoTone,
+} from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 import AppbarMenu from '../../navigation/appbar/AppbarMenu';
@@ -36,9 +35,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   content: {
-    marginTop: theme.spacing(7),
+    marginTop: theme.spacing(3),
     padding: theme.spacing(3, 2),
-    height: '100%',
   },
   contentContainer: {
     position: 'relative',
@@ -60,18 +58,21 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 300,
   },
   titlebar: {
+    display: 'flex',
+    flexDirection: 'column',
     flexGrow: 1,
-    margin: theme.spacing(1),
+    margin: theme.spacing(0, 1),
+    maxWidth: '60%',
+  },
+  titleSection: {
+    lineHeight: 1.2,
   },
 }));
-
-// eslint-disable-next-line react/jsx-props-no-spreading
-const Transition = forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const ItemSeeMore = ({
   appbarTitle,
   collapsedClickEvent,
-  collapsedContent = () => {},
+  collapsedContent = () => { },
   expandedContent,
   isButtonShown = true,
   isEpisode,
@@ -85,11 +86,15 @@ const ItemSeeMore = ({
   const classes = useStyles();
 
   const history = useHistory();
-  const { section } = useParams();
+  const [activeTab, id, section] = usePath();
 
   const [seeMore, setSeeMore] = useState(sectionId === section);
 
-  useEffect(() => setSeeMore(sectionId === section), [sectionId, section]);
+  useEffect(() => {
+    if (id !== 'search') {
+      setSeeMore(sectionId === section);
+    }
+  }, [sectionId, section, id]);
 
   const handleButtonClick = () => {
     if (seeMore) history.goBack();
@@ -98,16 +103,14 @@ const ItemSeeMore = ({
     setSeeMore(!seeMore);
   };
 
-  const collapsedProps = collapsedContent.type.name === 'ItemHorizontalContainer' ? {
-    handleSeeMore: () => {
-      handleButtonClick();
-    },
-  } : {};
-
   const handleClose = () => {
     collapsedClickEvent();
     setSeeMore(!seeMore);
     history.goBack();
+  };
+
+  const handleSearch = () => {
+    history.push(`/${activeTab}/search`);
   };
 
   const renderContent = () => {
@@ -116,31 +119,39 @@ const ItemSeeMore = ({
     if (isMobile) {
       return (
         <Dialog
-          TransitionComponent={Transition}
           classes={{ paper: classes.paper }}
           fullScreen
           onClose={handleClose}
           open={seeMore}
         >
-          <AppBar color="default" className={classes.appBar}>
-            <Toolbar>
-              <IconButton edge="start" onClick={handleClose} aria-label="close">
-                <ArrowBack />
-              </IconButton>
-              <div className={classes.titlebar}>
-                <Typography variant="h6" noWrap>
-                  {titleSection}
-                </Typography>
-                <Typography variant="caption" noWrap>
-                  {title}
-                </Typography>
-              </div>
-              {isMobile && <AppbarMenu />}
-            </Toolbar>
-          </AppBar>
-          <div className={classes.content}>
+          <DialogTitle id={`item-see-more-${title}`} className={classes.dialogTitle}>
+            <AppBar color="default">
+              <Toolbar>
+                <IconButton edge="start" onClick={handleClose} aria-label="close">
+                  <ArrowBackTwoTone />
+                </IconButton>
+                <div className={classes.titlebar}>
+                  <Typography
+                    className={classes.titleSection}
+                    noWrap
+                    variant="h6"
+                  >
+                    {titleSection}
+                  </Typography>
+                  <Typography variant="caption" noWrap >
+                    {title}
+                  </Typography>
+                </div>
+                <IconButton onClick={handleSearch}>
+                  <SearchTwoTone />
+                </IconButton>
+                {isMobile && <AppbarMenu />}
+              </Toolbar>
+            </AppBar>
+          </DialogTitle>
+          <DialogContent className={classes.content}>
             {expandedContent}
-          </div>
+          </DialogContent>
         </Dialog>
       );
     }
@@ -152,11 +163,11 @@ const ItemSeeMore = ({
         onClose={handleClose}
         open={seeMore}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose} className={classes.dialogTitle}>
+        <DialogTitle id={`item-see-more-${title}`} onClose={handleClose} className={classes.dialogTitle}>
           <span className={classes.appbarTitle}>{`${title} `}</span>
           {titleSection}
           <IconButton onClick={handleClose} edge="end" className={classes.iconButton}>
-            <Close />
+            <CloseTwoTone />
           </IconButton>
         </DialogTitle>
         <DialogContent className={clsx({ [classes.episodeDialog]: isEpisode })} dividers>
@@ -175,7 +186,7 @@ const ItemSeeMore = ({
     <Grid container>
       <Grid container item xs={12} className={classes.contentContainer}>
         {renderContent()}
-        {cloneElement(collapsedContent, collapsedProps)}
+        {collapsedContent}
       </Grid>
       {isButtonShown && (
         <Grid

@@ -11,7 +11,7 @@ const store = createStore(
   rootReducer,
   compose(
     applyMiddleware(reduxThunk, routerMiddleware(history)),
-    window.devToolsExtension ? window.devToolsExtension() : f => f,
+    window.devToolsExtension ? window.devToolsExtension({ trace: true, traceLimit: 25 }) : f => f,
   ),
 );
 

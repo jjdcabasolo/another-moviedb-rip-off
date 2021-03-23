@@ -6,6 +6,7 @@ export {
   getTopRatedMovies,
   getTrendingMovies,
   getUpcomingMovies,
+  searchMovie,
 } from './movies';
 
 export {
@@ -16,4 +17,9 @@ export {
   getTVShowSeasonDetails,
   getTopRatedShows,
   getTrendingShows,
+  searchTVShow,
 } from './tvShows';
+
+export {
+  getCountries,
+} from './countries';

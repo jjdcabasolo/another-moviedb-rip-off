@@ -8,18 +8,7 @@ import {
   MovieTwoTone,
   NaturePeopleTwoTone,
   PlayCircleFilledTwoTone,
-  VpnKeyTwoTone,
 } from '@material-ui/icons';
-
-export const NOTE_NO_API_KEY = {
-  icon: (className) => <VpnKeyTwoTone className={className} />,
-  id: 'note-no-api-key',
-  header: 'Set your TMDb API key.',
-  content: [
-    'It seems you have not yet set a TMDb API key.',
-    'Set it now on the sidebar to fetch contents from The Movie Database.',
-  ],
-};
 
 export const NOTE_NO_SELECTED_MOVIE = {
   icon: (className) => <MovieTwoTone className={className} />,

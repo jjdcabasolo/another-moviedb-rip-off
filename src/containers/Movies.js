@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import ReactPlayer from 'react-player';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { usePath } from '../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
@@ -17,6 +17,7 @@ import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
 import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
 import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
 import MovieRecommendations from '../components/movie/MovieDetails/MovieRecommendations';
+import MovieReviews from '../components/movie/MovieDetails/MovieReviews';
 import Note from '../components/common/Note';
 import ScrollToTop from '../components/common/ScrollToTop';
 import Section from '../components/common/item/detail/Section';
@@ -24,8 +25,6 @@ import Section from '../components/common/item/detail/Section';
 import { getMovieDetails } from '../api';
 
 import { moviesActions } from '../reducers/ducks';
-
-import { decryptKey } from '../utils/functions';
 
 import {
   NOTE_NO_SELECTED_MOVIE,
@@ -67,7 +66,7 @@ const Movies = () => {
 
   const [isLoaded, setIsLoaded] = useState(true);
 
-  const { movieId } = useParams();
+  const [, movieId] = usePath();
 
   const {
     belongs_to_collection: belongsToCollection,
@@ -80,6 +79,7 @@ const Movies = () => {
     recommendations,
     release_date: releaseDate,
     revenue,
+    reviews,
     title,
     tmdb,
     youtube,
@@ -92,14 +92,19 @@ const Movies = () => {
     production: productionCompanies && productionCompanies.length > 0,
     collection: belongsToCollection && Object.keys(belongsToCollection).length > 0,
     recommendations: recommendations && recommendations.length > 0,
+    reviews: reviews && reviews.length > 0,
   };
   const hasStatistics = !Number.isNaN(budget)
     && !Number.isNaN(revenue)
     && (budget !== 0 && revenue !== 0);
 
   useEffect(() => {
+    if (movieId === 'search') return;
+
     if (movieId) {
-      getMovieDetails(decryptKey(), movieId, (response) => {
+      const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
+
+      getMovieDetails(parmesanio, movieId, (response) => {
         dispatch(moviesActions.setActiveMovie(response));
         dispatch(moviesActions.setDetailsLoading(false));
         setIsLoaded(true);
@@ -112,7 +117,7 @@ const Movies = () => {
     }
   }, [movieId, dispatch]);
 
-  if (movieId === undefined) {
+  if (movieId === undefined || movieId === 'search') {
     return (
       <div className={classes.note}>
         <Note details={NOTE_NO_SELECTED_MOVIE} />
@@ -197,6 +202,15 @@ const Movies = () => {
         </Section>
 
         <Section
+          anchorId="movie-reviews"
+          divider
+          title="Reviews"
+          visible={sectionVisibility.reviews}
+        >
+          <MovieReviews />
+        </Section>
+
+        <Section
           anchorId="movie-collection"
           title={collectionContent ? collectionContent.name : ''}
           visible={sectionVisibility.collection}
@@ -220,7 +234,7 @@ const Movies = () => {
             companies={productionCompanies.map((e) => e.name)}
             link={tmdb}
             title={title || originalTitle}
-            year={moment(releaseDate).format('YYYY')}
+            year={releaseDate ? moment(releaseDate).format('YYYY') : ''}
           />
         </Section>
       </Grid>

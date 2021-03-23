@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -13,13 +14,9 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import {
-  CategoryTwoTone,
-  ArrowDropUp,
-  ArrowDropDown,
-} from '@material-ui/icons';
+import { ArrowDropDown, SearchTwoTone } from '@material-ui/icons';
 
-import { scrollToID, toCamelCase } from '../../../utils/functions';
+import { scrollToID } from '../../../utils/functions';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
@@ -60,9 +57,16 @@ const useStyles = makeStyles((theme) => ({
   chipDropdown: {
     margin: theme.spacing(1),
   },
+  chipLabel: {
+    paddingLeft: 0,
+    paddingRight: 9,
+  },
 }));
 
-const ItemCategory = ({ type }) => {
+const ItemCategory = ({
+  iconSize = 'default',
+  type,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const classes = useStyles();
@@ -73,8 +77,8 @@ const ItemCategory = ({ type }) => {
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const chipDropdownRef = useRef(null);
+  
+  const history = useHistory();
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -85,14 +89,18 @@ const ItemCategory = ({ type }) => {
     : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const category = isMovie ? movieCategory : tvShowCategory;
 
-  const handleClick = (event) => {
+  const handleDropdownClick = (event) => {
     setAnchorEl(event.currentTarget || event.current);
+  };
+
+  const handleSearchClick = () => {
+    history.push(`/${activeTab}/search`);
   };
 
   const handleClose = () => setAnchorEl(null);
 
   const handleChipClick = (itemCategory) => {
-    if (isMobile) scrollToID('scroll-to-top-anchor', false);
+    scrollToID(isMobile ? 'scroll-to-top-anchor' : 'scroll-to-top-anchor-drawer', false);
     if (isMovie) dispatch(moviesActions.setCategory(itemCategory));
     if (isTVShow) dispatch(tvShowsActions.setCategory(itemCategory));
   };
@@ -113,12 +121,12 @@ const ItemCategory = ({ type }) => {
   const renderPopover = () => (
     <Popover
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      anchorOrigin={{ vertical: 'center', horizontal: 'left' }}
       classes={{ paper: classes.popover }}
       id={id}
       onClose={handleClose}
       open={open}
-      transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      transformOrigin={{ vertical: 'center', horizontal: 'left' }}
     >
       <Typography
         className={classes.category}
@@ -136,8 +144,8 @@ const ItemCategory = ({ type }) => {
       return (
         <>
           <Tooltip title="Set category">
-            <IconButton aria-label="setCategory" onClick={handleClick}>
-              <CategoryTwoTone />
+            <IconButton aria-label="setCategory" onClick={handleDropdownClick}>
+              <ArrowDropDown fontSize={iconSize} />
             </IconButton>
           </Tooltip>
           {renderPopover()}
@@ -146,32 +154,30 @@ const ItemCategory = ({ type }) => {
     case 'appbarHorizontalList':
       return (
         <div className={clsx(classes.topCategories)}>
+          <Chip
+            className={classes.chip}
+            classes={{ label: classes.chipLabel }}
+            color="default"
+            icon={<SearchTwoTone />}
+            key="item-category-chip-search"
+            onClick={handleSearchClick}
+            variant="outlined"
+          />
           {renderCategoryChips()}
           <div className={classes.lastEntry} />
         </div>
-      );
-    case 'chipDropdown':
-      return (
-        <>
-          <Chip
-            className={classes.chipDropdown}
-            color="default"
-            deleteIcon={open ? <ArrowDropUp /> : <ArrowDropDown />}
-            label={toCamelCase(isMovie ? movieCategory : tvShowCategory)}
-            onClick={handleClick}
-            onDelete={() => handleClick(chipDropdownRef)}
-            ref={chipDropdownRef}
-            variant="outlined"
-          />
-          {renderPopover()}
-        </>
       );
     default:
       return renderCategoryChips();
   }
 };
 
+ItemCategory.defaultProps = {
+  iconSize: 'default',
+};
+
 ItemCategory.propTypes = {
+  iconSize: PropTypes.string,
   type: PropTypes.string.isRequired,
 };
 

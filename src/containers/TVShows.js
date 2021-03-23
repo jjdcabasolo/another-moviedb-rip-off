@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { usePath } from '../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid, useMediaQuery } from '@material-ui/core';
@@ -17,6 +17,7 @@ import TVShowEpisodes from '../components/tvShow/TVShowDetails/TVShowEpisodes';
 import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
 import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
 import TVShowRecommendations from '../components/tvShow/TVShowDetails/TVShowRecommendations';
+import TVShowReviews from '../components/tvShow/TVShowDetails/TVShowReviews';
 import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
 import TVShowSeasonList from '../components/tvShow/TVShowDetails/TVShowSeasonList';
 import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
@@ -24,8 +25,6 @@ import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistic
 import { getTVShowDetails, getTVShowSeasonDetails } from '../api';
 
 import { tvShowsActions } from '../reducers/ducks';
-
-import { decryptKey } from '../utils/functions';
 
 import { NOTE_NO_SELECTED_TV_SHOW, NOTE_TV_SHOW_NOT_FOUND } from '../constants';
 
@@ -51,7 +50,7 @@ const TVShows = () => {
 
   const [isLoaded, setIsLoaded] = useState(true);
 
-  const { tvShowId } = useParams();
+  const [, tvShowId] = usePath();
 
   const {
     cast,
@@ -63,6 +62,7 @@ const TVShows = () => {
     original_name: originalName,
     production_companies: productionCompanies,
     recommendations,
+    reviews,
     seasons,
     tmdb,
   } = tvShow;
@@ -74,6 +74,7 @@ const TVShows = () => {
     production: (createdBy && createdBy.length > 0)
       || (productionCompanies && productionCompanies.length > 0),
     recommendations: recommendations && recommendations.length > 0,
+    reviews: reviews && reviews.length > 0,
     seasonList: seasons && seasons.length > 0,
   };
   const hasStatistics = !Number.isNaN(numberOfEpisodes)
@@ -81,8 +82,12 @@ const TVShows = () => {
     && (numberOfEpisodes !== 0 && numberOfSeasons !== 0);
 
   useEffect(() => {
+    if (tvShowId === 'search') return;
+
     if (tvShowId) {
-      getTVShowDetails(decryptKey(), tvShowId, (tvShowResponse) => {
+      const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
+
+      getTVShowDetails(parmesanio, tvShowId, (tvShowResponse) => {
         const { seasons: fetchedSeason } = tvShowResponse;
 
         if (fetchedSeason) {
@@ -90,7 +95,7 @@ const TVShows = () => {
             .sort((a, b) => b.season_number - a.season_number)
             .find((e) => e.season_number > 0 && e.air_date);
 
-          getTVShowSeasonDetails(decryptKey(), tvShowId, latestSeason, (episodeResponse) => {
+          getTVShowSeasonDetails(parmesanio, tvShowId, latestSeason, (episodeResponse) => {
             dispatch(tvShowsActions.setActiveTVShow(tvShowResponse, episodeResponse, latestSeason));
             dispatch(tvShowsActions.setDetailsLoading(false));
             setIsLoaded(true);
@@ -108,7 +113,7 @@ const TVShows = () => {
     }
   }, [tvShowId, dispatch]);
 
-  if (tvShowId === undefined) {
+  if (tvShowId === undefined || tvShowId === 'search') {
     return (
       <div className={classes.note}>
         <Note details={NOTE_NO_SELECTED_TV_SHOW} />
@@ -196,6 +201,15 @@ const TVShows = () => {
         </Section>
 
         <Section
+          anchorId="tvshow-reviews"
+          divider
+          title="Reviews"
+          visible={sectionVisibility.reviews}
+        >
+          <TVShowReviews />
+        </Section>
+
+        <Section
           anchorId="tvshow-recommendations"
           title="Recommendations"
           visible={sectionVisibility.recommendations}
@@ -211,7 +225,7 @@ const TVShows = () => {
             companies={productionCompanies.map((e) => e.name)}
             link={tmdb}
             title={name || originalName}
-            year={moment(firstAirDate).format('YYYY')}
+            year={firstAirDate ? moment(firstAirDate).format('YYYY') : ''}
           />
         </Section>
       </Grid>

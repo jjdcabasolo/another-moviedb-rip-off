@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
   getTrendingMovies,
@@ -15,57 +15,63 @@ import {
   getOnTheAirShows,
   getPopularShows,
   getTopRatedShows,
+
+  // getCountries,
 } from '../api';
 
-import { moviesActions, tvShowsActions, snackbarActions } from '../reducers/ducks';
-
-import { decryptKey } from '../utils/functions';
+import {
+  moviesActions,
+  snackbarActions,
+  // tmdbConfigActions,
+  tvShowsActions,
+} from '../reducers/ducks';
 
 const InitAPICalls = () => {
-  const apiKey = useSelector((state) => state.sidebar.apiKey);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
+
     let hasError = false;
     let errorMessage = '';
 
     // movies
-    getTrendingMovies(decryptKey(), (response) => {
+    getTrendingMovies(parmesanio, (response) => {
       dispatch(moviesActions.setMovieList('trending', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getNowPlayingMovies(decryptKey(), (response) => {
+    getNowPlayingMovies(parmesanio, (response) => {
       dispatch(moviesActions.setMovieList('nowPlaying', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getPopularMovies(decryptKey(), (response) => {
+    getPopularMovies(parmesanio, (response) => {
       dispatch(moviesActions.setMovieList('popular', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getTopRatedMovies(decryptKey(), (response) => {
+    getTopRatedMovies(parmesanio, (response) => {
       dispatch(moviesActions.setMovieList('topRated', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getUpcomingMovies(decryptKey(), (response) => {
+    getUpcomingMovies(parmesanio, (response) => {
       dispatch(moviesActions.setMovieList('upcoming', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getHighestGrossingMovies(decryptKey(), (response) => {
+    getHighestGrossingMovies(parmesanio, (response) => {
       dispatch(moviesActions.setMovieList('highestGrossing', response.data.results));
     }, (error) => {
       errorMessage = error;
@@ -73,45 +79,53 @@ const InitAPICalls = () => {
     });
 
     // tv shows
-    getTrendingShows(decryptKey(), (response) => {
+    getTrendingShows(parmesanio, (response) => {
       dispatch(tvShowsActions.setTVShowsList('trending', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getAiringTodayShows(decryptKey(), (response) => {
+    getAiringTodayShows(parmesanio, (response) => {
       dispatch(tvShowsActions.setTVShowsList('airingToday', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getOnTheAirShows(decryptKey(), (response) => {
+    getOnTheAirShows(parmesanio, (response) => {
       dispatch(tvShowsActions.setTVShowsList('onTheAir', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getPopularShows(decryptKey(), (response) => {
+    getPopularShows(parmesanio, (response) => {
       dispatch(tvShowsActions.setTVShowsList('popular', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
-    getTopRatedShows(decryptKey(), (response) => {
+    getTopRatedShows(parmesanio, (response) => {
       dispatch(tvShowsActions.setTVShowsList('topRated', response.data.results));
     }, (error) => {
       errorMessage = error;
       hasError = true;
     });
 
+    // // country config
+    // getCountries(parmesanio, (response) => {
+    //   dispatch(tmdbConfigActions.setCountryConfig(response.data));
+    // }, (error) => {
+    //   errorMessage = error;
+    //   hasError = true;
+    // });
+
     if (hasError) {
       dispatch(snackbarActions.showSnackbar(`Error on fetching now playing movies: ${errorMessage}`, 'error'));
     }
-  }, [apiKey, dispatch]);
+  }, [dispatch]);
 
   return null;
 };

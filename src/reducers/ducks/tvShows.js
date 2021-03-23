@@ -4,9 +4,8 @@ const tvShowsActionType = {
   SET_CATEGORY: '@tvShows/SET_CATEGORY',
   SET_DETAILS_LOADING: '@tvShows/SET_DETAILS_LOADING',
   SET_EPISODE: '@tvShows/SET_EPISODE',
-  SET_SEASON_DRAWER: '@tvShows/SET_SEASON_DRAWER',
-  SET_SEASON_DRAWER_SELECTED_SEASON: '@tvShows/SET_SEASON_DRAWER_SELECTED_SEASON',
-  SET_SELECTED_EPISODE: '@tvShows/SET_SELECTED_EPISODE',
+  SET_SEARCH_LOADING: '@tvShows/SET_SEARCH_LOADING',
+  SET_SEARCH_RESULTS: '@tvShows/SET_SEARCH_RESULTS',
   SET_SELECTED_SEASON: '@tvShows/SET_SELECTED_SEASON',
   SET_TV_SHOWS_LIST: '@tvShows/SET_TV_SHOWS_LIST',
 };
@@ -37,12 +36,21 @@ export const tvShowsActions = {
     type: tvShowsActionType.SET_SELECTED_SEASON,
     payload: { selectedSeason },
   }),
+  setSearchResults: (searchResults) => ({
+    type: tvShowsActionType.SET_SEARCH_RESULTS,
+    payload: { searchResults },
+  }),
+  setSearchLoading: (isSearchLoading) => ({
+    type: tvShowsActionType.SET_SEARCH_LOADING,
+    payload: { isSearchLoading },
+  }),
 };
 
 // REDUCER
 const initialState = {
   category: 'trending',
   episodes: [],
+  isSearchLoading: false,
   isSeasonLoading: false,
   isTVShowLoading: false,
   list: {
@@ -53,6 +61,7 @@ const initialState = {
     trending: [],
   },
   loadedContent: 0,
+  searchResults: [],
   selectedSeason: 0,
   tvShow: {},
 };
@@ -101,12 +110,24 @@ const setSelectedSeason = (state, action) => ({
   selectedSeason: action.payload.selectedSeason,
 });
 
+const setSearchResults = (state, action) => ({
+  ...state,
+  searchResults: action.payload.searchResults,
+});
+
+const setSearchLoading = (state, action) => ({
+  ...state,
+  isSearchLoading: action.payload.isSearchLoading,
+});
+
 export const tvShowsReducer = (state = initialState, action) => {
   switch (action.type) {
     case tvShowsActionType.SET_ACTIVE_TV_SHOW: return setActiveTVShow(state, action);
     case tvShowsActionType.SET_CATEGORY: return setCategory(state, action);
     case tvShowsActionType.SET_DETAILS_LOADING: return setDetailsLoading(state, action);
     case tvShowsActionType.SET_EPISODE: return setEpisode(state, action);
+    case tvShowsActionType.SET_SEARCH_LOADING: return setSearchLoading(state, action);
+    case tvShowsActionType.SET_SEARCH_RESULTS: return setSearchResults(state, action);
     case tvShowsActionType.SET_SELECTED_SEASON: return setSelectedSeason(state, action);
     case tvShowsActionType.SET_TV_SHOWS_LIST: return setTVShowsList(state, action);
     default: return state;

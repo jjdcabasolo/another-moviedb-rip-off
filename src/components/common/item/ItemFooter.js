@@ -12,8 +12,10 @@ import {
   OpenInNew,
 } from '@material-ui/icons';
 
+import { enumerate } from '../../../utils/functions';
+
 import {
-  API_KEY_DIALOG_TMDB_LINK,
+  TMDB_LINK,
   TMDB_SIGN_UP,
 } from '../../../constants';
 
@@ -36,10 +38,6 @@ const ItemFooter = ({
 }) => {
   const classes = useStyles();
 
-  const formattedCompanies = companies.length === 2
-    ? companies.join(' and ')
-    : companies.join(', ').replace(/, ([^,]*)$/, ', and $1');
-
   const renderLinkOpenNewTab = (content, href) => (
     <Link href={href} rel="noopener" target="_blank">
       {content}
@@ -51,7 +49,7 @@ const ItemFooter = ({
     <Grid container spacing={3} className={classes.footer}>
       <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
-          {`${title} (${year})${companies.length > 0 ? ` © ${formattedCompanies}` : ''}.`}
+          {`${title} ${year.length > 0 ? `(${year})` : ''}${companies.length > 0 ? ` © ${enumerate(companies)}` : ''}.`}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -69,7 +67,7 @@ const ItemFooter = ({
       <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
           All contents came from the community-built movie and TV database,&nbsp;
-          {renderLinkOpenNewTab('The Movie Database (TMDb)', API_KEY_DIALOG_TMDB_LINK)}
+          {renderLinkOpenNewTab('The Movie Database (TMDb)', TMDB_LINK)}
           .
         </Typography>
       </Grid>
@@ -83,7 +81,7 @@ const ItemFooter = ({
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body2" color="textSecondary">
-          © 2020 All Rights Reserved.
+          © 2019-2021 All Rights Reserved.
         </Typography>
       </Grid>
       <Grid item xs={12}>

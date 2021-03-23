@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
-import { useLocation } from 'react-router-dom';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -16,11 +16,9 @@ import {
 import { AvatarGroup } from '@material-ui/lab';
 
 import BrokenImage from '../../common/BrokenImage';
-import LineClamp from '../../common/LineClamp';
+import TruncatedOverview from '../../common/TruncatedOverview';
 
-import { evaluateLocation } from '../../../utils/functions';
-
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
@@ -39,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
     objectFit: 'cover',
+    objectPosition: '50% 0%',
     width: '100%',
   },
   brokenImageContainer: {
@@ -48,9 +47,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     marginBottom: theme.spacing(0.5),
     padding: theme.spacing(1),
-  },
-  avatarGroup: {
-    marginLeft: theme.spacing(1),
   },
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
@@ -80,9 +76,8 @@ const TVShowEpisode = ({
   const isSmallTablet = useMediaQuery(theme.breakpoints.only('md'));
   const classes = useStyles();
 
-  const location = useLocation();
-  const { tvShowSection } = evaluateLocation(location);
-  const isSectionActive = tvShowSection && tvShowSection.length !== 0;
+  const [, , section] = usePath();
+  const isSectionActive = section && section.length !== 0;
 
   const maxGuestsToShow = isSmallTablet ? 12 : 10;
 
@@ -98,7 +93,7 @@ const TVShowEpisode = ({
 
   if (!airDate || moment(airDate).diff(moment()) > 0) return null;
 
-  let episodeImagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+  let episodeImagePath = TMDB_IMAGE_PREFIX;
   if (stillPath) episodeImagePath += `/w780${stillPath}`;
 
   const [director] = crew.filter((e) => e.job === 'Director');
@@ -135,36 +130,29 @@ const TVShowEpisode = ({
           {`${episodeNumber} · ${episodeName}`}
         </Typography>
         <Typography color="textSecondary" variant="body2" noWrap gutterBottom>
-          {airDate ? moment(airDate).format('MMM D, YYYY') : ''}
+          {airDate ? moment(airDate).format('MMM D, YYYY') : NO_DATE_TEXT}
         </Typography>
       </Grid>
       <Grid item className={classes.gridItem}>
-        <LineClamp
-          text={overview}
-          lines={2}
-          ellipsis="..."
-          moreText="read more"
-          lessText="read less"
-          className="line-clamp"
-        />
+        <TruncatedOverview overview={overview} variant="body2" />
       </Grid>
       {director && Object.keys(director).length > 0
         && writer && Object.keys(writer).length > 0 && (
-        <Grid item className={classes.gridItem} container>
-          {renderCrew(director, 'Director')}
-          {renderCrew(writer, 'Writer')}
-        </Grid>
-      )}
+          <Grid item className={classes.gridItem} container>
+            {renderCrew(director, 'Director')}
+            {renderCrew(writer, 'Writer')}
+          </Grid>
+        )}
       {guestStars.length > 0 && (
         <Grid item className={classes.gridItem}>
           <Typography color="textSecondary" variant="caption">
             Guests
           </Typography>
-          <AvatarGroup className={classes.avatarGroup}>
+          <AvatarGroup max={maxGuestsToShow}>
             {guestStars.map((guest, i) => {
               const { id, profile_path: profilePath } = guest;
 
-              let guestImagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+              let guestImagePath = TMDB_IMAGE_PREFIX;
               if (stillPath) guestImagePath += `/w780${profilePath}`;
 
               if (i < maxGuestsToShow) {
@@ -191,10 +179,10 @@ const TVShowEpisode = ({
       {!isCollapsed
         && (isMobile || isSectionActive)
         && isLastItem && (
-        <Grid item className={classes.dividerContainer}>
-          <Divider />
-        </Grid>
-      )}
+          <Grid item className={classes.dividerContainer}>
+            <Divider />
+          </Grid>
+        )}
     </Grid>
   );
 };

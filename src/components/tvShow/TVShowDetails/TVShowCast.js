@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -24,14 +25,13 @@ const useStyles = makeStyles((theme) => ({
   },
   horizontalScrollItemSpacing: {
     margin: theme.spacing(0, 1),
-    [theme.breakpoints.only('xs')]: {
-      margin: theme.spacing(0, 0.5),
-    },
   },
   lastEntry: {
-    padding: theme.spacing(0.5),
+    padding: theme.spacing(1.5),
   },
 }));
+
+const SECTION_ID = 'cast';
 
 const TVShowCast = () => {
   const classes = useStyles();
@@ -42,6 +42,8 @@ const TVShowCast = () => {
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
+
+  const history = useHistory();
 
   const [cardCol, setCardCol] = useState(0);
 
@@ -55,6 +57,10 @@ const TVShowCast = () => {
     setCardCol(getCastCol(isMobile, isSmallTablet));
   }, [isMobile, isSmallTablet, isBigTablet, isDesktop]);
 
+  const handleSeeMore = () => {
+    history.push(`${history.location.pathname}/${SECTION_ID}`);
+  };
+
   return (
     <Grid container className={classes.container}>
       <ItemSeeMore
@@ -62,6 +68,7 @@ const TVShowCast = () => {
         collapsedClickEvent={() => scrollToID('tvshow-cast')}
         collapsedContent={(
           <ItemHorizontalContainer
+            handleSeeMore={handleSeeMore}
             isWithSeeMore={cast.length > maxCount}
             scrollAmount={144}
           >
@@ -96,7 +103,7 @@ const TVShowCast = () => {
           </Grid>
         )}
         isButtonShown={cast.length > maxCount}
-        sectionId="cast"
+        sectionId={SECTION_ID}
         seeMoreText={`Show all ${cast.length} cast`}
       />
     </Grid>

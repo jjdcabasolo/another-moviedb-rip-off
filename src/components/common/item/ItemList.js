@@ -12,7 +12,6 @@ import Note from '../Note';
 
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
-  NOTE_NO_API_KEY,
   NOTE_OFFLINE,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
 } from '../../../constants';
@@ -50,14 +49,6 @@ const ItemList = () => {
     return (
       <div className={classes.note}>
         <Note details={NOTE_OFFLINE} />
-      </div>
-    );
-  }
-
-  if (localStorage.getItem('apiKey') === null) {
-    return (
-      <div className={classes.note}>
-        <Note details={NOTE_NO_API_KEY} />
       </div>
     );
   }

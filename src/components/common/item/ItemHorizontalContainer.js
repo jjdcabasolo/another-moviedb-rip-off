@@ -17,10 +17,11 @@ import SeeMoreIconButton from '../SeeMoreIconButton';
 
 const useStyles = makeStyles((theme) => ({
   horizontalScroll: {
-    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
     display: 'flex',
     overflowX: 'auto',
     overflowY: 'hidden',
+    position: 'relative',
     '&::-webkit-scrollbar': {
       display: 'none',
     },
@@ -136,7 +137,7 @@ const ItemHorizontalContainer = ({
 };
 
 ItemHorizontalContainer.defaultProps = {
-  handleSeeMore: () => {},
+  handleSeeMore: () => { },
   imageSize: 0,
   isWithSeeMore: false,
 };

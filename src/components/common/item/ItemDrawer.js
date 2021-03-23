@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 
-import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { usePath } from '../../../hooks';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -15,7 +20,10 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { ChevronLeft, ChevronRight } from '@material-ui/icons';
+import {
+  ChevronLeft,
+  ChevronRight,
+} from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 import ComponentLoader from '../ComponentLoader';
@@ -23,6 +31,7 @@ import ItemCard from './ItemCard';
 import ItemCategory from './ItemCategory';
 import ItemHeader from './ItemHeader';
 import ItemSearch from './ItemSearch';
+import ItemSearchResults from './ItemSearchResults';
 import Note from '../Note';
 
 import { toCamelCase } from '../../../utils/functions';
@@ -32,7 +41,6 @@ import { sidebarActions } from '../../../reducers/ducks';
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
-  NOTE_NO_API_KEY,
   NOTE_OFFLINE,
   ITEM_DRAWER_WIDTH,
 } from '../../../constants';
@@ -49,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   drawerOpenPaperPadding: {
-    padding: theme.spacing(3, 5, 0, 5),
+    padding: theme.spacing(5),
     height: '100%',
   },
   drawerClose: {
@@ -85,10 +93,6 @@ const useStyles = makeStyles((theme) => ({
   },
   itemCardContainer: {
     overflowY: 'auto',
-    '&::-webkit-scrollbar': {
-      width: 0,
-      height: 0,
-    },
   },
   desktopDrawerOpenItemCardContainer: {
     marginBottom: theme.spacing(10),
@@ -99,6 +103,9 @@ const useStyles = makeStyles((theme) => ({
   itemHeader: {
     padding: theme.spacing(16, 0),
   },
+  itemSearch: {
+    width: theme.spacing(40),
+  },
   options: {
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.brokenImage.border}`,
@@ -106,9 +113,13 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '50%',
     position: 'fixed',
     right: theme.spacing(8),
-    top: theme.spacing(4),
+    top: theme.spacing(8),
     width: 'auto',
     zIndex: 2,
+  },
+  anchor: {
+    top: 0,
+    position: 'absolute',
   },
 }));
 
@@ -123,6 +134,7 @@ const ItemDrawer = ({
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const movieCategory = useSelector((state) => state.movies.category);
   const movieList = useSelector((state) => state.movies.list);
   const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
@@ -133,21 +145,36 @@ const ItemDrawer = ({
 
   const [itemDrawerOpen, setItemDrawerOpen] = useState(true);
 
+  const [, searchPath] = usePath();
+
   const isMovie = activeTab === 'movies';
   const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const contentToDisplay = isMovie ? movieList[movieCategory] : tvShowList[tvShowCategory];
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
 
-  useEffect(() => {
+  const evaluateDrawerState = useCallback(() => {
     let itemDrawerFinalState = false;
+
     if (isDesktop && !isItemSelected) itemDrawerFinalState = true;
     if (isTablet) itemDrawerFinalState = true;
+
     setItemDrawerOpen(itemDrawerFinalState);
     dispatch(sidebarActions.setItemDrawer(itemDrawerFinalState));
-  }, [isDesktop, isTablet, isItemSelected, dispatch]);
+  }, [dispatch, isDesktop, isItemSelected, isTablet]);
+
+  useEffect(() => {
+    evaluateDrawerState();
+  }, [isDesktop, isTablet, isItemSelected, evaluateDrawerState]);
+
+  useEffect(() => {
+    if (!isDesktop || (isDesktop && searchPath !== 'search')) {
+      evaluateDrawerState();
+    }
+  }, [searchPath, evaluateDrawerState, isDesktop]);
 
   const handleDrawerToggle = () => {
     const isDrawerOpen = !itemDrawerOpen;
+
     setItemDrawerOpen(isDrawerOpen);
     dispatch(sidebarActions.setItemDrawer(isDrawerOpen));
   };
@@ -165,12 +192,13 @@ const ItemDrawer = ({
       return <Note details={NOTE_OFFLINE} />;
     }
 
-    if (localStorage.getItem('apiKey') === null) {
-      return <Note details={NOTE_NO_API_KEY} />;
-    }
-
     if (loadedContent !== categoryChips.length) {
-      return <ComponentLoader location="itemdrawer" isItemDrawerOpen={itemDrawerOpen} />;
+      return (
+        <ComponentLoader
+          location="itemdrawer"
+          isItemDrawerOpen={itemDrawerOpen}
+        />
+      );
     }
 
     let itemCardCol = 12; // 1 card per row
@@ -186,6 +214,7 @@ const ItemDrawer = ({
         item
         justify="center"
       >
+        {!itemDrawerOpen && <div id="scroll-to-top-anchor-drawer" />}
         {contentToDisplay.slice(0, 10).map((item, rank) => (
           <ItemCard
             col={itemCardCol}
@@ -225,66 +254,76 @@ const ItemDrawer = ({
     >
       {itemDrawerOpen
         ? (
-          <Grid
-            alignItems="center"
-            container
-            direction="row"
-          >
-            <Grid
-              item
-              container
-              justify="flex-end"
-              alignItems="center"
-              className={classes.options}
-              spacing={1}
-            >
-              <Grid item>
-                <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />
-              </Grid>
-              <Grid item>
-                <ItemSearch />
-              </Grid>
-              <Grid item>
-                {isDesktop && renderToggleItemDrawer()}
-              </Grid>
-            </Grid>
+          <Container>
             <Grid
               alignItems="center"
-              className={classes.itemHeader}
               container
-              direction="column"
-              item
-              justify="center"
+              direction="row"
             >
-              <ItemHeader />
+              <Grid
+                alignItems="center"
+                container
+                item
+                justify="flex-end"
+              >
+                <Grid item className={clsx({ [classes.itemSearch]: isSearchOpen })}>
+                  <ItemSearch />
+                </Grid>
+                {!isSearchOpen && (
+                  <Grid item>
+                    {isDesktop && renderToggleItemDrawer()}
+                  </Grid>
+                )}
+              </Grid>
+              {!isSearchOpen && (
+                <Grid
+                  alignItems="center"
+                  className={classes.itemHeader}
+                  container
+                  direction="column"
+                  item
+                  justify="center"
+                >
+                  <ItemHeader />
+                </Grid>
+              )}
             </Grid>
-          </Grid>
+          </Container>
         )
         : (
           <AppBar position="static" color="inherit">
             <Toolbar className={classes.toolbar}>
-              <Typography variant="h6">
-                {`Top 10 ${toCamelCase(isMovie ? movieCategory : tvShowCategory)}`}
-              </Typography>
+              {!isSearchOpen && (
+                <>
+                  <Typography variant="h6">
+                    {`Top 10 ${toCamelCase(isMovie ? movieCategory : tvShowCategory).replace('Highest', 'H. ')}`}
+                  </Typography>
+                  {contentToDisplay.length > 0 && (
+                    <ItemCategory type="iconButton" />
+                  )}
+                </>
+              )}
               <div className={classes.grow} />
-              {contentToDisplay.length > 0
-                && <ItemCategory type={itemDrawerOpen ? 'chipDropdown' : 'iconButton'} />}
               <ItemSearch />
-              {isDesktop && renderToggleItemDrawer(true)}
+              {!isSearchOpen && isDesktop && renderToggleItemDrawer(true)}
             </Toolbar>
           </AppBar>
         )}
-      <Container
-        className={clsx(
-          classes.itemCardContainer,
-          {
-            [classes.desktopDrawerOpenItemCardContainer]: itemDrawerOpen,
-            [classes.desktopDrawerClosedItemCardContainer]: !itemDrawerOpen,
-          },
+      {isSearchOpen
+        ? <ItemSearchResults />
+        : (
+          <Container
+            className={clsx(
+              classes.itemCardContainer,
+              {
+                [classes.desktopDrawerOpenItemCardContainer]: itemDrawerOpen,
+                [classes.desktopDrawerClosedItemCardContainer]: !itemDrawerOpen,
+              },
+            )}
+          >
+            {renderItemCards()}
+          </Container>
         )}
-      >
-        {renderItemCards()}
-      </Container>
     </Drawer>
   );
 };

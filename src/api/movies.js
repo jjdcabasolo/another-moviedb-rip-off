@@ -7,7 +7,7 @@ export const getPopularMovies = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/movie/popular', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -17,7 +17,7 @@ export const getNowPlayingMovies = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/movie/now_playing', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -27,7 +27,7 @@ export const getTopRatedMovies = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/movie/top_rated', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -37,7 +37,7 @@ export const getUpcomingMovies = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/movie/upcoming', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -47,7 +47,7 @@ export const getHighestGrossingMovies = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/discover/movie', { params: { api_key, sort_by: 'revenue.desc' } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -57,7 +57,7 @@ export const getTrendingMovies = (
   api_key,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get('/trending/movie/day', { params: { api_key } })
   .then((response) => success(response))
   .catch((error) => fail(error))
@@ -79,11 +79,11 @@ export const getMovieDetails = (
   movie_id,
   success,
   fail,
-  after = () => {},
+  after = () => { },
 ) => axios.get(`/movie/${movie_id}`, {
   params: {
     api_key,
-    append_to_response: 'videos,credits,external_ids,recommendations',
+    append_to_response: 'videos,credits,external_ids,recommendations,reviews',
   },
 })
   .then((response) => {
@@ -97,6 +97,7 @@ export const getMovieDetails = (
       id: tmdb_id,
       recommendations,
       videos,
+      reviews,
     } = details;
 
     const {
@@ -121,6 +122,9 @@ export const getMovieDetails = (
       : null;
     delete details.videos;
 
+    // extract reviews
+    details.reviews = reviews.results.filter((e) => e.author_details.rating);
+
     // extract external link id's
     details.facebook = facebook_id !== null ? `https://www.facebook.com/${facebook_id}` : null;
     details.instagram = instagram_id !== null ? `https://www.instagram.com/${instagram_id}` : null;
@@ -140,10 +144,21 @@ export const getMovieDetails = (
         details.collection_content = collectionData;
 
         success(details);
-      }, () => {}, () => {});
+      }, () => { }, () => { });
     } else {
       success(details);
     }
   })
+  .catch((error) => fail(error))
+  .finally(() => after());
+
+export const searchMovie = (
+  api_key,
+  query,
+  success,
+  fail,
+  after,
+) => axios.get(`/search/movie`, { params: { api_key, query } })
+  .then((response) => success(response.data.results))
   .catch((error) => fail(error))
   .finally(() => after());

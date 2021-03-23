@@ -1,15 +1,9 @@
 export {
-  encrypt,
-  decrypt,
-  decryptKey,
-} from './encrypt';
-
-export {
   getCrewMembers,
 } from './extractCrew';
 
 export {
-  evaluateLocation,
+  enumerate,
   toCamelCase,
   toMillionsOrBillions,
   truncateText,
@@ -23,6 +17,10 @@ export {
 export {
   scrollToID,
 } from './scroll';
+
+export {
+  debounceEvent,
+} from './debounce';
 
 export {
   getTVShowStatus,

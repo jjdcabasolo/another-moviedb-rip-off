@@ -16,23 +16,11 @@ const renderComponent = (component) => (
 
 const Routes = () => (
   <Switch>
-    {/* { routes.map(e => (
-      <>
-        <Route exact path={e.path}>
-          <Suspense fallback={<ComponentLoader />}>
-            {e.component}
-          </Suspense>
-        </Route>
-        { e.child && (
-          <Route exact path={e.child.path}>
-            {e.child.component}
-          </Route>
-        )}
-      </>
-    )) }
-    <Route component={NotFound} /> */}
     <Redirect exact from="/" to="/movies" />
     <Route exact path="/movies">
+      {renderComponent('movies')}
+    </Route>
+    <Route exact path="/movies/search">
       {renderComponent('movies')}
     </Route>
     <Route exact path="/movies/:movieId">
@@ -43,6 +31,9 @@ const Routes = () => (
     </Route>
 
     <Route exact path="/tvshows">
+      {renderComponent('tvshows')}
+    </Route>
+    <Route exact path="/tvshows/search">
       {renderComponent('tvshows')}
     </Route>
     <Route exact path="/tvshows/:tvShowId">

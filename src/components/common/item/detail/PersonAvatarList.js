@@ -14,7 +14,7 @@ import {
 
 import BrokenImage from '../../BrokenImage';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
+import { TMDB_IMAGE_PREFIX } from '../../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   demo: {
@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
+  },
+  listItem: {
+    '&:last-child': {
+      marginBottom: theme.spacing(2),
+    },
   },
 }));
 
@@ -46,7 +51,7 @@ const PersonAvatarList = ({
         </Typography>
       )}
       <List disablePadding>
-        { content.map((person) => {
+        {content.map((person) => {
           const {
             job,
             name,
@@ -55,14 +60,14 @@ const PersonAvatarList = ({
           const isImageValid = profilePath !== null;
 
           return (
-            <ListItem key={`person-avatar-list-${name}`}>
+            <ListItem key={`person-avatar-list-${name}`} className={classes.listItem}>
               <ListItemAvatar>
                 {isImageValid
                   ? (
                     <Avatar
                       alt={`${name}'s avatar.`}
                       className={classes.avatar}
-                      src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${profilePath}`}
+                      src={`${TMDB_IMAGE_PREFIX}/w154${profilePath}`}
                     />
                   )
                   : <BrokenImage type="avatar" avatarSize="small" />}

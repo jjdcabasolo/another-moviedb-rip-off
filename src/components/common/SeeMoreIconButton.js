@@ -44,7 +44,7 @@ const SeeMoreIconButton = ({ handleSeeMore }) => {
       </Grid>
       <Grid item>
         <Typography variant="body1" align="center" noWrap>
-          View all
+          Show all
         </Typography>
       </Grid>
     </Grid>

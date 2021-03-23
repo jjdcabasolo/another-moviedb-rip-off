@@ -6,7 +6,12 @@ import { Avatar, Chip } from '@material-ui/core';
 
 import BrokenImage from '../../BrokenImage';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../../constants';
+import { truncateText } from '../../../../utils/functions';
+
+import {
+  MAX_CHARACTER_PRODUCTION_CHIP,
+  TMDB_IMAGE_PREFIX,
+} from '../../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -19,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(3),
     marginLeft: theme.spacing(0.5),
     width: theme.spacing(3),
+    marginRight: -6,
   },
 }));
 
@@ -29,28 +35,28 @@ const ProductionChip = ({
 }) => {
   const classes = useStyles();
 
-  const isImageValid = image !== null;
-
-  let label = name;
+  let label = truncateText(name, MAX_CHARACTER_PRODUCTION_CHIP, 'characters');;
   if (country) label += ` (${country})`;
+
+  const avatarImage = image !== null
+    ? (
+      <Avatar
+        alt={`${name}'s avatar.`}
+        className={classes.avatar}
+        src={`${TMDB_IMAGE_PREFIX}/w154${image}`}
+      />
+    )
+    : (
+      <BrokenImage
+        avatarSize="small"
+        extraClass={classes.brokenImage}
+        type="avatar"
+      />
+    );
 
   return (
     <Chip
-      avatar={isImageValid
-        ? (
-          <Avatar
-            alt={`${name}'s avatar.`}
-            className={classes.avatar}
-            src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}`}
-          />
-        )
-        : (
-          <BrokenImage
-            avatarSize="small"
-            extraClass={classes.brokenImage}
-            type="avatar"
-          />
-        )}
+      avatar={avatarImage}
       variant="outlined"
       label={label}
       className={classes.chip}

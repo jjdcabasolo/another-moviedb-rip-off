@@ -2,10 +2,11 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 import {
+  browserReducer,
   moviesReducer,
   sidebarReducer,
   snackbarReducer,
-  browserReducer,
+  tmdbConfigReducer,
   tvShowsReducer,
 } from './ducks';
 
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
   movies: moviesReducer,
   sidebar: sidebarReducer,
   snackbar: snackbarReducer,
+  tmdbConfig: tmdbConfigReducer,
   tvShows: tvShowsReducer,
 });
 

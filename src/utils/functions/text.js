@@ -21,33 +21,6 @@ export const truncateText = (text, length, type) => {
   }
 };
 
-export const evaluateLocation = (location) => {
-  const result = {};
-
-  const path = location.pathname.replace('/', '').split('/');
-  if (path[0].match(/movies/g)) {
-    result.movie = true;
-    if (path[1] !== undefined) {
-      result.movieId = path[1];
-    }
-    if (path[2] !== undefined) {
-      result.movieSection = path[2];
-    }
-  }
-
-  if (path[0].match(/tvshows/g)) {
-    result.tvShow = true;
-    if (path[1] !== undefined) {
-      result.tvShowId = path[1];
-    }
-    if (path[2] !== undefined) {
-      result.tvShowSection = path[2];
-    }
-  }
-
-  return result;
-};
-
 // money format for millions and billions
 // taken from https://stackoverflow.com/q/36734201
 export const toMillionsOrBillions = (num) => {
@@ -71,3 +44,7 @@ export const toCamelCase = (text) => {
 
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
+
+export const enumerate = (array) => array.length === 2
+  ? array.join(' and ')
+  : array.join(', ').replace(/, ([^,]*)$/, ', and $1');

@@ -19,6 +19,11 @@ export {
 } from './snackbar';
 
 export {
+  tmdbConfigActions,
+  tmdbConfigReducer,
+} from './tmdbConfig';
+
+export {
   tvShowsActions,
   tvShowsReducer,
 } from './tvShows';

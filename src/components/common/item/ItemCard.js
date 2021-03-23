@@ -22,14 +22,10 @@ import { scrollToID, truncateText } from '../../../utils/functions';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   media: {
-    transition: theme.transitions.create('background-image', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
     borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(22),
   },
@@ -170,13 +166,15 @@ const ItemCard = ({
 
   const isMovie = type === 'movies';
   const date = isMovie ? content.release_date : content.first_air_date;
-  const dateDisplay = date ? ` • ${moment(date).format('MMM D, YYYY')}` : '';
+  const dateDisplay = date ? ` ${moment(date).format('MMM D, YYYY')}` : ` ${NO_DATE_TEXT}`;
 
   if (!content) return null;
 
   const handleCardClick = () => {
     scrollToID('scroll-to-top-anchor', false);
-    if (handleDrawerToggle && drawerOpen) handleDrawerToggle();
+
+    if (handleDrawerToggle) handleDrawerToggle();
+
     if (isMovie) dispatch(moviesActions.setDetailsLoading(true));
     else {
       dispatch(tvShowsActions.setDetailsLoading(true));
@@ -184,7 +182,7 @@ const ItemCard = ({
   };
 
   let isImageValid = true;
-  let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+  let imagePath = TMDB_IMAGE_PREFIX;
   if (!isMobile && content && content.poster_path) {
     imagePath += `/w780${content.poster_path}`;
   } else if (isMobile && content && content.backdrop_path) {
@@ -207,7 +205,7 @@ const ItemCard = ({
       <Link to={`/${type}/${content.id}`}>
         <Card onClick={handleCardClick} variant="outlined" className={classes.card}>
           <CardActionArea>
-            { !isImageValid && (
+            {!isImageValid && (
               <BrokenImage
                 type="cardMedia"
                 extraClass={classes.brokenImageContainer}
@@ -256,14 +254,16 @@ const ItemCard = ({
                 )}
                 color="textSecondary"
               >
-                <span
-                  className={clsx(
-                    classes.rankText,
-                    { [classes.textImageInvalid]: !isImageValid },
-                  )}
-                >
-                  {rank}
-                </span>
+                {rank !== 0 && (
+                  <span
+                    className={clsx(
+                      classes.rankText,
+                      { [classes.textImageInvalid]: !isImageValid },
+                    )}
+                  >
+                    {`${rank} •`}
+                  </span>
+                )}
                 {dateDisplay}
               </Typography>
             </div>
@@ -287,7 +287,7 @@ ItemCard.defaultProps = {
     title: '',
   }),
   drawerOpen: false,
-  handleDrawerToggle: () => {},
+  handleDrawerToggle: () => { },
   hasSpacingHorizontalScroll: false,
   isHorizontalScroll: false,
   rank: 0,

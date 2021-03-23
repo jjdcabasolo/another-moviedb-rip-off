@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -15,10 +15,7 @@ import TruncatedOverview from '../TruncatedOverview';
 
 import { scrollToID } from '../../../utils/functions';
 
-import {
-  MAX_WORD_COUNT,
-  MAX_ITEMS_BEFORE_COLLAPSING,
-} from '../../../constants';
+import { MAX_ITEMS_BEFORE_COLLAPSING } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -54,6 +51,7 @@ const ItemCardHorizontalList = ({
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
 
+  const history = useHistory();
   const { section } = useParams();
 
   const sectionId = anchorId.replace('movie-', '').replace('tvshow-', '');
@@ -62,9 +60,13 @@ const ItemCardHorizontalList = ({
 
   if (!items) return null;
 
+  const handleSeeMore = () => {
+    history.push(`${history.location.pathname}/${sectionId}`);
+  };
+
   const renderOverview = () => overview.length > 0 && (
     <div className={classes.overview}>
-      <TruncatedOverview overview={overview} maxWords={MAX_WORD_COUNT} />
+      <TruncatedOverview overview={overview} />
     </div>
   );
 
@@ -76,8 +78,9 @@ const ItemCardHorizontalList = ({
         collapsedClickEvent={() => scrollToID(anchorId)}
         collapsedContent={(
           <ItemHorizontalContainer
-            scrollAmount={theme.spacing(45 + 2)}
+            handleSeeMore={handleSeeMore}
             isWithSeeMore={items.length > MAX_ITEMS_BEFORE_COLLAPSING}
+            scrollAmount={theme.spacing(45 + 2)}
           >
             {collapsedItems.map((item, index) => (
               <div
@@ -90,7 +93,6 @@ const ItemCardHorizontalList = ({
                     content={item}
                     hasSpacingHorizontalScroll={hasSpacingHorizontalScroll}
                     isHorizontalScroll
-                    rank={index + 1}
                     type={activeTab}
                   />
                 </Grid>

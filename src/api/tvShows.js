@@ -60,7 +60,7 @@ export const getTVShowDetails = (
 ) => axios.get(`/tv/${tv_id}`, {
   params: {
     api_key,
-    append_to_response: 'credits,external_ids,recommendations',
+    append_to_response: 'credits,external_ids,recommendations,reviews',
   },
 })
   .then((response) => {
@@ -72,6 +72,7 @@ export const getTVShowDetails = (
       external_ids,
       id: tmdb_id,
       recommendations,
+      reviews,
     } = details;
 
     const {
@@ -87,6 +88,9 @@ export const getTVShowDetails = (
 
     // simplify recommendations response
     details.recommendations = recommendations.results;
+
+    // extract reviews
+    details.reviews = reviews.results.filter((e) => e.author_details.rating);
 
     // extract external link id's
     details.facebook = facebook_id !== null ? `https://www.facebook.com/${facebook_id}` : null;
@@ -110,5 +114,16 @@ export const getTVShowSeasonDetails = (
   after = () => { },
 ) => axios.get(`/tv/${tv_id}/season/${season_number}`, { params: { api_key } })
   .then((response) => success(response.data.episodes))
+  .catch((error) => fail(error))
+  .finally(() => after());
+
+export const searchTVShow = (
+  api_key,
+  query,
+  success,
+  fail,
+  after,
+) => axios.get(`/search/tv`, { params: { api_key, query } })
+  .then((response) => success(response.data.results))
   .catch((error) => fail(error))
   .finally(() => after());

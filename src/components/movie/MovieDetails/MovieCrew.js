@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Grid, Typography, useMediaQuery } from '@material-ui/core';
 
 import ItemSeeMore from '../../common/item/ItemSeeMore';
 import PersonAvatarList from '../../common/item/detail/PersonAvatarList';
@@ -11,7 +11,15 @@ import Statistic from '../../common/item/detail/Statistic';
 
 import { getCrewMembers, getCrewCol, scrollToID } from '../../../utils/functions';
 
-import { CREW_TO_DISPLAY } from '../../../constants';
+import { CREW_TO_DISPLAY, MAX_CREW_ON_SHOW_LESS } from '../../../constants';
+
+const useStyles = makeStyles((theme) => ({
+  moreCrew: {
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(-2),
+    paddingLeft: theme.spacing(9),
+  },
+}));
 
 const MovieCrew = () => {
   const theme = useTheme();
@@ -19,6 +27,7 @@ const MovieCrew = () => {
   const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
   const isBigTablet = useMediaQuery(theme.breakpoints.only('md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const classes = useStyles();
 
   const movie = useSelector((state) => state.movies.movie);
 
@@ -64,70 +73,84 @@ const MovieCrew = () => {
 
       setMasonryConfig([]);
       CREW_TO_DISPLAY.forEach((e) => {
-        if (finalCrew[e.identifier].length > 0) setMasonryConfig((a) => [...a, e.identifier]);
+        if (finalCrew[e.identifier].length > 0) {
+          setMasonryConfig((a) => [...a, e.identifier]);
+        }
       });
     }
   }, [movie, crew]);
 
   const renderMasonryGrid = (crewShowMore) => {
-    const col = [];
-    for (let i = 0; i < crewCol; i += 1) {
-      const colItem = [];
-      for (let a = i; a < masonryConfig.length; a += crewCol) {
-        if (!crewShowMore) {
-          if (masonryConfig[a] === 'production'
-            || masonryConfig[a] === 'composer'
-            || masonryConfig[a] === 'cinematography'
-            || masonryConfig[a] === 'editor'
-            || masonryConfig[a] === 'costume'
-            || masonryConfig[a] === 'makeup') break;
-        }
-        const members = crewMembers[masonryConfig[a]];
-        const crewTitle = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
-        colItem.push(
+    const masonryGrid = Array(crewCol).fill([]);
+    let colItemCount = Array(crewCol).fill(0);
+    let crewSection;
+    let memberCount = 0;
+
+    for (let a = 0; a < masonryConfig.length; a += 1) {
+      if (!crewShowMore) {
+        if (masonryConfig[a] === 'composer'
+          || masonryConfig[a] === 'cinematography'
+          || masonryConfig[a] === 'editor'
+          || masonryConfig[a] === 'costume'
+          || masonryConfig[a] === 'makeup'
+          || masonryConfig[a] === 'lighting'
+          || masonryConfig[a] === 'visualEffects') break;
+      }
+
+      const members = [...crewMembers[masonryConfig[a]]];
+      memberCount = members.length;
+      const membersToDisplay = crewShowMore ? members : [...members.splice(0, MAX_CREW_ON_SHOW_LESS)];
+      const crewTitle = CREW_TO_DISPLAY.filter((c) => c.identifier === masonryConfig[a])[0];
+      const crewLabel = crewTitle.label(members.length);
+
+      crewSection = (
+        <>
           <PersonAvatarList
             key={`movie-crew-person-avatar-list-${crewTitle.identifier}`}
-            content={members}
-            title={crewTitle.label(members.length)}
-          />,
-        );
+            content={membersToDisplay}
+            title={crewLabel}
+          />
+          {!crewShowMore && members.length > 0 && (
+            <Grid item xs={12} className={classes.moreCrew}>
+              <Typography variant="caption" color="textSecondary">
+                {`...and ${members.length} more`}
+              </Typography>
+            </Grid>
+          )}
+        </>
+      );
+
+      if (crewCol > 1) {
+        let min = colItemCount[0];
+        let minIndex = 0;
+
+        for (let j = 1; j < crewCol; j += 1) {
+          if (min > colItemCount[j]) {
+            min = colItemCount[j];
+            minIndex = j;
+          }
+        }
+
+        colItemCount[minIndex] += memberCount;
+        masonryGrid[minIndex] = [...masonryGrid[minIndex], crewSection];
+      } else {
+        masonryGrid[0] = [...masonryGrid[0], crewSection];
       }
-      col.push(<Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{colItem}</Grid>);
     }
-    return col;
-  };
 
-  const renderStatistic = () => {
-    const { lighting, visualEffects } = crewMembers;
-    const crewStatistic = [
-      {
-        length: lighting.length,
-        label: 'Lighting',
-        divider: true,
-      },
-      {
-        length: visualEffects.length,
-        label: 'VFX',
-        divider: true,
-      },
-      {
-        length: crew.length,
-        label: 'Total Crew',
-        isTotal: true,
-      },
-    ].filter((e) => e.length > 0);
-
-    return crewStatistic.map((e) => (
-      <Statistic
-        col={12 / crewStatistic.length}
-        count={e.length}
-        divider={e.divider}
-        isTotal={e.isTotal}
-        key={`movie-crew-statistic-${e.label}`}
-        label={e.label}
-      />
+    return masonryGrid.map((e, i) => (
+      <Grid item xs={12 / crewCol} key={`movie-crew-masonry-grid-${i}`}>{e}</Grid>
     ));
   };
+
+  const renderStatistic = () => (
+    <Statistic
+      col={12 / crew.length}
+      count={crew.length}
+      isTotal
+      label="Total Crew"
+    />
+  );
 
   if (!('director' in crewMembers)) return null;
 

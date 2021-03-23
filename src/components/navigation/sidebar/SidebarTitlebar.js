@@ -9,13 +9,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   IconButton,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
-import { ArrowBackTwoTone } from '@material-ui/icons';
+import { ArrowBackTwoTone, SearchTwoTone } from '@material-ui/icons';
 
 import AppBar from '../../overrides/AppBar';
 
-import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
+import {
+  moviesActions,
+  sidebarActions,
+  tvShowsActions,
+} from '../../../reducers/ducks';
 
 const useStyles = makeStyles((theme) => ({
   toolbarDrawer: {
@@ -25,15 +30,22 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  grow: {
+    flexGrow: 1,
+  },
 }));
 
 const SidebarTitlebar = ({ item }) => {
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
+  const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
+  const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);  
   const dispatch = useDispatch();
-
+  
   const history = useHistory();
+  
   const {
     date,
     name,
@@ -42,13 +54,23 @@ const SidebarTitlebar = ({ item }) => {
     title,
   } = item;
 
+  const isMovie = activeTab === 'movies';
+  const isItemLoading = isMovie ? isMovieLoading : isTVShowLoading;
   const isItemSelected = 'id' in item;
 
   const goBack = useCallback(() => {
     if (activeTab === 'movies') dispatch(moviesActions.setActiveMovie({}));
     else dispatch(tvShowsActions.setActiveTVShow({}));
+
+    if (isSearchOpen) dispatch(sidebarActions.setSearch(false));
+
     history.goBack();
-  }, [dispatch, history, activeTab]);
+  }, [dispatch, history, isSearchOpen, activeTab]);
+
+  const handleSearch = () => {
+    dispatch(sidebarActions.setItemDrawer(true));
+    history.push(`/${activeTab}/search`);
+  };
 
   const evaluateTitle = () => {
     if (activeTab === 'movies') return title || originalTitle;
@@ -63,14 +85,21 @@ const SidebarTitlebar = ({ item }) => {
       >
         <IconButton
           aria-label="back"
-          edge="start"
           onClick={goBack}
         >
           <ArrowBackTwoTone />
         </IconButton>
-        <Typography component="h1" variant="h6">
-          {isItemSelected && `${evaluateTitle()} (${moment(date).format('YYYY')})`}
-        </Typography>
+        {!isItemLoading && (
+          <Typography component="h1" variant="h6">
+            {isItemSelected && `${evaluateTitle()} ${date ? `(${moment(date).format('YYYY')})` : ''}`}
+          </Typography>
+        )}
+        <div className={classes.grow} />
+        <Tooltip title="Search">
+          <IconButton onClick={handleSearch}>
+            <SearchTwoTone />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );

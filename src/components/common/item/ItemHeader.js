@@ -9,7 +9,14 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
+import ItemCategory from './ItemCategory';
+
 import { toCamelCase } from '../../../utils/functions';
+
+import {
+  MOVIE_DRAWER_CATEGORY_CHIPS,
+  TV_SHOW_DRAWER_CATEGORY_CHIPS,
+} from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   titleLite: {
@@ -20,8 +27,16 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     textAlign: 'center',
   },
+  description: {
+    textAlign: 'center',
+    maxWidth: '75vw',
+  },
   subtitle: {
     color: theme.palette.action.disabled,
+  },
+  categoryContainer: {
+    marginLeft: theme.spacing(2),
+    position: 'absolute',
   },
 }));
 
@@ -36,6 +51,10 @@ const ItemHeader = () => {
 
   const isMovie = activeTab === 'movies';
   const activeCategory = isMovie ? movieCategory : tvShowCategory;
+  const categoryChips = isMovie
+    ? MOVIE_DRAWER_CATEGORY_CHIPS
+    : TV_SHOW_DRAWER_CATEGORY_CHIPS;
+  const [{ description }] = categoryChips.filter(e => e.identifier === activeCategory);
 
   return (
     <>
@@ -44,15 +63,20 @@ const ItemHeader = () => {
       </Typography>
       <Typography variant={isMobile ? 'h2' : 'h1'} className={classes.title}>
         {toCamelCase(activeCategory)}
+        {!isMobile && (
+          <span className={classes.categoryContainer}>
+            <ItemCategory type="iconButton" iconSize="large" />
+          </span>
+        )}
       </Typography>
       <Typography variant={isMobile ? 'h3' : 'h2'} gutterBottom className={classes.titleLite}>
         {activeTab === 'movies' ? ' Movies' : ' TV Shows'}
       </Typography>
-      <Typography variant="caption" className={classes.subtitle}>
-        on The Movie Database (TMDb)
+      <Typography variant="caption" gutterBottom className={classes.description} color="textSecondary">
+        {description}
       </Typography>
       <Typography variant="caption" className={classes.subtitle}>
-        {`as of today, ${moment().format('MMMM D, YYYY')}`}
+        {`as of today, ${moment().format('MMMM D, YYYY (dddd)')}`}
       </Typography>
     </>
   );

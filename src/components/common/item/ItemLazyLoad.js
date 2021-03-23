@@ -62,7 +62,6 @@ const ItemLazyLoad = ({
           ...otherProps,
           key: `item-lazy-load-item-card-horizontal-list-${content.id}`,
           content,
-          rank: index + 1,
         };
       case 'itemCast':
         return {
@@ -71,6 +70,12 @@ const ItemLazyLoad = ({
           character: content.character,
           image: content.profile_path,
           name: content.name,
+        };
+      case 'itemCardSearchResults':
+        return {
+          ...otherProps,
+          key: `item-search-results-item-card-${index + 1}-${content.id}`,
+          content,
         };
       default:
         return {};
