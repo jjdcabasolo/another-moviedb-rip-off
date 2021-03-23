@@ -10,7 +10,7 @@ import { truncateText } from '../../../../utils/functions';
 
 import {
   MAX_CHARACTER_PRODUCTION_CHIP,
-  MOVIE_DRAWER_TMDB_IMAGE_PREFIX,
+  TMDB_IMAGE_PREFIX,
 } from '../../../../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +43,7 @@ const ProductionChip = ({
       <Avatar
         alt={`${name}'s avatar.`}
         className={classes.avatar}
-        src={`${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w154${image}`}
+        src={`${TMDB_IMAGE_PREFIX}/w154${image}`}
       />
     )
     : (

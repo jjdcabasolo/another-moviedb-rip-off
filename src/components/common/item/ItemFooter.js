@@ -15,7 +15,7 @@ import {
 import { enumerate } from '../../../utils/functions';
 
 import {
-  API_KEY_DIALOG_TMDB_LINK,
+  TMDB_LINK,
   TMDB_SIGN_UP,
 } from '../../../constants';
 
@@ -67,7 +67,7 @@ const ItemFooter = ({
       <Grid item xs={12}>
         <Typography variant="body2" gutterBottom color="textSecondary">
           All contents came from the community-built movie and TV database,&nbsp;
-          {renderLinkOpenNewTab('The Movie Database (TMDb)', API_KEY_DIALOG_TMDB_LINK)}
+          {renderLinkOpenNewTab('The Movie Database (TMDb)', TMDB_LINK)}
           .
         </Typography>
       </Grid>

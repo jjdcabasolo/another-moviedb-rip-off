@@ -29,7 +29,7 @@ import {
   tvShowsActions,
 } from '../../../reducers/ducks';
 
-import { debounceEvent, decryptKey } from '../../../utils/functions';
+import { debounceEvent } from '../../../utils/functions';
 
 import { searchMovie, searchTVShow } from '../../../api';
 
@@ -63,9 +63,11 @@ const ItemSearch = ({
   const isMovie = activeTab === 'movies';
 
   const fetchSearchResults = useCallback((q) => {
+    const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
+
     if (isMovie) {
       dispatch(moviesActions.setSearchLoading(true));
-      searchMovie(decryptKey(), q, (response) => {
+      searchMovie(parmesanio, q, (response) => {
         dispatch(moviesActions.setSearchResults(response));
       }, (error) => {
         dispatch(snackbarActions.showSnackbar(`Error on searching the movie: ${error}`, 'error'));
@@ -75,7 +77,7 @@ const ItemSearch = ({
     }
     else {
       dispatch(tvShowsActions.setSearchLoading(true));
-      searchTVShow(decryptKey(), q, (response) => {
+      searchTVShow(parmesanio, q, (response) => {
         dispatch(tvShowsActions.setSearchResults(response));
       }, (error) => {
         dispatch(snackbarActions.showSnackbar(`Error on searching the TV show: ${error}`, 'error'));

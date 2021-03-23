@@ -26,8 +26,6 @@ import { getTVShowDetails, getTVShowSeasonDetails } from '../api';
 
 import { tvShowsActions } from '../reducers/ducks';
 
-import { decryptKey } from '../utils/functions';
-
 import { NOTE_NO_SELECTED_TV_SHOW, NOTE_TV_SHOW_NOT_FOUND } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +85,9 @@ const TVShows = () => {
     if (tvShowId === 'search') return;
 
     if (tvShowId) {
-      getTVShowDetails(decryptKey(), tvShowId, (tvShowResponse) => {
+      const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
+
+      getTVShowDetails(parmesanio, tvShowId, (tvShowResponse) => {
         const { seasons: fetchedSeason } = tvShowResponse;
 
         if (fetchedSeason) {
@@ -95,7 +95,7 @@ const TVShows = () => {
             .sort((a, b) => b.season_number - a.season_number)
             .find((e) => e.season_number > 0 && e.air_date);
 
-          getTVShowSeasonDetails(decryptKey(), tvShowId, latestSeason, (episodeResponse) => {
+          getTVShowSeasonDetails(parmesanio, tvShowId, latestSeason, (episodeResponse) => {
             dispatch(tvShowsActions.setActiveTVShow(tvShowResponse, episodeResponse, latestSeason));
             dispatch(tvShowsActions.setDetailsLoading(false));
             setIsLoaded(true);

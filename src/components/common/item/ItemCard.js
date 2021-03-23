@@ -22,7 +22,7 @@ import { scrollToID, truncateText } from '../../../utils/functions';
 
 import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -182,7 +182,7 @@ const ItemCard = ({
   };
 
   let isImageValid = true;
-  let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+  let imagePath = TMDB_IMAGE_PREFIX;
   if (!isMobile && content && content.poster_path) {
     imagePath += `/w780${content.poster_path}`;
   } else if (isMobile && content && content.backdrop_path) {

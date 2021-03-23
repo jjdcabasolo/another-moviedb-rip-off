@@ -41,7 +41,6 @@ import { sidebarActions } from '../../../reducers/ducks';
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
-  NOTE_NO_API_KEY,
   NOTE_OFFLINE,
   ITEM_DRAWER_WIDTH,
 } from '../../../constants';
@@ -191,10 +190,6 @@ const ItemDrawer = ({
   const renderItemCards = () => {
     if (!window.navigator.onLine) {
       return <Note details={NOTE_OFFLINE} />;
-    }
-
-    if (localStorage.getItem('apiKey') === null) {
-      return <Note details={NOTE_NO_API_KEY} />;
     }
 
     if (loadedContent !== categoryChips.length) {

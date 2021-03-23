@@ -18,12 +18,10 @@ import { CodeTwoTone, MenuTwoTone, WebTwoTone } from '@material-ui/icons';
 
 import DarkModeToggle from '../../common/DarkModeToggle';
 
-import APIKeyDialog from '../../apiKey/APIKeyDialog';
-
 import { moviesActions, sidebarActions, tvShowsActions } from '../../../reducers/ducks';
 
 import {
-  API_KEY_DIALOG_TMDB_LINK,
+  TMDB_LINK,
   FIGMA_LINK,
   GITHUB_REPO_LINK,
   TMDB_LOGO,
@@ -126,8 +124,7 @@ const SidebarContent = () => {
         {renderListItemLink(FIGMA_LINK, <WebTwoTone />, 'Figma (Wireframes)', undefined)}
         <Divider className={classes.divider} />
         <DarkModeToggle type="listItem" />
-        <APIKeyDialog />
-        {renderListItemLink(API_KEY_DIALOG_TMDB_LINK, (
+        {renderListItemLink(TMDB_LINK, (
           <img
             alt="TMDb Logo"
             className={classes.tmdbLogo}

@@ -14,9 +14,7 @@ import { getTVShowSeasonDetails } from '../../../api';
 
 import { tvShowsActions } from '../../../reducers/ducks';
 
-import { decryptKey } from '../../../utils/functions';
-
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -76,7 +74,9 @@ const TVShowSeasonList = () => {
 
   const handleCardClick = (index) => {
     if (selectedSeason !== index) {
-      getTVShowSeasonDetails(decryptKey(), tvShow.id, index, (response) => {
+      const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
+
+      getTVShowSeasonDetails(parmesanio, tvShow.id, index, (response) => {
         dispatch(tvShowsActions.setEpisode(response));
       }, () => { });
       dispatch(tvShowsActions.setSelectedSeason(index));
@@ -101,7 +101,7 @@ const TVShowSeasonList = () => {
           const isActive = seasonNumber === selectedSeason;
           const seasonName = seasonNumber === 0 ? name : `S${seasonNumber}`;
 
-          let imagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+          let imagePath = TMDB_IMAGE_PREFIX;
           if (posterPath) imagePath += `/w780${posterPath}`;
 
           return (

@@ -18,7 +18,7 @@ import { AvatarGroup } from '@material-ui/lab';
 import BrokenImage from '../../common/BrokenImage';
 import TruncatedOverview from '../../common/TruncatedOverview';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
@@ -93,7 +93,7 @@ const TVShowEpisode = ({
 
   if (!airDate || moment(airDate).diff(moment()) > 0) return null;
 
-  let episodeImagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+  let episodeImagePath = TMDB_IMAGE_PREFIX;
   if (stillPath) episodeImagePath += `/w780${stillPath}`;
 
   const [director] = crew.filter((e) => e.job === 'Director');
@@ -152,7 +152,7 @@ const TVShowEpisode = ({
             {guestStars.map((guest, i) => {
               const { id, profile_path: profilePath } = guest;
 
-              let guestImagePath = MOVIE_DRAWER_TMDB_IMAGE_PREFIX;
+              let guestImagePath = TMDB_IMAGE_PREFIX;
               if (stillPath) guestImagePath += `/w780${profilePath}`;
 
               if (i < maxGuestsToShow) {

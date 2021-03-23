@@ -26,8 +26,6 @@ import { getMovieDetails } from '../api';
 
 import { moviesActions } from '../reducers/ducks';
 
-import { decryptKey } from '../utils/functions';
-
 import {
   NOTE_NO_SELECTED_MOVIE,
   NOTE_MOVIE_NOT_FOUND,
@@ -104,7 +102,9 @@ const Movies = () => {
     if (movieId === 'search') return;
 
     if (movieId) {
-      getMovieDetails(decryptKey(), movieId, (response) => {
+      const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
+
+      getMovieDetails(parmesanio, movieId, (response) => {
         dispatch(moviesActions.setActiveMovie(response));
         dispatch(moviesActions.setDetailsLoading(false));
         setIsLoaded(true);

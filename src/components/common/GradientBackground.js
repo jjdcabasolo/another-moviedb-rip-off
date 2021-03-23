@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import { MOVIE_DRAWER_TMDB_IMAGE_PREFIX } from '../../constants';
+import { TMDB_IMAGE_PREFIX } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -54,7 +54,7 @@ const GradientBackground = ({
 }) => {
   const classes = useStyles();
 
-  const src = `${MOVIE_DRAWER_TMDB_IMAGE_PREFIX}/w1280${image}`;
+  const src = `${TMDB_IMAGE_PREFIX}/w1280${image}`;
 
   if (isLoading) return null;
   if (!image && isItemSelected) return <div className={classes.noImagePadding} />;

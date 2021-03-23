@@ -18,7 +18,6 @@ import {
 } from '@material-ui/core';
 import { ArrowBackTwoTone, SearchTwoTone } from '@material-ui/icons';
 
-import APIKeyDialog from '../../apiKey/APIKeyDialog';
 import AppBar from '../../overrides/AppBar';
 import AppbarMenu from './AppbarMenu';
 import GradientBackground from '../../common/GradientBackground';
@@ -156,7 +155,6 @@ const Appbar = ({ children }) => {
           ATMDbRo
         </Typography>
         {searchComponent}
-        <APIKeyDialog />
         <AppbarMenu />
       </>
     );
