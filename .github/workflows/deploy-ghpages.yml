@@ -7,29 +7,22 @@ on:
     - master
 
 jobs:
-  build-deploy:
-    runs-on: ubuntu-18.04
+  build-and-deploy:
+    runs-on: ubuntu-latest
     steps:
-    - name: Checking out master
-      uses: actions/checkout@master
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
 
-    - name: Setting up Node v.10
-      uses: actions/setup-node@v1
-      with:
-        node-version: '10.16'
+      - name: Install and Build 🔧
+        run: |
+          npm install
+          npm run build
+        env:
+          REACT_APP_TMDB_PARMESANIO: ${{ secrets.REACT_APP_TMDB_PARMESANIO }}
 
-    - name: Adding the ridiculously big and messy node_modules folder
-      run: npm install
-
-    - name: Setting up Git credentials
-      run: |
-        git config --global user.email "abasolojohnjourish@gmail.com"
-        git config --global user.name ${GHPAGES_DEPLOY_USERNAMIO}
-        git remote rm origin
-        git remote add origin https://${GHPAGES_DEPLOY_USERNAMIO}:${GHPAGES_DEPLOY_PARMESANIO}@github.com/${GHPAGES_DEPLOY_USERNAMIO}/another-moviedb-rip-off.git
-      env:
-        GHPAGES_DEPLOY_PARMESANIO: ${{ secrets.GHPAGES_DEPLOY_PARMESANIO }}
-        GHPAGES_DEPLOY_USERNAMIO: jjdcabasolo
-
-    - name: Deploying ATMDbRo to GitHub Pages
-      run: npm run deploy
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GHPAGES_DEPLOY_PARMESANIO }}
+          BRANCH: gh-pages
+          FOLDER: build
