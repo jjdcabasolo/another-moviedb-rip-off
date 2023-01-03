@@ -1,20 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Tooltip as MuiTooltip } from '@material-ui/core';
+import { Tooltip as MuiTooltip } from "@material-ui/core";
 
-const Tooltip = ({
-  children,
-  placement,
-  title,
-  visible,
-}) => (visible
-  ? (
+const Tooltip = ({ children, placement, title, visible }) =>
+  visible ? (
     <MuiTooltip title={title} placement={placement}>
       {children}
     </MuiTooltip>
-  )
-  : children);
+  ) : (
+    children
+  );
 
 Tooltip.propTypes = {
   children: PropTypes.node.isRequired,

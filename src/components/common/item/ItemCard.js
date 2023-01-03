@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
-import moment from 'moment';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import clsx from "clsx";
+import moment from "moment";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Card,
   CardActionArea,
@@ -14,15 +14,15 @@ import {
   Grid,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import BrokenImage from '../BrokenImage';
+import BrokenImage from "../BrokenImage";
 
-import { scrollToID, truncateText } from '../../../utils/functions';
+import { scrollToID, truncateText } from "../../../utils/functions";
 
-import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
+import { moviesActions, tvShowsActions } from "../../../reducers/ducks";
 
-import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -31,23 +31,23 @@ const useStyles = makeStyles((theme) => ({
   },
   mediaDrawerOpen: {
     height: 0,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       paddingTop: theme.spacing(45),
     },
-    width: '100%',
+    width: "100%",
   },
   mediaDrawerClosed: {
     height: 0,
-    width: '100%',
+    width: "100%",
   },
   typoOverlayMediaDrawerOpen: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       marginTop: theme.spacing(-25),
     },
-    [theme.breakpoints.between('sm', 'lg')]: {
+    [theme.breakpoints.between("sm", "lg")]: {
       marginTop: theme.spacing(-25),
     },
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up("lg")]: {
       marginTop: -((theme.browserSize.height - theme.spacing(22)) / 2),
     },
   },
@@ -55,17 +55,17 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(-21),
   },
   typoOverlay: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    position: 'absolute',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    position: "absolute",
     padding: theme.spacing(2),
     color: theme.palette.grey[100],
-    pointerEvents: 'none',
-    overflow: 'hidden',
-    width: '100%',
+    pointerEvents: "none",
+    overflow: "hidden",
+    width: "100%",
     bottom: 0,
-    height: '100%',
+    height: "100%",
   },
   typoOverlayBackgroundGradient: {
     backgroundImage: `linear-gradient(to top,
@@ -80,23 +80,23 @@ const useStyles = makeStyles((theme) => ({
     )`,
   },
   cardContainer: {
-    transition: theme.transitions.create('padding', {
+    transition: theme.transitions.create("padding", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       padding: theme.spacing(1, 0),
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       padding: theme.spacing(1),
     },
   },
   itemExtension: {
-    maxWidth: '20%',
-    flexBasis: '20%',
+    maxWidth: "20%",
+    flexBasis: "20%",
   },
   rank: {
-    fontWeight: '400',
+    fontWeight: "400",
     fontSize: theme.typography.body2.fontSize,
     color: theme.palette.grey[300],
     marginRight: theme.spacing(1),
@@ -106,38 +106,38 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grey[50],
   },
   cardTitle: {
-    letterSpacing: '0.02em',
+    letterSpacing: "0.02em",
     fontWeight: theme.typography.fontWeightMedium,
   },
   horizontalScrollItemWidth: {
     padding: 0,
     width: theme.spacing(45),
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       width: `calc(100vw - ${theme.spacing(6)}px)`,
     },
   },
   horizontalScrollItemSpacing: {
     padding: 0,
     paddingBottom: theme.spacing(2),
-    [theme.breakpoints.up('md')]: {
-      '&:last-child': {
+    [theme.breakpoints.up("md")]: {
+      "&:last-child": {
         paddingBottom: 0,
       },
     },
-    [theme.breakpoints.only('xs')]: {
-      '&:first-child': {
+    [theme.breakpoints.only("xs")]: {
+      "&:first-child": {
         paddingTop: theme.spacing(1),
       },
     },
   },
   brokenImageContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    height: '100%',
-    justifyContent: 'center',
+    alignItems: "center",
+    display: "flex",
+    height: "100%",
+    justifyContent: "center",
     padding: theme.spacing(1),
-    position: 'absolute',
-    width: '100%',
+    position: "absolute",
+    width: "100%",
   },
   card: {
     backgroundColor: theme.palette.brokenImage.background,
@@ -159,19 +159,21 @@ const ItemCard = ({
   type,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
-  const isMovie = type === 'movies';
+  const isMovie = type === "movies";
   const date = isMovie ? content.release_date : content.first_air_date;
-  const dateDisplay = date ? ` ${moment(date).format('MMM D, YYYY')}` : ` ${NO_DATE_TEXT}`;
+  const dateDisplay = date
+    ? ` ${moment(date).format("MMM D, YYYY")}`
+    : ` ${NO_DATE_TEXT}`;
 
   if (!content) return null;
 
   const handleCardClick = () => {
-    scrollToID('scroll-to-top-anchor', false);
+    scrollToID("scroll-to-top-anchor", false);
 
     if (handleDrawerToggle) handleDrawerToggle();
 
@@ -191,19 +193,20 @@ const ItemCard = ({
 
   return (
     <Grid
-      className={clsx(
-        classes.cardContainer,
-        {
-          [classes.itemExtension]: col === 2 && !isHorizontalScroll,
-          [classes.horizontalScrollItemWidth]: isHorizontalScroll,
-          [classes.horizontalScrollItemSpacing]: hasSpacingHorizontalScroll,
-        },
-      )}
+      className={clsx(classes.cardContainer, {
+        [classes.itemExtension]: col === 2 && !isHorizontalScroll,
+        [classes.horizontalScrollItemWidth]: isHorizontalScroll,
+        [classes.horizontalScrollItemSpacing]: hasSpacingHorizontalScroll,
+      })}
       item
       xs={col}
     >
       <Link to={`/${type}/${content.id}`}>
-        <Card onClick={handleCardClick} variant="outlined" className={classes.card}>
+        <Card
+          onClick={handleCardClick}
+          variant="outlined"
+          className={classes.card}
+        >
           <CardActionArea>
             {!isImageValid && (
               <BrokenImage
@@ -212,54 +215,45 @@ const ItemCard = ({
               />
             )}
             <CardMedia
-              className={clsx(
-                classes.media,
-                {
-                  [classes.mediaDrawerOpen]: drawerOpen,
-                  [classes.mediaDrawerClosed]: !drawerOpen,
-                },
-              )}
+              className={clsx(classes.media, {
+                [classes.mediaDrawerOpen]: drawerOpen,
+                [classes.mediaDrawerClosed]: !drawerOpen,
+              })}
               image={imagePath}
             />
             <div
-              className={clsx(
-                classes.typoOverlay,
-                {
-                  [classes.typoOverlayBackgroundGradient]: isImageValid,
-                  [classes.typoOverlayMediaDrawerOpen]: drawerOpen,
-                  [classes.typoOverlayMediaDrawerClosed]: !drawerOpen,
-                },
-              )}
+              className={clsx(classes.typoOverlay, {
+                [classes.typoOverlayBackgroundGradient]: isImageValid,
+                [classes.typoOverlayMediaDrawerOpen]: drawerOpen,
+                [classes.typoOverlayMediaDrawerClosed]: !drawerOpen,
+              })}
             >
               <Typography
                 variant="h6"
-                className={clsx(
-                  classes.cardTitle,
-                  { [classes.textImageInvalid]: !isImageValid },
-                )}
+                className={clsx(classes.cardTitle, {
+                  [classes.textImageInvalid]: !isImageValid,
+                })}
                 noWrap
               >
                 {truncateText(
                   isMovie
-                    ? (content.title || content.original_title)
-                    : (content.name || content.original_name),
+                    ? content.title || content.original_title
+                    : content.name || content.original_name,
                   drawerOpen ? 25 : 100,
-                  'characters',
+                  "characters"
                 )}
               </Typography>
               <Typography
-                className={clsx(
-                  classes.rank,
-                  { [classes.textImageInvalid]: !isImageValid },
-                )}
+                className={clsx(classes.rank, {
+                  [classes.textImageInvalid]: !isImageValid,
+                })}
                 color="textSecondary"
               >
                 {rank !== 0 && (
                   <span
-                    className={clsx(
-                      classes.rankText,
-                      { [classes.textImageInvalid]: !isImageValid },
-                    )}
+                    className={clsx(classes.rankText, {
+                      [classes.textImageInvalid]: !isImageValid,
+                    })}
                   >
                     {`${rank} •`}
                   </span>
@@ -277,21 +271,21 @@ const ItemCard = ({
 ItemCard.defaultProps = {
   col: 12,
   content: PropTypes.shape({
-    backdrop_path: '',
-    first_air_date: '',
-    name: '',
-    original_name: '',
-    original_title: '',
-    poster_path: '',
-    release_date: '',
-    title: '',
+    backdrop_path: "",
+    first_air_date: "",
+    name: "",
+    original_name: "",
+    original_title: "",
+    poster_path: "",
+    release_date: "",
+    title: "",
   }),
   drawerOpen: false,
-  handleDrawerToggle: () => { },
+  handleDrawerToggle: () => {},
   hasSpacingHorizontalScroll: false,
   isHorizontalScroll: false,
   rank: 0,
-  type: '',
+  type: "",
 };
 
 ItemCard.propTypes = {

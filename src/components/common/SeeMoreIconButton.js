@@ -1,22 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
-import { ArrowForward } from '@material-ui/icons';
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography } from "@material-ui/core";
+import FowardIcon from "../../assets/icons/forward";
 
-import Fab from '../overrides/Fab';
+import Fab from "../custom/base/Fab";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.colorScheme.background,
     color: theme.palette.text.primary,
-    '&:hover': {
-      backgroundColor: theme.palette.background.default,
+    "&:hover": {
+      backgroundColor: theme.palette.colorScheme.background,
     },
   },
   seeMoreContainer: {
-    height: '100%',
+    height: "100%",
     width: theme.spacing(20),
   },
 }));
@@ -39,7 +39,7 @@ const SeeMoreIconButton = ({ handleSeeMore }) => {
     >
       <Grid item>
         <Fab className={classes.fab}>
-          <ArrowForward />
+          <FowardIcon />
         </Fab>
       </Grid>
       <Grid item>

@@ -1,28 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-import ItemCardHorizontalList from '../../common/item/ItemCardHorizontalList';
+import ItemCardHorizontalList from "../../common/item/ItemCardHorizontalList";
 
 const TVShowRecommendations = ({ anchorId }) => {
   const tvShow = useSelector((state) => state.tvShows.tvShow);
 
-  const {
-    name,
-    original_name: originalName,
-    recommendations,
-  } = tvShow;
+  const { name, original_name: originalName, recommendations } = tvShow;
 
   if (!recommendations) return null;
 
   return (
     <ItemCardHorizontalList
       anchorId={anchorId}
-      appbarTitle={[name || originalName, 'Recommendations']}
+      appbarTitle={[name || originalName, "Recommendations"]}
       areRecommendations
       items={recommendations}
-      overview={`If you liked ${name || originalName}, check out these other TV shows:`}
+      overview={`If you liked ${
+        name || originalName
+      }, check out these other TV shows:`}
     />
   );
 };

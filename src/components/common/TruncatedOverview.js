@@ -1,30 +1,28 @@
-import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useRef } from "react";
+import PropTypes from "prop-types";
 
-import LinesEllipsis from 'react-lines-ellipsis'
+import LinesEllipsis from "react-lines-ellipsis";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Typography, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Typography, useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   overview: {
-    userSelect: 'none',
-    cursor: 'pointer',
-    whiteSpace: 'pre-wrap',
+    userSelect: "none",
+    whiteSpace: "pre-wrap",
+  },
+  readMore: {
+    cursor: "pointer",
   },
   textEllipsis: {
-    whiteSpace: 'pre-wrap',
+    whiteSpace: "pre-wrap",
   },
 }));
 
-const TruncatedOverview = ({
-  maxLine,
-  overview,
-  variant = 'body1',
-}) => {
+const TruncatedOverview = ({ maxLine, overview, variant = "body1" }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
 
   const overviewRef = useRef(null);
 
@@ -51,35 +49,36 @@ const TruncatedOverview = ({
       ref={overviewRef}
       variant={variant}
     >
-      {showMoreOverview
-        ? overview
-        : (
-          <LinesEllipsis
-            basedOn="letters"
-            className={classes.textEllipsis}
-            ellipsis={(
-              <Typography
-                component="span"
-                color="textSecondary"
-                display="inline"
-                variant={variant}
-              >
-                ...read more.
-              </Typography>
-            )}
-            maxLine={maxLine || maxLineDefault}
-            onReflow={handleReflow}
-            text={overview.replace(/\n/g, ' ')}
-            trimRight
-          />
-        )}
+      {showMoreOverview ? (
+        overview
+      ) : (
+        <LinesEllipsis
+          basedOn="letters"
+          className={classes.textEllipsis}
+          ellipsis={
+            <Typography
+              component="span"
+              color="textSecondary"
+              display="inline"
+              variant={variant}
+              className={classes.readMore}
+            >
+              ...read more.
+            </Typography>
+          }
+          maxLine={maxLine || maxLineDefault}
+          onReflow={handleReflow}
+          text={overview.replace(/\n/g, " ")}
+          trimRight
+        />
+      )}
     </Typography>
   );
 };
 
 TruncatedOverview.defaultProps = {
   maxLine: null,
-  variant: 'body1',
+  variant: "body1",
 };
 
 TruncatedOverview.propTypes = {

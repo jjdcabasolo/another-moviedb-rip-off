@@ -1,6 +1,6 @@
 // ACTION TYPE
 const browserActionType = {
-  CHANGE_BROWSER_SIZE: '@browser/CHANGE_BROWSER_SIZE',
+  CHANGE_BROWSER_SIZE: "@browser/CHANGE_BROWSER_SIZE",
 };
 
 // ACTIONS
@@ -26,7 +26,9 @@ const changeBrowserSize = (state, action) => ({
 
 export const browserReducer = (state = initialState, action) => {
   switch (action.type) {
-    case browserActionType.CHANGE_BROWSER_SIZE: return changeBrowserSize(state, action);
-    default: return state;
+    case browserActionType.CHANGE_BROWSER_SIZE:
+      return changeBrowserSize(state, action);
+    default:
+      return state;
   }
 };

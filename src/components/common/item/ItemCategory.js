@@ -1,38 +1,43 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
-import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import clsx from "clsx";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Chip,
-  IconButton,
-  Popover,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-} from '@material-ui/core';
-import { ArrowDropDown, SearchTwoTone } from '@material-ui/icons';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Chip, Popover, Typography, useMediaQuery } from "@material-ui/core";
+import IconButton from "../../custom/composed/IconButton";
+import ArrowDownIcon from "../../../assets/icons/arrow-down";
+import SearchIcon from "../../../assets/icons/search";
 
-import { scrollToID } from '../../../utils/functions';
+import { scrollToID } from "../../../utils/functions";
 
-import { moviesActions, tvShowsActions } from '../../../reducers/ducks';
+import { moviesActions, tvShowsActions } from "../../../reducers/ducks";
 
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
-} from '../../../constants';
+} from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
-    '&:first-child': {
+    "&:first-child": {
       marginLeft: theme.spacing(1),
     },
-    '&:last-child': {
+    "&:last-child": {
       marginRight: theme.spacing(1),
+    },
+    "& svg": {
+      padding: theme.spacing(0, 1),
+      height: theme.spacing(3),
+    },
+    "& svg *[fill]": {
+      fill: theme.palette.colorScheme.svgStrokeFill,
+    },
+    "& svg *[stroke]": {
+      stroke: theme.palette.colorScheme.svgStrokeFill,
     },
   },
   popover: {
@@ -40,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: theme.spacing(25),
   },
   topCategories: {
-    display: 'flex',
+    display: "flex",
     margin: theme.spacing(1, 0),
-    overflowX: 'auto',
-    'scrollbar-width': 'none',
-    '&::-webkit-scrollbar': {
-      display: 'none',
+    overflowX: "auto",
+    "scrollbar-width": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
     },
   },
   category: {
@@ -59,16 +64,13 @@ const useStyles = makeStyles((theme) => ({
   },
   chipLabel: {
     paddingLeft: 0,
-    paddingRight: 9,
+    paddingRight: 0,
   },
 }));
 
-const ItemCategory = ({
-  iconSize = 'default',
-  type,
-}) => {
+const ItemCategory = ({ iconSize = "default", type }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
@@ -77,13 +79,13 @@ const ItemCategory = ({
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  
+
   const history = useHistory();
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-  const isMovie = activeTab === 'movies';
-  const isTVShow = activeTab === 'tvshows';
+  const id = open ? "simple-popover" : undefined;
+  const isMovie = activeTab === "movies";
+  const isTVShow = activeTab === "tvshows";
   const categoryChips = isMovie
     ? MOVIE_DRAWER_CATEGORY_CHIPS
     : TV_SHOW_DRAWER_CATEGORY_CHIPS;
@@ -100,39 +102,37 @@ const ItemCategory = ({
   const handleClose = () => setAnchorEl(null);
 
   const handleChipClick = (itemCategory) => {
-    scrollToID(isMobile ? 'scroll-to-top-anchor' : 'scroll-to-top-anchor-drawer', false);
+    scrollToID(
+      isMobile ? "scroll-to-top-anchor" : "scroll-to-top-anchor-drawer",
+      false
+    );
     if (isMovie) dispatch(moviesActions.setCategory(itemCategory));
     if (isTVShow) dispatch(tvShowsActions.setCategory(itemCategory));
   };
 
-  const renderCategoryChips = () => (
+  const renderCategoryChips = () =>
     categoryChips.map((e) => (
       <Chip
         className={classes.chip}
-        color={e.isActive(category) ? 'primary' : 'default'}
+        color={e.isActive(category) ? "primary" : "default"}
         key={`item-category-chip-${e.label}`}
         label={e.label}
         onClick={() => handleChipClick(e.identifier)}
-        variant={e.isActive(category) ? 'default' : 'outlined'}
+        variant={e.isActive(category) ? "default" : "outlined"}
       />
-    ))
-  );
+    ));
 
   const renderPopover = () => (
     <Popover
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'center', horizontal: 'left' }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       classes={{ paper: classes.popover }}
       id={id}
       onClose={handleClose}
       open={open}
-      transformOrigin={{ vertical: 'center', horizontal: 'left' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
     >
-      <Typography
-        className={classes.category}
-        gutterBottom
-        variant="body1"
-      >
+      <Typography className={classes.category} gutterBottom variant="body1">
         Set category:
       </Typography>
       {renderCategoryChips()}
@@ -140,25 +140,25 @@ const ItemCategory = ({
   );
 
   switch (type) {
-    case 'iconButton':
+    case "iconButton":
       return (
         <>
-          <Tooltip title="Set category">
-            <IconButton aria-label="setCategory" onClick={handleDropdownClick}>
-              <ArrowDropDown fontSize={iconSize} />
-            </IconButton>
-          </Tooltip>
+          <IconButton
+            svgSrc={<ArrowDownIcon />}
+            handleOnClick={handleDropdownClick}
+            tooltipTitle="Set category"
+          />
           {renderPopover()}
         </>
       );
-    case 'appbarHorizontalList':
+    case "appbarHorizontalList":
       return (
         <div className={clsx(classes.topCategories)}>
           <Chip
             className={classes.chip}
             classes={{ label: classes.chipLabel }}
             color="default"
-            icon={<SearchTwoTone />}
+            icon={<SearchIcon />}
             key="item-category-chip-search"
             onClick={handleSearchClick}
             variant="outlined"
@@ -173,7 +173,7 @@ const ItemCategory = ({
 };
 
 ItemCategory.defaultProps = {
-  iconSize: 'default',
+  iconSize: "default",
 };
 
 ItemCategory.propTypes = {

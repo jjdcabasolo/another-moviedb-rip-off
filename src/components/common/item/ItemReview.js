@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import moment from 'moment';
+import moment from "moment";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Chip,
   Divider,
   Grid,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import TruncatedOverview from '../TruncatedOverview';
+import TruncatedOverview from "../TruncatedOverview";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   reviewContainer: {
     paddingBottom: theme.spacing(4),
-    '&:last-child': {
+    "&:last-child": {
       paddingBottom: 0,
     },
   },
@@ -31,71 +31,67 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(4),
   },
   item: {
-    [theme.breakpoints.only('xs')]: {
-      alignItems: 'center',
-      display: 'flex',
+    [theme.breakpoints.only("xs")]: {
+      alignItems: "center",
+      display: "flex",
     },
   },
   reviewCard: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
-    height: 'fit-content',
+    height: "fit-content",
     margin: theme.spacing(1),
-    [theme.breakpoints.only('xs')]: {
-      display: 'flex',
-      justifyContent: 'center',
+    [theme.breakpoints.only("xs")]: {
+      display: "flex",
+      justifyContent: "center",
     },
   },
   reviewContents: {
-    [theme.breakpoints.up('sm')]: {
-      maxWidth: '80%',
-      flexBasis: '80%',
-    }
+    [theme.breakpoints.up("sm")]: {
+      maxWidth: "80%",
+      flexBasis: "80%",
+    },
   },
 }));
 
-const ItemReview = ({
-  author,
-  content,
-  date,
-  divider,
-  rating,
-}) => {
+const ItemReview = ({ author, content, date, divider, rating }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const renderChip = () => {
     let label;
 
-    if (rating === 10) label = 'Perfect!';
-    else if (8 <= rating && rating < 10) label = 'Good~';
-    else if (5 <= rating && rating < 8) label = 'Fair';
-    else label = 'Nope.';
+    if (rating === 10) label = "Perfect!";
+    else if (8 <= rating && rating < 10) label = "Good~";
+    else if (5 <= rating && rating < 8) label = "Fair";
+    else label = "Nope.";
 
     return <Chip label={label} size="small" />;
   };
 
   return (
     <>
-      {divider
-        ? (
-          <Grid item xs={12} className={classes.divider}>
-            <Divider />
-          </Grid>
-        )
-        : null}
+      {divider ? (
+        <Grid item xs={12} className={classes.divider}>
+          <Divider />
+        </Grid>
+      ) : null}
       <Grid container className={classes.reviewContainer} spacing={2}>
-        <Grid item sm={2} xs={12} container direction={isMobile ? 'row' : 'column'} spacing={1} className={classes.reviewCard}>
+        <Grid
+          item
+          sm={2}
+          xs={12}
+          container
+          direction={isMobile ? "row" : "column"}
+          spacing={1}
+          className={classes.reviewCard}
+        >
           <Grid item>
-            <Typography variant="h3">
-              {rating}
-            </Typography>
+            <Typography variant="h3">{rating}</Typography>
           </Grid>
           <Grid item className={classes.item}>
-            <Typography color="textSecondary">
-              out of 10
-            </Typography>
+            <Typography color="textSecondary">out of 10</Typography>
           </Grid>
           <Grid item className={classes.item}>
             {renderChip()}
@@ -106,7 +102,7 @@ const ItemReview = ({
             Review by <span className={classes.author}>{author}</span>
           </Typography>
           <Typography variant="caption" gutterBottom color="textSecondary">
-            {`Created on ${moment(date).format('MMM D, YYYY')}`}
+            {`Created on ${moment(date).format("MMM D, YYYY")}`}
           </Typography>
           <Typography variant="body2" gutterBottom className={classes.content}>
             <TruncatedOverview overview={content} maxLine={8} variant="body2" />

@@ -61,7 +61,7 @@ export const MAX_CREW_ON_SHOW_LESS = 2;
 /*
 
 */
-export const NO_DATE_TEXT = 'No release date.';
+export const NO_DATE_TEXT = "No release date.";
 
 /*
 

@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-import { Grid } from '@material-ui/core';
+import { Grid } from "@material-ui/core";
 
-import Statistic from '../../common/item/detail/Statistic';
+import Statistic from "../../common/item/detail/Statistic";
 
-import { toMillionsOrBillions } from '../../../utils/functions';
+import { toMillionsOrBillions } from "../../../utils/functions";
 
 const MovieBudget = () => {
   const movie = useSelector((state) => state.movies.movie);
@@ -18,7 +18,7 @@ const MovieBudget = () => {
     const hasIncome = income > 0;
 
     return [
-      (revenue !== 0 && (
+      revenue !== 0 && (
         <Statistic
           col={4}
           count={toMillionsOrBillions(revenue)}
@@ -26,8 +26,8 @@ const MovieBudget = () => {
           key="movie-budget-revenue"
           label="Revenue"
         />
-      )),
-      (budget !== 0 && (
+      ),
+      budget !== 0 && (
         <Statistic
           col={4}
           count={toMillionsOrBillions(budget)}
@@ -35,15 +35,15 @@ const MovieBudget = () => {
           key="movie-budget-budget"
           label="Budget"
         />
-      )),
-      (hasIncome && (
+      ),
+      hasIncome && (
         <Statistic
           col={4}
           count={toMillionsOrBillions(income)}
           key="movie-budget-income"
           label="Income"
         />
-      )),
+      ),
     ];
   };
 

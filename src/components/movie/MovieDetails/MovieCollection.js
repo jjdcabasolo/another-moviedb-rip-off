@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-import ItemCardHorizontalList from '../../common/item/ItemCardHorizontalList';
+import ItemCardHorizontalList from "../../common/item/ItemCardHorizontalList";
 
 const MovieCollection = ({ anchorId }) => {
   const movie = useSelector((state) => state.movies.movie);
@@ -20,7 +20,7 @@ const MovieCollection = ({ anchorId }) => {
 
   return (
     <ItemCardHorizontalList
-      appbarTitle={[title || originalTitle, 'Collection']}
+      appbarTitle={[title || originalTitle, "Collection"]}
       anchorId={anchorId}
       items={parts}
       isOverviewCollapsed

@@ -1,59 +1,59 @@
-import React from 'react';
+import React from "react";
 
-import clsx from 'clsx';
-import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
+import clsx from "clsx";
+import moment from "moment";
+import { useSelector, useDispatch } from "react-redux";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Grid, Typography, useMediaQuery } from "@material-ui/core";
 
-import BrokenImage from '../../common/BrokenImage';
-import ItemHorizontalContainer from '../../common/item/ItemHorizontalContainer';
+import BrokenImage from "../../common/BrokenImage";
+import ItemHorizontalContainer from "../../common/item/ItemHorizontalContainer";
 
-import { getTVShowSeasonDetails } from '../../../api';
+import { getTVShowSeasonDetails } from "../../../api";
 
-import { tvShowsActions } from '../../../reducers/ducks';
+import { tvShowsActions } from "../../../reducers/ducks";
 
-import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    position: 'relative',
+    position: "relative",
   },
   image: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
-    objectFit: 'cover',
-    objectPosition: '50% 0%',
+    objectFit: "cover",
+    objectPosition: "50% 0%",
     width: theme.spacing(18.75),
   },
   activeImage: {
-    border: `1px solid ${theme.palette.divider} !important`,
+    border: `1px solid ${theme.palette.colorScheme.divider} !important`,
     borderRadius: theme.shape.borderRadius,
   },
   emphasis: {
     fontWeight: 600,
   },
   horizontalScrollItemSpacing: {
-    border: '1px solid transparent',
-    cursor: 'pointer',
+    border: "1px solid transparent",
+    cursor: "pointer",
     margin: 0,
     padding: theme.spacing(1),
     maxWidth: theme.spacing(22.25),
-    [theme.breakpoints.only('xs')]: {
-      '&:last-child': {
+    [theme.breakpoints.only("xs")]: {
+      "&:last-child": {
         marginRight: theme.spacing(2),
       },
     },
   },
   gridItem: {
-    maxWidth: '100%',
+    maxWidth: "100%",
   },
   brokenImageContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
     padding: theme.spacing(1),
   },
   lastEntry: {
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TVShowSeasonList = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
@@ -76,9 +76,15 @@ const TVShowSeasonList = () => {
     if (selectedSeason !== index) {
       const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
 
-      getTVShowSeasonDetails(parmesanio, tvShow.id, index, (response) => {
-        dispatch(tvShowsActions.setEpisode(response));
-      }, () => { });
+      getTVShowSeasonDetails(
+        parmesanio,
+        tvShow.id,
+        index,
+        (response) => {
+          dispatch(tvShowsActions.setEpisode(response));
+        },
+        () => {}
+      );
       dispatch(tvShowsActions.setSelectedSeason(index));
     }
   };
@@ -106,10 +112,9 @@ const TVShowSeasonList = () => {
 
           return (
             <Grid
-              className={clsx(
-                classes.horizontalScrollItemSpacing,
-                { [classes.activeImage]: isActive },
-              )}
+              className={clsx(classes.horizontalScrollItemSpacing, {
+                [classes.activeImage]: isActive,
+              })}
               container
               direction="column"
               onClick={() => handleCardClick(seasonNumber)}
@@ -117,27 +122,30 @@ const TVShowSeasonList = () => {
               key={`tv-show-season-list-${id}`}
             >
               <Grid item className={classes.gridItem}>
-                {posterPath
-                  ? (
-                    <img
-                      className={classes.image}
-                      alt="Season cover"
-                      src={imagePath}
-                    />
-                  )
-                  : (
-                    <BrokenImage
-                      type="baseImage"
-                      extraClass={`${classes.activeImage} ${classes.image} ${classes.brokenImageContainer}`}
-                    />
-                  )}
+                {posterPath ? (
+                  <img
+                    className={classes.image}
+                    alt="Season cover"
+                    src={imagePath}
+                  />
+                ) : (
+                  <BrokenImage
+                    type="baseImage"
+                    extraClass={`${classes.activeImage} ${classes.image} ${classes.brokenImageContainer}`}
+                  />
+                )}
               </Grid>
               <Grid item className={classes.gridItem}>
-                <Typography noWrap className={clsx({ [classes.emphasis]: isActive })}>
+                <Typography
+                  noWrap
+                  className={clsx({ [classes.emphasis]: isActive })}
+                >
                   {seasonName}
                 </Typography>
                 <Typography color="textSecondary" variant="body2" noWrap>
-                  {airDate ? moment(airDate).format('MMM D, YYYY') : NO_DATE_TEXT}
+                  {airDate
+                    ? moment(airDate).format("MMM D, YYYY")
+                    : NO_DATE_TEXT}
                 </Typography>
               </Grid>
             </Grid>

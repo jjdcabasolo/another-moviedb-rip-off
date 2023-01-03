@@ -1,34 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { useHistory, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Grid, useMediaQuery } from "@material-ui/core";
 
-import ItemCard from './ItemCard';
-import ItemHorizontalContainer from './ItemHorizontalContainer';
-import ItemLazyLoad from './ItemLazyLoad';
-import ItemSeeMore from './ItemSeeMore';
-import TruncatedOverview from '../TruncatedOverview';
+import ItemCard from "./ItemCard";
+import ItemHorizontalContainer from "./ItemHorizontalContainer";
+import ItemLazyLoad from "./ItemLazyLoad";
+import ItemSeeMore from "./ItemSeeMore";
+import TruncatedOverview from "../TruncatedOverview";
 
-import { scrollToID } from '../../../utils/functions';
+import { scrollToID } from "../../../utils/functions";
 
-import { MAX_ITEMS_BEFORE_COLLAPSING } from '../../../constants';
+import { MAX_ITEMS_BEFORE_COLLAPSING } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       margin: theme.spacing(2, 0),
     },
-    position: 'relative',
-    width: 'inherit',
+    position: "relative",
+    width: "inherit",
   },
   horizontalScrollItemSpacing: {
     paddingRight: theme.spacing(2),
-    [theme.breakpoints.up('md')]: {
-      '&:last-child': {
+    [theme.breakpoints.up("md")]: {
+      "&:last-child": {
         paddingRight: 0,
       },
     },
@@ -46,7 +46,7 @@ const ItemCardHorizontalList = ({
   overview,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const activeTab = useSelector((state) => state.sidebar.activeTab);
@@ -54,7 +54,7 @@ const ItemCardHorizontalList = ({
   const history = useHistory();
   const { section } = useParams();
 
-  const sectionId = anchorId.replace('movie-', '').replace('tvshow-', '');
+  const sectionId = anchorId.replace("movie-", "").replace("tvshow-", "");
   const collapsedItems = areRecommendations ? items.slice(0, 10) : items;
   const hasSpacingHorizontalScroll = section === sectionId;
 
@@ -64,11 +64,12 @@ const ItemCardHorizontalList = ({
     history.push(`${history.location.pathname}/${sectionId}`);
   };
 
-  const renderOverview = () => overview.length > 0 && (
-    <div className={classes.overview}>
-      <TruncatedOverview overview={overview} />
-    </div>
-  );
+  const renderOverview = () =>
+    overview.length > 0 && (
+      <div className={classes.overview}>
+        <TruncatedOverview overview={overview} />
+      </div>
+    );
 
   return (
     <Grid container className={classes.container}>
@@ -76,7 +77,7 @@ const ItemCardHorizontalList = ({
       <ItemSeeMore
         appbarTitle={appbarTitle}
         collapsedClickEvent={() => scrollToID(anchorId)}
-        collapsedContent={(
+        collapsedContent={
           <ItemHorizontalContainer
             handleSeeMore={handleSeeMore}
             isWithSeeMore={items.length > MAX_ITEMS_BEFORE_COLLAPSING}
@@ -99,9 +100,9 @@ const ItemCardHorizontalList = ({
               </div>
             ))}
           </ItemHorizontalContainer>
-        )}
+        }
         isButtonShown={items.length > MAX_ITEMS_BEFORE_COLLAPSING}
-        expandedContent={(
+        expandedContent={
           <>
             {isMobile && renderOverview()}
             <Grid item xs={12} container>
@@ -118,7 +119,7 @@ const ItemCardHorizontalList = ({
               />
             </Grid>
           </>
-        )}
+        }
         maxWidth="xs"
         sectionId={sectionId}
       />
@@ -128,20 +129,24 @@ const ItemCardHorizontalList = ({
 
 ItemCardHorizontalList.defaultProps = {
   areRecommendations: false,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    label: '',
-    link: '',
-  })),
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: "",
+      link: "",
+    })
+  ),
 };
 
 ItemCardHorizontalList.propTypes = {
   anchorId: PropTypes.string.isRequired,
   appbarTitle: PropTypes.arrayOf(PropTypes.string).isRequired,
   areRecommendations: PropTypes.bool,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string,
-    link: PropTypes.string,
-  })),
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      link: PropTypes.string,
+    })
+  ),
   overview: PropTypes.string.isRequired,
 };
 

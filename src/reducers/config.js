@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { combineReducers } from "redux";
+import { routerReducer } from "react-router-redux";
 
 import {
   browserReducer,
@@ -8,7 +8,7 @@ import {
   snackbarReducer,
   tmdbConfigReducer,
   tvShowsReducer,
-} from './ducks';
+} from "./ducks";
 
 const appReducer = combineReducers({
   router: routerReducer,
@@ -20,6 +20,7 @@ const appReducer = combineReducers({
   tvShows: tvShowsReducer,
 });
 
-const rootReducer = (state, action) => appReducer(action.type === 'CLEAR_REDUX_STATES' ? undefined : state, action);
+const rootReducer = (state, action) =>
+  appReducer(action.type === "CLEAR_REDUX_STATES" ? undefined : state, action);
 
 export default rootReducer;

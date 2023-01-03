@@ -1,34 +1,26 @@
-export {
-  ITEM_DRAWER_WIDTH,
-  SIDEBAR_WIDTH,
-} from './drawers';
+export { ITEM_DRAWER_WIDTH, SIDEBAR_WIDTH } from "./drawers";
 
 export {
   CREW_TO_DISPLAY,
   MOVIE_BREADCRUMBS_CONFIG,
   MOVIE_DRAWER_CATEGORY_CHIPS,
-} from './movies';
+} from "./movies";
 
 export {
+  NOTE_ERROR_OCCURRED,
   NOTE_MOVIE_NOT_FOUND,
   NOTE_NO_SELECTED_MOVIE,
   NOTE_NO_SELECTED_TV_SHOW,
   NOTE_OFFLINE,
   NOTE_PAGE_NOT_FOUND,
+  NOTE_SEARCH,
   NOTE_TV_SHOW_NOT_FOUND,
-} from './note';
+} from "./note";
 
 export {
   TV_SHOW_BREADCRUMBS_CONFIG,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
-} from './tvShows';
-
-export {
-  IMDB_LOGO,
-  IMDB_LOGO_DARK,
-  TMDB_LOGO,
-  TMDB_LOGO_DARK,
-} from './logo';
+} from "./tvShows";
 
 export {
   FIGMA_LINK,
@@ -36,7 +28,7 @@ export {
   TMDB_IMAGE_PREFIX,
   TMDB_LINK,
   TMDB_SIGN_UP,
-} from './links';
+} from "./links";
 
 export {
   MAX_CAST_HORIZONTAL_ITEMS,
@@ -48,4 +40,4 @@ export {
   NO_DATE_TEXT,
   OVERVIEW_MAX_WORDS,
   TRUNCATION_ALLOWANCE,
-} from './items';
+} from "./items";

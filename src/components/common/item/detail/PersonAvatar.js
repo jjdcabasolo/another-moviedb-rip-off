@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
+import { Avatar, Grid, Typography } from "@material-ui/core";
 
-import BrokenImage from '../../BrokenImage';
+import BrokenImage from "../../BrokenImage";
 
-import { TMDB_IMAGE_PREFIX } from '../../../../constants';
+import { TMDB_IMAGE_PREFIX } from "../../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   subtitle: {
-    fontWeight: '400',
+    fontWeight: "400",
   },
   title: {
     fontWeight: theme.typography.fontWeightMedium,
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(14),
   },
   text: {
-    width: 'inherit',
+    width: "inherit",
     marginTop: theme.spacing(1),
   },
   horizontalScrollItemWidth: {
@@ -48,9 +48,9 @@ const PersonAvatar = ({
   return (
     <Grid
       alignItems="center"
-      className={clsx(
-        { [classes.horizontalScrollItemWidth]: isHorizontalScroll },
-      )}
+      className={clsx({
+        [classes.horizontalScrollItemWidth]: isHorizontalScroll,
+      })}
       container
       direction="column"
       item
@@ -58,22 +58,18 @@ const PersonAvatar = ({
       xs={col}
     >
       <Grid item>
-        {isImageValid
-          ? (
-            <Avatar
-              alt={`${name}'s avatar.`}
-              className={classes.avatar}
-              src={`${TMDB_IMAGE_PREFIX}/w780${image}`}
-            />
-          )
-          : <BrokenImage type="avatar" extraClass={classes.avatar} />}
+        {isImageValid ? (
+          <Avatar
+            alt={`${name}'s avatar.`}
+            className={classes.avatar}
+            src={`${TMDB_IMAGE_PREFIX}/w780${image}`}
+          />
+        ) : (
+          <BrokenImage type="avatar" extraClass={classes.avatar} />
+        )}
       </Grid>
       <Grid item className={classes.text}>
-        <Typography
-          align="center"
-          className={classes.title}
-          variant="body1"
-        >
+        <Typography align="center" className={classes.title} variant="body1">
           {character}
         </Typography>
       </Grid>
@@ -92,11 +88,11 @@ const PersonAvatar = ({
 };
 
 PersonAvatar.defaultProps = {
-  character: '',
+  character: "",
   col: 12,
-  image: '',
+  image: "",
   isHorizontalScroll: false,
-  name: '',
+  name: "",
 };
 
 PersonAvatar.propTypes = {

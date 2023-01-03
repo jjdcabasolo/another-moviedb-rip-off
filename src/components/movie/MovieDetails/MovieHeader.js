@@ -1,22 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import moment from 'moment';
-import { useSelector } from 'react-redux';
+import moment from "moment";
+import { useSelector } from "react-redux";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Chip,
-  Grid,
-  Typography,
-  useMediaQuery,
-} from '@material-ui/core';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Chip, Grid, Typography, useMediaQuery } from "@material-ui/core";
 
-import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
-import ItemLinks from '../../common/item/ItemLinks';
-import TruncatedOverview from '../../common/TruncatedOverview';
+import ItemBreadcrumbs from "../../common/item/ItemBreadcrumbs";
+import ItemLinks from "../../common/item/ItemLinks";
+import TruncatedOverview from "../../common/TruncatedOverview";
 
-import { MOVIE_BREADCRUMBS_CONFIG, NO_DATE_TEXT } from '../../../constants';
+import { MOVIE_BREADCRUMBS_CONFIG, NO_DATE_TEXT } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -33,24 +28,24 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.h4.fontSize,
     fontWeight: theme.typography.fontWeightLight,
     marginLeft: theme.spacing(2),
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       marginLeft: theme.spacing(1),
       fontSize: theme.typography.h5.fontSize,
     },
   },
   ellipsis: {
-    fontSize: '1rem',
+    fontSize: "1rem",
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    fontWeight: '400',
-    lineHeight: '1.5',
-    letterSpacing: '0.00938em',
-  }
+    fontWeight: "400",
+    lineHeight: "1.5",
+    letterSpacing: "0.00938em",
+  },
 }));
 
 const MovieHeader = ({ sectionVisibility }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
 
   const movie = useSelector((state) => state.movies.movie);
 
@@ -69,7 +64,9 @@ const MovieHeader = ({ sectionVisibility }) => {
     twitter,
   } = movie;
 
-  const breadcrumbs = MOVIE_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
+  const breadcrumbs = MOVIE_BREADCRUMBS_CONFIG.filter(
+    (e) => sectionVisibility[e.visibilityId]
+  );
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(runtime / 60);
   const runtimeMinutes = runtime % 60;
@@ -77,14 +74,11 @@ const MovieHeader = ({ sectionVisibility }) => {
   return (
     <Grid item xs={12} container spacing={2}>
       <Grid item xs={12}>
-        <Typography
-          className={classes.title}
-          variant={isMobile ? 'h4' : 'h2'}
-        >
+        <Typography className={classes.title} variant={isMobile ? "h4" : "h2"}>
           {title || originalTitle}
           {releaseDate && (
             <span className={classes.releaseYear}>
-              {`(${moment(releaseDate).format('YYYY')})`}
+              {`(${moment(releaseDate).format("YYYY")})`}
             </span>
           )}
         </Typography>
@@ -94,13 +88,17 @@ const MovieHeader = ({ sectionVisibility }) => {
           <Typography
             className={classes.subtitle}
             color="textSecondary"
-            variant={isMobile ? 'body1' : 'h6'}
+            variant={isMobile ? "body1" : "h6"}
           >
-            {releaseDate ? moment(releaseDate).format('MMM D, YYYY') : NO_DATE_TEXT}
+            {releaseDate
+              ? moment(releaseDate).format("MMM D, YYYY")
+              : NO_DATE_TEXT}
             &nbsp;&middot;&nbsp;
             {runtime
-              ? `${runtimeHours !== 0 ? `${runtimeHours}hr ` : ''}${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`
-              : 'No runtime yet.'}
+              ? `${runtimeHours !== 0 ? `${runtimeHours}hr ` : ""}${
+                  runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ""
+                }`
+              : "No runtime yet."}
           </Typography>
         </Grid>
       </Grid>
@@ -131,14 +129,8 @@ const MovieHeader = ({ sectionVisibility }) => {
       )}
       {tagline && (
         <Grid item xs={12}>
-          <Typography
-            color="textSecondary"
-            gutterBottom
-            variant="body1"
-          >
-            <em>
-              {tagline}
-            </em>
+          <Typography color="textSecondary" gutterBottom variant="body1">
+            <em>{tagline}</em>
           </Typography>
         </Grid>
       )}

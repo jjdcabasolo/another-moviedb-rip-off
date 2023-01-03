@@ -1,42 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Divider,
-  Grid,
-  IconButton,
-  SvgIcon,
-  Tooltip,
-} from '@material-ui/core';
-import { LinkTwoTone } from '@material-ui/icons';
+import { makeStyles } from "@material-ui/core/styles";
+import { Divider, Grid } from "@material-ui/core";
+import IconButton from "../../custom/composed/IconButton";
 
-import Facebook from '../../../assets/images/013-facebook';
-import Instagram from '../../../assets/images/014-instagram';
-import Twitter from '../../../assets/images/004-twitter';
+import FacebookIcon from "../../../assets/icons/facebook";
+import InstagramIcon from "../../../assets/icons/instagram";
+import TwitterIcon from "../../../assets/icons/twitter";
+import IMDbIcon from "../../../assets/icons/imdb";
+import TMDbIcon from "../../../assets/icons/tmdb";
+import ShareIcon from "../../../assets/icons/share";
 
-import { snackbarActions } from '../../../reducers/ducks';
-
-import {
-  IMDB_LOGO_DARK,
-  IMDB_LOGO,
-  TMDB_LOGO_DARK,
-  TMDB_LOGO,
-} from '../../../constants';
+import { snackbarActions } from "../../../reducers/ducks";
 
 const useStyles = makeStyles((theme) => ({
   divider: {
-    height: '50%',
-    [theme.breakpoints.up('sm')]: {
+    height: "50%",
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(0.5),
       marginRight: theme.spacing(0.5),
-    }
+    },
   },
   dividerContainer: {
-    alignItems: 'center',
-    display: 'flex',
+    alignItems: "center",
+    display: "flex",
   },
   logo: {
     width: theme.spacing(3),
@@ -44,77 +34,73 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ItemLinks = ({
-  facebook,
-  imdb,
-  instagram,
-  tmdb,
-  twitter,
-}) => {
+const ItemLinks = ({ facebook, imdb, instagram, tmdb, twitter }) => {
   const classes = useStyles();
 
-  const darkMode = useSelector((state) => state.sidebar.darkMode);
   const dispatch = useDispatch();
 
-  const [start, setStart] = useState('');
+  const [start, setStart] = useState("");
 
   useEffect(() => {
-    const links = [facebook, instagram, twitter, imdb, tmdb].filter((e) => e !== null);
-    setStart(links[0] || '');
+    const links = [facebook, instagram, twitter, imdb, tmdb].filter(
+      (e) => e !== null
+    );
+    setStart(links[0] || "");
   }, [facebook, instagram, twitter, imdb, tmdb]);
 
   const handleShareLinkClick = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      dispatch(snackbarActions.showSnackbar(`Link copied to clipboard!`, 'success'));
-    }, (error) => {
-      dispatch(snackbarActions.showSnackbar(`Error on copying to clipboard: ${error}`, 'error'));
-    });
+    navigator.clipboard.writeText(window.location.href).then(
+      () => {
+        dispatch(
+          snackbarActions.showSnackbar(`Link copied to clipboard!`, "success")
+        );
+      },
+      () => {
+        dispatch(
+          snackbarActions.showSnackbar(
+            `Error on copying to clipboard. Try again.`,
+            "error"
+          )
+        );
+      }
+    );
   };
 
-  const renderSocialNetworkLinks = (src, link, title, isImg) => (
+  const renderIconButtonWithTooltip = (src, link, title) => (
     <Grid item>
-      <Tooltip title={title}>
-        <IconButton
-          edge={start === link ? 'start' : false}
-          onClick={() => window.open(link, '_blank')}
-          className={classes.iconButton}
-        >
-          {isImg ? src : <SvgIcon>{src}</SvgIcon>}
-        </IconButton>
-      </Tooltip>
+      <IconButton
+        svgSrc={src}
+        tooltipTitle={title}
+        handleOnClick={
+          link ? () => window.open(link, "_blank") : handleShareLinkClick
+        }
+      />
     </Grid>
-  );
-
-  const renderImgLogo = (alt, logoDark, logo) => (
-    <img
-      alt={alt}
-      className={classes.logo}
-      src={darkMode ? logoDark : logo}
-    />
   );
 
   return (
     <Grid container spacing={1}>
-      {facebook && facebook !== null && renderSocialNetworkLinks(<Facebook />, facebook, 'Facebook')}
-      {instagram && instagram !== null && renderSocialNetworkLinks(<Instagram />, instagram, 'Instagram')}
-      {twitter && twitter !== null && renderSocialNetworkLinks(<Twitter />, twitter, 'Twitter')}
+      {facebook &&
+        facebook !== null &&
+        renderIconButtonWithTooltip(<FacebookIcon />, facebook, "Facebook")}
+      {instagram &&
+        instagram !== null &&
+        renderIconButtonWithTooltip(<InstagramIcon />, instagram, "Instagram")}
+      {twitter &&
+        twitter !== null &&
+        renderIconButtonWithTooltip(<TwitterIcon />, twitter, "Twitter")}
       {start.match(/(facebook)|(twitter)|(instagram)/g) && (
         <Grid item className={classes.dividerContainer}>
           <Divider orientation="vertical" className={classes.divider} />
         </Grid>
       )}
-      {imdb && imdb !== null && renderSocialNetworkLinks(renderImgLogo('IMDb Logo', IMDB_LOGO_DARK, IMDB_LOGO), imdb, 'IMDb', true)}
-      {tmdb && tmdb !== null && renderSocialNetworkLinks(renderImgLogo('TMDb Logo', TMDB_LOGO_DARK, TMDB_LOGO), tmdb, 'TMDb', true)}
-      <Grid item>
-        <Tooltip title="Share">
-          <IconButton
-            onClick={handleShareLinkClick}
-            className={classes.iconButton}
-          >
-            <LinkTwoTone />
-          </IconButton>
-        </Tooltip>
-      </Grid>
+      {imdb &&
+        imdb !== null &&
+        renderIconButtonWithTooltip(<IMDbIcon />, imdb, "IMDb")}
+      {tmdb &&
+        tmdb !== null &&
+        renderIconButtonWithTooltip(<TMDbIcon />, tmdb, "TMDb")}
+      {renderIconButtonWithTooltip(<ShareIcon />, null, "Copy share link")}
     </Grid>
   );
 };

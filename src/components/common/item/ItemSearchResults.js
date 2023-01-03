@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { useHistory } from 'react-router-dom';
-import { usePath } from '../../../hooks';
-import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
+import { usePath } from "../../../hooks";
+import { useSelector, useDispatch } from "react-redux";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Container,
   Dialog,
   DialogContent,
   DialogTitle,
   Grid,
-  IconButton,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
-import { ArrowBackTwoTone } from '@material-ui/icons';
+} from "@material-ui/core";
+import IconButton from "../../custom/composed/IconButton";
+import BackIcon from "../../../assets/icons/back";
 
-import ComponentLoader from '../ComponentLoader';
-import ItemCard from './ItemCard';
-import ItemLazyLoad from '../../common/item/ItemLazyLoad';
-import ItemSearch from './ItemSearch';
+import ComponentLoader from "../ComponentLoader";
+import ItemCard from "./ItemCard";
+import ItemLazyLoad from "../../common/item/ItemLazyLoad";
+import ItemSearch from "./ItemSearch";
 
-import { sidebarActions } from '../../../reducers/ducks';
+import { sidebarActions } from "../../../reducers/ducks";
 
 const useStyles = makeStyles((theme) => ({
   drawerOpenContainer: {
@@ -30,16 +30,16 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerClosedContainer: {
     padding: theme.spacing(1),
-    overflowY: 'auto',
+    overflowY: "auto",
   },
   noResults: {
     padding: theme.spacing(1),
   },
   paper: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.colorScheme.background,
   },
   dialogTitle: {
-    padding: theme.spacing(0.5, 2),
+    padding: theme.spacing(1, 2),
   },
   dialogContent: {
     padding: theme.spacing(2),
@@ -54,19 +54,25 @@ const useStyles = makeStyles((theme) => ({
 
 const ItemSearchResults = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
-  const isBigTablet = useMediaQuery(theme.breakpoints.only('md'));
-  const isSmallTablet = useMediaQuery(theme.breakpoints.only('sm'));
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isBigTablet = useMediaQuery(theme.breakpoints.only("md"));
+  const isSmallTablet = useMediaQuery(theme.breakpoints.only("sm"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("lg"));
   const classes = useStyles();
 
   // const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
-  const isMovieSearchLoading = useSelector((state) => state.movies.isSearchLoading);
-  const isTVShowSearchLoading = useSelector((state) => state.tvShows.isSearchLoading);
+  const isMovieSearchLoading = useSelector(
+    (state) => state.movies.isSearchLoading
+  );
+  const isTVShowSearchLoading = useSelector(
+    (state) => state.tvShows.isSearchLoading
+  );
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
   const movieSearchResults = useSelector((state) => state.movies.searchResults);
   const searchQuery = useSelector((state) => state.sidebar.searchQuery);
-  const tvShowSearchResults = useSelector((state) => state.tvShows.searchResults);
+  const tvShowSearchResults = useSelector(
+    (state) => state.tvShows.searchResults
+  );
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -75,10 +81,10 @@ const ItemSearchResults = () => {
   const [content, setContent] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const isMovie = activeTab === 'movies';
+  const isMovie = activeTab === "movies";
 
   useEffect(() => {
-    setIsDialogOpen(idPath === 'search');
+    setIsDialogOpen(idPath === "search");
   }, [idPath]);
 
   useEffect(() => {
@@ -110,11 +116,7 @@ const ItemSearchResults = () => {
   if (searchQuery.length > 0) {
     if (content.length > 0) {
       results = (
-        <Grid
-          container
-          item
-          justify="center"
-        >
+        <Grid container item justify="center">
           <ItemLazyLoad
             contents={content}
             node={<ItemCard />}
@@ -127,7 +129,7 @@ const ItemSearchResults = () => {
             type="itemCardSearchResults"
           />
         </Grid>
-      )
+      );
     } else {
       if (isSearchLoading) {
         results = (
@@ -153,12 +155,18 @@ const ItemSearchResults = () => {
         onClose={handleClose}
         open={isDialogOpen}
       >
-        <DialogTitle id="item-search-results" onClose={handleClose} className={classes.dialogTitle}>
-          <Grid container>
+        <DialogTitle
+          id="item-search-results"
+          onClose={handleClose}
+          className={classes.dialogTitle}
+        >
+          <Grid container spacing={2} wrap="nowrap">
             <Grid item>
-              <IconButton edge="start" onClick={handleClose} aria-label="close">
-                <ArrowBackTwoTone />
-              </IconButton>
+              <IconButton
+                svgSrc={<BackIcon />}
+                handleOnClick={handleClose}
+                tooltipTitle="Go back"
+              />
             </Grid>
             <Grid item className={classes.itemSearchContainer}>
               <ItemSearch isPermanentlyOpen />
@@ -172,17 +180,11 @@ const ItemSearchResults = () => {
     );
   }
 
-  return itemDrawerOpen
-    ? (
-      <Container className={classes.drawerOpenContainer}>
-        {results}
-      </Container>
-    )
-    : (
-      <div className={classes.drawerClosedContainer}>
-        {results}
-      </div>
-    );
+  return itemDrawerOpen ? (
+    <Container className={classes.drawerOpenContainer}>{results}</Container>
+  ) : (
+    <div className={classes.drawerClosedContainer}>{results}</div>
+  );
 };
 
 export default ItemSearchResults;

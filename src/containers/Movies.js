@@ -1,51 +1,53 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import moment from 'moment';
-import ReactPlayer from 'react-player';
-import { useSelector, useDispatch } from 'react-redux';
-import { usePath } from '../hooks';
+import moment from "moment";
+import ReactPlayer from "react-player";
+import { useSelector, useDispatch } from "react-redux";
+import { usePath } from "../hooks";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Grid, useMediaQuery } from "@material-ui/core";
 
-import ComponentLoader from '../components/common/ComponentLoader';
-import ItemFooter from '../components/common/item/ItemFooter';
-import MovieBudget from '../components/movie/MovieDetails/MovieBudget';
-import MovieCast from '../components/movie/MovieDetails/MovieCast';
-import MovieCollection from '../components/movie/MovieDetails/MovieCollection';
-import MovieCrew from '../components/movie/MovieDetails/MovieCrew';
-import MovieHeader from '../components/movie/MovieDetails/MovieHeader';
-import MovieProduction from '../components/movie/MovieDetails/MovieProduction';
-import MovieRecommendations from '../components/movie/MovieDetails/MovieRecommendations';
-import MovieReviews from '../components/movie/MovieDetails/MovieReviews';
-import Note from '../components/common/Note';
-import ScrollToTop from '../components/common/ScrollToTop';
-import Section from '../components/common/item/detail/Section';
+import ComponentLoader from "../components/common/ComponentLoader";
+import ErrorBoundary from "../components/navigation/ErrorBoundary";
+import ItemFooter from "../components/common/item/ItemFooter";
+import MovieBudget from "../components/movie/MovieDetails/MovieBudget";
+import MovieCast from "../components/movie/MovieDetails/MovieCast";
+import MovieCollection from "../components/movie/MovieDetails/MovieCollection";
+import MovieCrew from "../components/movie/MovieDetails/MovieCrew";
+import MovieHeader from "../components/movie/MovieDetails/MovieHeader";
+import MovieProduction from "../components/movie/MovieDetails/MovieProduction";
+import MovieRecommendations from "../components/movie/MovieDetails/MovieRecommendations";
+import MovieReviews from "../components/movie/MovieDetails/MovieReviews";
+import Note from "../components/common/Note";
+import ScrollToTop from "../components/common/ScrollToTop";
+import Section from "../components/common/item/detail/Section";
 
-import { getMovieDetails } from '../api';
+import { getMovieDetails } from "../api";
 
-import { moviesActions } from '../reducers/ducks';
+import { moviesActions } from "../reducers/ducks";
 
 import {
   NOTE_NO_SELECTED_MOVIE,
   NOTE_MOVIE_NOT_FOUND,
-} from '../constants';
+  NOTE_SEARCH,
+} from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(0, 2),
   },
   trailer: {
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       height: `${theme.spacing(24)}px !important`,
     },
-    [theme.breakpoints.only('sm')]: {
+    [theme.breakpoints.only("sm")]: {
       height: `${theme.spacing(35)}px !important`,
     },
-    [theme.breakpoints.between('sm', 'md')]: {
+    [theme.breakpoints.between("sm", "md")]: {
       height: `${theme.spacing(45)}px !important`,
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up("md")]: {
       height: `${theme.spacing(60)}px !important`,
     },
   },
@@ -56,10 +58,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Movies = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const movie = useSelector((state) => state.movies.movie);
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const dispatch = useDispatch();
@@ -90,34 +93,44 @@ const Movies = () => {
     cast: cast && cast.length > 0,
     crew: crew && crew.length > 0,
     production: productionCompanies && productionCompanies.length > 0,
-    collection: belongsToCollection && Object.keys(belongsToCollection).length > 0,
+    collection:
+      belongsToCollection && Object.keys(belongsToCollection).length > 0,
     recommendations: recommendations && recommendations.length > 0,
     reviews: reviews && reviews.length > 0,
   };
-  const hasStatistics = !Number.isNaN(budget)
-    && !Number.isNaN(revenue)
-    && (budget !== 0 && revenue !== 0);
+  const hasStatistics =
+    !Number.isNaN(budget) &&
+    !Number.isNaN(revenue) &&
+    budget !== 0 &&
+    revenue !== 0;
 
   useEffect(() => {
-    if (movieId === 'search') return;
+    if (movieId === "search") return;
 
     if (movieId) {
       const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
 
-      getMovieDetails(parmesanio, movieId, (response) => {
-        dispatch(moviesActions.setActiveMovie(response));
-        dispatch(moviesActions.setDetailsLoading(false));
-        setIsLoaded(true);
-      }, (error) => {
-        if (error.response) {
-          dispatch(moviesActions.setActiveMovie({}));
-          setIsLoaded(error.response.data.status_code);
+      getMovieDetails(
+        parmesanio,
+        movieId,
+        (response) => {
+          dispatch(moviesActions.setActiveMovie(response));
+          setIsLoaded(true);
+        },
+        (error) => {
+          if (error.response) {
+            dispatch(moviesActions.setActiveMovie({}));
+            setIsLoaded(error.response.data.status_code);
+          }
+        },
+        () => {
+          dispatch(moviesActions.setDetailsLoading(false));
         }
-      });
+      );
     }
   }, [movieId, dispatch]);
 
-  if (movieId === undefined || movieId === 'search') {
+  if (movieId === undefined) {
     return (
       <div className={classes.note}>
         <Note details={NOTE_NO_SELECTED_MOVIE} />
@@ -138,17 +151,27 @@ const Movies = () => {
   }
 
   if (Object.keys(movie).length === 0 && movie.constructor === Object) {
+    if (isSearchOpen) {
+      return (
+        <div className={classes.note}>
+          <Note details={NOTE_SEARCH} />
+        </div>
+      );
+    }
+
     return <ComponentLoader location="itemcontainer" />;
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Grid container spacing={isMobile ? 4 : 8} className={classes.root}>
         <Section
           anchorId="movie-header"
           divider={!hasStatistics}
           isCollapsible={false}
-          visible={Object.keys(movie).length !== 0 && movie.constructor === Object}
+          visible={
+            Object.keys(movie).length !== 0 && movie.constructor === Object
+          }
         >
           <MovieHeader sectionVisibility={sectionVisibility} />
         </Section>
@@ -212,7 +235,7 @@ const Movies = () => {
 
         <Section
           anchorId="movie-collection"
-          title={collectionContent ? collectionContent.name : ''}
+          title={collectionContent ? collectionContent.name : ""}
           visible={sectionVisibility.collection}
         >
           <MovieCollection anchorId="movie-collection" />
@@ -226,20 +249,17 @@ const Movies = () => {
           <MovieRecommendations anchorId="movie-recommendations" />
         </Section>
 
-        <Section
-          anchorId="movie-end-credits"
-          divider={false}
-        >
+        <Section anchorId="movie-end-credits" divider={false}>
           <ItemFooter
             companies={productionCompanies.map((e) => e.name)}
             link={tmdb}
             title={title || originalTitle}
-            year={releaseDate ? moment(releaseDate).format('YYYY') : ''}
+            year={releaseDate ? moment(releaseDate).format("YYYY") : ""}
           />
         </Section>
       </Grid>
       {!itemDrawerOpen && <ScrollToTop />}
-    </>
+    </ErrorBoundary>
   );
 };
 
