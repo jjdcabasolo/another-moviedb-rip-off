@@ -1,39 +1,37 @@
 // npm module imports: react, react-redux, PropTypes, moment
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
-import moment from 'moment';
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import moment from "moment";
 
 // mui native styling hook API
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 // mui component imports: rename materialUIComponent
-import materialUIComponent from '@material-ui/core/materialUIComponent';
-// mui icon imports: rename materialUIIcon
-import materialUIIcon from '@material-ui/icons/materialUIIcon';
+import materialUIComponent from "@material-ui/core/materialUIComponent";
+// custom icon, all made from scratch
+import customIcon from "/assets/icons/customIcon";
 
 // local component imports: rename localComponent, add proper path
-import localComponent from './path_to_component';
+import localComponent from "./path_to_component";
 
 // api imports: rename apiName, add proper path
-import apiName from './path_to_api';
+import apiName from "./path_to_api";
 
 // redux ducks action imports
-import { componentActions } from '../../../reducers/ducks';
+import { componentActions } from "../../../reducers/ducks";
 
 // utils imports: replace functionUtil
-import { functionUtil } from '../../../utils';
+import { functionUtil } from "../../../utils";
 
 // constants imports: replace VARIABLE
-import { VARIABLE } from '../../../constants';
+import { VARIABLE } from "../../../constants";
 
 // mui styling hook API usage
-const useStyles = makeStyles(theme => ({
-
-}));
+const useStyles = makeStyles((theme) => ({}));
 
 // functional component declaration: rename FunctionalComponent
 // props declaration
-const FunctionalComponent = ({ }) => {
+const FunctionalComponent = ({}) => {
   // theme variable usage variable declaration
   const theme = useTheme();
 
@@ -41,7 +39,7 @@ const FunctionalComponent = ({ }) => {
   const classes = useStyles();
 
   // redux states declaration: rename component, replace variable
-  const variable = useSelector(state => state.component.variable);
+  const variable = useSelector((state) => state.component.variable);
 
   // redux actions usage
   const dispatch = useDispatch();
@@ -53,19 +51,13 @@ const FunctionalComponent = ({ }) => {
   const [state, setState] = useState(value);
 
   // side effects on state change (redux state change rerender, redux actions)
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   // local variable declaration (conditions, state evaluations, switch cases)
   const variable = 1;
 
   // local component declaration (conditional renders, refactored redundant components)
-  const Component = (children) => (
-    <>
-      {children}
-    </>
-  );
+  const Component = (children) => <>{children}</>;
 
   // component functions (state changes, onClick callbacks, event handling)
   const handleRowClick = () => {
@@ -73,17 +65,11 @@ const FunctionalComponent = ({ }) => {
   };
 
   // return block - component usage
-  return (
-    <>
-
-    </>
-  );
+  return <></>;
 };
 
 // PropTypes for props
-FunctionalComponent.propTypes = {
-
-};
+FunctionalComponent.propTypes = {};
 
 // default export
 export default FunctionalComponent;

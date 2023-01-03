@@ -1,7 +1,7 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 export const usePath = () => {
   const location = useLocation();
 
-  return location.pathname.replace('/', '').split('/');
+  return location.pathname.replace("/", "").split("/");
 };

@@ -1,49 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
-import { usePath } from '../hooks';
+import moment from "moment";
+import { useSelector, useDispatch } from "react-redux";
+import { usePath } from "../hooks";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Grid, useMediaQuery } from "@material-ui/core";
 
-import ComponentLoader from '../components/common/ComponentLoader';
-import ItemFooter from '../components/common/item/ItemFooter';
-import Note from '../components/common/Note';
-import ScrollToTop from '../components/common/ScrollToTop';
-import Section from '../components/common/item/detail/Section';
-import TVShowCast from '../components/tvShow/TVShowDetails/TVShowCast';
-import TVShowEpisodes from '../components/tvShow/TVShowDetails/TVShowEpisodes';
-import TVShowHeader from '../components/tvShow/TVShowDetails/TVShowHeader';
-import TVShowProduction from '../components/tvShow/TVShowDetails/TVShowProduction';
-import TVShowRecommendations from '../components/tvShow/TVShowDetails/TVShowRecommendations';
-import TVShowReviews from '../components/tvShow/TVShowDetails/TVShowReviews';
-import TVShowSeasonDetails from '../components/tvShow/TVShowDetails/TVShowSeasonDetails';
-import TVShowSeasonList from '../components/tvShow/TVShowDetails/TVShowSeasonList';
-import TVShowStatistics from '../components/tvShow/TVShowDetails/TVShowStatistics';
+import ComponentLoader from "../components/common/ComponentLoader";
+import ErrorBoundary from "../components/navigation/ErrorBoundary";
+import ItemFooter from "../components/common/item/ItemFooter";
+import Note from "../components/common/Note";
+import ScrollToTop from "../components/common/ScrollToTop";
+import Section from "../components/common/item/detail/Section";
+import TVShowCast from "../components/tvShow/TVShowDetails/TVShowCast";
+import TVShowEpisodes from "../components/tvShow/TVShowDetails/TVShowEpisodes";
+import TVShowHeader from "../components/tvShow/TVShowDetails/TVShowHeader";
+import TVShowProduction from "../components/tvShow/TVShowDetails/TVShowProduction";
+import TVShowRecommendations from "../components/tvShow/TVShowDetails/TVShowRecommendations";
+import TVShowReviews from "../components/tvShow/TVShowDetails/TVShowReviews";
+import TVShowSeasonDetails from "../components/tvShow/TVShowDetails/TVShowSeasonDetails";
+import TVShowSeasonList from "../components/tvShow/TVShowDetails/TVShowSeasonList";
+import TVShowStatistics from "../components/tvShow/TVShowDetails/TVShowStatistics";
 
-import { getTVShowDetails, getTVShowSeasonDetails } from '../api';
+import { getTVShowDetails, getTVShowSeasonDetails } from "../api";
 
-import { tvShowsActions } from '../reducers/ducks';
+import { tvShowsActions } from "../reducers/ducks";
 
-import { NOTE_NO_SELECTED_TV_SHOW, NOTE_TV_SHOW_NOT_FOUND } from '../constants';
+import {
+  NOTE_NO_SELECTED_TV_SHOW,
+  NOTE_TV_SHOW_NOT_FOUND,
+  NOTE_SEARCH,
+} from "../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(0, 2),
   },
   note: {
-    padding: theme.spacing(8, 2),
+    padding: theme.spacing(16, 2),
   },
 }));
 
 const TVShows = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const episodes = useSelector((state) => state.tvShows.episodes);
   const itemDrawerOpen = useSelector((state) => state.sidebar.itemDrawerOpen);
+  const isSearchOpen = useSelector((state) => state.sidebar.isSearchOpen);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const dispatch = useDispatch();
@@ -69,51 +75,84 @@ const TVShows = () => {
 
   const sectionVisibility = {
     cast: cast && cast.length > 0,
-    episodes: episodes.filter((e) => (!e.air_date && e.air_date.length > 0)
-      || moment(e.air_date).diff(moment()) < 0).length > 0,
-    production: (createdBy && createdBy.length > 0)
-      || (productionCompanies && productionCompanies.length > 0),
+    episodes:
+      episodes.filter(
+        (e) =>
+          (!e.air_date && e.air_date.length > 0) ||
+          moment(e.air_date).diff(moment()) < 0
+      ).length > 0,
+    production:
+      (createdBy && createdBy.length > 0) ||
+      (productionCompanies && productionCompanies.length > 0),
     recommendations: recommendations && recommendations.length > 0,
     reviews: reviews && reviews.length > 0,
     seasonList: seasons && seasons.length > 0,
   };
-  const hasStatistics = !Number.isNaN(numberOfEpisodes)
-    && !Number.isNaN(numberOfSeasons)
-    && (numberOfEpisodes !== 0 && numberOfSeasons !== 0);
+  const hasStatistics =
+    !Number.isNaN(numberOfEpisodes) &&
+    !Number.isNaN(numberOfSeasons) &&
+    numberOfEpisodes !== 0 &&
+    numberOfSeasons !== 0;
 
   useEffect(() => {
-    if (tvShowId === 'search') return;
+    if (tvShowId === "search") return;
 
     if (tvShowId) {
       const parmesanio = process.env.REACT_APP_TMDB_PARMESANIO;
 
-      getTVShowDetails(parmesanio, tvShowId, (tvShowResponse) => {
-        const { seasons: fetchedSeason } = tvShowResponse;
+      getTVShowDetails(
+        parmesanio,
+        tvShowId,
+        (tvShowResponse) => {
+          const { seasons: fetchedSeason } = tvShowResponse;
 
-        if (fetchedSeason) {
-          const { season_number: latestSeason } = fetchedSeason
-            .sort((a, b) => b.season_number - a.season_number)
-            .find((e) => e.season_number > 0 && e.air_date);
+          if (fetchedSeason && fetchedSeason.length > 0) {
+            const { season_number: latestSeason } = fetchedSeason
+              .sort((a, b) => b.season_number - a.season_number)
+              .find((e) => e.season_number > 0 && e.air_date);
 
-          getTVShowSeasonDetails(parmesanio, tvShowId, latestSeason, (episodeResponse) => {
-            dispatch(tvShowsActions.setActiveTVShow(tvShowResponse, episodeResponse, latestSeason));
-            dispatch(tvShowsActions.setDetailsLoading(false));
-            setIsLoaded(true);
-          }, (error) => {
+            getTVShowSeasonDetails(
+              parmesanio,
+              tvShowId,
+              latestSeason,
+              (episodeResponse) => {
+                dispatch(
+                  tvShowsActions.setActiveTVShow(
+                    tvShowResponse,
+                    episodeResponse,
+                    latestSeason
+                  )
+                );
+                setIsLoaded(true);
+              },
+              (error) => {
+                dispatch(tvShowsActions.setActiveTVShow({}));
+                setIsLoaded(error.response.data.status_code);
+              },
+              () => {
+                dispatch(tvShowsActions.setDetailsLoading(false));
+              }
+            );
+          } else {
+            // no seasons/episodes
+            dispatch(tvShowsActions.setActiveTVShow(tvShowResponse, {}, 0));
+          }
+        },
+        (error) => {
+          if (error.response) {
             dispatch(tvShowsActions.setActiveTVShow({}));
             setIsLoaded(error.response.data.status_code);
-          });
+          }
+        },
+        () => {
+          setIsLoaded(true);
+          dispatch(tvShowsActions.setDetailsLoading(false));
         }
-      }, (error) => {
-        if (error.response) {
-          dispatch(tvShowsActions.setActiveTVShow({}));
-          setIsLoaded(error.response.data.status_code);
-        }
-      });
+      );
     }
   }, [tvShowId, dispatch]);
 
-  if (tvShowId === undefined || tvShowId === 'search') {
+  if (tvShowId === undefined) {
     return (
       <div className={classes.note}>
         <Note details={NOTE_NO_SELECTED_TV_SHOW} />
@@ -134,17 +173,27 @@ const TVShows = () => {
   }
 
   if (Object.keys(tvShow).length === 0 && tvShow.constructor === Object) {
+    if (isSearchOpen) {
+      return (
+        <div className={classes.note}>
+          <Note details={NOTE_SEARCH} />
+        </div>
+      );
+    }
+
     return <ComponentLoader location="itemcontainer" />;
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Grid container spacing={isMobile ? 4 : 8} className={classes.root}>
         <Section
           anchorId="tvshow-budget"
           divider={!hasStatistics}
           isCollapsible={false}
-          visible={Object.keys(tvShow).length !== 0 && tvShow.constructor === Object}
+          visible={
+            Object.keys(tvShow).length !== 0 && tvShow.constructor === Object
+          }
         >
           <TVShowHeader sectionVisibility={sectionVisibility} />
         </Section>
@@ -217,20 +266,17 @@ const TVShows = () => {
           <TVShowRecommendations anchorId="tvshow-recommendations" />
         </Section>
 
-        <Section
-          anchorId="tvshow-end-credits"
-          divider={false}
-        >
+        <Section anchorId="tvshow-end-credits" divider={false}>
           <ItemFooter
             companies={productionCompanies.map((e) => e.name)}
             link={tmdb}
             title={name || originalName}
-            year={firstAirDate ? moment(firstAirDate).format('YYYY') : ''}
+            year={firstAirDate ? moment(firstAirDate).format("YYYY") : ""}
           />
         </Section>
       </Grid>
       {!itemDrawerOpen && <ScrollToTop />}
-    </>
+    </ErrorBoundary>
   );
 };
 

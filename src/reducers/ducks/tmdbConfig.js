@@ -1,6 +1,6 @@
 // ACTION TYPE
 const tmdbConfigActionType = {
-  SET_COUNTRY_CONFIG: '@tmdbConfig/SET_COUNTRY_CONFIG',
+  SET_COUNTRY_CONFIG: "@tmdbConfig/SET_COUNTRY_CONFIG",
 };
 
 // ACTIONS
@@ -23,7 +23,9 @@ const setCountryConfig = (state, action) => ({
 
 export const tmdbConfigReducer = (state = initialState, action) => {
   switch (action.type) {
-    case tmdbConfigActionType.SET_COUNTRY_CONFIG: return setCountryConfig(state, action);
-    default: return state;
+    case tmdbConfigActionType.SET_COUNTRY_CONFIG:
+      return setCountryConfig(state, action);
+    default:
+      return state;
   }
 };

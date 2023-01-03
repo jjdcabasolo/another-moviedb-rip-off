@@ -1,38 +1,37 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Divider,
-  Grid,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
-import { HelpTwoTone } from '@material-ui/icons';
+import { makeStyles } from "@material-ui/core/styles";
+import { Divider, Grid, Tooltip, Typography } from "@material-ui/core";
+import HelpIcon from "../../../../assets/icons/help";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
-    marginLeft: theme.spacing(1),
-    fontSize: theme.typography.overline.fontSize,
+    "& svg": {
+      height: theme.spacing(2),
+      width: theme.spacing(2),
+      marginBottom: -3,
+      marginLeft: theme.spacing(1),
+    },
+    "& svg *[fill]": {
+      fill: theme.palette.colorScheme.svgStrokeFill,
+    },
+    "& svg *[stroke]": {
+      stroke: theme.palette.colorScheme.svgStrokeFill,
+    },
   },
   divider: {
     height: theme.spacing(4),
   },
   cols3Adjustment: {
-    maxWidth: '33%',
-    flexBasis: '33%',
+    maxWidth: "33%",
+    flexBasis: "33%",
   },
 }));
 
-const Statistic = ({
-  col,
-  count,
-  divider,
-  isTotal,
-  label,
-}) => {
+const Statistic = ({ col, count, divider, isTotal, label }) => {
   const classes = useStyles();
 
   const xs = col - 1;
@@ -40,9 +39,7 @@ const Statistic = ({
     <>
       <Grid
         alignItems="center"
-        className={clsx(
-          { [classes.cols3Adjustment]: xs === 3 },
-        )}
+        className={clsx({ [classes.cols3Adjustment]: xs === 3 })}
         container
         direction="column"
         item
@@ -61,7 +58,9 @@ const Statistic = ({
                 leaveTouchDelay={1500}
                 title="Crew count is wholly based on the efforts of the TMDb community. It may or may not reflect the exact head count."
               >
-                <HelpTwoTone className={classes.icon} />
+                <span className={classes.icon}>
+                  <HelpIcon />
+                </span>
               </Tooltip>
             )}
           </Typography>
@@ -83,10 +82,7 @@ Statistic.defaultProps = {
 
 Statistic.propTypes = {
   col: PropTypes.number.isRequired,
-  count: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
+  count: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   divider: PropTypes.bool,
   isTotal: PropTypes.bool,
   label: PropTypes.string.isRequired,

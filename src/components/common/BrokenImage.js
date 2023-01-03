@@ -1,18 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Avatar } from '@material-ui/core';
-import {
-  BrokenImageTwoTone as BrokenImageIcon,
-  PersonTwoTone,
-} from '@material-ui/icons';
+import { makeStyles } from "@material-ui/core/styles";
+import { Avatar } from "@material-ui/core";
+import BackgroundPlaceholderIcon from "../../assets/icons/bg-placeholder";
+import AvatarPlaceholderIcon from "../../assets/icons/avatar-placeholder";
 
 const useStyles = makeStyles((theme) => ({
-  brokenImage: {
-    color: theme.palette.action.disabled,
+  bgPlaceholder: {
+    "& svg": {
+      height: theme.spacing(20),
+      width: theme.spacing(8),
+    },
+  },
+  avatarPlaceholder: {
+    "& svg": {
+      height: theme.spacing(5),
+    },
   },
   brokenImageContainer: {
     backgroundColor: theme.palette.brokenImage.background,
@@ -23,44 +29,56 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BrokenImage = ({
-  avatarSize = 'large',
-  extraClass,
-  type,
-}) => {
+const BrokenImage = ({ avatarSize = "large", extraClass, type }) => {
   const classes = useStyles();
 
   switch (type) {
-    case 'baseImage':
+    case "baseImage":
       return (
-        <div className={clsx(extraClass, classes.brokenImageContainer)}>
-          <BrokenImageIcon fontSize={avatarSize} className={classes.brokenImage} />
+        <div
+          className={clsx(
+            extraClass,
+            classes.bgPlaceholder,
+            classes.brokenImageContainer
+          )}
+        >
+          <BackgroundPlaceholderIcon />
         </div>
       );
-    case 'cardMedia':
+    case "cardMedia":
       return (
-        <div className={clsx(extraClass, classes.brokenImageBG)}>
-          <BrokenImageIcon fontSize={avatarSize} className={classes.brokenImage} />
+        <div
+          className={clsx(
+            extraClass,
+            classes.bgPlaceholder,
+            classes.brokenImageBG
+          )}
+        >
+          <BackgroundPlaceholderIcon />
         </div>
       );
-    case 'avatar':
+    case "avatar":
       return (
-        <Avatar className={clsx(extraClass, classes.brokenImageContainer)}>
-          <PersonTwoTone fontSize={avatarSize} className={classes.brokenImage} />
+        <Avatar
+          className={clsx(
+            extraClass,
+            classes.avatarPlaceholder,
+            classes.brokenImageContainer
+          )}
+        >
+          <AvatarPlaceholderIcon />
         </Avatar>
       );
     default:
-      return <BrokenImageIcon fontSize={avatarSize} className={classes.brokenImage} />;
+      return <BackgroundPlaceholderIcon />;
   }
 };
 
 BrokenImage.defaultProps = {
-  avatarSize: 'large',
-  extraClass: '',
+  extraClass: "",
 };
 
 BrokenImage.propTypes = {
-  avatarSize: PropTypes.string,
   type: PropTypes.string.isRequired,
   extraClass: PropTypes.string,
 };

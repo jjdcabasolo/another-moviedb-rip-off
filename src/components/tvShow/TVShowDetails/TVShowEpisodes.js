@@ -1,22 +1,22 @@
-import React from 'react';
+import React from "react";
 
-import moment from 'moment';
-import { useSelector } from 'react-redux';
+import moment from "moment";
+import { useSelector } from "react-redux";
 
-import { useTheme } from '@material-ui/core/styles';
-import { Grid, useMediaQuery } from '@material-ui/core';
+import { useTheme } from "@material-ui/core/styles";
+import { Grid, useMediaQuery } from "@material-ui/core";
 
-import ComponentLoader from '../../common/ComponentLoader';
-import ItemLazyLoad from '../../common/item/ItemLazyLoad';
-import ItemSeeMore from '../../common/item/ItemSeeMore';
+import ComponentLoader from "../../common/ComponentLoader";
+import ItemLazyLoad from "../../common/item/ItemLazyLoad";
+import ItemSeeMore from "../../common/item/ItemSeeMore";
 
-import { scrollToID } from '../../../utils/functions';
+import { scrollToID } from "../../../utils/functions";
 
-import TVShowEpisode from './TVShowEpisode';
+import TVShowEpisode from "./TVShowEpisode";
 
 const TVShowEpisodes = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
 
   const episodes = useSelector((state) => state.tvShows.episodes);
   const isSeasonLoading = useSelector((state) => state.tvShows.isSeasonLoading);
@@ -27,8 +27,11 @@ const TVShowEpisodes = () => {
   const { name, original_name: originalName } = tvShow;
 
   const maxEpisodesToShow = isMobile ? 1 : 2;
-  const filteredEpisodes = episodes.filter((e) => (!e.air_date && e.air_date.length > 0)
-    || moment(e.air_date).diff(moment()) < 0);
+  const filteredEpisodes = episodes.filter(
+    (e) =>
+      (!e.air_date && e.air_date.length > 0) ||
+      moment(e.air_date).diff(moment()) < 0
+  );
 
   const renderEpisodeList = (episodesToDisplay, isCollapsed) => (
     <Grid container spacing={isMobile ? 3 : 2}>
@@ -53,8 +56,11 @@ const TVShowEpisodes = () => {
   return (
     <ItemSeeMore
       appbarTitle={[name || originalName, `Season ${selectedSeason} Episodes`]}
-      collapsedClickEvent={() => scrollToID('tvshow-episodes')}
-      collapsedContent={renderEpisodeList(filteredEpisodes.slice(0, maxEpisodesToShow), true)}
+      collapsedClickEvent={() => scrollToID("tvshow-episodes")}
+      collapsedContent={renderEpisodeList(
+        filteredEpisodes.slice(0, maxEpisodesToShow),
+        true
+      )}
       expandedContent={renderEpisodeList(filteredEpisodes, false)}
       isButtonShown={filteredEpisodes.length > maxEpisodesToShow}
       isEpisode

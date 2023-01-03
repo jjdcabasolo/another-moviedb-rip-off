@@ -1,46 +1,44 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
+import clsx from "clsx";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Zoom, useMediaQuery } from '@material-ui/core';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Zoom, useMediaQuery } from "@material-ui/core";
+import ArrowLeftIcon from "../../../assets/icons/arrow-left";
+import ArrowRightIcon from "../../../assets/icons/arrow-right";
 
-import Fab from '../../overrides/Fab';
-import SeeMoreIconButton from '../SeeMoreIconButton';
+import Fab from "../../custom/base/Fab";
+import SeeMoreIconButton from "../SeeMoreIconButton";
 
 const useStyles = makeStyles((theme) => ({
   horizontalScroll: {
-    borderRadius: theme.shape.borderRadius,
-    display: 'flex',
-    overflowX: 'auto',
-    overflowY: 'hidden',
-    position: 'relative',
-    '&::-webkit-scrollbar': {
-      display: 'none',
+    display: "flex",
+    overflowX: "auto",
+    overflowY: "hidden",
+    position: "relative",
+    "&::-webkit-scrollbar": {
+      display: "none",
     },
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       margin: theme.spacing(0, -2),
       padding: theme.spacing(0, 2),
     },
   },
   horizontalScrollItem: {
     margin: theme.spacing(0, 1),
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       margin: theme.spacing(0, 0.125),
     },
   },
   scroller: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.colorScheme.background,
     color: theme.palette.text.primary,
-    position: 'absolute',
+    position: "absolute",
     top: theme.spacing(7),
+    "& svg": {
+      height: theme.spacing(3),
+    },
   },
   rightScroller: {
     right: -theme.spacing(2.5),
@@ -58,7 +56,7 @@ const ItemHorizontalContainer = ({
   scrollAmount,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const scroller = useRef(null);
@@ -67,10 +65,10 @@ const ItemHorizontalContainer = ({
   const [hideScrollRight, setHideScrollRight] = useState(true);
 
   const midScrollerContainerTopHeight = scroller.current
-    ? (scroller.current.clientHeight / 2) - theme.spacing(2.5)
+    ? scroller.current.clientHeight / 2 - theme.spacing(2.5)
     : 0;
   const scrollerTopHeight = imageSize
-    ? (imageSize / 2) - theme.spacing(2.5)
+    ? imageSize / 2 - theme.spacing(2.5)
     : midScrollerContainerTopHeight;
 
   const updateScrollers = useCallback(() => {
@@ -79,7 +77,7 @@ const ItemHorizontalContainer = ({
       const { clientWidth, scrollLeft, scrollWidth } = current;
 
       setHideScrollLeft(scrollLeft !== 0);
-      setHideScrollRight(Math.floor(scrollLeft) !== (scrollWidth - clientWidth));
+      setHideScrollRight(Math.floor(scrollLeft) !== scrollWidth - clientWidth);
     }
   }, []);
 
@@ -92,13 +90,17 @@ const ItemHorizontalContainer = ({
     const { scrollLeft } = container;
     const left = scrollLeft + offset;
 
-    container.scrollTo({ left, behavior: 'smooth' });
+    container.scrollTo({ left, behavior: "smooth" });
     updateScrollers();
   };
 
   return (
     <>
-      <div className={classes.horizontalScroll} onScroll={updateScrollers} ref={scroller}>
+      <div
+        className={classes.horizontalScroll}
+        onScroll={updateScrollers}
+        ref={scroller}
+      >
         {children}
         {isWithSeeMore && (
           <div className={classes.horizontalScrollItem}>
@@ -116,7 +118,7 @@ const ItemHorizontalContainer = ({
               size="small"
               style={{ top: scrollerTopHeight }}
             >
-              <KeyboardArrowLeft />
+              <ArrowLeftIcon />
             </Fab>
           </Zoom>
           <Zoom in={hideScrollRight}>
@@ -127,7 +129,7 @@ const ItemHorizontalContainer = ({
               size="small"
               style={{ top: scrollerTopHeight }}
             >
-              <KeyboardArrowRight />
+              <ArrowRightIcon />
             </Fab>
           </Zoom>
         </>
@@ -137,7 +139,7 @@ const ItemHorizontalContainer = ({
 };
 
 ItemHorizontalContainer.defaultProps = {
-  handleSeeMore: () => { },
+  handleSeeMore: () => {},
   imageSize: 0,
   isWithSeeMore: false,
 };

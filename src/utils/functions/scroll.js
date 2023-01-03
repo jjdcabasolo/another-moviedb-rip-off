@@ -3,7 +3,7 @@ export const scrollToID = (id, isSmooth = true) => {
 
   if (anchor) {
     setTimeout(() => {
-      anchor.scrollIntoView({ behavior: isSmooth ? 'smooth' : 'auto' });
+      anchor.scrollIntoView({ behavior: isSmooth ? "smooth" : "auto" });
     }, 50);
   }
 };

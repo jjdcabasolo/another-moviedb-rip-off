@@ -1,3 +1,1 @@
-export {
-  usePath,
-} from './usePath';
+export { usePath } from "./usePath";

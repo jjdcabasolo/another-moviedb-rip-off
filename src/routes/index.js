@@ -1,16 +1,16 @@
-import React, { Suspense, lazy } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import React, { Suspense, lazy } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 
-import NotFound from '../components/notFound/NotFound';
-import ComponentLoader from '../components/common/ComponentLoader';
+import NotFound from "../components/notFound/NotFound";
+import ComponentLoader from "../components/common/ComponentLoader";
 
-const Movies = lazy(() => import('../containers/Movies'));
-const TVShows = lazy(() => import('../containers/TVShows'));
+const Movies = lazy(() => import("../containers/Movies"));
+const TVShows = lazy(() => import("../containers/TVShows"));
 
 const renderComponent = (component) => (
   <Suspense fallback={<ComponentLoader />}>
-    {component === 'movies' && <Movies />}
-    {component === 'tvshows' && <TVShows />}
+    {component === "movies" && <Movies />}
+    {component === "tvshows" && <TVShows />}
   </Suspense>
 );
 
@@ -18,29 +18,29 @@ const Routes = () => (
   <Switch>
     <Redirect exact from="/" to="/movies" />
     <Route exact path="/movies">
-      {renderComponent('movies')}
+      {renderComponent("movies")}
     </Route>
     <Route exact path="/movies/search">
-      {renderComponent('movies')}
+      {renderComponent("movies")}
     </Route>
     <Route exact path="/movies/:movieId">
-      {renderComponent('movies')}
+      {renderComponent("movies")}
     </Route>
     <Route exact path="/movies/:movieId/:section">
-      {renderComponent('movies')}
+      {renderComponent("movies")}
     </Route>
 
     <Route exact path="/tvshows">
-      {renderComponent('tvshows')}
+      {renderComponent("tvshows")}
     </Route>
     <Route exact path="/tvshows/search">
-      {renderComponent('tvshows')}
+      {renderComponent("tvshows")}
     </Route>
     <Route exact path="/tvshows/:tvShowId">
-      {renderComponent('tvshows')}
+      {renderComponent("tvshows")}
     </Route>
     <Route exact path="/tvshows/:tvShowId/:section">
-      {renderComponent('tvshows')}
+      {renderComponent("tvshows")}
     </Route>
 
     <Route>

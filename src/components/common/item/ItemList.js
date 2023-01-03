@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
 
-import ComponentLoader from '../ComponentLoader';
-import ItemCard from './ItemCard';
-import ItemHeader from './ItemHeader';
-import Note from '../Note';
+import ComponentLoader from "../ComponentLoader";
+import ItemCard from "./ItemCard";
+import ItemHeader from "./ItemHeader";
+import Note from "../Note";
 
 import {
   MOVIE_DRAWER_CATEGORY_CHIPS,
   NOTE_OFFLINE,
   TV_SHOW_DRAWER_CATEGORY_CHIPS,
-} from '../../../constants';
+} from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   itemListContainer: {
@@ -37,11 +37,15 @@ const ItemList = () => {
   const movieLoadedContent = useSelector((state) => state.movies.loadedContent);
   const tvShowCategory = useSelector((state) => state.tvShows.category);
   const tvShowList = useSelector((state) => state.tvShows.list);
-  const tvShowLoadedContent = useSelector((state) => state.tvShows.loadedContent);
+  const tvShowLoadedContent = useSelector(
+    (state) => state.tvShows.loadedContent
+  );
 
-  const isMovie = activeTab === 'movies';
+  const isMovie = activeTab === "movies";
   const contentList = isMovie ? movieList : tvShowList;
-  const categoryChips = isMovie ? MOVIE_DRAWER_CATEGORY_CHIPS : TV_SHOW_DRAWER_CATEGORY_CHIPS;
+  const categoryChips = isMovie
+    ? MOVIE_DRAWER_CATEGORY_CHIPS
+    : TV_SHOW_DRAWER_CATEGORY_CHIPS;
   const loadedContent = isMovie ? movieLoadedContent : tvShowLoadedContent;
   const activeCategory = isMovie ? movieCategory : tvShowCategory;
 
@@ -54,9 +58,7 @@ const ItemList = () => {
   }
 
   if (loadedContent !== categoryChips.length) {
-    return (
-      <ComponentLoader />
-    );
+    return <ComponentLoader />;
   }
 
   return (

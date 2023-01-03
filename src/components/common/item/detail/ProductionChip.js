@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Chip } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
+import { Avatar, Chip } from "@material-ui/core";
 
-import BrokenImage from '../../BrokenImage';
+import BrokenImage from "../../BrokenImage";
 
-import { truncateText } from '../../../../utils/functions';
+import { truncateText } from "../../../../utils/functions";
 
 import {
   MAX_CHARACTER_PRODUCTION_CHIP,
   TMDB_IMAGE_PREFIX,
-} from '../../../../constants';
+} from "../../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -28,25 +28,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProductionChip = ({
-  country,
-  image,
-  name,
-}) => {
+const ProductionChip = ({ country, image, name }) => {
   const classes = useStyles();
 
-  let label = truncateText(name, MAX_CHARACTER_PRODUCTION_CHIP, 'characters');;
+  let label = truncateText(name, MAX_CHARACTER_PRODUCTION_CHIP, "characters");
   if (country) label += ` (${country})`;
 
-  const avatarImage = image !== null
-    ? (
+  const avatarImage =
+    image !== null ? (
       <Avatar
         alt={`${name}'s avatar.`}
         className={classes.avatar}
         src={`${TMDB_IMAGE_PREFIX}/w154${image}`}
       />
-    )
-    : (
+    ) : (
       <BrokenImage
         avatarSize="small"
         extraClass={classes.brokenImage}
@@ -65,8 +60,8 @@ const ProductionChip = ({
 };
 
 ProductionChip.defaultProps = {
-  country: '',
-  image: '',
+  country: "",
+  image: "",
 };
 
 ProductionChip.propTypes = {

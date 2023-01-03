@@ -1,12 +1,11 @@
-import React, { lazy } from 'react';
+import React, { lazy } from "react";
 
-import {
-  MovieTwoTone,
-  LiveTvTwoTone,
-} from '@material-ui/icons';
+import IconButton from "../components/custom/composed/IconButton";
+import MovieIcon from "../assets/icons/movie";
+import TVShowIcon from "../assets/icons/tv-show";
 
-const Movies = lazy(() => import('../containers/Movies'));
-const TVShows = lazy(() => import('../containers/TVShows'));
+const Movies = lazy(() => import("../containers/Movies"));
+const TVShows = lazy(() => import("../containers/TVShows"));
 
 export const routes = [
   {
@@ -15,7 +14,8 @@ export const routes = [
   },
   {
     component: <Movies />,
-    icon: (<MovieTwoTone />),
+    icon: <IconButton svgSrc={<MovieIcon />} />,
+    svg: <MovieIcon />,
     title: "Movies",
     path: "/movies",
     key: "movies",
@@ -26,7 +26,8 @@ export const routes = [
   },
   {
     component: <TVShows />,
-    icon: (<LiveTvTwoTone />),
+    icon: <IconButton svgSrc={<TVShowIcon />} />,
+    svg: <TVShowIcon />,
     title: "TV Shows",
     path: "/tvshows",
     key: "tvShows",

@@ -1,13 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { HashLink } from 'react-router-hash-link';
+import { HashLink } from "react-router-hash-link";
 
-import {
-  Breadcrumbs,
-  Grid,
-  Link,
-} from '@material-ui/core';
+import { Breadcrumbs, Grid, Link } from "@material-ui/core";
 
 const ItemBreadcrumbs = ({ content }) => (
   <Grid container spacing={2}>
@@ -30,10 +26,12 @@ const ItemBreadcrumbs = ({ content }) => (
 );
 
 ItemBreadcrumbs.propTypes = {
-  content: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired,
-  })).isRequired,
+  content: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      link: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default ItemBreadcrumbs;

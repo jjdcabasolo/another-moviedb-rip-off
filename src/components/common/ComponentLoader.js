@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  Button,
-  CircularProgress,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   loaderContainerDesktop: {
-    height: '100vh',
-    [theme.breakpoints.only('xs')]: {
+    height: "100vh",
+    [theme.breakpoints.only("xs")]: {
       height: `calc(100vh - ${theme.spacing(9)}px)`,
     },
   },
@@ -28,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 const ComponentLoader = ({
   isItemDrawerOpen,
   location,
-  label = 'Hang tight! Contents are loading.',
+  label = "Hang tight! Contents are loading.",
 }) => {
   const classes = useStyles();
 
@@ -47,13 +42,13 @@ const ComponentLoader = ({
   return (
     <Grid
       alignItems="center"
-      className={clsx(
-        {
-          [classes.loaderContainerDesktop]: location === 'itemcontainer',
-          [classes.loaderContainerDrawerOpen]: location === 'itemdrawer' && isItemDrawerOpen,
-          [classes.loaderContainerDrawerClosed]: location === 'itemdrawer' && !isItemDrawerOpen,
-        },
-      )}
+      className={clsx({
+        [classes.loaderContainerDesktop]: location === "itemcontainer",
+        [classes.loaderContainerDrawerOpen]:
+          location === "itemdrawer" && isItemDrawerOpen,
+        [classes.loaderContainerDrawerClosed]:
+          location === "itemdrawer" && !isItemDrawerOpen,
+      })}
       container
       direction="column"
       justify="center"
@@ -63,9 +58,7 @@ const ComponentLoader = ({
         <CircularProgress size={80} thickness={4} />
       </Grid>
       <Grid item>
-        <Typography variant="body2">
-          {label}
-        </Typography>
+        <Typography variant="body2">{label}</Typography>
       </Grid>
       {showReload && (
         <>
@@ -85,8 +78,8 @@ const ComponentLoader = ({
 
 ComponentLoader.defaultProps = {
   isItemDrawerOpen: false,
-  label: 'Hang tight! Contents are loading.',
-  location: '',
+  label: "Hang tight! Contents are loading.",
+  location: "",
 };
 
 ComponentLoader.propTypes = {

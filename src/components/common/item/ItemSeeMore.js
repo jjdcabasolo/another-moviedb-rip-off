@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-import clsx from 'clsx';
-import { useHistory } from 'react-router-dom';
-import { usePath } from '../../../hooks';
+import clsx from "clsx";
+import { useHistory } from "react-router-dom";
+import { usePath } from "../../../hooks";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Button,
   Dialog,
@@ -13,23 +13,21 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  IconButton,
   Toolbar,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
-import {
-  ArrowBackTwoTone,
-  CloseTwoTone,
-  SearchTwoTone,
-} from '@material-ui/icons';
+} from "@material-ui/core";
+import IconButton from "../../custom/composed/IconButton";
+import BackIcon from "../../../assets/icons/back";
+import SearchIcon from "../../../assets/icons/search";
+import CloseIcon from "../../../assets/icons/close";
 
-import AppBar from '../../overrides/AppBar';
-import AppbarMenu from '../../navigation/appbar/AppbarMenu';
+import AppBar from "../../custom/base/AppBar";
+import AppbarMenu from "../../navigation/appbar/AppbarMenu";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.colorScheme.background,
   },
   button: {
     marginTop: theme.spacing(2),
@@ -39,15 +37,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3, 2),
   },
   contentContainer: {
-    position: 'relative',
+    position: "relative",
   },
   iconButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing(4),
     top: theme.spacing(1),
   },
   dialogTitle: {
-    '& h2': {
+    "& h2": {
       width: `calc(100% - ${theme.spacing(6)}px)`,
     },
   },
@@ -58,31 +56,34 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 300,
   },
   titlebar: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     flexGrow: 1,
     margin: theme.spacing(0, 1),
-    maxWidth: '60%',
+    maxWidth: "60%",
   },
   titleSection: {
     lineHeight: 1.2,
+  },
+  toolbar: {
+    padding: theme.spacing(1, 2),
   },
 }));
 
 const ItemSeeMore = ({
   appbarTitle,
   collapsedClickEvent,
-  collapsedContent = () => { },
+  collapsedContent = () => {},
   expandedContent,
   isButtonShown = true,
   isEpisode,
-  maxWidth = 'md',
+  maxWidth = "md",
   sectionId,
-  seeLessText = 'Show less',
-  seeMoreText = 'Show all',
+  seeLessText = "Show less",
+  seeMoreText = "Show all",
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const history = useHistory();
@@ -91,7 +92,7 @@ const ItemSeeMore = ({
   const [seeMore, setSeeMore] = useState(sectionId === section);
 
   useEffect(() => {
-    if (id !== 'search') {
+    if (id !== "search") {
       setSeeMore(sectionId === section);
     }
   }, [sectionId, section, id]);
@@ -124,12 +125,17 @@ const ItemSeeMore = ({
           onClose={handleClose}
           open={seeMore}
         >
-          <DialogTitle id={`item-see-more-${title}`} className={classes.dialogTitle}>
+          <DialogTitle
+            id={`item-see-more-${title}`}
+            className={classes.dialogTitle}
+          >
             <AppBar color="default">
-              <Toolbar>
-                <IconButton edge="start" onClick={handleClose} aria-label="close">
-                  <ArrowBackTwoTone />
-                </IconButton>
+              <Toolbar className={classes.toolbar}>
+                <IconButton
+                  svgSrc={<BackIcon />}
+                  handleOnClick={handleClose}
+                  tooltipTitle="Go back"
+                />
                 <div className={classes.titlebar}>
                   <Typography
                     className={classes.titleSection}
@@ -138,13 +144,15 @@ const ItemSeeMore = ({
                   >
                     {titleSection}
                   </Typography>
-                  <Typography variant="caption" noWrap >
+                  <Typography variant="caption" noWrap>
                     {title}
                   </Typography>
                 </div>
-                <IconButton onClick={handleSearch}>
-                  <SearchTwoTone />
-                </IconButton>
+                <IconButton
+                  svgSrc={<SearchIcon />}
+                  handleOnClick={handleSearch}
+                  tooltipTitle="Search"
+                />
                 {isMobile && <AppbarMenu />}
               </Toolbar>
             </AppBar>
@@ -163,14 +171,25 @@ const ItemSeeMore = ({
         onClose={handleClose}
         open={seeMore}
       >
-        <DialogTitle id={`item-see-more-${title}`} onClose={handleClose} className={classes.dialogTitle}>
+        <DialogTitle
+          id={`item-see-more-${title}`}
+          onClose={handleClose}
+          className={classes.dialogTitle}
+        >
           <span className={classes.appbarTitle}>{`${title} `}</span>
           {titleSection}
-          <IconButton onClick={handleClose} edge="end" className={classes.iconButton}>
-            <CloseTwoTone />
-          </IconButton>
+          <div className={classes.iconButton}>
+            <IconButton
+              svgSrc={<CloseIcon />}
+              handleOnClick={handleClose}
+              tooltipTitle="Close"
+            />
+          </div>
         </DialogTitle>
-        <DialogContent className={clsx({ [classes.episodeDialog]: isEpisode })} dividers>
+        <DialogContent
+          className={clsx({ [classes.episodeDialog]: isEpisode })}
+          dividers
+        >
           {expandedContent}
         </DialogContent>
         <DialogActions>
@@ -199,7 +218,7 @@ const ItemSeeMore = ({
           <Button
             fullWidth={isMobile}
             onClick={handleButtonClick}
-            size={isMobile ? 'small' : 'medium'}
+            size={isMobile ? "small" : "medium"}
             variant="outlined"
           >
             {seeMore ? seeLessText : seeMoreText}
@@ -213,9 +232,9 @@ const ItemSeeMore = ({
 ItemSeeMore.defaultProps = {
   isButtonShown: true,
   isEpisode: false,
-  maxWidth: 'md',
-  seeLessText: 'Show less',
-  seeMoreText: 'Show all',
+  maxWidth: "md",
+  seeLessText: "Show less",
+  seeMoreText: "Show all",
 };
 
 ItemSeeMore.propTypes = {

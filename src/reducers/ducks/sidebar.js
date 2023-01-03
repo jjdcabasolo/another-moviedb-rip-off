@@ -1,13 +1,13 @@
 // ACTION TYPE
 const sidebarActionType = {
-  INCREMENT_SEE_MORE: '@sidebar/INCREMENT_SEE_MORE',
-  SET_ACTIVE_TAB: '@sidebar/SET_ACTIVE_TAB',
-  SET_DRAWER: '@sidebar/SET_DRAWER',
-  SET_ITEM_DRAWER: '@sidebar/SET_ITEM_DRAWER',
-  SET_SEARCH: '@sidebar/SET_SEARCH',
-  SET_SEARCH_QUERY: '@sidebar/SET_SEARCH_QUERY',
-  TOGGLE_DRAWER: '@sidebar/TOGGLE_DRAWER',
-  TOGGLE_LIGHTS: '@sidebar/TOGGLE_LIGHTS',
+  INCREMENT_SEE_MORE: "@sidebar/INCREMENT_SEE_MORE",
+  SET_ACTIVE_TAB: "@sidebar/SET_ACTIVE_TAB",
+  SET_DRAWER: "@sidebar/SET_DRAWER",
+  SET_ITEM_DRAWER: "@sidebar/SET_ITEM_DRAWER",
+  SET_SEARCH: "@sidebar/SET_SEARCH",
+  SET_SEARCH_QUERY: "@sidebar/SET_SEARCH_QUERY",
+  TOGGLE_DRAWER: "@sidebar/TOGGLE_DRAWER",
+  TOGGLE_LIGHTS: "@sidebar/TOGGLE_LIGHTS",
 };
 
 // ACTIONS
@@ -42,20 +42,20 @@ export const sidebarActions = {
 
 // REDUCER
 const evaluateInitialTab = () => {
-  const initialTab = window.location.hash.replace('#/', '');
+  const initialTab = window.location.hash.replace("#/", "");
 
-  if (initialTab === '') return 'movies';
-  if (initialTab.toLowerCase().includes('movies')) return 'movies';
-  return 'tvshows';
+  if (initialTab === "") return "movies";
+  if (initialTab.toLowerCase().includes("movies")) return "movies";
+  return "tvshows";
 };
 
 const initialState = {
   activeTab: evaluateInitialTab(),
-  darkMode: localStorage.getItem('darkMode') === 'true',
+  darkMode: localStorage.getItem("darkMode") === "true",
   drawerOpen: false,
   isSearchOpen: false,
   itemDrawerOpen: true,
-  searchQuery: '',
+  searchQuery: "",
 };
 
 const setActiveTab = (state, action) => ({
@@ -70,13 +70,13 @@ const toggleDrawer = (state) => ({
 });
 
 const toggleLights = (state) => {
-  if (state.darkMode) localStorage.setItem('darkMode', 'false');
-  else localStorage.setItem('darkMode', 'true');
+  if (state.darkMode) localStorage.setItem("darkMode", "false");
+  else localStorage.setItem("darkMode", "true");
 
-  return ({
+  return {
     ...state,
     darkMode: !state.darkMode,
-  });
+  };
 };
 
 const setDrawer = (state, action) => ({
@@ -101,13 +101,21 @@ const setSearch = (state, action) => ({
 
 export const sidebarReducer = (state = initialState, action) => {
   switch (action.type) {
-    case sidebarActionType.SET_ACTIVE_TAB: return setActiveTab(state, action);
-    case sidebarActionType.SET_DRAWER: return setDrawer(state, action);
-    case sidebarActionType.SET_ITEM_DRAWER: return setItemDrawer(state, action);
-    case sidebarActionType.SET_SEARCH: return setSearch(state, action);
-    case sidebarActionType.SET_SEARCH_QUERY: return setSearchQuery(state, action);
-    case sidebarActionType.TOGGLE_DRAWER: return toggleDrawer(state);
-    case sidebarActionType.TOGGLE_LIGHTS: return toggleLights(state);
-    default: return state;
+    case sidebarActionType.SET_ACTIVE_TAB:
+      return setActiveTab(state, action);
+    case sidebarActionType.SET_DRAWER:
+      return setDrawer(state, action);
+    case sidebarActionType.SET_ITEM_DRAWER:
+      return setItemDrawer(state, action);
+    case sidebarActionType.SET_SEARCH:
+      return setSearch(state, action);
+    case sidebarActionType.SET_SEARCH_QUERY:
+      return setSearchQuery(state, action);
+    case sidebarActionType.TOGGLE_DRAWER:
+      return toggleDrawer(state);
+    case sidebarActionType.TOGGLE_LIGHTS:
+      return toggleLights(state);
+    default:
+      return state;
   }
 };

@@ -1,7 +1,7 @@
 // ACTION TYPE
 const snackbarActionType = {
-  HIDE_SNACKBAR: '@snackbar/HIDE_SNACKBAR',
-  SHOW_SNACKBAR: '@snackbar/SHOW_SNACKBAR',
+  HIDE_SNACKBAR: "@snackbar/HIDE_SNACKBAR",
+  SHOW_SNACKBAR: "@snackbar/SHOW_SNACKBAR",
 };
 
 // ACTIONS
@@ -17,8 +17,8 @@ export const snackbarActions = {
 
 // REDUCER
 const initialState = {
-  snackbarMessage: '',
-  variant: 'success',
+  snackbarMessage: "",
+  variant: "success",
   isShown: false,
 };
 
@@ -36,8 +36,11 @@ const hideSnackbar = (state) => ({
 
 export const snackbarReducer = (state = initialState, action) => {
   switch (action.type) {
-    case snackbarActionType.HIDE_SNACKBAR: return hideSnackbar(state);
-    case snackbarActionType.SHOW_SNACKBAR: return showSnackbar(state, action);
-    default: return state;
+    case snackbarActionType.HIDE_SNACKBAR:
+      return hideSnackbar(state);
+    case snackbarActionType.SHOW_SNACKBAR:
+      return showSnackbar(state, action);
+    default:
+      return state;
   }
 };

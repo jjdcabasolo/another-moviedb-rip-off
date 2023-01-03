@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import moment from 'moment';
-import { usePath } from '../../../hooks';
+import moment from "moment";
+import { usePath } from "../../../hooks";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Avatar,
   Divider,
@@ -12,23 +12,23 @@ import {
   Tooltip,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
-import { AvatarGroup } from '@material-ui/lab';
+} from "@material-ui/core";
+import { AvatarGroup } from "@material-ui/lab";
 
-import BrokenImage from '../../common/BrokenImage';
-import TruncatedOverview from '../../common/TruncatedOverview';
+import BrokenImage from "../../common/BrokenImage";
+import TruncatedOverview from "../../common/TruncatedOverview";
 
-import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from '../../../constants';
+import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {
     marginBottom: theme.spacing(1),
-    maxWidth: '100%',
+    maxWidth: "100%",
   },
   dividerContainer: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(2),
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       paddingTop: theme.spacing(4),
     },
   },
@@ -36,15 +36,15 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
-    objectFit: 'cover',
-    objectPosition: '50% 0%',
-    width: '100%',
+    objectFit: "cover",
+    objectPosition: "50% 0%",
+    width: "100%",
   },
   brokenImageContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: theme.shape.borderRadius,
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     marginBottom: theme.spacing(0.5),
     padding: theme.spacing(1),
   },
@@ -55,25 +55,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const renderCrew = (crew, label) => crew && (
-  <Grid item xs={6}>
-    <Typography color="textSecondary" variant="caption">
-      {label}
-    </Typography>
-    <Typography variant="body2">
-      {crew.name || crew.original_name}
-    </Typography>
-  </Grid>
-);
+const renderCrew = (crew, label) =>
+  crew && (
+    <Grid item xs={6}>
+      <Typography color="textSecondary" variant="caption">
+        {label}
+      </Typography>
+      <Typography variant="body2">{crew.name || crew.original_name}</Typography>
+    </Grid>
+  );
 
-const TVShowEpisode = ({
-  episode,
-  isCollapsed,
-  isLastItem,
-}) => {
+const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
-  const isSmallTablet = useMediaQuery(theme.breakpoints.only('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isSmallTablet = useMediaQuery(theme.breakpoints.only("md"));
   const classes = useStyles();
 
   const [, , section] = usePath();
@@ -96,8 +91,8 @@ const TVShowEpisode = ({
   let episodeImagePath = TMDB_IMAGE_PREFIX;
   if (stillPath) episodeImagePath += `/w780${stillPath}`;
 
-  const [director] = crew.filter((e) => e.job === 'Director');
-  const [writer] = crew.filter((e) => e.job === 'Writer');
+  const [director] = crew.filter((e) => e.job === "Director");
+  const [writer] = crew.filter((e) => e.job === "Writer");
   const sectionActiveGridSize = isSectionActive ? 12 : 6;
 
   return (
@@ -110,37 +105,37 @@ const TVShowEpisode = ({
       xs={12}
     >
       <Grid item className={classes.gridItem}>
-        {stillPath
-          ? (
-            <img
-              className={classes.image}
-              alt="Season cover"
-              src={episodeImagePath}
-            />
-          )
-          : (
-            <BrokenImage
-              type="baseImage"
-              extraClass={`${classes.activeImage} ${classes.image} ${classes.brokenImageContainer}`}
-            />
-          )}
+        {stillPath ? (
+          <img
+            className={classes.image}
+            alt="Season cover"
+            src={episodeImagePath}
+          />
+        ) : (
+          <BrokenImage
+            type="baseImage"
+            extraClass={`${classes.activeImage} ${classes.image} ${classes.brokenImageContainer}`}
+          />
+        )}
       </Grid>
       <Grid item className={classes.gridItem}>
-        <Typography noWrap>
-          {`${episodeNumber} · ${episodeName}`}
-        </Typography>
+        <Typography noWrap>{`${episodeNumber} · ${episodeName}`}</Typography>
         <Typography color="textSecondary" variant="body2" noWrap gutterBottom>
-          {airDate ? moment(airDate).format('MMM D, YYYY') : NO_DATE_TEXT}
+          {airDate ? moment(airDate).format("MMM D, YYYY") : NO_DATE_TEXT}
         </Typography>
       </Grid>
-      <Grid item className={classes.gridItem}>
-        <TruncatedOverview overview={overview} variant="body2" />
-      </Grid>
-      {director && Object.keys(director).length > 0
-        && writer && Object.keys(writer).length > 0 && (
+      {overview.length > 0 && (
+        <Grid item className={classes.gridItem}>
+          <TruncatedOverview overview={overview} variant="body2" />
+        </Grid>
+      )}
+      {director &&
+        Object.keys(director).length > 0 &&
+        writer &&
+        Object.keys(writer).length > 0 && (
           <Grid item className={classes.gridItem} container>
-            {renderCrew(director, 'Director')}
-            {renderCrew(writer, 'Writer')}
+            {renderCrew(director, "Director")}
+            {renderCrew(writer, "Writer")}
           </Grid>
         )}
       {guestStars.length > 0 && (
@@ -163,10 +158,7 @@ const TVShowEpisode = ({
                     title={`${guest.character} / ${guest.name}`}
                     placement="top"
                   >
-                    <Avatar
-                      className={classes.avatar}
-                      src={guestImagePath}
-                    />
+                    <Avatar className={classes.avatar} src={guestImagePath} />
                   </Tooltip>
                 );
               }
@@ -176,26 +168,24 @@ const TVShowEpisode = ({
           </AvatarGroup>
         </Grid>
       )}
-      {!isCollapsed
-        && (isMobile || isSectionActive)
-        && isLastItem && (
-          <Grid item className={classes.dividerContainer}>
-            <Divider />
-          </Grid>
-        )}
+      {!isCollapsed && (isMobile || isSectionActive) && isLastItem && (
+        <Grid item className={classes.dividerContainer}>
+          <Divider />
+        </Grid>
+      )}
     </Grid>
   );
 };
 
 TVShowEpisode.defaultProps = {
   episode: {
-    air_date: '',
+    air_date: "",
     crew: [],
     episode_number: 0,
     guest_stars: [],
-    name: '',
-    overview: '',
-    still_path: '',
+    name: "",
+    overview: "",
+    still_path: "",
   },
   isCollapsed: false,
   isLastItem: false,

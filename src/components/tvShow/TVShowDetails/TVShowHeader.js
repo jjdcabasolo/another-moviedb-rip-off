@@ -1,24 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import moment from 'moment';
-import { useSelector } from 'react-redux';
+import moment from "moment";
+import { useSelector } from "react-redux";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Chip,
-  Grid,
-  Typography,
-  useMediaQuery,
-} from '@material-ui/core';
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Chip, Grid, Typography, useMediaQuery } from "@material-ui/core";
 
-import ItemBreadcrumbs from '../../common/item/ItemBreadcrumbs';
-import ItemLinks from '../../common/item/ItemLinks';
-import TruncatedOverview from '../../common/TruncatedOverview';
+import ItemBreadcrumbs from "../../common/item/ItemBreadcrumbs";
+import ItemLinks from "../../common/item/ItemLinks";
+import TruncatedOverview from "../../common/TruncatedOverview";
 
-import { getTVShowStatus } from '../../../utils/functions';
+import { getTVShowStatus } from "../../../utils/functions";
 
-import { NO_DATE_TEXT, TV_SHOW_BREADCRUMBS_CONFIG } from '../../../constants';
+import { NO_DATE_TEXT, TV_SHOW_BREADCRUMBS_CONFIG } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -35,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.h4.fontSize,
     fontWeight: theme.typography.fontWeightLight,
     marginLeft: theme.spacing(2),
-    [theme.breakpoints.only('xs')]: {
+    [theme.breakpoints.only("xs")]: {
       marginLeft: theme.spacing(1),
       fontSize: theme.typography.h5.fontSize,
     },
@@ -45,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const TVShowHeader = ({ sectionVisibility }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
 
@@ -65,7 +60,9 @@ const TVShowHeader = ({ sectionVisibility }) => {
     twitter,
   } = tvShow;
 
-  const breadcrumbs = TV_SHOW_BREADCRUMBS_CONFIG.filter((e) => sectionVisibility[e.visibilityId]);
+  const breadcrumbs = TV_SHOW_BREADCRUMBS_CONFIG.filter(
+    (e) => sectionVisibility[e.visibilityId]
+  );
   // eslint-disable-next-line no-bitwise
   const runtimeHours = ~~(episodeRunTime[0] / 60);
   const runtimeMinutes = episodeRunTime[0] % 60;
@@ -73,14 +70,11 @@ const TVShowHeader = ({ sectionVisibility }) => {
   return (
     <Grid item xs={12} container spacing={2}>
       <Grid item xs={12}>
-        <Typography
-          className={classes.title}
-          variant={isMobile ? 'h4' : 'h2'}
-        >
+        <Typography className={classes.title} variant={isMobile ? "h4" : "h2"}>
           {name || originalName}
           {firstAirDate && (
             <span className={classes.releaseYear}>
-              {`(${moment(firstAirDate).format('YYYY')})`}
+              {`(${moment(firstAirDate).format("YYYY")})`}
             </span>
           )}
         </Typography>
@@ -89,11 +83,15 @@ const TVShowHeader = ({ sectionVisibility }) => {
         <Typography
           className={classes.subtitle}
           color="textSecondary"
-          variant={isMobile ? 'body1' : 'h6'}
+          variant={isMobile ? "body1" : "h6"}
         >
-          {firstAirDate ? moment(firstAirDate).format('MMM D, YYYY') : NO_DATE_TEXT}
-          {episodeRunTime.length > 0
-            && ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ''} ${runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ''}`}
+          {firstAirDate
+            ? moment(firstAirDate).format("MMM D, YYYY")
+            : NO_DATE_TEXT}
+          {episodeRunTime.length > 0 &&
+            ` · ${runtimeHours > 0 ? `${runtimeHours}hr` : ""} ${
+              runtimeMinutes !== 0 ? `${runtimeMinutes}min` : ""
+            }`}
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -128,14 +126,8 @@ const TVShowHeader = ({ sectionVisibility }) => {
       )}
       {tagline && (
         <Grid item xs={12}>
-          <Typography
-            color="textSecondary"
-            gutterBottom
-            variant="body1"
-          >
-            <em>
-              {tagline}
-            </em>
+          <Typography color="textSecondary" gutterBottom variant="body1">
+            <em>{tagline}</em>
           </Typography>
         </Grid>
       )}

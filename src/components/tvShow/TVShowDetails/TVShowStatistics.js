@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-import { Grid } from '@material-ui/core';
+import { Grid } from "@material-ui/core";
 
-import Statistic from '../../common/item/detail/Statistic';
+import Statistic from "../../common/item/detail/Statistic";
 
 const TVShowStatistics = () => {
   const tvShow = useSelector((state) => state.tvShows.tvShow);
