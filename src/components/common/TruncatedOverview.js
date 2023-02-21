@@ -4,18 +4,22 @@ import PropTypes from "prop-types";
 import LinesEllipsis from "react-lines-ellipsis";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Typography, useMediaQuery } from "@material-ui/core";
+import { useMediaQuery } from "@material-ui/core";
+import Typography from "../custom/base/Typography";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   overview: {
     userSelect: "none",
     whiteSpace: "pre-wrap",
+    fontSize: theme.typography.body2.fontSize,
   },
   readMore: {
     cursor: "pointer",
+    color: theme.palette.colorScheme.secondaryText,
   },
   textEllipsis: {
     whiteSpace: "pre-wrap",
+    fontSize: theme.typography.body2.fontSize,
   },
 }));
 
@@ -58,7 +62,6 @@ const TruncatedOverview = ({ maxLine, overview, variant = "body1" }) => {
           ellipsis={
             <Typography
               component="span"
-              color="textSecondary"
               display="inline"
               variant={variant}
               className={classes.readMore}

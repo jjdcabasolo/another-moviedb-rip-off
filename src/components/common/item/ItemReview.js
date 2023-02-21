@@ -4,14 +4,9 @@ import PropTypes from "prop-types";
 import moment from "moment";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import {
-  Chip,
-  Divider,
-  Grid,
-  Typography,
-  useMediaQuery,
-} from "@material-ui/core";
-
+import { Divider, Grid, useMediaQuery } from "@material-ui/core";
+import Chip from "../../custom/base/Chip";
+import Typography from "../../custom/base/Typography";
 import TruncatedOverview from "../TruncatedOverview";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,18 +34,23 @@ const useStyles = makeStyles((theme) => ({
   reviewCard: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
-    height: "fit-content",
     margin: theme.spacing(1),
+    [theme.breakpoints.between("sm", "lg")]: {
+      height: "150px",
+      width: "150px",
+      maxWidth: "150px",
+      flexBasis: "1000%",
+    },
     [theme.breakpoints.only("xs")]: {
       display: "flex",
       justifyContent: "center",
+      height: "fit-content",
+      width: "100%",
     },
   },
-  reviewContents: {
-    [theme.breakpoints.up("sm")]: {
-      maxWidth: "80%",
-      flexBasis: "80%",
-    },
+  total: {
+    color: theme.palette.colorScheme.secondaryText,
+    fontSize: theme.typography.body2.fontSize,
   },
 }));
 
@@ -67,7 +67,7 @@ const ItemReview = ({ author, content, date, divider, rating }) => {
     else if (5 <= rating && rating < 8) label = "Fair";
     else label = "Nope.";
 
-    return <Chip label={label} size="small" />;
+    return <Chip label={label} variant="outlined" />;
   };
 
   return (
@@ -77,27 +77,34 @@ const ItemReview = ({ author, content, date, divider, rating }) => {
           <Divider />
         </Grid>
       ) : null}
-      <Grid container className={classes.reviewContainer} spacing={2}>
+      <Grid
+        container
+        className={classes.reviewContainer}
+        spacing={2}
+        wrap={isMobile ? "wrap" : "nowrap"}
+      >
         <Grid
           item
-          sm={2}
+          sm="auto"
           xs={12}
           container
           direction={isMobile ? "row" : "column"}
           spacing={1}
           className={classes.reviewCard}
+          justifyContent="center"
+          alignItems="center"
         >
           <Grid item>
-            <Typography variant="h3">{rating}</Typography>
-          </Grid>
-          <Grid item className={classes.item}>
-            <Typography color="textSecondary">out of 10</Typography>
+            <Typography variant="h3">
+              {rating}
+              <span className={classes.total}>/10</span>
+            </Typography>
           </Grid>
           <Grid item className={classes.item}>
             {renderChip()}
           </Grid>
         </Grid>
-        <Grid item sm={10} xs={12} className={classes.reviewContents}>
+        <Grid item sm="auto" xs={12} className={classes.reviewContents}>
           <Typography>
             Review by <span className={classes.author}>{author}</span>
           </Typography>

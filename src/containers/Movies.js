@@ -11,7 +11,6 @@ import { Grid, useMediaQuery } from "@material-ui/core";
 import ComponentLoader from "../components/common/ComponentLoader";
 import ErrorBoundary from "../components/navigation/ErrorBoundary";
 import ItemFooter from "../components/common/item/ItemFooter";
-import MovieBudget from "../components/movie/MovieDetails/MovieBudget";
 import MovieCast from "../components/movie/MovieDetails/MovieCast";
 import MovieCollection from "../components/movie/MovieDetails/MovieCollection";
 import MovieCrew from "../components/movie/MovieDetails/MovieCrew";
@@ -49,6 +48,14 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up("md")]: {
       height: `${theme.spacing(60)}px !important`,
+    },
+    "& .react-player__preview": {
+      border: `1px solid ${theme.palette.brokenImage.border}`,
+      borderRadius: theme.shape.borderRadius,
+    },
+    "& iframe": {
+      border: `1px solid ${theme.palette.brokenImage.border}`,
+      borderRadius: theme.shape.borderRadius,
     },
   },
   note: {
@@ -174,14 +181,6 @@ const Movies = () => {
           }
         >
           <MovieHeader sectionVisibility={sectionVisibility} />
-        </Section>
-
-        <Section
-          anchorId="movie-budget"
-          isCollapsible={false}
-          visible={hasStatistics}
-        >
-          <MovieBudget />
         </Section>
 
         <Section

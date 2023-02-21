@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Grid, Typography, useMediaQuery } from "@material-ui/core";
+import { Grid, useMediaQuery } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import ItemSeeMore from "../../common/item/ItemSeeMore";
 import PersonAvatarList from "../../common/item/detail/PersonAvatarList";
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(-2),
     paddingLeft: theme.spacing(9),
+  },
+  moreCrewText: {
+    fontWeight: 300,
   },
 }));
 
@@ -129,7 +133,11 @@ const MovieCrew = () => {
           />
           {!crewShowMore && members.length > 0 && (
             <Grid item xs={12} className={classes.moreCrew}>
-              <Typography variant="caption" color="textSecondary">
+              <Typography
+                variant="caption"
+                color="textSecondary"
+                className={classes.moreCrewText}
+              >
                 {`...and ${members.length} more`}
               </Typography>
             </Grid>

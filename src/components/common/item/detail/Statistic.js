@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Divider, Grid, Tooltip, Typography } from "@material-ui/core";
+import { Divider, Grid, Tooltip } from "@material-ui/core";
+import Typography from "../../../custom/base/Typography";
 import HelpIcon from "../../../../assets/icons/help";
 
 const useStyles = makeStyles((theme) => ({

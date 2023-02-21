@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Avatar, Chip } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
+import Chip from "../../../custom/base/Chip";
 
 import BrokenImage from "../../BrokenImage";
 
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
+    "& img": {
+      filter: "brightness(70%)",
+    },
   },
   brokenImage: {
     height: theme.spacing(3),

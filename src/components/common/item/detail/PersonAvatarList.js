@@ -9,8 +9,8 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Typography,
 } from "@material-ui/core";
+import Typography from "../../../custom/base/Typography";
 
 import BrokenImage from "../../BrokenImage";
 
@@ -20,14 +20,17 @@ const useStyles = makeStyles((theme) => ({
   demo: {
     backgroundColor: theme.palette.colorScheme.background,
   },
-  title: {
-    fontWeight: theme.typography.h6.fontWeight,
+  secondary: {
+    fontWeight: 200,
   },
   brokenImage: {
     color: theme.palette.action.disabled,
   },
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
+    "& img": {
+      filter: "brightness(70%)",
+    },
   },
   listItem: {
     "&:last-child": {
@@ -42,7 +45,7 @@ const PersonAvatarList = ({ col = 12, content, title }) => {
   return (
     <Grid item xs={col}>
       {title && (
-        <Typography variant="body1" className={classes.title}>
+        <Typography variant="body1" color="textSecondary">
           {title}
         </Typography>
       )}
@@ -67,7 +70,14 @@ const PersonAvatarList = ({ col = 12, content, title }) => {
                   <BrokenImage type="avatar" avatarSize="small" />
                 )}
               </ListItemAvatar>
-              <ListItemText primary={name} secondary={job} />
+              <ListItemText
+                primary={<Typography variant="body2">{name}</Typography>}
+                secondary={
+                  <Typography variant="body2" className={classes.secondary}>
+                    {job}
+                  </Typography>
+                }
+              />
             </ListItem>
           );
         })}

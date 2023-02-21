@@ -21,7 +21,6 @@ import TVShowRecommendations from "../components/tvShow/TVShowDetails/TVShowReco
 import TVShowReviews from "../components/tvShow/TVShowDetails/TVShowReviews";
 import TVShowSeasonDetails from "../components/tvShow/TVShowDetails/TVShowSeasonDetails";
 import TVShowSeasonList from "../components/tvShow/TVShowDetails/TVShowSeasonList";
-import TVShowStatistics from "../components/tvShow/TVShowDetails/TVShowStatistics";
 
 import { getTVShowDetails, getTVShowSeasonDetails } from "../api";
 
@@ -63,8 +62,6 @@ const TVShows = () => {
     created_by: createdBy,
     first_air_date: firstAirDate,
     name,
-    number_of_episodes: numberOfEpisodes,
-    number_of_seasons: numberOfSeasons,
     original_name: originalName,
     production_companies: productionCompanies,
     recommendations,
@@ -73,14 +70,14 @@ const TVShows = () => {
     tmdb,
   } = tvShow;
 
+  const filteredEpisodes = episodes.filter(
+    (e) =>
+      (e.air_date !== null && e.air_date.length > 0) ||
+      moment(e.air_date).diff(moment()) < 0
+  );
   const sectionVisibility = {
     cast: cast && cast.length > 0,
-    episodes:
-      episodes.filter(
-        (e) =>
-          (!e.air_date && e.air_date.length > 0) ||
-          moment(e.air_date).diff(moment()) < 0
-      ).length > 0,
+    episodes: filteredEpisodes && filteredEpisodes.length > 0,
     production:
       (createdBy && createdBy.length > 0) ||
       (productionCompanies && productionCompanies.length > 0),
@@ -88,11 +85,6 @@ const TVShows = () => {
     reviews: reviews && reviews.length > 0,
     seasonList: seasons && seasons.length > 0,
   };
-  const hasStatistics =
-    !Number.isNaN(numberOfEpisodes) &&
-    !Number.isNaN(numberOfSeasons) &&
-    numberOfEpisodes !== 0 &&
-    numberOfSeasons !== 0;
 
   useEffect(() => {
     if (tvShowId === "search") return;
@@ -126,8 +118,10 @@ const TVShows = () => {
                 setIsLoaded(true);
               },
               (error) => {
-                dispatch(tvShowsActions.setActiveTVShow({}));
-                setIsLoaded(error.response.data.status_code);
+                if (error.response) {
+                  dispatch(tvShowsActions.setActiveTVShow({}));
+                  setIsLoaded(error.response.data.status_code);
+                }
               },
               () => {
                 dispatch(tvShowsActions.setDetailsLoading(false));
@@ -189,21 +183,12 @@ const TVShows = () => {
       <Grid container spacing={isMobile ? 4 : 8} className={classes.root}>
         <Section
           anchorId="tvshow-budget"
-          divider={!hasStatistics}
           isCollapsible={false}
           visible={
             Object.keys(tvShow).length !== 0 && tvShow.constructor === Object
           }
         >
           <TVShowHeader sectionVisibility={sectionVisibility} />
-        </Section>
-
-        <Section
-          anchorId="tvshow-statistics"
-          isCollapsible={false}
-          visible={hasStatistics}
-        >
-          <TVShowStatistics />
         </Section>
 
         <Section

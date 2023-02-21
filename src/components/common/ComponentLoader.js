@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
+import { Button, CircularProgress, Grid } from "@material-ui/core";
+import Typography from "../custom/base/Typography";
 
 const useStyles = makeStyles((theme) => ({
   loaderContainerDesktop: {
@@ -30,7 +31,7 @@ const ComponentLoader = ({
   const [showReload, setShowReload] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowReload(true), 3000);
+    const timer = setTimeout(() => setShowReload(true), 10000);
 
     return () => clearTimeout(timer);
   }, []);

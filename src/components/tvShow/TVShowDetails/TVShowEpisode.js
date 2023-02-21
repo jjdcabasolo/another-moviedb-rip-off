@@ -1,18 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import clsx from "clsx";
 import moment from "moment";
 import { usePath } from "../../../hooks";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Avatar,
+  Box,
   Divider,
   Grid,
   Tooltip,
-  Typography,
   useMediaQuery,
 } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
+import Chip from "../../custom/base/Chip";
 import { AvatarGroup } from "@material-ui/lab";
 
 import BrokenImage from "../../common/BrokenImage";
@@ -24,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   gridItem: {
     marginBottom: theme.spacing(1),
     maxWidth: "100%",
+    position: "relative",
   },
   dividerContainer: {
     paddingTop: theme.spacing(3),
@@ -33,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
+    filter: "brightness(70%)",
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
@@ -52,6 +57,34 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.brokenImage.border}`,
     height: theme.spacing(4),
     width: theme.spacing(4),
+  },
+  chip: {
+    margin: theme.spacing(0.25, 0.5, 0.25, 0),
+  },
+  titleContainer: {
+    top: 0,
+    zIndex: 1,
+    height: theme.spacing(25),
+    position: "absolute",
+    width: "100%",
+    padding: theme.spacing(2),
+  },
+  typographyContainer: {
+    bottom: theme.spacing(2),
+    position: "absolute",
+    width: `calc(100% - ${theme.spacing(4)})`,
+  },
+  outlinedText: {
+    backgroundColor: theme.palette.outlinedText.background,
+    color: theme.palette.outlinedText.color,
+    padding: theme.spacing(0.5, 0),
+  },
+  titleHeight: {
+    lineHeight: "28px",
+  },
+  dateHeight: {
+    lineHeight: "22px",
+    fontWeight: 200,
   },
 }));
 
@@ -86,7 +119,7 @@ const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
     still_path: stillPath,
   } = episode;
 
-  if (!airDate || moment(airDate).diff(moment()) > 0) return null;
+  if (!airDate) return null;
 
   let episodeImagePath = TMDB_IMAGE_PREFIX;
   if (stillPath) episodeImagePath += `/w780${stillPath}`;
@@ -94,6 +127,33 @@ const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
   const [director] = crew.filter((e) => e.job === "Director");
   const [writer] = crew.filter((e) => e.job === "Writer");
   const sectionActiveGridSize = isSectionActive ? 12 : 6;
+
+  const getEpisodeStatus = () =>
+    moment(airDate).diff(moment()) > 0 ? "Coming Soon" : "Aired";
+
+  const renderTitle = () => {
+    return (
+      <Box className={classes.titleContainer}>
+        <Box className={classes.typographyContainer}>
+          <Typography
+            className={clsx(classes.title, classes.titleHeight)}
+            variant="body1"
+          >
+            <span className={clsx(classes.outlinedText, classes.titleHeight)}>
+              {`${episodeNumber} · ${episodeName}`}
+            </span>
+          </Typography>
+          {airDate && (
+            <Typography className={classes.subtitle} variant="caption">
+              <span className={clsx(classes.outlinedText, classes.dateHeight)}>
+                {airDate ? moment(airDate).format("MMM D, YYYY") : NO_DATE_TEXT}
+              </span>
+            </Typography>
+          )}
+        </Box>
+      </Box>
+    );
+  };
 
   return (
     <Grid
@@ -114,15 +174,17 @@ const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
         ) : (
           <BrokenImage
             type="baseImage"
-            extraClass={`${classes.activeImage} ${classes.image} ${classes.brokenImageContainer}`}
+            extraClass={`${classes.image} ${classes.brokenImageContainer}`}
           />
         )}
+        {renderTitle()}
       </Grid>
-      <Grid item className={classes.gridItem}>
-        <Typography noWrap>{`${episodeNumber} · ${episodeName}`}</Typography>
-        <Typography color="textSecondary" variant="body2" noWrap gutterBottom>
-          {airDate ? moment(airDate).format("MMM D, YYYY") : NO_DATE_TEXT}
-        </Typography>
+      <Grid item className={classes.gridItem} container>
+        <Chip
+          className={classes.chip}
+          label={getEpisodeStatus()}
+          variant="outlined"
+        />
       </Grid>
       {overview.length > 0 && (
         <Grid item className={classes.gridItem}>

@@ -6,8 +6,9 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Chip, Popover, Typography, useMediaQuery } from "@material-ui/core";
+import { Chip, Popover, useMediaQuery } from "@material-ui/core";
 import IconButton from "../../custom/composed/IconButton";
+import Typography from "../../custom/base/Typography";
 import ArrowDownIcon from "../../../assets/icons/arrow-down";
 import SearchIcon from "../../../assets/icons/search";
 
@@ -157,7 +158,6 @@ const ItemCategory = ({ iconSize = "default", type }) => {
           <Chip
             className={classes.chip}
             classes={{ label: classes.chipLabel }}
-            color="default"
             icon={<SearchIcon />}
             key="item-category-chip-search"
             onClick={handleSearchClick}

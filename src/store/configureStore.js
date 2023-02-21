@@ -13,7 +13,8 @@ const store = createStore(
     applyMiddleware(reduxThunk, routerMiddleware(history)),
     window.devToolsExtension
       ? window.devToolsExtension({ trace: true, traceLimit: 25 })
-      : (f) => f
+      : (f) => f,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
 

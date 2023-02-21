@@ -4,15 +4,9 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Chip,
-  Collapse,
-  Divider,
-  Grid,
-  Tooltip,
-  Typography,
-} from "@material-ui/core";
+import { Chip, Collapse, Divider, Grid, Tooltip } from "@material-ui/core";
 import IconButton from "../../../custom/composed/IconButton";
+import Typography from "../../../custom/base/Typography";
 import ArrowDownIcon from "../../../../assets/icons/arrow-down";
 import ArrowUpIcon from "../../../../assets/icons/arrow-up";
 
@@ -42,6 +36,16 @@ const useStyles = makeStyles((theme) => ({
       padding: `${theme.spacing(2, 0)} !important`,
     },
   },
+  outlinedText: {
+    backgroundColor: theme.palette.colorScheme.sectionHeaderBackground,
+    color: theme.palette.colorScheme.sectionHeaderText,
+    padding: theme.spacing(1, 0),
+  },
+  anchor: {
+    [theme.breakpoints.only("xs")]: {
+      marginTop: -theme.spacing(6),
+    },
+  },
 }));
 
 const Section = ({
@@ -66,7 +70,7 @@ const Section = ({
 
   return visible ? (
     <>
-      <div id={anchorId} />
+      <div id={anchorId} className={classes.anchor} />
       <Grid container item xs={col}>
         {title && (
           <Grid container item xs={12}>
@@ -78,11 +82,10 @@ const Section = ({
               xs={isCollapsible ? 11 : 12}
             >
               <Typography variant="h6">
-                {title}
+                <span className={classes.outlinedText}>{title}</span>
                 {chipContent && (
                   <Chip
                     className={classes.chip}
-                    color="default"
                     label={chipContent}
                     size="small"
                     variant="outlined"

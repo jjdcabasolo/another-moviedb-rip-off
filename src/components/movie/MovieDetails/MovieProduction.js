@@ -3,7 +3,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Grid, Typography, useMediaQuery } from "@material-ui/core";
+import { Grid, useMediaQuery } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import ProductionChip from "../../common/item/detail/ProductionChip";
 
@@ -11,7 +12,6 @@ import { enumerate } from "../../../utils/functions";
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    fontWeight: theme.typography.h6.fontWeight,
     width: "100%",
   },
 }));
@@ -37,7 +37,12 @@ const MovieProduction = () => {
 
   const renderProduction = (title, items, xs = isMobile ? 12 : 6) => (
     <Grid item xs={xs} container>
-      <Typography variant="body1" gutterBottom className={classes.title}>
+      <Typography
+        variant="body1"
+        gutterBottom
+        className={classes.title}
+        color="textSecondary"
+      >
         {title}
       </Typography>
       {items}

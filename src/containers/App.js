@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import teal from "@material-ui/core/colors/teal";
 import grey from "@material-ui/core/colors/grey";
 
@@ -38,19 +38,31 @@ const App = () => {
     return () => window.removeEventListener("resize", updateSize);
   }, [dispatch]);
 
-  const theme = createMuiTheme({
+  const theme = createTheme({
+    typography: {
+      fontFamily: ['"Roboto Mono"', "Roboto", "sans-serif"].join(","),
+    },
     palette: {
-      primary: { main: darkMode ? teal[200] : teal[500] },
+      primary: { main: darkMode ? teal[200] : teal[400] },
       type: darkMode ? "dark" : "light",
+      text: {
+        primary: darkMode ? grey[100] : grey[800],
+        secondary: darkMode ? grey[400] : grey[500],
+        disabled: darkMode ? grey[300] : grey[600],
+      },
       brokenImage: {
         border: darkMode ? grey[700] : grey[300],
         background: darkMode ? grey[800] : grey[200],
+      },
+      outlinedText: {
+        background: grey[800],
+        color: grey[200],
       },
       colorScheme: {
         background: darkMode ? "#303030" : grey[50],
         sectionHeaderBackground: darkMode ? grey[800] : grey[100],
         divider: darkMode ? grey[600] : grey[300],
-        svgStrokeFill: darkMode ? grey[300] : grey[600],
+        svgStrokeFill: darkMode ? grey[200] : grey[700],
         secondaryText: darkMode ? grey[400] : grey[500],
         chipColor: darkMode ? grey[400] : grey[500],
         buttonText: darkMode ? grey[200] : grey[700],

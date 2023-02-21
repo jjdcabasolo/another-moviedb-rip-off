@@ -7,12 +7,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { usePath } from "../../../hooks";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Grid, Toolbar, Typography } from "@material-ui/core";
+import { CssBaseline, Grid, Toolbar } from "@material-ui/core";
 import IconButton from "../../custom/composed/IconButton";
+import AppBar from "../../custom/base/AppBar";
+import Typography from "../../custom/base/Typography";
 import SearchIcon from "../../../assets/icons/search";
 import BackIcon from "../../../assets/icons/back";
 
-import AppBar from "../../custom/base/AppBar";
 import AppbarMenu from "./AppbarMenu";
 import GradientBackground from "../../common/GradientBackground";
 import Helmet from "../Helmet";
@@ -48,11 +49,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 1),
   },
   container: {
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(15),
-  },
-  containerItemSelected: {
-    marginTop: -theme.spacing(12),
   },
   category: {
     borderTop: `1px solid ${theme.palette.colorScheme.divider}`,
@@ -86,8 +84,8 @@ const Appbar = ({ children }) => {
 
   const [activeBottomTab, setActiveBottomTab] = useState(isMovie ? 1 : 2);
 
-  const { title, original_title: originalTitle, poster_path: movieBG } = movie;
-  const { name, original_name: originalName, poster_path: tvShowBG } = tvShow;
+  const { title, original_title: originalTitle } = movie;
+  const { name, original_name: originalName } = tvShow;
 
   const isMovieEmpty =
     Object.keys(movie).length === 0 && movie.constructor === Object;
@@ -120,12 +118,7 @@ const Appbar = ({ children }) => {
     const titleComponent = isItemLoading ? (
       <div className={classes.titlebar} />
     ) : (
-      <Typography
-        component="h1"
-        variant="h6"
-        noWrap
-        className={classes.titlebar}
-      >
+      <Typography noWrap className={classes.titlebar}>
         {displayTitle}
       </Typography>
     );
@@ -154,7 +147,7 @@ const Appbar = ({ children }) => {
 
     return (
       <>
-        <Typography component="h1" variant="h6" className={classes.titlebar}>
+        <Typography component="h2" variant="h6" className={classes.titlebar}>
           ATMDbRo
         </Typography>
         {searchComponent}
@@ -176,7 +169,8 @@ const Appbar = ({ children }) => {
     if (isTabActive) {
       return (
         <GradientBackground
-          image={isMovie ? movieBG : tvShowBG}
+          isMovie={isMovie}
+          item={isMovie ? movie : tvShow}
           isItemSelected={isItemSelected}
           isLoading={isItemEmpty}
           isVisible={isItemSelected && !isItemLoading}
@@ -204,12 +198,7 @@ const Appbar = ({ children }) => {
       >
         <div id="scroll-to-top-anchor" />
         {renderTopContents()}
-        <div
-          className={clsx(classes.container, {
-            [classes.containerItemSelected]: isItemSelected,
-          })}
-          ref={itemListContainerRef}
-        >
+        <div className={classes.container} ref={itemListContainerRef}>
           {renderList()}
         </div>
       </div>

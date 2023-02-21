@@ -3,7 +3,8 @@ import React from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import TruncatedOverview from "../../common/TruncatedOverview";
 
@@ -26,7 +27,7 @@ const TVShowSeasonDetails = () => {
 
   const filteredEpisodes = episodes.filter(
     (e) =>
-      (!e.air_date && e.air_date.length > 0) ||
+      (e.air_date !== null && e.air_date.length > 0) ||
       moment(e.air_date).diff(moment()) < 0
   ).length;
 

@@ -29,7 +29,7 @@ const TVShowEpisodes = () => {
   const maxEpisodesToShow = isMobile ? 1 : 2;
   const filteredEpisodes = episodes.filter(
     (e) =>
-      (!e.air_date && e.air_date.length > 0) ||
+      (e.air_date !== null && e.air_date.length > 0) ||
       moment(e.air_date).diff(moment()) < 0
   );
 

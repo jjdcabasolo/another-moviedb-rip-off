@@ -5,10 +5,10 @@ import clsx from "clsx";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Zoom, useMediaQuery } from "@material-ui/core";
+import Fab from "../../custom/base/Fab";
 import ArrowLeftIcon from "../../../assets/icons/arrow-left";
 import ArrowRightIcon from "../../../assets/icons/arrow-right";
 
-import Fab from "../../custom/base/Fab";
 import SeeMoreIconButton from "../SeeMoreIconButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,8 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   scroller: {
-    backgroundColor: theme.palette.colorScheme.background,
-    color: theme.palette.text.primary,
+    zIndex: 10,
     position: "absolute",
     top: theme.spacing(7),
     "& svg": {

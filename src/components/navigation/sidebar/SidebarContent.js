@@ -11,10 +11,10 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
-  Typography,
 } from "@material-ui/core";
-
 import IconButton from "../../custom/composed/IconButton";
+import Typography from "../../custom/base/Typography";
+
 import DarkModeToggle from "../../common/DarkModeToggle";
 
 import TMDbIcon from "../../../assets/icons/tmdb";
@@ -62,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
+  title: {
+    margin: 0,
+  },
 }));
 
 const SidebarContent = () => {
@@ -105,7 +108,7 @@ const SidebarContent = () => {
           <ListItemText
             className={classes.listItemText}
             primary={
-              <Typography component="h1" variant="h6">
+              <Typography component="h2" variant="h6" className={classes.title}>
                 {" "}
                 ATMDbRo{" "}
               </Typography>

@@ -4,7 +4,8 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Typography, useMediaQuery } from "@material-ui/core";
+import { useMediaQuery } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import ItemCategory from "./ItemCategory";
 

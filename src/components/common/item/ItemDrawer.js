@@ -11,14 +11,14 @@ import {
   Drawer,
   Grid,
   Toolbar,
-  Typography,
   useMediaQuery,
 } from "@material-ui/core";
+import AppBar from "../../custom/base/AppBar";
 import IconButton from "../../custom/composed/IconButton";
+import Typography from "../../custom/base/Typography";
 import ArrowLeftIcon from "../../../assets/icons/arrow-left";
 import ArrowRightIcon from "../../../assets/icons/arrow-right";
 
-import AppBar from "../../custom/base/AppBar";
 import ComponentLoader from "../ComponentLoader";
 import ItemCard from "./ItemCard";
 import ItemCategory from "./ItemCategory";
@@ -81,9 +81,6 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
     },
   },
-  grow: {
-    flexGrow: 1,
-  },
   itemCardContainer: {
     overflowY: "auto",
   },
@@ -116,6 +113,16 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButtonPadding: {
     marginLeft: theme.spacing(1),
+  },
+  titlebar: {
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+    margin: theme.spacing(0, 2),
+    maxWidth: "60%",
+  },
+  titleSection: {
+    lineHeight: 1.2,
   },
 }));
 
@@ -282,11 +289,21 @@ const ItemDrawer = ({ isItemSelected }) => {
           <Toolbar className={classes.toolbar}>
             {!isSearchOpen && (
               <>
-                <Typography variant="h6" className={classes.grow}>
-                  {`Top 10 ${toCamelCase(
-                    isMovie ? movieCategory : tvShowCategory
-                  ).replace("Highest", "H. ")}`}
-                </Typography>
+                <div className={classes.titlebar}>
+                  <Typography variant="caption" noWrap>
+                    Top 10
+                  </Typography>
+                  <Typography
+                    className={classes.titleSection}
+                    noWrap
+                    variant="h6"
+                  >
+                    {`${toCamelCase(
+                      isMovie ? movieCategory : tvShowCategory
+                    ).replace("Highest", "")}`}
+                  </Typography>
+                </div>
+                <Typography variant="h6" className={classes.grow}></Typography>
                 {contentToDisplay.length > 0 && (
                   <ItemCategory type="iconButton" />
                 )}

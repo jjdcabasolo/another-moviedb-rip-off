@@ -8,8 +8,8 @@ const Fab = styled(MuiFab)(({ theme }) => ({
   "& svg *[stroke]": {
     stroke: theme.palette.colorScheme.svgStrokeFill,
   },
-  backgroundColor: theme.palette.colorScheme.background,
-  border: `1px solid ${theme.palette.brokenImage.border}`,
+  backgroundColor: theme.palette.colorScheme.sectionHeaderBackground,
+  border: `1px solid ${theme.palette.colorScheme.divider}`,
   boxShadow: "none",
   "&:hover": {
     boxShadow: "none",
@@ -21,7 +21,7 @@ const Fab = styled(MuiFab)(({ theme }) => ({
   "&:active": {
     boxShadow: "none",
   },
-  color: theme.palette.text.primary,
+  color: theme.palette.colorScheme.buttonText,
 }));
 
 export default Fab;

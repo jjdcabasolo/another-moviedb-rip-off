@@ -2,19 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import Fab from "../custom/base/Fab";
+import Typography from "../custom/base/Typography";
 import FowardIcon from "../../assets/icons/forward";
 
-import Fab from "../custom/base/Fab";
-
 const useStyles = makeStyles((theme) => ({
-  fab: {
-    backgroundColor: theme.palette.colorScheme.background,
-    color: theme.palette.text.primary,
-    "&:hover": {
-      backgroundColor: theme.palette.colorScheme.background,
-    },
-  },
   seeMoreContainer: {
     height: "100%",
     width: theme.spacing(20),
@@ -38,13 +31,13 @@ const SeeMoreIconButton = ({ handleSeeMore }) => {
       xs={12}
     >
       <Grid item>
-        <Fab className={classes.fab}>
+        <Fab>
           <FowardIcon />
         </Fab>
       </Grid>
       <Grid item>
         <Typography variant="body1" align="center" noWrap>
-          Show all
+          show all
         </Typography>
       </Grid>
     </Grid>
