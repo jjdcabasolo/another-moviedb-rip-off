@@ -4,23 +4,24 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Avatar, Grid, Typography } from "@material-ui/core";
+import { Avatar, Grid } from "@material-ui/core";
+import Typography from "../../../custom/base/Typography";
 
 import BrokenImage from "../../BrokenImage";
 
 import { TMDB_IMAGE_PREFIX } from "../../../../constants";
 
 const useStyles = makeStyles((theme) => ({
-  subtitle: {
-    fontWeight: "400",
-  },
-  title: {
-    fontWeight: theme.typography.fontWeightMedium,
+  secondary: {
+    fontWeight: 200,
   },
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
     height: theme.spacing(14),
     width: theme.spacing(14),
+    "& img": {
+      filter: "brightness(70%)",
+    },
   },
   text: {
     width: "inherit",
@@ -69,18 +70,18 @@ const PersonAvatar = ({
         )}
       </Grid>
       <Grid item className={classes.text}>
-        <Typography align="center" className={classes.title} variant="body1">
-          {character}
+        <Typography align="center" variant="body2">
+          {name}
         </Typography>
       </Grid>
       <Grid item>
         <Typography
           align="center"
-          className={classes.subtitle}
+          className={classes.secondary}
           color="textSecondary"
           variant="body2"
         >
-          {name}
+          {character}
         </Typography>
       </Grid>
     </Grid>

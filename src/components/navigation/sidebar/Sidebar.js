@@ -28,12 +28,16 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
   },
+  bg: {
+    position: "relative",
+    zIndex: -1,
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(5),
   },
   contentItemSelected: {
-    marginTop: theme.spacing(-10),
+    marginTop: 0,
   },
   drawer: {
     display: "flex",
@@ -82,8 +86,6 @@ const Sidebar = ({ children }) => {
 
   const [activeTab, idPath] = usePath();
   const isMovie = activeTab === "movies";
-  const { backdrop_path: movieBG } = movie;
-  const { backdrop_path: tvShowBG } = tvShow;
 
   const isMovieEmpty =
     Object.keys(movie).length === 0 && movie.constructor === Object;
@@ -115,12 +117,15 @@ const Sidebar = ({ children }) => {
   const renderTopContents = () => {
     if (isItemSelected && isTabActive) {
       return (
-        <GradientBackground
-          image={isMovie ? movieBG : tvShowBG}
-          isItemSelected={isItemSelected}
-          isLoading={isItemEmpty}
-          isVisible={isItemSelected && isTabActive && !isItemLoading}
-        />
+        <div className={classes.bg}>
+          <GradientBackground
+            isMovie={isMovie}
+            item={isMovie ? movie : tvShow}
+            isItemSelected={isItemSelected}
+            isLoading={isItemEmpty}
+            isVisible={isItemSelected && isTabActive && !isItemLoading}
+          />
+        </div>
       );
     }
 

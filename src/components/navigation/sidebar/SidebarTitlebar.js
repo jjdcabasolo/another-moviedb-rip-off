@@ -6,7 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Toolbar, Typography } from "@material-ui/core";
+import { Toolbar } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import AppBar from "../../custom/base/AppBar";
 import IconButton from "../../custom/composed/IconButton";
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginLeft: theme.spacing(2),
+    color: theme.palette.text.primary,
   },
   grow: {
     flexGrow: 1,
@@ -79,7 +81,7 @@ const SidebarTitlebar = ({ item }) => {
   };
 
   return (
-    <AppBar color="default" className={classes.appbar}>
+    <AppBar className={classes.appbar}>
       <Toolbar className={classes.toolbarDrawer}>
         <IconButton
           svgSrc={<BackIcon />}
@@ -87,7 +89,7 @@ const SidebarTitlebar = ({ item }) => {
           tooltipTitle="Go back"
         />
         {!isItemLoading && (
-          <Typography component="h1" variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             {isItemSelected &&
               `${evaluateTitle()} ${
                 date ? `(${moment(date).format("YYYY")})` : ""

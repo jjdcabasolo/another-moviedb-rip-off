@@ -4,7 +4,12 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { ListItemText, ListItem, MenuItem } from "@material-ui/core";
+import {
+  ListItemText,
+  ListItemIcon,
+  ListItem,
+  MenuItem,
+} from "@material-ui/core";
 import IconButton from "../custom/composed/IconButton";
 
 import LightModeIcon from "../../assets/icons/light-mode";
@@ -32,9 +37,11 @@ const DarkModeToggle = ({ type, edge }) => {
     case "listItem":
       return (
         <ListItem button onClick={handleToggleLights}>
-          <IconButton
-            svgSrc={darkMode ? <DarkModeIcon /> : <LightModeIcon />}
-          />
+          <ListItemIcon>
+            <IconButton
+              svgSrc={darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+            />
+          </ListItemIcon>
           <ListItemText
             className={classes.listItemText}
             primary="Toggle lights"

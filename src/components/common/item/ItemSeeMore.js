@@ -7,22 +7,22 @@ import { usePath } from "../../../hooks";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Grid,
   Toolbar,
-  Typography,
   useMediaQuery,
 } from "@material-ui/core";
+import AppBar from "../../custom/base/AppBar";
+import Button from "../../custom/base/Button";
 import IconButton from "../../custom/composed/IconButton";
+import Typography from "../../custom/base/Typography";
 import BackIcon from "../../../assets/icons/back";
 import SearchIcon from "../../../assets/icons/search";
 import CloseIcon from "../../../assets/icons/close";
 
-import AppBar from "../../custom/base/AppBar";
 import AppbarMenu from "../../navigation/appbar/AppbarMenu";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   content: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(5),
     padding: theme.spacing(3, 2),
   },
   contentContainer: {
@@ -56,14 +56,13 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 300,
   },
   titlebar: {
-    display: "flex",
-    flexDirection: "column",
     flexGrow: 1,
-    margin: theme.spacing(0, 1),
-    maxWidth: "60%",
+    margin: theme.spacing(0, 2),
+    color: theme.palette.text.primary,
+    lineHeight: 1,
   },
   titleSection: {
-    lineHeight: 1.2,
+    lineHeight: 1,
   },
   toolbar: {
     padding: theme.spacing(1, 2),
@@ -129,25 +128,23 @@ const ItemSeeMore = ({
             id={`item-see-more-${title}`}
             className={classes.dialogTitle}
           >
-            <AppBar color="default">
+            <AppBar>
               <Toolbar className={classes.toolbar}>
                 <IconButton
                   svgSrc={<BackIcon />}
                   handleOnClick={handleClose}
                   tooltipTitle="Go back"
                 />
-                <div className={classes.titlebar}>
+                <Typography noWrap className={classes.titlebar}>
+                  <Typography noWrap>{titleSection}</Typography>
                   <Typography
-                    className={classes.titleSection}
+                    variant="caption"
                     noWrap
-                    variant="h6"
+                    className={classes.titleSection}
                   >
-                    {titleSection}
-                  </Typography>
-                  <Typography variant="caption" noWrap>
                     {title}
                   </Typography>
-                </div>
+                </Typography>
                 <IconButton
                   svgSrc={<SearchIcon />}
                   handleOnClick={handleSearch}
@@ -193,7 +190,7 @@ const ItemSeeMore = ({
           {expandedContent}
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="default">
+          <Button autoFocus onClick={handleClose} variant="outlined">
             Close
           </Button>
         </DialogActions>

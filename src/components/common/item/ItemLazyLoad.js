@@ -74,6 +74,25 @@ const ItemLazyLoad = ({
           key: `item-search-results-item-card-${index + 1}-${content.id}`,
           content,
         };
+      case "itemReviews":
+        const {
+          author,
+          author_details,
+          created_at: date,
+          content: reviewContent,
+        } = content;
+
+        const { rating } = author_details;
+
+        return {
+          ...otherProps,
+          key: `item-reviews-item-card-${index + 1}-${content.id}`,
+          author,
+          content: reviewContent,
+          date,
+          rating,
+          divider: index !== 0,
+        };
       default:
         return {};
     }

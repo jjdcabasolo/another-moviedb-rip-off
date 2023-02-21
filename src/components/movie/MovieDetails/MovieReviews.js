@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import { Grid } from "@material-ui/core";
 
+import ItemLazyLoad from "../../common/item/ItemLazyLoad";
 import ItemReview from "../../common/item/ItemReview";
 import ItemSeeMore from "../../common/item/ItemSeeMore";
 
@@ -40,7 +41,14 @@ const MovieReviews = () => {
         appbarTitle={[title || originalTitle, "Reviews"]}
         collapsedClickEvent={() => scrollToID("movie-reviews")}
         collapsedContent={reviewsUI[0]}
-        expandedContent={reviewsUI}
+        expandedContent={
+          <ItemLazyLoad
+            contents={reviews}
+            maxItemPerLoad={5}
+            node={<ItemReview />}
+            type="itemReviews"
+          />
+        }
         isButtonShown={reviews.length > 1}
         isEpisode
         sectionId={SECTION_ID}

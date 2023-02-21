@@ -4,8 +4,9 @@ import clsx from "clsx";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Grid, Typography, useMediaQuery } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Box, Grid } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import BrokenImage from "../../common/BrokenImage";
 import ItemHorizontalContainer from "../../common/item/ItemHorizontalContainer";
@@ -14,56 +15,72 @@ import { getTVShowSeasonDetails } from "../../../api";
 
 import { tvShowsActions } from "../../../reducers/ducks";
 
-import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from "../../../constants";
+import { TMDB_IMAGE_PREFIX } from "../../../constants";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     position: "relative",
   },
   image: {
+    filter: "brightness(70%)",
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
-    height: theme.spacing(25),
+    width: "250px",
     objectFit: "cover",
     objectPosition: "50% 0%",
-    width: theme.spacing(18.75),
-  },
-  activeImage: {
-    border: `1px solid ${theme.palette.colorScheme.divider} !important`,
-    borderRadius: theme.shape.borderRadius,
+    height: "355px",
   },
   emphasis: {
     fontWeight: 600,
   },
   horizontalScrollItemSpacing: {
-    border: "1px solid transparent",
     cursor: "pointer",
-    margin: 0,
-    padding: theme.spacing(1),
-    maxWidth: theme.spacing(22.25),
-    [theme.breakpoints.only("xs")]: {
-      "&:last-child": {
-        marginRight: theme.spacing(2),
-      },
+    marginRight: theme.spacing(2),
+    width: "250px",
+    "&:last-child": {
+      marginRight: 0,
     },
-  },
-  gridItem: {
-    maxWidth: "100%",
   },
   brokenImageContainer: {
     alignItems: "center",
     display: "flex",
     justifyContent: "center",
-    padding: theme.spacing(1),
   },
   lastEntry: {
     width: theme.spacing(2.5),
   },
+  titleContainer: {
+    zIndex: 1,
+    height: "355px",
+    position: "absolute",
+    width: "250px",
+    padding: theme.spacing(2),
+  },
+  typographyContainer: {
+    bottom: theme.spacing(2),
+    position: "absolute",
+  },
+  outlinedText: {
+    backgroundColor: theme.palette.outlinedText.background,
+    color: theme.palette.outlinedText.color,
+    padding: theme.spacing(0.5, 0),
+  },
+  titleHeight: {
+    lineHeight: "28px",
+  },
+  dateHeight: {
+    lineHeight: "22px",
+    fontWeight: 200,
+  },
+  activeSeason: {
+    textDecoration: "underline",
+  },
+  activeImage: {
+    filter: "brightness(40%)",
+  },
 }));
 
 const TVShowSeasonList = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const classes = useStyles();
 
   const tvShow = useSelector((state) => state.tvShows.tvShow);
@@ -89,12 +106,41 @@ const TVShowSeasonList = () => {
     }
   };
 
+  const renderTitle = ({ isActive, seasonName, airDate }) => {
+    return (
+      <Box className={classes.titleContainer}>
+        <Box className={classes.typographyContainer}>
+          <Typography
+            className={clsx(classes.title, classes.titleHeight)}
+            variant="body1"
+          >
+            <span
+              className={clsx(classes.outlinedText, classes.titleHeight, {
+                [classes.activeSeason]: isActive,
+              })}
+            >
+              {seasonName}
+            </span>
+          </Typography>
+          {airDate && (
+            <Typography className={classes.subtitle} variant="caption">
+              <span
+                className={clsx(classes.outlinedText, classes.dateHeight, {
+                  [classes.activeSeason]: isActive,
+                })}
+              >
+                {moment(airDate).format("MMM D, YYYY")}
+              </span>
+            </Typography>
+          )}
+        </Box>
+      </Box>
+    );
+  };
+
   return (
     <Grid container item xs={12} className={classes.container}>
-      <ItemHorizontalContainer
-        imageSize={theme.spacing(28)}
-        scrollAmount={theme.spacing(63)}
-      >
+      <ItemHorizontalContainer imageSize={355} scrollAmount={266}>
         {seasons.map((season) => {
           const {
             air_date: airDate,
@@ -105,57 +151,38 @@ const TVShowSeasonList = () => {
           } = season;
 
           const isActive = seasonNumber === selectedSeason;
-          const seasonName = seasonNumber === 0 ? name : `S${seasonNumber}`;
+          const seasonName =
+            seasonNumber === 0 ? name : `Season ${seasonNumber}`;
 
           let imagePath = TMDB_IMAGE_PREFIX;
           if (posterPath) imagePath += `/w780${posterPath}`;
 
           return (
             <Grid
-              className={clsx(classes.horizontalScrollItemSpacing, {
-                [classes.activeImage]: isActive,
-              })}
+              className={classes.horizontalScrollItemSpacing}
               container
               direction="column"
               onClick={() => handleCardClick(seasonNumber)}
-              spacing={1}
               key={`tv-show-season-list-${id}`}
             >
-              <Grid item className={classes.gridItem}>
-                {posterPath ? (
-                  <img
-                    className={classes.image}
-                    alt="Season cover"
-                    src={imagePath}
-                  />
-                ) : (
-                  <BrokenImage
-                    type="baseImage"
-                    extraClass={`${classes.activeImage} ${classes.image} ${classes.brokenImageContainer}`}
-                  />
-                )}
-              </Grid>
-              <Grid item className={classes.gridItem}>
-                <Typography
-                  noWrap
-                  className={clsx({ [classes.emphasis]: isActive })}
-                >
-                  {seasonName}
-                </Typography>
-                <Typography color="textSecondary" variant="body2" noWrap>
-                  {airDate
-                    ? moment(airDate).format("MMM D, YYYY")
-                    : NO_DATE_TEXT}
-                </Typography>
-              </Grid>
+              {posterPath ? (
+                <img
+                  className={clsx(classes.image, {
+                    [classes.activeImage]: isActive,
+                  })}
+                  alt="Season cover"
+                  src={imagePath}
+                />
+              ) : (
+                <BrokenImage
+                  type="baseImage"
+                  extraClass={`${classes.image} ${classes.brokenImageContainer}`}
+                />
+              )}
+              {renderTitle({ isActive, seasonName, airDate })}
             </Grid>
           );
         })}
-        {isMobile && (
-          <Grid container direction="column" spacing={1}>
-            <Grid item className={classes.lastEntry} />
-          </Grid>
-        )}
       </ItemHorizontalContainer>
     </Grid>
   );

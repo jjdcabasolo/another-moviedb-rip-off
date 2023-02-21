@@ -11,10 +11,10 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  Typography,
   useMediaQuery,
 } from "@material-ui/core";
 import IconButton from "../../custom/composed/IconButton";
+import Typography from "../../custom/base/Typography";
 import BackIcon from "../../../assets/icons/back";
 
 import ComponentLoader from "../ComponentLoader";

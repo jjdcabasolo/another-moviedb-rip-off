@@ -12,13 +12,13 @@ import {
   CardActionArea,
   CardMedia,
   Grid,
-  Typography,
   useMediaQuery,
 } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import BrokenImage from "../BrokenImage";
 
-import { scrollToID, truncateText } from "../../../utils/functions";
+import { scrollToID } from "../../../utils/functions";
 
 import { moviesActions, tvShowsActions } from "../../../reducers/ducks";
 
@@ -27,7 +27,8 @@ import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from "../../../constants";
 const useStyles = makeStyles((theme) => ({
   media: {
     borderRadius: theme.shape.borderRadius,
-    paddingTop: theme.spacing(22),
+    paddingTop: theme.spacing(23),
+    filter: "brightness(70%)",
   },
   mediaDrawerOpen: {
     height: 0,
@@ -67,18 +68,6 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     height: "100%",
   },
-  typoOverlayBackgroundGradient: {
-    backgroundImage: `linear-gradient(to top,
-      rgba(0,0,0,0.4) 0%,
-      rgba(0,0,0,0.3) 30%,
-      rgba(0,0,0,0.25) 35%,
-      rgba(0,0,0,0.2) 40%,
-      rgba(0,0,0,0.15) 45%,
-      rgba(0,0,0,0.1) 50%,
-      rgba(0,0,0,0.1) 90%,
-      rgba(0,0,0,0.1) 100%
-    )`,
-  },
   cardContainer: {
     transition: theme.transitions.create("padding", {
       easing: theme.transitions.easing.easeOut,
@@ -97,7 +86,6 @@ const useStyles = makeStyles((theme) => ({
   },
   rank: {
     fontWeight: "400",
-    fontSize: theme.typography.body2.fontSize,
     color: theme.palette.grey[300],
     marginRight: theme.spacing(1),
   },
@@ -145,6 +133,18 @@ const useStyles = makeStyles((theme) => ({
   },
   textImageInvalid: {
     color: theme.palette.text.primary,
+  },
+  outlinedText: {
+    backgroundColor: theme.palette.outlinedText.background,
+    color: theme.palette.outlinedText.color,
+    padding: theme.spacing(0.5, 0),
+  },
+  titleHeight: {
+    lineHeight: "28px",
+  },
+  dateHeight: {
+    lineHeight: "22px",
+    fontWeight: 200,
   },
 }));
 
@@ -223,42 +223,45 @@ const ItemCard = ({
             />
             <div
               className={clsx(classes.typoOverlay, {
-                [classes.typoOverlayBackgroundGradient]: isImageValid,
                 [classes.typoOverlayMediaDrawerOpen]: drawerOpen,
                 [classes.typoOverlayMediaDrawerClosed]: !drawerOpen,
               })}
             >
               <Typography
-                variant="h6"
+                variant="body1"
                 className={clsx(classes.cardTitle, {
                   [classes.textImageInvalid]: !isImageValid,
                 })}
-                noWrap
               >
-                {truncateText(
-                  isMovie
+                <span
+                  className={clsx(classes.outlinedText, classes.titleHeight)}
+                >
+                  {isMovie
                     ? content.title || content.original_title
-                    : content.name || content.original_name,
-                  drawerOpen ? 25 : 100,
-                  "characters"
-                )}
+                    : content.name || content.original_name}
+                </span>
               </Typography>
               <Typography
                 className={clsx(classes.rank, {
                   [classes.textImageInvalid]: !isImageValid,
                 })}
+                variant="caption"
                 color="textSecondary"
               >
-                {rank !== 0 && (
-                  <span
-                    className={clsx(classes.rankText, {
-                      [classes.textImageInvalid]: !isImageValid,
-                    })}
-                  >
-                    {`${rank} •`}
-                  </span>
-                )}
-                {dateDisplay}
+                <span
+                  className={clsx(classes.outlinedText, classes.dateHeight)}
+                >
+                  {rank !== 0 && (
+                    <span
+                      className={clsx(classes.rankText, {
+                        [classes.textImageInvalid]: !isImageValid,
+                      })}
+                    >
+                      {`${rank} •`}
+                    </span>
+                  )}
+                  {dateDisplay}
+                </span>
               </Typography>
             </div>
           </CardActionArea>
