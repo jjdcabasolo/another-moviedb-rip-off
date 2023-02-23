@@ -24,6 +24,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   chip: {
     margin: theme.spacing(0.5),
+    textTransform: "lowercase",
     "&:first-child": {
       marginLeft: theme.spacing(1),
     },
