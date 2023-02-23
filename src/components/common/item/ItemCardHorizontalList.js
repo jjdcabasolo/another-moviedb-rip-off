@@ -6,12 +6,12 @@ import { useSelector } from "react-redux";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Grid, useMediaQuery } from "@material-ui/core";
+import Typography from "../../custom/base/Typography";
 
 import ItemCard from "./ItemCard";
 import ItemHorizontalContainer from "./ItemHorizontalContainer";
 import ItemLazyLoad from "./ItemLazyLoad";
 import ItemSeeMore from "./ItemSeeMore";
-import TruncatedOverview from "../TruncatedOverview";
 
 import { scrollToID } from "../../../utils/functions";
 
@@ -70,7 +70,9 @@ const ItemCardHorizontalList = ({
   const renderOverview = () =>
     overview.length > 0 && (
       <div className={classes.overview}>
-        <TruncatedOverview overview={overview} />
+        <Typography variant="body2" color="textSecondary">
+          {overview}
+        </Typography>
       </div>
     );
 

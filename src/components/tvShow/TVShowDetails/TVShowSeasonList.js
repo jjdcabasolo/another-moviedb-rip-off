@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   image: {
-    filter: "brightness(70%)",
+    filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
     width: "250px",
@@ -87,7 +87,7 @@ const TVShowSeasonList = () => {
   const selectedSeason = useSelector((state) => state.tvShows.selectedSeason);
   const dispatch = useDispatch();
 
-  const { seasons } = tvShow;
+  const { seasons, name: showName, original_name: originalName } = tvShow;
 
   const handleCardClick = (index) => {
     if (selectedSeason !== index) {
@@ -170,7 +170,9 @@ const TVShowSeasonList = () => {
                   className={clsx(classes.image, {
                     [classes.activeImage]: isActive,
                   })}
-                  alt="Season cover"
+                  alt={`${
+                    showName || originalName
+                  } Season ${seasonNumber}'s cover`}
                   src={imagePath}
                 />
               ) : (

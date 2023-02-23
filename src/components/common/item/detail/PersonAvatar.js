@@ -12,6 +12,9 @@ import BrokenImage from "../../BrokenImage";
 import { TMDB_IMAGE_PREFIX } from "../../../../constants";
 
 const useStyles = makeStyles((theme) => ({
+  primary: {
+    fontWeight: 600,
+  },
   secondary: {
     fontWeight: 200,
   },
@@ -20,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(14),
     width: theme.spacing(14),
     "& img": {
-      filter: "brightness(70%)",
+      filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
     },
   },
   text: {
@@ -70,7 +73,7 @@ const PersonAvatar = ({
         )}
       </Grid>
       <Grid item className={classes.text}>
-        <Typography align="center" variant="body2">
+        <Typography align="center" variant="body2" className={classes.primary}>
           {name}
         </Typography>
       </Grid>

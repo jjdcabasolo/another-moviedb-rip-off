@@ -95,7 +95,7 @@ const Section = ({
             </Grid>
             {isCollapsible && (
               <Grid item xs={1} container justify="flex-end">
-                <Tooltip title={expanded ? "Hide content" : "Show content"}>
+                <Tooltip title={expanded ? "hide content" : "show content"}>
                   <IconButton
                     className={classes.margin}
                     svgSrc={expanded ? <ArrowUpIcon /> : <ArrowDownIcon />}

@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   demo: {
     backgroundColor: theme.palette.colorScheme.background,
   },
+  primary: {
+    fontWeight: 600,
+  },
   secondary: {
     fontWeight: 200,
   },
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
     "& img": {
-      filter: "brightness(70%)",
+      filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
     },
   },
   listItem: {
@@ -45,7 +48,7 @@ const PersonAvatarList = ({ col = 12, content, title }) => {
   return (
     <Grid item xs={col}>
       {title && (
-        <Typography variant="body1" color="textSecondary">
+        <Typography variant="body2" color="textSecondary">
           {title}
         </Typography>
       )}
@@ -71,7 +74,11 @@ const PersonAvatarList = ({ col = 12, content, title }) => {
                 )}
               </ListItemAvatar>
               <ListItemText
-                primary={<Typography variant="body2">{name}</Typography>}
+                primary={
+                  <Typography variant="body2" className={classes.primary}>
+                    {name}
+                  </Typography>
+                }
                 secondary={
                   <Typography variant="body2" className={classes.secondary}>
                     {job}

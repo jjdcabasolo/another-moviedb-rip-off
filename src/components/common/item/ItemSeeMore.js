@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   dialogTitle: {
     "& h2": {
       width: `calc(100% - ${theme.spacing(6)}px)`,
+      textTransform: "lowercase",
     },
   },
   episodeDialog: {

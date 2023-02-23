@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     border: `1px solid ${theme.palette.brokenImage.border}`,
     "& img": {
-      filter: "brightness(70%)",
+      filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
     },
   },
   brokenImage: {

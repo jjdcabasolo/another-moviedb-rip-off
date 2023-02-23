@@ -12,7 +12,7 @@ import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from "../../constants";
 const useStyles = makeStyles((theme) => ({
   image: {
     position: "absolute",
-    filter: "brightness(70%)",
+    filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
     objectFit: "cover",
     objectPosition: "50% 0%",
     borderBottom: `1px solid ${theme.palette.colorScheme.divider}`,

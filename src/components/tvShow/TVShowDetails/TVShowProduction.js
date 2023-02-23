@@ -8,11 +8,12 @@ import Typography from "../../custom/base/Typography";
 
 import ProductionChip from "../../common/item/detail/ProductionChip";
 
-import { enumerate } from "../../../utils/functions";
-
 const useStyles = makeStyles((theme) => ({
   title: {
     width: "100%",
+  },
+  name: {
+    fontWeight: 600,
   },
 }));
 
@@ -29,6 +30,8 @@ const TVShowProduction = () => {
     production_companies: productionCompanies,
     production_countries: productionCountries,
     spoken_languages: spokenLanguages,
+    number_of_episodes: totalEpisodes,
+    number_of_seasons: totalSeasons,
   } = tvShow;
 
   const hasCreatedBy = createdBy && createdBy.length > 0;
@@ -38,11 +41,13 @@ const TVShowProduction = () => {
   const hasProductionCountry =
     productionCountries && productionCountries.length > 0;
   const hasSpokenLanguages = spokenLanguages && spokenLanguages.length > 0;
+  const hasTotalEpisodes = totalEpisodes && totalEpisodes > 0;
+  const hasTotalSeasons = totalSeasons && totalSeasons > 0;
 
   const renderProduction = (title, items, xs = isMobile ? 12 : 6) => (
     <Grid item xs={xs} container>
       <Typography
-        variant="body1"
+        variant="body2"
         gutterBottom
         className={classes.title}
         color="textSecondary"
@@ -52,6 +57,28 @@ const TVShowProduction = () => {
       {items}
     </Grid>
   );
+
+  const renderProductionList = (primary, secondary, index, length) => {
+    let punctuation = "";
+
+    if (index === 0 && length === 1) {
+      // only 1 entry
+      punctuation = "";
+    } else if (index === length - 2) {
+      // entry before last #oxfordComma
+      punctuation = ", and ";
+    } else if (index < length - 1) {
+      // mid entry
+      punctuation = ", ";
+    }
+
+    return (
+      <>
+        <span className={classes.name}>{primary}</span> ({secondary})
+        {punctuation}
+      </>
+    );
+  };
 
   return (
     <Grid item container>
@@ -125,12 +152,33 @@ const TVShowProduction = () => {
             }),
             12
           )}
+        {hasTotalSeasons &&
+          renderProduction(
+            "Total Season Count",
+            <Typography variant="body2">
+              <span className={classes.name}>{totalSeasons}</span> season
+              {totalSeasons > 1 ? "s" : ""}
+            </Typography>
+          )}
+        {hasTotalEpisodes &&
+          renderProduction(
+            "Total Episode Count",
+            <Typography variant="body2">
+              <span className={classes.name}>{totalEpisodes}</span> episode
+              {totalEpisodes > 1 ? "s" : ""}
+            </Typography>
+          )}
         {hasProductionCountry &&
           renderProduction(
             "Country",
             <Typography variant="body2">
-              {enumerate(
-                productionCountries.map((e) => `${e.name} (${e.iso_3166_1})`)
+              {productionCountries.map((e, i) =>
+                renderProductionList(
+                  e.name,
+                  e.iso_3166_1,
+                  i,
+                  productionCountries.length
+                )
               )}
             </Typography>
           )}
@@ -138,8 +186,13 @@ const TVShowProduction = () => {
           renderProduction(
             "Spoken Languages",
             <Typography variant="body2">
-              {enumerate(
-                spokenLanguages.map((e) => `${e.english_name} (${e.iso_639_1})`)
+              {spokenLanguages.map((e, i) =>
+                renderProductionList(
+                  e.english_name,
+                  e.iso_639_1,
+                  i,
+                  spokenLanguages.length
+                )
               )}
             </Typography>
           )}

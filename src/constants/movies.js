@@ -9,33 +9,33 @@ export const MOVIE_DRAWER_CATEGORY_CHIPS = [
     label: "Popular",
     identifier: "popular",
     isActive: (e) => e === "popular",
-    description: "Winners of the popularity contest, I guess.",
+    description: "TMDB implements a voting system and these are the winners.",
   },
   {
     label: "Now Playing",
     identifier: "nowPlaying",
     isActive: (e) => e === "nowPlaying",
-    description: "Movies in theatres. Oh, are theatres still a thing?",
+    description: "Movies in theaters right now.",
   },
   {
     label: "Top Rated",
     identifier: "topRated",
     isActive: (e) => e === "topRated",
     description:
-      "Top rated movies on TMDb. And no, the rating system of TMDb will not be implemented.",
+      "Top rated movies on TMDb. And no, I will not implement the rating system of TMDb.",
   },
   {
     label: "Upcoming",
     identifier: "upcoming",
     isActive: (e) => e === "upcoming",
-    description:
-      "Upcoming movies in theatres. Movies may vary, depending on where you are.",
+    description: "Upcoming movies in theatres.",
   },
   {
     label: "Highest Grossing",
     identifier: "highestGrossing",
     isActive: (e) => e === "highestGrossing",
-    description: "Highest grossing movies of all time.",
+    description:
+      "Highest grossing movies of all time. Data may not be accurate, as TMDb users can modify the values.",
   },
 ];
 

@@ -57,7 +57,7 @@ const Statistic = ({ col, count, divider, isTotal, label }) => {
               <Tooltip
                 enterTouchDelay={0}
                 leaveTouchDelay={1500}
-                title="Crew count is wholly based on the efforts of the TMDb community. It may or may not reflect the exact head count."
+                title="crew count is wholly based on the efforts of the tmdb community. it may or may not reflect the exact head count."
               >
                 <span className={classes.icon}>
                   <HelpIcon />

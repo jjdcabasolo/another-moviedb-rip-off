@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   media: {
     borderRadius: theme.shape.borderRadius,
     paddingTop: theme.spacing(23),
-    filter: "brightness(70%)",
+    filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
   },
   mediaDrawerOpen: {
     height: 0,

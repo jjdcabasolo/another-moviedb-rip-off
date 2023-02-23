@@ -19,7 +19,6 @@ import Chip from "../../custom/base/Chip";
 import { AvatarGroup } from "@material-ui/lab";
 
 import BrokenImage from "../../common/BrokenImage";
-import TruncatedOverview from "../../common/TruncatedOverview";
 
 import { TMDB_IMAGE_PREFIX, NO_DATE_TEXT } from "../../../constants";
 
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
-    filter: "brightness(70%)",
+    filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
     border: `1px solid ${theme.palette.brokenImage.border}`,
     borderRadius: theme.shape.borderRadius,
     height: theme.spacing(25),
@@ -72,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   typographyContainer: {
     bottom: theme.spacing(2),
     position: "absolute",
-    width: `calc(100% - ${theme.spacing(4)})`,
+    width: `calc(100% - ${theme.spacing(4)}px)`,
   },
   outlinedText: {
     backgroundColor: theme.palette.outlinedText.background,
@@ -114,7 +113,9 @@ const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
     crew,
     episode_number: episodeNumber,
     guest_stars: guestStars,
+    name,
     name: episodeName,
+    original_name: originalName,
     overview,
     still_path: stillPath,
   } = episode;
@@ -168,7 +169,9 @@ const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
         {stillPath ? (
           <img
             className={classes.image}
-            alt="Season cover"
+            alt={`${
+              name || originalName
+            } Episode ${episodeNumber} ${episodeName}'s stills.`}
             src={episodeImagePath}
           />
         ) : (
@@ -188,7 +191,7 @@ const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
       </Grid>
       {overview.length > 0 && (
         <Grid item className={classes.gridItem}>
-          <TruncatedOverview overview={overview} variant="body2" />
+          <Typography variant="body2">{overview}</Typography>
         </Grid>
       )}
       {director &&
@@ -210,15 +213,17 @@ const TVShowEpisode = ({ episode, isCollapsed, isLastItem }) => {
               const { id, profile_path: profilePath } = guest;
 
               let guestImagePath = TMDB_IMAGE_PREFIX;
-              if (stillPath) guestImagePath += `/w780${profilePath}`;
+              if (stillPath) guestImagePath += `/w45${profilePath}`;
 
               if (i < maxGuestsToShow) {
                 return (
                   <Tooltip
+                    arrow
                     enterTouchDelay={50}
                     key={`tv-show-episode-avatar-group-${id}`}
-                    title={`${guest.character} / ${guest.name}`}
+                    leaveTouchDelay={3000}
                     placement="top"
+                    title={`${guest.name} as ${guest.character}`.toLowerCase()}
                   >
                     <Avatar className={classes.avatar} src={guestImagePath} />
                   </Tooltip>

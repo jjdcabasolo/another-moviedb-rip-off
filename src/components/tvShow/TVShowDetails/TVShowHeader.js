@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   posterImage: {
-    filter: "brightness(70%)",
+    filter: `brightness(${theme.palette.type === "dark" ? "70%" : "90%"})`,
     border: `1px solid ${theme.palette.colorScheme.divider}`,
     borderRadius: theme.shape.borderRadius,
     height: "355px",

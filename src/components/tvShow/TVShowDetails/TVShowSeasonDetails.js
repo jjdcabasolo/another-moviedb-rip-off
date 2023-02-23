@@ -6,8 +6,6 @@ import { useSelector } from "react-redux";
 import { Grid } from "@material-ui/core";
 import Typography from "../../custom/base/Typography";
 
-import TruncatedOverview from "../../common/TruncatedOverview";
-
 import { selectSeason } from "../../../utils/functions";
 
 import { NO_DATE_TEXT } from "../../../constants";
@@ -47,7 +45,7 @@ const TVShowSeasonDetails = () => {
       </Grid>
       {overview && (
         <Grid item xs={12}>
-          <TruncatedOverview overview={overview} />
+          <Typography variant="body2">{overview}</Typography>
         </Grid>
       )}
     </Grid>

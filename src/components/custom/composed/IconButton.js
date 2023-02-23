@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const IconButton = ({ isActive, svgSrc, tooltipTitle, handleOnClick }) => {
+const IconButton = ({ isActive, svgSrc, tooltipTitle = "", handleOnClick }) => {
   const classes = useStyles();
 
   const svgIcon = (
@@ -47,7 +47,7 @@ const IconButton = ({ isActive, svgSrc, tooltipTitle, handleOnClick }) => {
   );
 
   if (tooltipTitle.length > 0) {
-    return <Tooltip title={tooltipTitle}>{svgIcon}</Tooltip>;
+    return <Tooltip title={tooltipTitle.toLowerCase()}>{svgIcon}</Tooltip>;
   }
 
   return svgIcon;

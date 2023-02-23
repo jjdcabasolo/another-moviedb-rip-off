@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(15),
+    paddingBottom: theme.spacing(18),
   },
   category: {
     borderTop: `1px solid ${theme.palette.colorScheme.divider}`,

@@ -36,7 +36,7 @@ const SeeMoreIconButton = ({ handleSeeMore }) => {
         </Fab>
       </Grid>
       <Grid item>
-        <Typography variant="body1" align="center" noWrap>
+        <Typography variant="body2" align="center" noWrap>
           show all
         </Typography>
       </Grid>

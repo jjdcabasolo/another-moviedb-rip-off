@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.colorScheme.secondaryText,
     fontSize: theme.typography.body2.fontSize,
   },
+  date: {
+    fontWeight: 200,
+  },
 }));
 
 const ItemReview = ({ author, content, date, divider, rating }) => {
@@ -108,7 +111,12 @@ const ItemReview = ({ author, content, date, divider, rating }) => {
           <Typography>
             Review by <span className={classes.author}>{author}</span>
           </Typography>
-          <Typography variant="caption" gutterBottom color="textSecondary">
+          <Typography
+            variant="caption"
+            gutterBottom
+            color="textSecondary"
+            className={classes.date}
+          >
             {`Created on ${moment(date).format("MMM D, YYYY")}`}
           </Typography>
           <Typography variant="body2" gutterBottom className={classes.content}>

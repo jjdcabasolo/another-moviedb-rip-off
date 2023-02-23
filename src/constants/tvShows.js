@@ -9,8 +9,7 @@ export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
     label: "Popular",
     identifier: "popular",
     isActive: (e) => e === "popular",
-    description:
-      "Everyone's watching these shows, so should you, you peer-pressured binge-watcher.",
+    description: "TMDB implements a voting system and these are the winners.",
   },
   {
     label: "On The Air",
@@ -28,7 +27,7 @@ export const TV_SHOW_DRAWER_CATEGORY_CHIPS = [
     label: "Top Rated",
     identifier: "topRated",
     isActive: (e) => e === "topRated",
-    description: "Shows with high ratings on TMDb.",
+    description: "TV shows with high ratings on TMDb.",
   },
 ];
 

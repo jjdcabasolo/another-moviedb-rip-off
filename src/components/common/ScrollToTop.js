@@ -38,7 +38,7 @@ const ScrollToTop = () => {
   };
 
   return (
-    <Tooltip title="Scroll to top">
+    <Tooltip title="scroll to top">
       <Fab
         aria-label="scroll back to top"
         className={classes.fab}
