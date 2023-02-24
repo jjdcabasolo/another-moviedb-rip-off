@@ -10,7 +10,6 @@ import Typography from "../../custom/base/Typography";
 
 import ItemBreadcrumbs from "../../common/item/ItemBreadcrumbs";
 import ItemLinks from "../../common/item/ItemLinks";
-import Statistic from "../../common/item/detail/Statistic";
 
 import { getTVShowStatus } from "../../../utils/functions";
 
@@ -67,8 +66,6 @@ const TVShowHeader = ({ sectionVisibility }) => {
     imdb,
     instagram,
     name,
-    number_of_episodes: numberOfEpisodes,
-    number_of_seasons: numberOfSeasons,
     original_name: originalName,
     overview,
     poster_path: posterPath,
@@ -152,17 +149,6 @@ const TVShowHeader = ({ sectionVisibility }) => {
         )}
         <Grid item xs={12}>
           <ItemBreadcrumbs content={breadcrumbs} />
-        </Grid>
-        <Grid item xs={12}>
-          <Grid item container justify="center" alignItems="center">
-            <Statistic
-              col={6}
-              count={numberOfSeasons}
-              label="Seasons"
-              divider
-            />
-            <Statistic col={6} count={numberOfEpisodes} label="Episodes" />
-          </Grid>
         </Grid>
       </Grid>
     </>

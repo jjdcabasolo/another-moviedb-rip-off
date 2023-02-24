@@ -21,22 +21,6 @@ export const truncateText = (text, length, type) => {
   }
 };
 
-// money format for millions and billions
-// taken from https://stackoverflow.com/q/36734201
-export const toMillionsOrBillions = (num) => {
-  const absoluteNumber = Math.abs(Number(num));
-  if (absoluteNumber >= 1.0e9) {
-    return `${(absoluteNumber / 1.0e9).toFixed(2)}B`;
-  }
-  if (absoluteNumber >= 1.0e6) {
-    return `${Math.floor(absoluteNumber / 1.0e6)}M`;
-  }
-  if (absoluteNumber >= 1.0e3) {
-    return `${Math.floor(absoluteNumber / 1.0e3)}K`;
-  }
-  return `${absoluteNumber}`;
-};
-
 // convert camel case to sentence case
 // taken from: https://stackoverflow.com/a/7225450
 export const toCamelCase = (text) => {

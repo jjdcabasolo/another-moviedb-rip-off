@@ -92,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
   rankText: {
     fontWeight: 600,
     color: theme.palette.grey[50],
+    lineHeight: "40px",
   },
   cardTitle: {
     letterSpacing: "0.02em",
@@ -227,12 +228,14 @@ const ItemCard = ({
                 [classes.typoOverlayMediaDrawerClosed]: !drawerOpen,
               })}
             >
-              <Typography
-                variant="body1"
-                className={clsx(classes.cardTitle, {
-                  [classes.textImageInvalid]: !isImageValid,
-                })}
-              >
+              <Typography variant="h5">
+                <span className={classes.outlinedText}>
+                  {rank !== 0 && (
+                    <span className={classes.rankText}>{rank}</span>
+                  )}
+                </span>
+              </Typography>
+              <Typography variant="body1" className={classes.cardTitle}>
                 <span
                   className={clsx(classes.outlinedText, classes.titleHeight)}
                 >
@@ -242,24 +245,13 @@ const ItemCard = ({
                 </span>
               </Typography>
               <Typography
-                className={clsx(classes.rank, {
-                  [classes.textImageInvalid]: !isImageValid,
-                })}
+                className={classes.rank}
                 variant="caption"
                 color="textSecondary"
               >
                 <span
                   className={clsx(classes.outlinedText, classes.dateHeight)}
                 >
-                  {rank !== 0 && (
-                    <span
-                      className={clsx(classes.rankText, {
-                        [classes.textImageInvalid]: !isImageValid,
-                      })}
-                    >
-                      {`${rank} •`}
-                    </span>
-                  )}
                   {dateDisplay}
                 </span>
               </Typography>

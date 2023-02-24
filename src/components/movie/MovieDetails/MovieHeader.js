@@ -10,9 +10,6 @@ import Typography from "../../custom/base/Typography";
 
 import ItemBreadcrumbs from "../../common/item/ItemBreadcrumbs";
 import ItemLinks from "../../common/item/ItemLinks";
-import Statistic from "../../common/item/detail/Statistic";
-
-import { toMillionsOrBillions } from "../../../utils/functions";
 
 import {
   MOVIE_BREADCRUMBS_CONFIG,
@@ -53,7 +50,6 @@ const MovieHeader = ({ sectionVisibility }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const {
-    budget,
     facebook,
     genres,
     imdb,
@@ -61,7 +57,6 @@ const MovieHeader = ({ sectionVisibility }) => {
     original_title: originalTitle,
     overview,
     poster_path: posterPath,
-    revenue,
     tagline,
     title,
     tmdb,
@@ -77,40 +72,6 @@ const MovieHeader = ({ sectionVisibility }) => {
   useEffect(() => {
     setIsImageLoaded(false);
   }, [posterPath]);
-
-  const renderStatistics = () => {
-    const income = revenue - budget;
-    const hasIncome = income > 0;
-
-    return [
-      revenue !== 0 && (
-        <Statistic
-          col={4}
-          count={toMillionsOrBillions(revenue)}
-          divider
-          key="movie-budget-revenue"
-          label="Revenue"
-        />
-      ),
-      budget !== 0 && (
-        <Statistic
-          col={4}
-          count={toMillionsOrBillions(budget)}
-          divider={!Number.isNaN(revenue) && hasIncome}
-          key="movie-budget-budget"
-          label="Budget"
-        />
-      ),
-      hasIncome && (
-        <Statistic
-          col={4}
-          count={toMillionsOrBillions(income)}
-          key="movie-budget-income"
-          label="Income"
-        />
-      ),
-    ];
-  };
 
   return (
     <>
@@ -171,11 +132,6 @@ const MovieHeader = ({ sectionVisibility }) => {
         )}
         <Grid item xs={12}>
           <ItemBreadcrumbs content={breadcrumbs} />
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container justify="center" alignItems="center">
-            {renderStatistics()}
-          </Grid>
         </Grid>
       </Grid>
     </>

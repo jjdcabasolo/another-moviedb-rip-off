@@ -25,8 +25,10 @@ const MovieProduction = () => {
   const movie = useSelector((state) => state.movies.movie);
 
   const {
+    budget,
     production_companies: productionCompanies,
     production_countries: productionCountries,
+    revenue,
     spoken_languages: spokenLanguages,
   } = movie;
 
@@ -35,6 +37,45 @@ const MovieProduction = () => {
   const hasProductionCountry =
     productionCountries && productionCountries.length > 0;
   const hasSpokenLanguages = spokenLanguages && spokenLanguages.length > 0;
+  const hasBudget = budget && budget > 0;
+  const hasRevenue = revenue && revenue > 0;
+
+  // money format for millions and billions
+  // taken from https://stackoverflow.com/q/36734201
+  const toMillionsOrBillions = (num) => {
+    const absoluteNumber = Math.abs(Number(num));
+    if (absoluteNumber >= 1.0e9) {
+      return (
+        <>
+          <span className={classes.name}>
+            {(absoluteNumber / 1.0e9).toFixed(2)}
+          </span>{" "}
+          billion
+        </>
+      );
+    }
+    if (absoluteNumber >= 1.0e6) {
+      return (
+        <>
+          <span className={classes.name}>
+            {Math.floor(absoluteNumber / 1.0e6)}
+          </span>{" "}
+          million
+        </>
+      );
+    }
+    if (absoluteNumber >= 1.0e3) {
+      return (
+        <>
+          <span className={classes.name}>
+            {Math.floor(absoluteNumber / 1.0e3)}
+          </span>{" "}
+          thousand
+        </>
+      );
+    }
+    return `${absoluteNumber}`;
+  };
 
   const renderProduction = (title, items, xs = isMobile ? 12 : 6) => (
     <Grid item xs={xs} container>
@@ -108,6 +149,20 @@ const MovieProduction = () => {
               );
             }),
             12
+          )}
+        {hasRevenue &&
+          renderProduction(
+            "Revenue",
+            <Typography variant="body2">
+              {toMillionsOrBillions(revenue)}
+            </Typography>
+          )}
+        {hasBudget &&
+          renderProduction(
+            "Budget",
+            <Typography variant="body2">
+              {toMillionsOrBillions(budget)}
+            </Typography>
           )}
         {hasProductionCountry &&
           renderProduction(

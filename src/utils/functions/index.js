@@ -1,11 +1,6 @@
 export { getCrewMembers } from "./extractCrew";
 
-export {
-  enumerate,
-  toCamelCase,
-  toMillionsOrBillions,
-  truncateText,
-} from "./text";
+export { enumerate, toCamelCase, truncateText } from "./text";
 
 export { getCastCol, getCrewCol } from "./movies";
 
