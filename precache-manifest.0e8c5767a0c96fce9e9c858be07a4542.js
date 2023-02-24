@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "37d4a0e0926694a53602f7d5ac9e0912",
+    "revision": "46a2d81fa1b3e415ec8052ba4bc44724",
     "url": "/another-moviedb-rip-off/index.html"
   },
   {
-    "revision": "11fcf44be243631d78ef",
+    "revision": "b7e4e416851f266c2639",
     "url": "/another-moviedb-rip-off/static/css/main.9a44514e.chunk.css"
   },
   {
@@ -20,16 +20,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/another-moviedb-rip-off/static/js/2.c8a78874.chunk.js"
   },
   {
-    "revision": "a94e271b328c05516a85",
-    "url": "/another-moviedb-rip-off/static/js/3.5d53cf2d.chunk.js"
+    "revision": "30871a97c955a4c260b7",
+    "url": "/another-moviedb-rip-off/static/js/3.0412a60a.chunk.js"
   },
   {
     "revision": "9312913abd3ec291e09a77758d4b839e",
-    "url": "/another-moviedb-rip-off/static/js/3.5d53cf2d.chunk.js.LICENSE.txt"
+    "url": "/another-moviedb-rip-off/static/js/3.0412a60a.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "1fa5b9fc3372639bfbd1",
-    "url": "/another-moviedb-rip-off/static/js/4.f8efdecb.chunk.js"
+    "revision": "28a42c3fb5301369a475",
+    "url": "/another-moviedb-rip-off/static/js/4.ca4df76e.chunk.js"
   },
   {
     "revision": "1a503553f572c4398060",
@@ -40,11 +40,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/another-moviedb-rip-off/static/js/7.5d8c22cb.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "11fcf44be243631d78ef",
-    "url": "/another-moviedb-rip-off/static/js/main.7b3d3f9a.chunk.js"
+    "revision": "b7e4e416851f266c2639",
+    "url": "/another-moviedb-rip-off/static/js/main.99ae0316.chunk.js"
   },
   {
-    "revision": "ef1a15474e3fee4d5cfe",
-    "url": "/another-moviedb-rip-off/static/js/runtime-main.362ea6c9.js"
+    "revision": "d852a8e5924217f5fff9",
+    "url": "/another-moviedb-rip-off/static/js/runtime-main.73addf0c.js"
   }
 ]);
