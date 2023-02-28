@@ -34,15 +34,19 @@ const TVShowProduction = () => {
     number_of_seasons: totalSeasons,
   } = tvShow;
 
-  const hasCreatedBy = createdBy && createdBy.length > 0;
-  const hasNetworks = networks && networks.length > 0;
-  const hasProductionCompany =
-    productionCompanies && productionCompanies.length > 0;
-  const hasProductionCountry =
-    productionCountries && productionCountries.length > 0;
-  const hasSpokenLanguages = spokenLanguages && spokenLanguages.length > 0;
-  const hasTotalEpisodes = totalEpisodes && totalEpisodes > 0;
-  const hasTotalSeasons = totalSeasons && totalSeasons > 0;
+  const hasCreatedBy = Boolean(createdBy && createdBy.length > 0);
+  const hasNetworks = Boolean(networks && networks.length > 0);
+  const hasProductionCompany = Boolean(
+    productionCompanies && productionCompanies.length > 0
+  );
+  const hasProductionCountry = Boolean(
+    productionCountries && productionCountries.length > 0
+  );
+  const hasSpokenLanguages = Boolean(
+    spokenLanguages && spokenLanguages.length > 0
+  );
+  const hasTotalEpisodes = Boolean(totalEpisodes && totalEpisodes > 0);
+  const hasTotalSeasons = Boolean(totalSeasons && totalSeasons > 0);
 
   const renderProduction = (title, items, xs = isMobile ? 12 : 6) => (
     <Grid item xs={xs} container>

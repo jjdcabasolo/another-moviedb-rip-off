@@ -137,6 +137,18 @@ const Movies = () => {
     }
   }, [movieId, dispatch]);
 
+  const renderScrollToTop = () => {
+    if (isMobile && movieId?.length) {
+      return <ScrollToTop />;
+    }
+
+    if (!itemDrawerOpen) {
+      return <ScrollToTop />;
+    }
+
+    return <></>;
+  };
+
   if (movieId === undefined) {
     return (
       <div className={classes.note}>
@@ -257,7 +269,7 @@ const Movies = () => {
           />
         </Section>
       </Grid>
-      {!itemDrawerOpen && <ScrollToTop />}
+      {renderScrollToTop()}
     </ErrorBoundary>
   );
 };

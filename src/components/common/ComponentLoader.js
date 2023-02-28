@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   loaderContainerDrawerClosed: {
     height: `calc(100vh - ${theme.spacing(10)}px)`,
   },
+  loader: {
+    color: theme.palette.colorScheme.divider,
+  },
 }));
 
 const ComponentLoader = ({
@@ -56,7 +59,7 @@ const ComponentLoader = ({
       spacing={2}
     >
       <Grid item>
-        <CircularProgress size={80} thickness={4} />
+        <CircularProgress size={80} thickness={4} className={classes.loader} />
       </Grid>
       <Grid item>
         <Typography variant="body2">{label}</Typography>

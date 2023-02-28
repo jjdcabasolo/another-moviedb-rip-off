@@ -146,6 +146,18 @@ const TVShows = () => {
     }
   }, [tvShowId, dispatch]);
 
+  const renderScrollToTop = () => {
+    if (isMobile && tvShowId?.length) {
+      return <ScrollToTop />;
+    }
+
+    if (!itemDrawerOpen) {
+      return <ScrollToTop />;
+    }
+
+    return <></>;
+  };
+
   if (tvShowId === undefined) {
     return (
       <div className={classes.note}>
@@ -260,7 +272,7 @@ const TVShows = () => {
           />
         </Section>
       </Grid>
-      {!itemDrawerOpen && <ScrollToTop />}
+      {renderScrollToTop()}
     </ErrorBoundary>
   );
 };

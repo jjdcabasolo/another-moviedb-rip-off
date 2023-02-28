@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 
 import clsx from "clsx";
@@ -73,16 +73,16 @@ const Appbar = ({ children }) => {
   const itemListContainerRef = useRef(null);
 
   const history = useHistory();
-  const [activeTab, idPath] = usePath();
-  const isMovie = activeTab === "movies";
+  const [, idPath] = usePath();
 
   const isMovieLoading = useSelector((state) => state.movies.isMovieLoading);
   const isTVShowLoading = useSelector((state) => state.tvShows.isTVShowLoading);
+  const activeTab = useSelector((state) => state.sidebar.activeTab);
   const movie = useSelector((state) => state.movies.movie);
   const tvShow = useSelector((state) => state.tvShows.tvShow);
   const dispatch = useDispatch();
 
-  const [activeBottomTab, setActiveBottomTab] = useState(isMovie ? 1 : 2);
+  const isMovie = activeTab === "movies";
 
   const { title, original_title: originalTitle } = movie;
   const { name, original_name: originalName } = tvShow;
@@ -102,7 +102,6 @@ const Appbar = ({ children }) => {
   const handleBottomNavigationClick = (index) => {
     const tab = index === 1 ? "movies" : "tvshows";
     scrollToID("scroll-to-top-anchor", tab === activeTab);
-    setActiveBottomTab(index);
     dispatch(sidebarActions.setActiveTab(tab));
     history.push(tab);
   };
@@ -218,7 +217,10 @@ const Appbar = ({ children }) => {
                         svgSrc={element.svg}
                         handleOnClick={() => handleBottomNavigationClick(index)}
                         tooltipTitle={element.title}
-                        isActive={activeBottomTab === index}
+                        isActive={
+                          activeTab ===
+                          element.title.replace(/ /g, "").toLowerCase()
+                        }
                       />
                     </Grid>
                   )

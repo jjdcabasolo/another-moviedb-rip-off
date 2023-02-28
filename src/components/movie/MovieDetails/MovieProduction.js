@@ -32,13 +32,17 @@ const MovieProduction = () => {
     spoken_languages: spokenLanguages,
   } = movie;
 
-  const hasProductionCompany =
-    productionCompanies && productionCompanies.length > 0;
-  const hasProductionCountry =
-    productionCountries && productionCountries.length > 0;
-  const hasSpokenLanguages = spokenLanguages && spokenLanguages.length > 0;
-  const hasBudget = budget && budget > 0;
-  const hasRevenue = revenue && revenue > 0;
+  const hasProductionCompany = Boolean(
+    productionCompanies && productionCompanies.length > 0
+  );
+  const hasProductionCountry = Boolean(
+    productionCountries && productionCountries.length > 0
+  );
+  const hasSpokenLanguages = Boolean(
+    spokenLanguages && spokenLanguages.length > 0
+  );
+  const hasBudget = Boolean(budget && budget > 0);
+  const hasRevenue = Boolean(revenue && revenue > 0);
 
   // money format for millions and billions
   // taken from https://stackoverflow.com/q/36734201
