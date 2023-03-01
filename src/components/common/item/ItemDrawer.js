@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   drawerOpen: {
-    width: theme.browserSize.width - theme.spacing(7),
+    width: theme.browserSize.width - theme.spacing(10.5),
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,

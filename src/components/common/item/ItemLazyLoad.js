@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   progressContainer: {
     padding: theme.spacing(2, 0, 6, 0),
   },
+  loader: {
+    color: theme.palette.colorScheme.divider,
+  },
 }));
 
 const ItemLazyLoad = ({
@@ -105,7 +108,7 @@ const ItemLazyLoad = ({
         .map((content, index) => cloneElement(node, getProps(content, index)))}
       {!hideLoader && contents.length >= maxItemPerLoad * page && (
         <Grid container justify="center" className={classes.progressContainer}>
-          <CircularProgress ref={loaderRef} />
+          <CircularProgress ref={loaderRef} className={classes.loader} />
         </Grid>
       )}
     </>
